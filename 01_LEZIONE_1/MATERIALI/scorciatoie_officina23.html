@@ -36,7 +36,7 @@ table{border-collapse:collapse;width:100%} td,th{border:1px solid var(--line);pa
 .fb{min-height:24px;margin-top:8px;font-weight:bold} .fb.ok{color:var(--ok)} .fb.ko{color:var(--ko)} .fb.mid{color:#8a6d00}
 .ans{display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap} .ans input{padding:7px 9px;border:2px solid var(--line);border-radius:7px;font-size:15px;width:320px;max-width:100%}
 .cnts{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:13px} .cnts div{background:var(--teal-l);border-radius:6px;padding:4px 7px;display:flex;justify-content:space-between;gap:6px}
-.cnts .m{background:var(--orange-l)} .cnts b{color:var(--teal)} .cnts .m b{color:#9a4410}
+.cnts .m{background:var(--orange-l);grid-column:span 2} .cnts b{color:var(--teal)} .cnts .m b{color:#9a4410}
 /* Blocco note simulato */
 .np{border:1px solid #9aa4ab;border-radius:8px;overflow:hidden;background:#fff;position:relative;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 .np-title{background:#f3f3f3;padding:7px 12px;font-size:14px;border-bottom:1px solid #e1e1e1;display:flex;gap:8px;align-items:center}
@@ -126,7 +126,7 @@ textarea.copy{width:100%;height:84px;font-family:"Courier New",monospace;font-si
     <div class="task"><div class="t" id="c-title"></div><div id="c-text" style="margin-top:6px"></div>
       <div class="ans hidden" id="c-ask"><label for="c-ans" id="c-asklab"></label><input id="c-ans" autocomplete="off"></div>
       <div style="margin-top:10px"><button class="btn" id="c-check">✔ Controlla</button> <button class="btn alt" id="c-hint">💡 Suggerimento</button> <button class="btn alt hidden" id="c-next">Sfida successiva →</button></div>
-      <div class="fb" id="c-fb"></div><div class="small" id="c-hinttext"></div></div>
+      <div class="fb" id="c-fb" aria-live="polite"></div><div class="small" id="c-hinttext"></div></div>
     <div class="np" id="np">
       <div class="np-title"><span>📝</span><span id="np-name"></span><span class="small">&nbsp;- Blocco note</span><span class="r"><button type="button" id="np-reset" title="Rimette il listino com'era all'inizio">↺ Listino da capo</button></span></div>
       <div class="np-menu">
@@ -134,8 +134,8 @@ textarea.copy{width:100%;height:84px;font-family:"Courier New",monospace;font-si
         <div class="mi">Modifica<div class="dd"><button data-a="undo">Annulla <span>Ctrl+Z</span></button><button data-a="find">Trova… <span>Ctrl+F</span></button><button data-a="all">Seleziona tutto <span>Ctrl+A</span></button></div></div>
         <div class="mi">Formato</div><div class="mi">Visualizza</div><div class="mi">?</div>
       </div>
-      <div class="banner hidden" id="banner">😱 Il listino è sparito? Niente panico: premi Ctrl+Z (Annulla).</div>
-      <div class="np-find hidden" id="find"><label for="fq">Trova</label><input id="fq" autocomplete="off" spellcheck="false"><span class="cnt" id="fcount"></span>
+      <div class="banner hidden" id="banner" role="alert">😱 Il listino è sparito? Niente panico: premi Ctrl+Z (Annulla).</div>
+      <div class="np-find hidden" id="find"><label for="fq">Trova</label><input id="fq" autocomplete="off" spellcheck="false"><span class="cnt" id="fcount" aria-live="polite"></span>
         <button type="button" id="fprev" title="Precedente (Shift+Invio)">▲</button><button type="button" id="fnext" title="Successivo (Invio)">▼</button><button type="button" id="fclose" title="Chiudi (Esc)">✕</button></div>
       <div class="np-edit"><div class="np-back" id="back"></div><textarea id="ed" wrap="off" spellcheck="false" autocomplete="off" aria-label="Testo del listino"></textarea></div>
       <div class="np-status"><span class="l" id="st-pos">Riga 1, colonna 1</span><span>100%</span><span>Windows (CRLF)</span><span>UTF-8</span></div>
@@ -145,9 +145,9 @@ textarea.copy{width:100%;height:84px;font-family:"Courier New",monospace;font-si
           <div class="r2"><label for="dlg-name">Nome file:</label><input id="dlg-name" autocomplete="off" spellcheck="false"></div>
           <div class="r2"><span>Salva come:</span><span class="ro">Documenti di testo (*.txt)</span></div>
           <div class="r2"><span>Codifica:</span><span class="ro">UTF-8</span></div>
-          <div class="err" id="dlg-err"></div></div>
+          <div class="err" id="dlg-err" aria-live="assertive"></div></div>
         <div class="ft"><button class="btn" id="dlg-save">Salva</button><button class="btn alt" id="dlg-cancel">Annulla</button></div></div></div>
-      <div class="toast" id="toast"></div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
     </div>
   </div>
 </div>
@@ -187,10 +187,10 @@ const curName = () => ($("#nome").value||"").replace(/\s+/g," ").trim();
 function saveResult(k,v){ if(!store.get("owner")) store.set("owner", curName()); store.set(k,v); }
 function clearResults(){ try{ Object.keys(localStorage).filter(k=>k.startsWith("o23sco_") && k!=="o23sco_nome").forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(k!=="nome") delete mem[k]; }
 $("#nome").addEventListener("change", ()=>{ const nn=curName(), ow=store.get("owner")||""; if(!ow || nn===ow) return;
-  if(confirm("I risultati salvati su questo computer sono di «"+ow+"».\n\nOK = sono un altro studente: riparto da zero.\nAnnulla = sono "+ow+" e ho solo corretto il mio nome.")){ clearResults(); location.reload(); } });
+  if(confirm("I risultati salvati su questo computer sono di «"+ow+"».\n\nOK = sono un altro studente: riparto da zero.\nAnnulla = sono "+ow+" e ho solo corretto il mio nome.")){ clearResults(); hardReload(); } });
 if(store.get("nome")) $("#whoinfo").textContent = "Su questo computer ci sono i risultati di: "+store.get("nome")+". Non sei tu? Premi «Nuovo studente».";
 $("#reset").addEventListener("click", ()=>{ if(!confirm("Cancellare nome, listino e risultati salvati su questo computer?")) return;
-  try{ Object.keys(localStorage).filter(k=>k.startsWith("o23sco_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; location.reload(); });
+  try{ Object.keys(localStorage).filter(k=>k.startsWith("o23sco_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; hardReload(); });
 /* ---------- navigazione ---------- */
 function go(id){ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hidden", s.id!==id));
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===id));
@@ -242,14 +242,17 @@ const ST0 = () => ({text:LISTINO, dirty:false, name:"listino_da_sistemare.txt", 
 let st = Object.assign(ST0(), store.get("st")||{}); st.cnt = Object.assign(ST0().cnt, st.cnt||{});
 let saveT=null; function persist(){ clearTimeout(saveT); saveT=setTimeout(()=>store.set("st",st),250); }
 function persistNow(){ clearTimeout(saveT); store.set("st",st); }
-window.addEventListener("beforeunload", persistNow);
+let noPersist=false;
+window.addEventListener("beforeunload", ()=>{ if(!noPersist) persistNow(); });
+function hardReload(){ noPersist=true; clearTimeout(saveT); location.reload(); }   // dopo un azzeramento non si riscrive lo stato vecchio
 const ta=$("#ed"), back=$("#back"), fq=$("#fq");
 ta.value = st.text;
 let lastKey={k:"",t:0}; const recent = k => lastKey.k===k && Date.now()-lastKey.t<800;
-let selAllBy=null, dis=null, recoveredAt=0;
+let selAllBy=null, dis=null, recoveredAt=0, resetting=false;
+function setAll(t){ resetting=true; ta.focus(); ta.select(); let ok=false; try{ ok=document.execCommand("insertText", false, t); }catch(e){} resetting=false; if(!ok || ta.value!==t) ta.value=t; }
 const CN=[["F","Ctrl+F"],["X","Ctrl+X"],["C","Ctrl+C"],["V","Ctrl+V"],["Z","Ctrl+Z"],["Y","Ctrl+Y"],["A","Ctrl+A"],["S","Ctrl+S"],["SS","Ctrl+Shift+S"],["Del","Canc"],["Bks","Backspace"]];
 function paintCounts(){ $("#cnts").innerHTML = CN.map(([k,l])=>`<div><span>${l}</span><b>${st.cnt[k]}</b></div>`).join("")
-  + `<div class="m"><span>🖱️ menu</span><b>${st.cnt.menu}</b></div><div class="m"><span>🖱️ trascinamenti</span><b>${st.cnt.drag}</b></div>`; }
+  + `<div class="m"><span>Con il mouse: menu</span><b>${st.cnt.menu}</b></div><div class="m"><span>Con il mouse: trascinamenti</span><b>${st.cnt.drag}</b></div>`; }
 function bump(k){ st.cnt[k]++; paintCounts(); persist(); }
 function paintTitle(){ $("#np-name").textContent=(st.dirty?"*":"")+st.name; }
 let toT; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toT); toT=setTimeout(()=>t.classList.remove("on"),2800); }
@@ -264,6 +267,11 @@ document.addEventListener("keydown", e=>{
   if(!workOn()) return;
   const c=e.code;
   if(dlgOpen()){ if(e.key==="Escape"){ e.preventDefault(); closeDlg(); } else if(isCtrl(e) && (c==="KeyS"||c==="KeyF")) e.preventDefault(); return; }
+  if(e.target===ta && !e.altKey){
+    if(e.key==="Delete" && e.shiftKey && !isCtrl(e)){ lastKey={k:"x",t:Date.now()}; bump("X"); return; }
+    if(e.key==="Insert" && e.shiftKey && !isCtrl(e)){ lastKey={k:"v",t:Date.now()}; bump("V"); return; }
+    if(e.key==="Insert" && isCtrl(e) && !e.shiftKey){ lastKey={k:"c",t:Date.now()}; bump("C"); return; }
+  }
   if(!isCtrl(e) || e.altKey) return;
   if(c==="KeyF"){ e.preventDefault(); bump("F"); openFind("kbd"); return; }
   if(c==="KeyS"){ e.preventDefault(); if(e.shiftKey){ bump("SS"); openDlg("kbd"); } else { bump("S"); save("kbd"); } return; }
@@ -280,14 +288,17 @@ ta.addEventListener("mousedown", ()=>{ selAllBy=null; });
 
 /* ---------- modifiche al testo ---------- */
 ta.addEventListener("beforeinput", e=>{
+  if(resetting) return;
   const it=e.inputType||"";
   if(!dis && !it.startsWith("history") && ta.value.length>200 && ta.selectionStart===0 && ta.selectionEnd===ta.value.length)
     dis={snap:ta.value, mA: selAllBy||"mouse"};        // "disastro": tutto il testo selezionato viene sostituito
 });
 ta.addEventListener("input", e=>{
+  if(resetting) return;
   const it=e.inputType||"";
   if(it==="deleteContentForward") bump("Del"); else if(it==="deleteContentBackward") bump("Bks"); else if(it==="insertFromDrop") bump("drag");
   const undoM = it==="historyUndo" ? (recent("z")?"kbd":"menu") : null;
+  if(!dis && st.text.length>1000 && ta.value.length < st.text.length*0.2) dis={snap:st.text, mA:"altro"};   // testo sparito anche senza Ctrl+A (es. Ctrl+Z dopo «Listino da capo»)
   if(dis){
     if(ta.value===dis.snap){ st.dis={mA:dis.mA, mZ:undoM||"altro"}; dis=null; recoveredAt=Date.now(); banner(false); toast("Listino recuperato! 👍"); }
     else banner(true);
@@ -346,6 +357,7 @@ $("#fnext").onclick=()=>stepFind(1); $("#fprev").onclick=()=>stepFind(-1); $("#f
 function nameErr(nm){
   const dot=nm.lastIndexOf("."), ext=nm.slice(dot), b=nm.slice(0,dot);
   if(ext!==".txt") return ext.toLowerCase()===".txt" ? "anche l'estensione va in minuscolo: .txt (regola 1)" : "l'estensione deve restare .txt (regola 7)";
+  if(b.includes(".")) return "c'è un punto di troppo nel nome: l'estensione .txt si scrive una volta sola";
   if(/\s/.test(b)) return "niente spazi: usa il trattino basso _ (regola 2)";
   if(/[A-Z]/.test(b)) return "tutto minuscolo (regola 1)";
   if(/[^a-z0-9_\-]/.test(b)) return "niente accenti, apostrofi o simboli (regola 3)";
@@ -353,6 +365,7 @@ function nameErr(nm){
   const cg=b.slice("listino_sistemato_".length);
   if(!cg) return "manca il cognome dopo listino_sistemato_";
   if(cg==="cognome") return "al posto della parola «cognome» scrivi il TUO cognome";
+  if(cg.includes("-")) return "per unire due cognomi usa il trattino basso _ (esempio: rossi_bianchi)";
   if(!/^[a-z]+(_[a-z]+)*$/.test(cg)) return "dopo listino_sistemato_ scrivi solo il cognome, in lettere minuscole";
   return "";
 }
@@ -381,7 +394,7 @@ function menuAct(a){ bump("menu");
   else if(a==="all"){ ta.focus(); ta.select(); selAllBy="menu"; pos(); }
   else if(a==="undo"){ ta.focus(); lastKey={k:"menu",t:Date.now()}; document.execCommand("undo"); } }
 $("#np-reset").addEventListener("click", ()=>{ if(!confirm("Rimettere il listino com'era all'inizio? Le modifiche al testo si perdono (le stelle già guadagnate restano).")) return;
-  const keep={cnt:st.cnt, finds:st.finds, dis:st.dis}; st=Object.assign(ST0(), keep); dis=null; banner(false); closeFind(); ta.value=LISTINO; ta.scrollTop=0; ta.setSelectionRange(0,0);
+  const keep={cnt:st.cnt, finds:st.finds, dis:st.dis}; st=Object.assign(ST0(), keep); dis=null; banner(false); closeFind(); setAll(LISTINO); ta.scrollTop=0; ta.setSelectionRange(0,0);
   paintTitle(); persistNow(); pos(); toast("Listino rimesso com'era all'inizio."); });
 
 /* =====================================================================
@@ -389,7 +402,7 @@ $("#np-reset").addEventListener("click", ()=>{ if(!confirm("Rimettere il listino
    ===================================================================== */
 const norm = s => String(s||"").toLowerCase().replace(/['’]/g,"").replace(/\s+/g," ").trim();
 const C = (()=>{
-  let cur=0, hinted=false, done=false;
+  let cur=+(store.get("cur")||0)||0, hinted=false, done=false;
   const findHas=(sub,m)=>st.finds.some(f=>f.q.includes(sub) && (!m || f.m===m));
   const lastClip=(t,code)=>{ for(let i=st.clip.length-1;i>=0;i--){ const c=st.clip[i]; if(c.t===t && c.codes.includes(code)) return c; } return null; };
   const clipBefore=(t,code,n)=>{ for(let i=st.clip.length-1;i>=0;i--){ const c=st.clip[i]; if(c.n<n && c.t===t && c.codes.includes(code)) return c; } return null; };
@@ -399,7 +412,7 @@ const C = (()=>{
     hint:"Clicca nel testo, premi Ctrl+F, scrivi EB-07: il codice si colora e il listino scorre fino a lì. Leggi il prodotto accanto al codice.",
     redo:"Rifai la ricerca con Ctrl+F e premi di nuovo Controlla.",
     check(ans){ const a=norm(ans); if(!a) return {ok:false, msg:"Scrivi il nome del prodotto nel riquadro."};
-      if(!(a===norm(EB07) || a.includes("caricabatterie"))) return {ok:false, msg:"Non è il prodotto del codice EB-07: cercalo con Ctrl+F."};
+      if(!(a===norm(EB07) || a.replace(/[\s-]/g,"").includes("caricabatter"))) return {ok:false, msg:"Non è il prodotto del codice EB-07: cercalo con Ctrl+F."};
       if(findHas("eb-07","kbd")) return {ok:true, tech:true};
       return {ok:true, tech:false, why: findHas("eb-07","menu") ? "hai aperto Trova dal menu Modifica" : "non hai cercato EB-07 con la barra Trova", need:"Ctrl+F"}; }},
    {id:"sposta", t:"Sposta 4 righe",
@@ -454,10 +467,12 @@ const C = (()=>{
   ];
   function paintList(){ $("#c-list").innerHTML = CH.map((c,i)=>{ const r=store.get("r_"+c.id); return `<li class="${i===cur?"cur":""}" data-i="${i}" tabindex="0" role="button">${i+1}. ${c.t}<span class="st">${r?stars(r.stars):""}</span></li>`; }).join("");
     document.querySelectorAll("#c-list li").forEach(li=>{ li.onclick=()=>start(+li.dataset.i); keyActivate(li, ()=>start(+li.dataset.i)); }); }
-  function start(i){ cur=i; done=false; const c=CH[i]; hinted=!!store.get("h_"+c.id);
+  function start(i){ const lf=document.activeElement && document.activeElement.closest && document.activeElement.closest("#c-list");
+    i=Math.max(0, Math.min(i, CH.length-1)); cur=i; store.set("cur", i); done=false; const c=CH[i]; hinted=!!store.get("h_"+c.id);
     $("#c-title").textContent=`Sfida ${i+1} di ${CH.length} · ${c.t}`; $("#c-text").innerHTML=c.d;
     $("#c-ask").classList.toggle("hidden", !c.ask); if(c.ask){ $("#c-asklab").textContent=c.ask; $("#c-ans").value=store.get("a_"+c.id)||""; }
-    $("#c-fb").textContent=""; $("#c-fb").className="fb"; $("#c-hinttext").textContent = hinted ? "💡 "+c.hint : ""; $("#c-next").classList.add("hidden"); paintList(); }
+    $("#c-fb").textContent=""; $("#c-fb").className="fb"; $("#c-hinttext").textContent = hinted ? "💡 "+c.hint : ""; $("#c-next").classList.add("hidden"); paintList();
+    if(lf){ const li=document.querySelector(`#c-list li[data-i="${i}"]`); if(li) li.focus(); } }
   function check(){
     const c=CH[cur], ans=$("#c-ans").value; if(c.ask) store.set("a_"+c.id, ans);
     const r=c.check(ans), fb=$("#c-fb");
@@ -476,7 +491,7 @@ const C = (()=>{
   $("#c-ans").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } });
   $("#c-hint").onclick=()=>{ hinted=true; store.set("h_"+CH[cur].id, true); $("#c-hinttext").textContent="💡 "+CH[cur].hint; };
   ["#c-check","#c-hint"].forEach(id=>$(id).addEventListener("mousedown", e=>{ if(document.activeElement===ta) e.preventDefault(); }));
-  return {start, get cur(){ return cur; }, CH, check};
+  return {start, get cur(){ return Math.max(0, Math.min(cur, CH.length-1)); }, CH, check};
 })();
 
 /* =====================================================================
