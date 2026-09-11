@@ -1,0 +1,10 @@
+﻿Missione 0 · 03 · Sistema la scheda del noleggio e-bike
+
+Missione 0 – Lezione 2. Marta ha scritto di corsa la scheda del nuovo servizio Noleggio e-bike: è un pasticcio. Deve diventare un PDF da dare ai clienti.
+
+0. Riscaldamento (15 minuti): scarica selezione_officina23.html, aprilo con doppio clic e fai le sfide della Palestra della selezione. Allo scadere incolla il codice risultato nella scheda (Parte 0), anche se non hai finito.
+1. Apri la scheda di lavoro e il documento di Marta (sono tue copie).
+2. Prima segna gli errori con i commenti, poi sistemali: struttura, stili, testo coerente, elenco, immagini, link, tabella.
+3. Le scelte grafiche sono tue: il documento deve essere coerente, riconoscibile e leggibile.
+4. Scarica il PDF, controllalo con la checklist e allegalo (Aggiungi o crea > File).
+5. Premi CONSEGNA.

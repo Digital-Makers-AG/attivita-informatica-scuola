@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Icona bicicletta</title>
+  <rect x="8" y="8" width="496" height="496" rx="80" fill="#FFF6D5"/>
+  <circle cx="140.8" cy="300.0" r="72.0" fill="none" stroke="#1F3A4D" stroke-width="16"/>
+  <line x1="140.8" y1="300.0" x2="207.0" y2="300.0" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="187.6" y2="346.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="140.8" y2="366.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="94.0" y2="346.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="74.6" y2="300.0" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="94.0" y2="253.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="140.8" y2="233.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="140.8" y1="300.0" x2="187.6" y2="253.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <circle cx="140.8" cy="300.0" r="8.6" fill="#1F3A4D"/>
+  <circle cx="371.2" cy="300.0" r="72.0" fill="none" stroke="#1F3A4D" stroke-width="16"/>
+  <line x1="371.2" y1="300.0" x2="437.4" y2="300.0" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="418.0" y2="346.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="371.2" y2="366.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="324.4" y2="346.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="305.0" y2="300.0" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="324.4" y2="253.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="371.2" y2="233.8" stroke="#1F3A4D" stroke-width="4.0"/>
+  <line x1="371.2" y1="300.0" x2="418.0" y2="253.2" stroke="#1F3A4D" stroke-width="4.0"/>
+  <circle cx="371.2" cy="300.0" r="8.6" fill="#1F3A4D"/>
+  <line x1="140.8" y1="300.0" x2="248.8" y2="300.0" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="248.8" y1="300.0" x2="216.4" y2="210.0" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="216.4" y1="210.0" x2="140.8" y2="300.0" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="216.4" y1="210.0" x2="331.6" y2="213.6" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="331.6" y1="213.6" x2="248.8" y2="300.0" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="331.6" y1="213.6" x2="371.2" y2="300.0" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="331.6" y1="213.6" x2="320.8" y2="186.2" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="320.8" y1="186.2" x2="351.0" y2="182.6" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <line x1="189.0" y1="199.9" x2="235.1" y2="199.9" stroke="#1F3A4D" stroke-width="24.0" stroke-linecap="round"/>
+  <line x1="216.4" y1="210.0" x2="216.4" y2="199.9" stroke="#1F3A4D" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="248.8" cy="300.0" r="14.4" fill="none" stroke="#1F3A4D" stroke-width="8.0"/>
+</svg>

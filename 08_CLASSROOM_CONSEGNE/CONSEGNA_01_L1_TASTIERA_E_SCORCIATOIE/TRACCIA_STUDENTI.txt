@@ -1,0 +1,9 @@
+﻿Missione 0 · 01 · Doma il computer: tastiera e scorciatoie
+
+Missione 0 – Lezione 1 – Parte A. Marta, la titolare di Officina 23, ha bisogno di uno stagista veloce ma soprattutto PRECISO.
+
+1. Apri la tua scheda di lavoro (allegata) e seguila parte per parte.
+2. Scarica typing_officina23.html (se si apre l'anteprima usa l'icona Scarica) e aprilo con doppio clic: è la palestra della tastiera.
+3. Lavorerai in coppia per il test iniziale: uno scrive, l'altro osserva le mani.
+4. Alla fine incolla nella scheda il codice risultato e allega il file listino_sistemato_cognome.txt (Aggiungi o crea > File).
+5. Premi CONSEGNA.

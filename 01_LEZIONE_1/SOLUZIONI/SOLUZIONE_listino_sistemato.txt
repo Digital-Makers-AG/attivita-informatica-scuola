@@ -1,0 +1,193 @@
+﻿LISTINO OFFICINA 23 - DA SISTEMARE
+Leggi le istruzioni nella scheda di lavoro (non qui).
+
+=== ACCESSORI ===
+AC-01 | Campanello classico | 15,00 €
+AC-02 | Campanello mini | 8,00 €
+AC-03 | Specchietto manubrio | 6,50 €
+AC-04 | Portapacchi posteriore | 39,00 €
+AC-05 | Cestino anteriore vimini | 15,00 €  ESAURITO
+AC-06 | Borraccia 500 ml | 22,00 €
+AC-07 | Borraccia termica | 22,00 €
+AC-08 | Portaborraccia alluminio | 29,00 €
+AC-09 | Pompa mini | 19,90 €
+AC-10 | Pompa da terra | 9,90 €
+AC-11 | Lucchetto a U | 12,00 €
+AC-12 | Lucchetto a spirale | 15,00 €
+AC-13 | Catena antifurto | 25,00 €
+AC-14 | Kit luci LED | 6,50 €
+AC-15 | Luce anteriore USB | 12,00 €
+AC-16 | Luce posteriore USB | 39,00 €
+AC-17 | Casco bimbo taglia S | 25,00 €
+AC-18 | Casco urbano taglia M | 39,00 €
+AC-19 | Casco urbano taglia L | 39,00 €  ESAURITO
+AC-20 | Guanti estivi | 8,00 €
+AC-21 | Guanti invernali | 25,00 €
+AC-22 | Mantella antipioggia | 22,00 €
+AC-23 | Copri sella | 6,50 €
+AC-24 | Sella comfort | 29,00 €
+AC-25 | Parafango anteriore | 22,00 €
+AC-26 | Parafango posteriore | 19,90 €
+AC-27 | Cavalletto laterale | 6,50 €
+AC-28 | Borsa laterale 20 l | 12,00 €
+AC-29 | Borsa manubrio | 6,50 €
+AC-30 | Supporto smartphone | 39,00 €
+AC-31 | Contachilometri | 19,90 €
+AC-32 | Seggiolino bimbo anteriore | 59,00 €
+AC-33 | Seggiolino bimbo posteriore | 69,00 €  ESAURITO
+AC-34 | Rimorchio bimbo | 189,00 €
+AC-35 | Gilet catarifrangente | 19,90 €
+AC-36 | Bretelle catarifrangenti | 39,00 €
+AC-37 | Kit catadiottri | 19,90 €
+AC-38 | Nastro manubrio | 39,00 €
+AC-39 | Manopole gel | 15,00 €
+AC-40 | Olio catena | 6,50 €
+AC-41 | Campanello classico (colore nero) | 15,00 €
+AC-42 | Campanello mini (colore nero) | 8,00 €
+AC-43 | Specchietto manubrio (colore nero) | 6,50 €
+AC-44 | Portapacchi posteriore (colore nero) | 39,00 €
+AC-45 | Cestino anteriore vimini (colore nero) | 15,00 €
+AC-46 | Borraccia 500 ml (colore nero) | 22,00 €
+AC-47 | Borraccia termica (colore nero) | 22,00 €
+AC-48 | Portaborraccia alluminio (colore nero) | 29,00 €
+AC-49 | Pompa mini (colore nero) | 19,90 €
+AC-50 | Pompa da terra (colore nero) | 9,90 €
+AC-51 | Lucchetto a U (colore nero) | 12,00 €
+AC-52 | Lucchetto a spirale (colore nero) | 15,00 €
+AC-53 | Catena antifurto (colore nero) | 25,00 €
+AC-54 | Kit luci LED (colore nero) | 6,50 €
+AC-55 | Luce anteriore USB (colore nero) | 12,00 €
+AC-56 | Luce posteriore USB (colore nero) | 39,00 €
+AC-57 | Casco bimbo taglia S (colore nero) | 25,00 €
+AC-58 | Casco urbano taglia M (colore nero) | 39,00 €
+AC-59 | Casco urbano taglia L (colore nero) | 39,00 €
+AC-60 | Guanti estivi (colore nero) | 8,00 €
+
+=== ACCESSORI E-BIKE ===
+EB-01 | Batteria 36V 10Ah | 390,00 €
+EB-02 | Batteria 36V 14Ah | 450,00 €
+EB-03 | Display e-bike | 89,00 €
+EB-04 | Sensore velocita' | 29,00 €
+EB-05 | Comando assistenza | 45,00 €
+EB-06 | Cavo motore | 15,00 €
+EB-07 | Caricabatterie e-bike 36V | 45,00 €
+EB-08 | Borsa porta batteria | 29,00 €
+EB-09 | Luce e-bike 6V | 25,00 €
+EB-10 | Chiave batteria | 15,00 €  ESAURITO
+EB-11 | Pacco batteria 48V | 520,00 €
+EB-12 | Coperchio motore | 29,00 €
+
+=== RICAMBI ===
+RI-001 | Camera d'aria 26 | 35,00 €
+RI-002 | Camera d'aria 27,5 | 4,50 €
+RI-003 | Camera d'aria 28 | 18,00 €
+RI-004 | Copertone 26 | 6,00 €
+RI-005 | Copertone 28 | 18,00 €
+RI-006 | Copertone antiforatura 28 | 35,00 €
+RI-007 | Pastiglie freno disco | 18,00 €
+RI-008 | Pattini freno V-brake | 6,00 €  ESAURITO
+RI-009 | Cavo freno | 6,00 €
+RI-010 | Cavo cambio | 6,00 €
+RI-011 | Guaina freno | 24,00 €
+RI-012 | Guaina cambio | 12,00 €
+RI-013 | Catena 7v | 24,00 €
+RI-014 | Catena 8v | 6,50 €
+RI-015 | Catena 9v | 35,00 €
+RI-016 | Pignone 7v | 4,50 €
+RI-017 | Pignone 8v | 4,50 €
+RI-018 | Corona 38 denti | 4,50 €
+RI-019 | Pedali piattaforma | 14,00 €
+RI-020 | Pedali bimbo | 2,10 €
+RI-021 | Raggi inox (10 pz) | 35,00 €  ESAURITO
+RI-022 | Cerchio 28 | 9,00 €
+RI-023 | Mozzo anteriore | 35,00 €
+RI-024 | Mozzo posteriore | 9,00 €
+RI-025 | Movimento centrale | 35,00 €
+RI-026 | Serie sterzo | 12,00 €
+RI-027 | Reggisella 27,2 | 4,50 €  ESAURITO
+RI-028 | Collarino sella | 12,00 €
+RI-029 | Leva freno | 9,00 €
+RI-030 | Comando cambio | 24,00 €
+RI-031 | Deragliatore posteriore | 9,00 €
+RI-032 | Forcellino cambio | 18,00 €
+RI-033 | Camera d'aria 26 (confezione 2 pz) | 66,50 €
+RI-034 | Camera d'aria 27,5 (confezione 2 pz) | 8,55 €
+RI-035 | Camera d'aria 28 (confezione 2 pz) | 34,20 €
+RI-036 | Copertone 26 (confezione 2 pz) | 11,40 €
+RI-037 | Copertone 28 (confezione 2 pz) | 34,20 €
+RI-038 | Copertone antiforatura 28 (confezione 2 pz) | 66,50 €
+RI-039 | Pastiglie freno disco (confezione 2 pz) | 34,20 €
+RI-040 | Pattini freno V-brake (confezione 2 pz) | 11,40 €
+RI-041 | Cavo freno (confezione 2 pz) | 11,40 €
+RI-042 | Cavo cambio (confezione 2 pz) | 11,40 €
+RI-043 | Guaina freno (confezione 2 pz) | 45,60 €
+RI-044 | Guaina cambio (confezione 2 pz) | 22,80 €
+RI-045 | Catena 7v (confezione 2 pz) | 45,60 €
+RI-046 | Catena 8v (confezione 2 pz) | 12,35 €
+RI-047 | Catena 9v (confezione 2 pz) | 66,50 €
+RI-048 | Pignone 7v (confezione 2 pz) | 8,55 €
+RI-049 | Pignone 8v (confezione 2 pz) | 8,55 €
+RI-050 | Corona 38 denti (confezione 2 pz) | 8,55 €
+RI-051 | Pedali piattaforma (confezione 2 pz) | 26,60 €
+RI-052 | Pedali bimbo (confezione 2 pz) | 3,99 €
+RI-053 | Raggi inox (10 pz) (confezione 2 pz) | 66,50 €
+RI-054 | Cerchio 28 (confezione 2 pz) | 17,10 €
+RI-055 | Mozzo anteriore (confezione 2 pz) | 66,50 €
+RI-056 | Mozzo posteriore (confezione 2 pz) | 17,10 €
+RI-057 | Movimento centrale (confezione 2 pz) | 66,50 €
+RI-058 | Serie sterzo (confezione 2 pz) | 22,80 €
+RI-059 | Reggisella 27,2 (confezione 2 pz) | 8,55 €
+RI-060 | Collarino sella (confezione 2 pz) | 22,80 €
+RI-061 | Leva freno (confezione 2 pz) | 17,10 €
+RI-062 | Comando cambio (confezione 2 pz) | 45,60 €
+RI-063 | Deragliatore posteriore (confezione 2 pz) | 17,10 €
+RI-064 | Forcellino cambio (confezione 2 pz) | 34,20 €
+RI-065 | Camera d'aria 26 (confezione 5 pz) | 157,50 €
+RI-066 | Camera d'aria 27,5 (confezione 5 pz) | 20,25 €
+RI-067 | Camera d'aria 28 (confezione 5 pz) | 81,00 €
+RI-068 | Copertone 26 (confezione 5 pz) | 27,00 €
+RI-069 | Copertone 28 (confezione 5 pz) | 81,00 €
+RI-070 | Copertone antiforatura 28 (confezione 5 pz) | 157,50 €
+RI-071 | Pastiglie freno disco (confezione 5 pz) | 81,00 €
+RI-072 | Pattini freno V-brake (confezione 5 pz) | 27,00 €
+RI-073 | Cavo freno (confezione 5 pz) | 27,00 €
+RI-074 | Cavo cambio (confezione 5 pz) | 27,00 €
+RI-075 | Guaina freno (confezione 5 pz) | 108,00 €
+RI-076 | Guaina cambio (confezione 5 pz) | 54,00 €
+RI-077 | Catena 7v (confezione 5 pz) | 108,00 €
+RI-078 | Catena 8v (confezione 5 pz) | 29,25 €
+RI-079 | Catena 9v (confezione 5 pz) | 157,50 €
+RI-080 | Pignone 7v (confezione 5 pz) | 20,25 €
+RI-081 | Pignone 8v (confezione 5 pz) | 20,25 €
+RI-082 | Corona 38 denti (confezione 5 pz) | 20,25 €
+RI-083 | Pedali piattaforma (confezione 5 pz) | 63,00 €
+RI-084 | Pedali bimbo (confezione 5 pz) | 9,45 €
+RI-085 | Raggi inox (10 pz) (confezione 5 pz) | 157,50 €
+RI-086 | Cerchio 28 (confezione 5 pz) | 40,50 €
+RI-087 | Mozzo anteriore (confezione 5 pz) | 157,50 €
+RI-088 | Mozzo posteriore (confezione 5 pz) | 40,50 €
+RI-089 | Movimento centrale (confezione 5 pz) | 157,50 €
+RI-090 | Serie sterzo (confezione 5 pz) | 54,00 €
+RI-091 | Reggisella 27,2 (confezione 5 pz) | 20,25 €
+RI-092 | Collarino sella (confezione 5 pz) | 54,00 €
+RI-093 | Leva freno (confezione 5 pz) | 40,50 €
+RI-094 | Comando cambio (confezione 5 pz) | 108,00 €
+RI-095 | Deragliatore posteriore (confezione 5 pz) | 40,50 €
+RI-096 | Forcellino cambio (confezione 5 pz) | 81,00 €
+RI-097 | Camera d'aria 26 (officina) | 42,00 €
+RI-098 | Camera d'aria 27,5 (officina) | 5,40 €
+RI-099 | Camera d'aria 28 (officina) | 21,60 €
+RI-100 | Copertone 26 (officina) | 7,20 €
+
+=== NOLEGGIO ===
+NO-01 | City bike - mezza giornata | 8,00 €
+NO-02 | City bike - giornata | 12,00 €
+NO-03 | E-bike - mezza giornata | 18,00 €
+NO-04 | E-bike - giornata | 30,00 €
+NO-05 | Bici bimbo - mezza giornata | 5,00 €
+NO-06 | Seggiolino bimbo - giornata | 4,00 €
+
+=== OFFERTE OPEN DAY ===
+AC-17 | Casco bimbo taglia S | 25,00 €
+
+--- fine listino ---

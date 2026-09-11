@@ -1,0 +1,8 @@
+﻿MISSIONE 0 - RIATTIVIAMO LE COMPETENZE DIGITALI
+
+1. Leggi README/README_DOCENTE.docx (5 minuti).
+2. Poi la guida completa: 00_GUIDA_DOCENTE/GUIDA_DOCENTE_MISSIONE_0.docx.
+3. Per preparare Classroom: 08_CLASSROOM_CONSEGNE/00_LEGGIMI_ORDINE_DI_CARICAMENTO.docx.
+4. Versione web della guida: apri index.html (anche dal computer) oppure pubblica l'intera cartella sul tuo sito.
+
+Tutti i nomi, le aziende e gli indirizzi (Officina 23, Montelieto, dominio .example) sono inventati a scopo didattico.

@@ -1,0 +1,6 @@
+﻿Per non duplicare i file, questi file del compito CHECKLIST si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- immagini_confronto.zip
+- immagini_candidate_volantino.zip
+- pagine_di_origine_immagini.pdf
+- ricerca_immagini_simulata.png

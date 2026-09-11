@@ -1,0 +1,5 @@
+﻿Per non duplicare i file, questi file del compito CHECKLIST si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- typing_officina23.html
+- mappa_tastiera_italiana.pdf
+- listino_da_sistemare.txt

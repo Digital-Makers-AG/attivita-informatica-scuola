@@ -1,0 +1,9 @@
+﻿Missione 0 · 06 · Casella sotto attacco (phishing)
+
+Missione 0 – Lezione 4 – Parte B (si fa per prima). Nella casella di Officina 23 sono arrivati diversi messaggi: alcuni potrebbero essere truffe.
+
+1. Scarica posta_officina23.html e aprilo con doppio clic.
+2. Per ogni messaggio: controlla il mittente completo (clic sul nome) e l'indirizzo vero dei link (mouse sopra, SENZA cliccare).
+3. Compila la scheda: indizi, decisione, come verificheresti.
+4. Nella tua Gmail trova il comando "Segnala phishing" e incolla lo screenshot nella scheda.
+5. Premi CONSEGNA.

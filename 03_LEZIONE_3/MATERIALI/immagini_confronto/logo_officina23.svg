@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
+  <title>Logo Officina 23 (vettoriale)</title>
+  <circle cx="500" cy="500" r="480" fill="#0B6E75"/>
+  <circle cx="500" cy="500" r="433" fill="none" stroke="#FAF4E6" stroke-width="14"/>
+  <text x="500" y="300" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="110" fill="#FAF4E6" text-anchor="middle" dominant-baseline="central">OFFICINA</text>
+  <circle cx="332.0" cy="575.0" r="105.0" fill="none" stroke="#FAF4E6" stroke-width="20"/>
+  <line x1="332.0" y1="575.0" x2="428.6" y2="575.0" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="400.3" y2="643.3" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="332.0" y2="671.6" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="263.7" y2="643.3" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="235.4" y2="575.0" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="263.7" y2="506.7" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="332.0" y2="478.4" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="332.0" y1="575.0" x2="400.3" y2="506.7" stroke="#FAF4E6" stroke-width="5.0"/>
+  <circle cx="332.0" cy="575.0" r="12.6" fill="#FAF4E6"/>
+  <circle cx="668.0" cy="575.0" r="105.0" fill="none" stroke="#FAF4E6" stroke-width="20"/>
+  <line x1="668.0" y1="575.0" x2="764.6" y2="575.0" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="736.3" y2="643.3" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="668.0" y2="671.6" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="599.7" y2="643.3" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="571.4" y2="575.0" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="599.7" y2="506.7" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="668.0" y2="478.4" stroke="#FAF4E6" stroke-width="5.0"/>
+  <line x1="668.0" y1="575.0" x2="736.3" y2="506.7" stroke="#FAF4E6" stroke-width="5.0"/>
+  <circle cx="668.0" cy="575.0" r="12.6" fill="#FAF4E6"/>
+  <line x1="332.0" y1="575.0" x2="489.5" y2="575.0" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="489.5" y1="575.0" x2="442.2" y2="443.8" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="442.2" y1="443.8" x2="332.0" y2="575.0" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="442.2" y1="443.8" x2="610.2" y2="449.0" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="610.2" y1="449.0" x2="489.5" y2="575.0" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="610.2" y1="449.0" x2="668.0" y2="575.0" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="610.2" y1="449.0" x2="594.5" y2="409.1" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="594.5" y1="409.1" x2="638.6" y2="403.9" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <line x1="402.4" y1="429.1" x2="469.6" y2="429.1" stroke="#FAF4E6" stroke-width="30.0" stroke-linecap="round"/>
+  <line x1="442.2" y1="443.8" x2="442.2" y2="429.1" stroke="#FAF4E6" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="489.5" cy="575.0" r="21.0" fill="none" stroke="#FAF4E6" stroke-width="10.0"/>
+  <circle cx="500" cy="800" r="95" fill="#D9661A"/>
+  <text x="500" y="800" font-family="Arial Black, Arial, Helvetica, sans-serif" font-weight="900" font-size="115" fill="#FAF4E6" text-anchor="middle" dominant-baseline="central">23</text>
+</svg>
