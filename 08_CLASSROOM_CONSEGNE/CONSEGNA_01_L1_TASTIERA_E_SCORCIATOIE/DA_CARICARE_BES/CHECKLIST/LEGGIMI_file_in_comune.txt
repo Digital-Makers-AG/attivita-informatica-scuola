@@ -2,4 +2,4 @@
 
 - typing_officina23.html
 - mappa_tastiera_italiana.pdf
-- listino_da_sistemare.txt
+- scorciatoie_officina23.html
