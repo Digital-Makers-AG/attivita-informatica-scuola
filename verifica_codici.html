@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verifica codici Missione 0</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%94%8E%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,600..800&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F4F2EC; --surface:#FFFFFF; --raise:#FAF9F5; --ink:#1B2226; --ink-2:#3A474D; --muted:#5E6C72; --line:#D6DDDD;
+  --teal:#0B6E75; --teal-ink:#0A5C62; --teal-soft:#DCEEEE; --orange:#D9661A; --orange-ink:#9A4410; --orange-soft:#FBE7D8;
+  --ok:#1E7D3A; --ok-soft:#DDF1E2; --warn:#8A5A00; --warn-soft:#FBEFCF; --bad:#B3261E; --bad-soft:#FBE3E1; --none:#E6EAEA; --focus:#D9661A;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --ground:#0F1618; --surface:#162124; --raise:#1B282C; --ink:#E7EDEC; --ink-2:#C3CFCF; --muted:#93A4A8; --line:#29383C;
+  --teal:#3FA9B0; --teal-ink:#7CCBD0; --teal-soft:#15393C; --orange:#EE8A45; --orange-ink:#F4AE7C; --orange-soft:#3A2616;
+  --ok:#6BCB86; --ok-soft:#173A24; --warn:#E6B45A; --warn-soft:#3A2F14; --bad:#F2877D; --bad-soft:#3F1C19; --none:#243236; --focus:#EE8A45; } }
+:root[data-theme="dark"]{
+  --ground:#0F1618; --surface:#162124; --raise:#1B282C; --ink:#E7EDEC; --ink-2:#C3CFCF; --muted:#93A4A8; --line:#29383C;
+  --teal:#3FA9B0; --teal-ink:#7CCBD0; --teal-soft:#15393C; --orange:#EE8A45; --orange-ink:#F4AE7C; --orange-soft:#3A2616;
+  --ok:#6BCB86; --ok-soft:#173A24; --warn:#E6B45A; --warn-soft:#3A2F14; --bad:#F2877D; --bad-soft:#3F1C19; --none:#243236; --focus:#EE8A45; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 1rem/1.5 "Atkinson Hyperlegible",Verdana,"Segoe UI",sans-serif}
+.mono,code,textarea{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+h1,h2,h3{font-family:Archivo,"Arial Narrow",Arial,sans-serif;text-wrap:balance;margin:0;letter-spacing:-.01em}
+a{color:var(--teal-ink)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.wrap{max-width:76rem;margin:0 auto;padding:0 1.25rem}
+.eyebrow{font:600 .75rem/1.3 "IBM Plex Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 .6rem}
+.tiny{font-size:.8rem;color:var(--muted)}
+header.top{padding:2.2rem 0 1.2rem}
+h1{font-weight:800;font-stretch:110%;font-size:clamp(1.9rem,4vw,2.6rem);line-height:1.05}
+.lead{max-width:64ch;color:var(--ink-2);margin:.8rem 0 0;font-size:1.06rem}
+.privacy{display:inline-flex;gap:.5rem;align-items:center;margin-top:.9rem;font-size:.9rem;color:var(--ok);background:var(--ok-soft);border-radius:999px;padding:.3rem .8rem}
+section{margin-top:1.6rem}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.2rem}
+.panel h2{font-size:1.15rem;font-stretch:104%;margin-bottom:.35rem}
+textarea#in{width:100%;min-height:9.5rem;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:.7rem .8rem;font-size:.8rem;line-height:1.45;background:var(--raise);color:var(--ink);white-space:pre;overflow:auto}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.7rem}
+.btn{border:0;border-radius:8px;padding:.55rem 1rem;font-weight:700;background:var(--teal);color:#fff}
+.btn.alt{background:transparent;color:var(--teal-ink);border:1.5px solid var(--teal)}
+.btn.ghost{background:transparent;color:var(--muted);border:1.5px solid var(--line)}
+.note{margin:.6rem 0 0;font-size:.9rem;color:var(--ink-2)}
+.example{display:none;margin:.7rem 0 0;padding:.55rem .8rem;border-radius:8px;background:var(--orange-soft);color:var(--orange-ink);font-size:.92rem}
+.example.on{display:block}
+.stats{display:flex;flex-wrap:wrap;gap:.4rem 1.6rem;margin:0 0 .9rem;padding:0;list-style:none}
+.stats li{font-size:.92rem;color:var(--ink-2)} .stats b{font:600 1.3rem/1 "IBM Plex Mono",monospace;color:var(--ink);margin-right:.3rem}
+.stats .bad b{color:var(--bad)} .stats .warn b{color:var(--warn)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:.88rem}
+th,td{padding:.5rem .55rem;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+thead th{background:var(--raise);font-weight:700;white-space:nowrap}
+thead .grp th{font:600 .7rem/1.2 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-bottom:0;padding-bottom:.1rem}
+thead .grp th.g{border-left:1px solid var(--line)}
+th.mic{font-size:.8rem;cursor:help} th.mic .id{display:block;font:600 .72rem/1.2 "IBM Plex Mono",monospace;color:var(--teal-ink)}
+td.g,th.g{border-left:1px solid var(--line)}
+.st{position:sticky;left:0;background:var(--surface);z-index:1;min-width:11rem;box-shadow:1px 0 0 var(--line)}
+thead .st{background:var(--raise);z-index:2}
+.st b{display:block} .st .tiny{display:block;overflow-wrap:anywhere}
+.lv{display:inline-grid;place-items:center;min-width:1.7rem;height:1.55rem;padding:0 .3rem;border-radius:5px;font:700 .8rem/1 "IBM Plex Mono",monospace}
+.lv-A{background:var(--ok-soft);color:var(--ok)} .lv-S{background:var(--warn-soft);color:var(--warn)} .lv-N{background:var(--bad-soft);color:var(--bad)}
+.lv-X{background:var(--none);color:var(--muted);font-weight:400} .lv-bad{background:transparent;color:var(--bad);border:1.5px solid var(--bad)}
+td .d{display:block;font-size:.72rem;color:var(--muted);margin-top:.2rem;white-space:nowrap;font-family:"IBM Plex Mono",monospace}
+td.fl{min-width:16rem}
+.flags{list-style:none;margin:0;padding:0;display:grid;gap:.2rem;font-size:.8rem}
+.flags li{padding-left:.9rem;position:relative;color:var(--ink-2)}
+.flags li::before{content:"";position:absolute;left:0;top:.45rem;width:.45rem;height:.45rem;border-radius:2px;background:var(--muted)}
+.flags li.bad{color:var(--bad)} .flags li.bad::before{background:var(--bad)} .flags li.warn::before{background:var(--warn)}
+tfoot td{background:var(--raise);font-size:.75rem;color:var(--ink-2);white-space:nowrap;font-family:"IBM Plex Mono",monospace;border-bottom:0}
+tfoot td span{display:block}
+.empty{padding:1.2rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;margin:.8rem 0 0;font-size:.85rem;color:var(--ink-2)}
+details.panel>summary{cursor:pointer;font-family:Archivo,Arial,sans-serif;font-weight:700;font-size:1.1rem}
+details.panel[open]>summary{margin-bottom:.6rem}
+.steps{margin:.3rem 0 0;padding-left:1.2rem;display:grid;gap:.45rem;max-width:72ch}
+.form td{border-bottom:1px solid var(--line)}
+.auto{background:var(--teal-soft);border-radius:8px;padding:.8rem 1rem;margin:.2rem 0 1rem;font-size:.95rem;max-width:84ch}
+details.sub{margin-top:.6rem} details.sub>summary{cursor:pointer;color:var(--teal-ink);font-weight:700;font-size:.9rem}
+pre.gs{max-height:22rem;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.7rem .8rem;font:.74rem/1.45 "IBM Plex Mono",ui-monospace,monospace;white-space:pre;color:var(--ink)}
+code.rx{font-size:.78rem;background:var(--raise);border:1px solid var(--line);border-radius:5px;padding:.15rem .35rem;overflow-wrap:anywhere}
+.cp{border:1px solid var(--line);background:var(--surface);color:var(--teal-ink);border-radius:5px;padding:.1rem .5rem;font-size:.78rem;font-weight:700;margin-left:.3rem}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem 1.6rem;margin:0;padding:0;list-style:none}
+.rules li{font-size:.88rem;color:var(--ink-2)} .rules b{font-family:"IBM Plex Mono",monospace;color:var(--teal-ink);margin-right:.35rem}
+footer{padding:2rem 0 3rem;font-size:.88rem;color:var(--muted)}
+@media (max-width:700px){ .rules{grid-template-columns:1fr} .st{min-width:8.5rem} }
+@media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <p class="eyebrow">Per il docente · Missione 0 · Officina 23</p>
+  <h1>Verifica dei codici della classe</h1>
+  <p class="lead">Incolla i codici risultato degli strumenti (palestre della tastiera, delle scorciatoie e della selezione, caselle di posta), anche tutti insieme dalle risposte del Modulo Google. La pagina controlla che nessuno li abbia modificati, li raggruppa per studente e propone il livello di ogni microcompetenza.</p>
+  <p class="privacy">🔒 I codici restano in questo browser: la pagina non invia nulla.</p>
+</div></header>
+<main class="wrap">
+<section class="panel" aria-labelledby="h-in">
+  <h2 id="h-in">1 · Incolla i codici</h2>
+  <textarea id="in" spellcheck="false" aria-label="Codici da verificare"></textarea>
+  <div class="actions"><button class="btn" id="go" type="button">Verifica</button><button class="btn ghost" id="clear" type="button">Svuota</button><button class="btn alt" id="ex-load" type="button">Rimetti l'esempio</button>
+    <span class="tiny">Dal Foglio Google delle risposte: seleziona tutto (Ctrl+A), copia (Ctrl+C) e incolla qui. Vanno bene anche codici sparsi, uno per riga.</span></div>
+  <p class="example" id="ex">Stai guardando un <b>esempio</b> con 5 studenti inventati (uno ha ritoccato un codice, uno ha cambiato nome, una ha finito il tempo). Premi «Svuota» e incolla i codici della tua classe.</p>
+</section>
+<section aria-labelledby="h-out">
+  <h2 id="h-out" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Risultati</h2>
+  <ul class="stats" id="stats"></ul>
+  <div id="out"></div>
+  <div class="legend"><span><span class="lv lv-A">A</span> Autonomo</span><span><span class="lv lv-S">S</span> Con supporto</span><span><span class="lv lv-N">N</span> Non ancora</span><span><span class="lv lv-X">—</span> Non osservata (manca il codice o la sfida)</span><span><span class="lv lv-bad">✘</span> Firma non valida: il codice è stato modificato</span></div>
+  <div class="actions" id="exp"><button class="btn alt" id="copy-tsv" type="button">Copia la tabella (per Fogli o il registro)</button><button class="btn ghost" id="dl-csv" type="button">Scarica CSV</button>
+    <span class="tiny">I livelli sono proposte: 1.1, 1.5, 9.3 e tutto ciò che è un file (PDF, ZIP, Drive, email) si valutano con la griglia.</span></div>
+</section>
+<section>
+<details class="panel"><summary>Come sono calcolati i livelli</summary>
+  <p class="note">Le soglie sono quelle della griglia di osservazione (07_GRIGLIE_DOCENTE). Passa il mouse sull'intestazione di una colonna per rileggere la regola.</p>
+  <ul class="rules"><li><b>1.2</b>Autonomo: almeno 20/25 simboli al primo colpo con 0–2 aiuti · Con supporto: 20/25 con più aiuti, oppure 15–19/25 · Non ancora: meno di 15/25</li><li><b>1.3</b>Autonomo: 10/10 righe entro 2 controlli · Con supporto: 10/10 con 3 o più controlli, oppure 8–9/10 · Non ancora: meno di 8/10</li><li><b>1.4</b>Autonomo: 8/8 dati con 0 clic · Con supporto: 8/8 con 1–3 clic, oppure 7/8 con 0 clic · Non ancora: altrimenti</li><li><b>2.1</b>Autonomo: SPOSTA e COPIA con 3 stelle · Con supporto: entrambe superate con 1–2 stelle (mouse o suggerimento) · Non ancora: almeno una non superata</li><li><b>2.2</b>Autonomo: ANNULLA con 3 stelle · Con supporto: 1–2 stelle · Non ancora: non superata</li><li><b>2.3</b>Autonomo: TROVA e CONTA con 3 stelle · Con supporto: entrambe superate con 1–2 stelle · Non ancora: almeno una non superata</li><li><b>2.4</b>Autonomo: SALVA con 3 stelle · Con supporto: 1–2 stelle · Non ancora: non superata</li><li><b>2.5</b>Autonomo: 8/8 sfide sui file e almeno 20/24 stelle · Con supporto: 8/8 con meno di 20 stelle · Non ancora: 1–7 sfide (se è mancato il tempo, consideratela non osservata) · nessuna sfida: non osservata</li><li><b>2.6</b>Autonomo: 8/8 sfide sul testo e almeno 20/24 stelle · Con supporto: 8/8 con meno di 20 stelle · Non ancora: 1–7 sfide · nessuna sfida: non osservata</li><li><b>9.1</b>Dal codice solo i controlli fatti nella casella. Autonomo: tutti i mittenti scoperti e tutti i link controllati · Con supporto: almeno la metà · Non ancora: meno della metà. Confermate con gli indizi scritti nella scheda.</li><li><b>9.2</b>Autonomo: tutte le decisioni giuste (e nella scheda lo screenshot di «Segnala phishing») · Con supporto: un errore · Non ancora: due o più errori o messaggi non decisi</li><li><b>9.1 MF</b>Come 9.1, nella casella della missione finale. Confermate con il diario delle scelte.</li><li><b>9.2 MF</b>Come 9.2, nella casella della missione finale (4 messaggi, 1 truffa).</li></ul>
+  <p class="note">Caselle di posta: le decisioni dello studente sono nel codice (P = phishing, A = affidabile); la chiave è nelle soluzioni (L4: 1P 2P 3P 4A 5P · missione finale: 1A 2A 3P 4A). La casella non dice allo studente se ha deciso bene.</p>
+</details>
+</section>
+<section>
+<details class="panel" open><summary>Come raccogliere i codici con un Modulo Google</summary>
+  <div class="auto"><b>Il modo più veloce: lo crea uno script.</b> Apri <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> con l'account della scuola › <b>Nuovo progetto</b>; cancella il contenuto, incolla lo script e salva; scegli la funzione <b>creaModuloCodici</b>, premi <b>Esegui</b> e autorizza Moduli e Fogli. Nel <b>Registro di esecuzione</b> trovi il link del modulo da allegare ai compiti e quello del foglio delle risposte.
+  <div class="actions"><button class="btn alt cp2" data-target="gs" type="button">Copia lo script</button><span class="tiny">È anche nel file <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/README/crea_modulo_codici.gs">README/crea_modulo_codici.gs</a></span></div>
+  <details class="sub"><summary>Mostra lo script</summary><pre class="gs" id="gs">/**
+ * Missione 0 · Officina 23 — crea il Modulo Google «Missione 0 · codici risultato»
+ * con impostazioni, domande, convalida dei codici e Foglio delle risposte collegato.
+ *
+ * Come si usa (una volta sola, con l&#x27;account della scuola):
+ *  1. Apri https://script.google.com › Nuovo progetto.
+ *  2. Cancella il contenuto, incolla tutto questo codice e salva (Ctrl+S).
+ *  3. In alto scegli la funzione creaModuloCodici e premi Esegui.
+ *  4. Autorizza l&#x27;accesso a Moduli e Fogli quando Google lo chiede.
+ *  5. Apri il Registro di esecuzione: trovi il link del modulo (da allegare ai compiti 01, 03, 06 e 08)
+ *     e il link del foglio delle risposte (da copiare in verifica_codici.html).
+ */
+const TITOLO = &#x27;Missione 0 · codici risultato&#x27;;
+const CODICI = [
+  {
+    &quot;titolo&quot;: &quot;Codice palestra della tastiera (L1)&quot;,
+    &quot;aiuto&quot;: &quot;Lezione 1 · Palestra della tastiera: ★ Riepilogo › clic nel codice › Ctrl+A › Ctrl+C, poi qui Ctrl+V. Inizia con O23-L1.&quot;,
+    &quot;regex&quot;: &quot;^\\s*O23-L1 \\|.*\\| #[0-9A-Z]{5}\\s*$&quot;,
+    &quot;inizio&quot;: &quot;O23-L1&quot;
+  },
+  {
+    &quot;titolo&quot;: &quot;Codice palestra delle scorciatoie (L1)&quot;,
+    &quot;aiuto&quot;: &quot;Lezione 1 · Palestra delle scorciatoie: ★ Riepilogo › copia il codice. Inizia con O23-SCO.&quot;,
+    &quot;regex&quot;: &quot;^\\s*O23-SCO \\|.*\\| #[0-9A-Z]{5}\\s*$&quot;,
+    &quot;inizio&quot;: &quot;O23-SCO&quot;
+  },
+  {
+    &quot;titolo&quot;: &quot;Codice palestra della selezione (L2)&quot;,
+    &quot;aiuto&quot;: &quot;Lezione 2 · Palestra della selezione: ★ Riepilogo › copia il codice. Inizia con O23-SEL.&quot;,
+    &quot;regex&quot;: &quot;^\\s*O23-SEL \\|.*\\| #[0-9A-Z]{5}\\s*$&quot;,
+    &quot;inizio&quot;: &quot;O23-SEL&quot;
+  },
+  {
+    &quot;titolo&quot;: &quot;Codice casella di posta (L4)&quot;,
+    &quot;aiuto&quot;: &quot;Lezione 4 · Casella di posta: ★ Riepilogo e codice › copia il codice. Inizia con O23-PHI.&quot;,
+    &quot;regex&quot;: &quot;^\\s*O23-PHI \\|.*\\| #[0-9A-Z]{5}\\s*$&quot;,
+    &quot;inizio&quot;: &quot;O23-PHI&quot;
+  },
+  {
+    &quot;titolo&quot;: &quot;Codice casella della missione (MF)&quot;,
+    &quot;aiuto&quot;: &quot;Missione finale · Casella di posta: ★ Riepilogo e codice › copia il codice. Inizia con O23-PMF.&quot;,
+    &quot;regex&quot;: &quot;^\\s*O23-PMF \\|.*\\| #[0-9A-Z]{5}\\s*$&quot;,
+    &quot;inizio&quot;: &quot;O23-PMF&quot;
+  }
+];
+
+function creaModuloCodici() {
+  const form = FormApp.create(TITOLO);
+  form.setDescription(&#x27;Incolla qui i codici risultato delle palestre e delle caselle di posta di Officina 23. &#x27; +
+    &#x27;Ogni codice inizia con O23 e finisce con # seguito da 5 caratteri: copialo tutto. &#x27; +
+    &#x27;Puoi tornare sul modulo quando vuoi e aggiungere i codici delle lezioni successive (Modifica la risposta).&#x27;);
+
+  // Chi risponde: solo account della scuola, una risposta a testa, modificabile nelle lezioni successive
+  imposta_(&#x27;raccolta degli indirizzi email&#x27;, () =&gt; form.setEmailCollectionType(FormApp.EmailCollectionType.VERIFIED), () =&gt; form.setCollectEmail(true));
+  imposta_(&#x27;solo utenti della scuola&#x27;, () =&gt; form.setRequireLogin(true));
+  imposta_(&#x27;una risposta per persona&#x27;, () =&gt; form.setLimitOneResponsePerUser(true));
+  form.setAllowResponseEdits(true);
+  form.setShowLinkToRespondAgain(false);
+  form.setProgressBar(false);
+  form.setConfirmationMessage(&#x27;Codici ricevuti, grazie! Quando una lezione ti chiede un altro codice, riapri il modulo e scegli «Modifica la risposta».&#x27;);
+
+  form.addTextItem().setTitle(&#x27;Nome e cognome&#x27;)
+      .setHelpText(&#x27;Scrivilo come negli strumenti (esempio: Mario Rossi).&#x27;).setRequired(true);
+  form.addTextItem().setTitle(&#x27;Classe&#x27;).setHelpText(&#x27;Esempio: 3A&#x27;).setRequired(true)
+      .setValidation(FormApp.createTextValidation()
+        .requireTextMatchesPattern(&#x27;^\\s*[1-5]\\s?[A-Za-z]{1,3}\\s*$&#x27;)
+        .setHelpText(&#x27;Scrivi la classe come 3A.&#x27;).build());
+
+  CODICI.forEach(c =&gt; {
+    form.addTextItem().setTitle(c.titolo).setHelpText(c.aiuto)
+        .setValidation(FormApp.createTextValidation()
+          .requireTextMatchesPattern(c.regex)
+          .setHelpText(&#x27;Incolla il codice completo, da &#x27; + c.inizio + &#x27; fino al # finale.&#x27;).build());
+  });
+
+  const foglio = SpreadsheetApp.create(TITOLO + &#x27; (risposte)&#x27;);
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, foglio.getId());
+  if (typeof form.setPublished === &#x27;function&#x27;) imposta_(&#x27;pubblicazione del modulo&#x27;, () =&gt; form.setPublished(true));
+
+  Logger.log(&#x27;Modulo da allegare ai compiti 01, 03, 06 e 08: &#x27; + form.getPublishedUrl());
+  Logger.log(&#x27;Per modificare il modulo: &#x27; + form.getEditUrl());
+  Logger.log(&#x27;Foglio delle risposte (seleziona tutto, copia e incolla in verifica_codici.html): &#x27; + foglio.getUrl());
+}
+
+/** Applica un&#x27;impostazione; se l&#x27;account non la permette, prova l&#x27;alternativa e lo annota nel registro. */
+function imposta_(nome, azione, alternativa) {
+  try { azione(); }
+  catch (e) {
+    if (alternativa) { try { alternativa(); return; } catch (e2) { /* nemmeno l&#x27;alternativa è disponibile */ } }
+    Logger.log(&#x27;Impostazione non applicata (&#x27; + nome + &#x27;): &#x27; + e.message + &#x27;. Puoi attivarla a mano nelle Impostazioni del modulo.&#x27;);
+  }
+}
+</pre></details></div>
+  <p class="note"><b>Oppure a mano:</b></p>
+  <ol class="steps">
+    <li>In Google Moduli, con l'account della scuola, crea un modulo vuoto: <b>Missione 0 · codici risultato</b>.</li>
+    <li>Impostazioni › Risposte: <b>Raccogli indirizzi email</b> (Verificati), <b>Limita a 1 risposta</b>, <b>Consenti la modifica dopo l'invio</b>. Così ogni studente ha una sola riga e la completa lezione dopo lezione.</li>
+    <li>Aggiungi le domande qui sotto (tutte «Risposta breve»). Per ogni codice: ⋮ › <b>Convalida della risposta</b> › Espressione regolare › <b>Corrisponde a</b> e incolla l'espressione; come testo di errore: «Incolla il codice completo, da O23 fino al # finale».</li>
+    <li>Allega il modulo ai compiti 01, 03, 06 e 08 (in Classroom: Aggiungi › Moduli Google). Le istruzioni per gli studenti lo nominano già.</li>
+    <li>Per verificare: nel modulo, Risposte › <b>Collega a Fogli</b>; nel foglio seleziona tutto (Ctrl+A), copia (Ctrl+C) e incolla nel riquadro 1 di questa pagina.</li>
+  </ol>
+  <div class="tw" style="margin-top:.9rem"><table class="form"><thead><tr><th>N.</th><th>Domanda</th><th>Espressione regolare per la convalida</th></tr></thead><tbody><tr><td>1</td><td><b>Nome e cognome</b><div class="tiny">Risposta breve · obbligatoria</div></td><td><span class="tiny">—</span></td></tr><tr><td>2</td><td><b>Classe</b><div class="tiny">Risposta breve · obbligatoria</div></td><td><span class="tiny">—</span></td></tr><tr><td>3</td><td><b>Codice palestra della tastiera (L1)</b><div class="tiny">Risposta breve</div></td><td><code class="rx" id="rx-L1">^\s*O23-L1 \|.*\| #[0-9A-Z]{5}\s*$</code> <button class="cp" data-target="rx-L1" type="button">Copia</button></td></tr><tr><td>4</td><td><b>Codice palestra delle scorciatoie (L1)</b><div class="tiny">Risposta breve</div></td><td><code class="rx" id="rx-SCO">^\s*O23-SCO \|.*\| #[0-9A-Z]{5}\s*$</code> <button class="cp" data-target="rx-SCO" type="button">Copia</button></td></tr><tr><td>5</td><td><b>Codice palestra della selezione (L2)</b><div class="tiny">Risposta breve</div></td><td><code class="rx" id="rx-SEL">^\s*O23-SEL \|.*\| #[0-9A-Z]{5}\s*$</code> <button class="cp" data-target="rx-SEL" type="button">Copia</button></td></tr><tr><td>6</td><td><b>Codice casella di posta (L4)</b><div class="tiny">Risposta breve</div></td><td><code class="rx" id="rx-PHI">^\s*O23-PHI \|.*\| #[0-9A-Z]{5}\s*$</code> <button class="cp" data-target="rx-PHI" type="button">Copia</button></td></tr><tr><td>7</td><td><b>Codice casella della missione (MF)</b><div class="tiny">Risposta breve</div></td><td><code class="rx" id="rx-PMF">^\s*O23-PMF \|.*\| #[0-9A-Z]{5}\s*$</code> <button class="cp" data-target="rx-PMF" type="button">Copia</button></td></tr></tbody></table></div>
+  <p class="note">I dati degli studenti restano nel modulo e nel foglio della scuola. Questa pagina li legge solo quando li incolli, nel tuo browser.</p>
+</details>
+</section>
+</main>
+<footer><div class="wrap">Codici prodotti da: <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/01_LEZIONE_1/MATERIALI/typing_officina23.html">palestra della tastiera</a> · <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/01_LEZIONE_1/MATERIALI/scorciatoie_officina23.html">scorciatoie</a> · <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/02_LEZIONE_2/MATERIALI/selezione_officina23.html">selezione</a> · <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/04_LEZIONE_4/MATERIALI/posta_officina23.html">casella L4</a> · <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/05_MISSIONE_FINALE/MATERIALI/posta_missione_finale.html">casella della missione</a>. Il controllo (#…) è un deterrente: dimostra che il codice non è stato ritoccato, non chi l'ha prodotto. <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/index.html">Pagina del docente</a> · <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/sintesi.html">Sintesi per i colleghi</a></div></footer>
+<script>
+const KEYS={"PHI": "1P 2P 3P 4A 5P", "PMF": "1A 2A 3P 4A"}, COLS=[{"id": "1.2", "t": "Simboli", "tool": "L1", "rule": "Autonomo: almeno 20/25 simboli al primo colpo con 0–2 aiuti · Con supporto: 20/25 con più aiuti, oppure 15–19/25 · Non ancora: meno di 15/25", "descr": "Digita i simboli @ # € % & / \\ _ - + = ( ) [ ] { } : ; ? ! \" ' < > scegliendo il modificatore corretto (nessuno, Shift, AltGr, AltGr+Shift)"}, {"id": "1.3", "t": "Codici Officina", "tool": "L1", "rule": "Autonomo: 10/10 righe entro 2 controlli · Con supporto: 10/10 con 3 o più controlli, oppure 8–9/10 · Non ancora: meno di 8/10", "descr": "Trascrive senza errori codici, indirizzi email, prezzi e parole accentate (es. info@officina23.example, EB-23/R, € 25,00, perche')"}, {"id": "1.4", "t": "Senza mouse", "tool": "L1", "rule": "Autonomo: 8/8 dati con 0 clic · Con supporto: 8/8 con 1–3 clic, oppure 7/8 con 0 clic · Non ancora: altrimenti", "descr": "Compila un modulo usando solo la tastiera (Tab, Shift+Tab, frecce, Alt+freccia giu', Spazio, Backspace, Canc, Invio)"}, {"id": "2.1", "t": "Sposta e copia", "tool": "SCO", "rule": "Autonomo: SPOSTA e COPIA con 3 stelle · Con supporto: entrambe superate con 1–2 stelle (mouse o suggerimento) · Non ancora: almeno una non superata", "descr": "Sposta righe con Ctrl+X / Ctrl+V e duplica righe con Ctrl+C / Ctrl+V senza riscriverle"}, {"id": "2.2", "t": "Annulla", "tool": "SCO", "rule": "Autonomo: ANNULLA con 3 stelle · Con supporto: 1–2 stelle · Non ancora: non superata", "descr": "Annulla un errore con Ctrl+Z, anche dopo aver sostituito tutto il testo per sbaglio (Ctrl+A + un tasto)"}, {"id": "2.3", "t": "Trova e conta", "tool": "SCO", "rule": "Autonomo: TROVA e CONTA con 3 stelle · Con supporto: entrambe superate con 1–2 stelle · Non ancora: almeno una non superata", "descr": "Trova parole e codici con Ctrl+F in un file di testo e in una pagina web"}, {"id": "2.4", "t": "Salva con nome", "tool": "SCO", "rule": "Autonomo: SALVA con 3 stelle · Con supporto: 1–2 stelle · Non ancora: non superata", "descr": "Salva le modifiche di un file locale con Ctrl+S e crea una copia con nome nuovo con 'Salva con nome' (Ctrl+Shift+S)"}, {"id": "2.5", "t": "Selezione file", "tool": "SEL", "rule": "Autonomo: 8/8 sfide sui file e almeno 20/24 stelle · Con supporto: 8/8 con meno di 20 stelle · Non ancora: 1–7 sfide (se è mancato il tempo, consideratela non osservata) · nessuna sfida: non osservata", "descr": "Seleziona file con mouse e tastiera: un file, file vicini (Shift+clic, Shift+frecce, rettangolo), file sparsi (Ctrl+clic, Ctrl+Spazio), tutti (Ctrl+A), tutti tranne alcuni"}, {"id": "2.6", "t": "Selezione testo", "tool": "SEL", "rule": "Autonomo: 8/8 sfide sul testo e almeno 20/24 stelle · Con supporto: 8/8 con meno di 20 stelle · Non ancora: 1–7 sfide · nessuna sfida: non osservata", "descr": "Seleziona testo con precisione: doppio e triplo clic, clic + Shift+clic, Shift+frecce, Ctrl+Shift+frecce, Shift+Fine, Ctrl+Shift+Fine, Ctrl+A"}, {"id": "9.1", "t": "Controlli", "tool": "PHI", "rule": "Dal codice solo i controlli fatti nella casella. Autonomo: tutti i mittenti scoperti e tutti i link controllati · Con supporto: almeno la metà · Non ancora: meno della metà. Confermate con gli indizi scritti nella scheda.", "descr": "Individua almeno tre indizi di phishing in una comunicazione, controllando mittente completo e indirizzo reale dei link (passando il mouse)"}, {"id": "9.2", "t": "Decisioni", "tool": "PHI", "rule": "Autonomo: tutte le decisioni giuste (e nella scheda lo screenshot di «Segnala phishing») · Con supporto: un errore · Non ancora: due o più errori o messaggi non decisi", "descr": "Decide l'azione corretta (non cliccare, non rispondere, segnalare, eliminare) e riconosce un messaggio legittimo"}, {"id": "9.1 MF", "t": "Controlli", "tool": "PMF", "rule": "Come 9.1, nella casella della missione finale. Confermate con il diario delle scelte.", "descr": "Individua almeno tre indizi di phishing in una comunicazione, controllando mittente completo e indirizzo reale dei link (passando il mouse)"}, {"id": "9.2 MF", "t": "Decisioni", "tool": "PMF", "rule": "Come 9.2, nella casella della missione finale (4 messaggi, 1 truffa).", "descr": "Decide l'azione corretta (non cliccare, non rispondere, segnalare, eliminare) e riconosce un messaggio legittimo"}], TOOLS={"L1": {"n": "Palestra della tastiera", "s": "Tastiera", "lez": "L1"}, "SCO": {"n": "Palestra delle scorciatoie", "s": "Scorciatoie", "lez": "L1"}, "SEL": {"n": "Palestra della selezione", "s": "Selezione", "lez": "L2"}, "PHI": {"n": "Casella di posta", "s": "Posta L4", "lez": "L4"}, "PMF": {"n": "Casella della missione", "s": "Posta MF", "lez": "MF"}}, EXAMPLE="Informazioni cronologiche\tIndirizzo email\tNome e cognome\tClasse\tCodice palestra della tastiera (L1)\tCodice palestra delle scorciatoie (L1)\tCodice palestra della selezione (L2)\tCodice casella di posta (L4)\tCodice casella della missione (MF)\n14/10/2026 10:41:12\tgiulia.neri@studenti.scuola.example\tGiulia Neri\t3A\tO23-L1 | Giulia Neri | INIZIALE 88,5% 132cpm tent.1 | SIMBOLI 23/25 aiuti 1 partite 2 | CODICI 10/10 primo 7/10 controlli 2 | MOUSE 0 clic 8/8 | FINALE 91,0% 140cpm tent.1 | #J7WF8\tO23-SCO | Giulia Neri | SFIDE 6/6 · STELLE 18/18 | TROVA 3 · SPOSTA 3 · COPIA 3 · ANNULLA 3 · CONTA 3 · SALVA 3 | suggerimenti 0 | TASTI F9 X4 C1 V5 Z1 A1 S2 Canc4 | MOUSE menu 0 trascina 0 | FILE listino_sistemato_neri.txt | #4SPDR\tO23-SEL | Giulia Neri | FILE 24/24 stelle (8/8 sfide) | TESTO 23/24 stelle (8/8 sfide) | BONUS 3/6 | suggerimenti 0 | #MGVUH\tO23-PHI | Giulia Neri | DECISIONI 1P 2P 3P 4A 5P | MITTENTI 4/4 | LINK 3/3 | CLIC 0 | #CPHXR\tO23-PMF | Giulia Neri | DECISIONI 1A 2A 3P 4A | MITTENTI 4/4 | LINK 2/2 | CLIC 0 | #WNAI6\n14/10/2026 10:44:57\tmario.rossi@studenti.scuola.example\tMario Rossi\t3A\tO23-L1 | Mario Rossi | INIZIALE 88,5% 132cpm tent.1 | SIMBOLI 17/25 aiuti 4 partite 2 | CODICI 10/10 primo 7/10 controlli 4 | MOUSE 2 clic 8/8 | FINALE 91,0% 140cpm tent.1 | #69WI5\tO23-SCO | Mario Rossi | SFIDE 6/6 · STELLE 15/18 | TROVA 3 · SPOSTA 1 · COPIA 3 · ANNULLA 3 · CONTA 3 · SALVA 2 | suggerimenti 1 | TASTI F9 X4 C1 V5 Z1 A1 S2 Canc4 | MOUSE menu 3 trascina 0 | FILE listino_sistemato_rossi.txt | #UBE0U\tO23-SEL | Mario Rossi | FILE 16/24 stelle (8/8 sfide) | TESTO 22/24 stelle (8/8 sfide) | BONUS 3/6 | suggerimenti 2 | #WT1P6\tO23-PHI | Mario Rossi | DECISIONI 1P 2P 3A 4A 5P | MITTENTI 2/4 | LINK 2/3 | CLIC 1 | #K02FX\t\n14/10/2026 10:47:03\taisha.khan@studenti.scuola.example\tAisha Khan\t3A\tO23-L1 | Aisha Khan | INIZIALE 88,5% 132cpm tent.1 | SIMBOLI 21/25 aiuti 0 partite 2 | CODICI 9/10 primo 7/10 controlli 2 | MOUSE 0 clic 8/8 | FINALE 91,0% 140cpm tent.1 | #T7C1K\t\tO23-SEL | Aisha Khan | FILE 9/24 stelle (5/8 sfide) | TESTO 20/24 stelle (8/8 sfide) | BONUS 3/6 | suggerimenti 0 | #TVR39\tO23-PHI | Aisha Khan | DECISIONI 1P 2P 3P 4A 5P | MITTENTI 1/4 | LINK 0/3 | CLIC 0 | #3V0MG\tO23-PMF | Aisha Khan | DECISIONI 1A 2A 3P 4A | MITTENTI 4/4 | LINK 2/2 | CLIC 0 | #WO7RH\n14/10/2026 10:52:30\tluca.verdi@studenti.scuola.example\tLuca Verdi\t3A\tO23-L1 | Luca Verdi | INIZIALE 88,5% 132cpm tent.1 | SIMBOLI 20/25 aiuti 2 partite 2 | CODICI 10/10 primo 7/10 controlli 1 | MOUSE 1 clic 8/8 | FINALE 91,0% 140cpm tent.1 | #ZHOJC\tO23-SCO | Luca Verdi | SFIDE 6/6 · STELLE 14/18 | TROVA 3 · SPOSTA 3 · COPIA 3 · ANNULLA 3 · CONTA 3 · SALVA 3 | suggerimenti 0 | TASTI F9 X4 C1 V5 Z1 A1 S2 Canc4 | MOUSE menu 0 trascina 0 | FILE listino_sistemato_verdi.txt | #45JZT\tO23-SEL | Luca V. | FILE 20/24 stelle (8/8 sfide) | TESTO 24/24 stelle (8/8 sfide) | BONUS 3/6 | suggerimenti 0 | #JVUD2\tO23-PHI | Luca Verdi | DECISIONI 1P 2A 3P 4P 5P | MITTENTI 3/4 | LINK 3/3 | CLIC 2 | #YKIBQ\t\n14/10/2026 11:03:18\tsara.bianchi@studenti.scuola.example\tSara Bianchi\t3A\tO23-L1 | Sara Bianchi | INIZIALE 88,5% 132cpm tent.1 | SIMBOLI 25/25 aiuti 0 partite 2 | CODICI 10/10 primo 7/10 controlli 1 | MOUSE 0 clic 8/8 | FINALE 91,0% 140cpm tent.1 | nome iniziale: Marco Gialli | #H2RKE\tO23-SCO | Sara Bianchi | SFIDE 6/6 · STELLE 17/18 | TROVA 3 · SPOSTA 3 · COPIA 3 · ANNULLA 2 · CONTA 3 · SALVA 3 | suggerimenti 1 | TASTI F9 X4 C1 V5 Z1 A1 S2 Canc4 | MOUSE menu 0 trascina 0 | FILE listino_sistemato_bianchi.txt | #1RX4A\tO23-SEL | Sara Bianchi | FILE 21/24 stelle (8/8 sfide) | TESTO 19/24 stelle (8/8 sfide) | BONUS 3/6 | suggerimenti 0 | #SUHON\tO23-PHI | Sara Bianchi | DECISIONI 1P 2P 3P 4A 5- | MITTENTI 4/4 | LINK 2/3 | CLIC 0 | #IAJDJ\t";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function sig(s,tag){ let h=5381; const t="O23*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+const RE_ALL=/O23-(?:L1|SCO|SEL|PHI|PMF) \|[^\t\r\n]*?\| #[0-9A-Z]{5}/g, RE_ONE=/O23-(?:L1|SCO|SEL|PHI|PMF) \|/;
+const normName=s=>(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim();
+const nameKey=s=>normName(s).split(" ").filter(Boolean).sort().join(" ");
+const LV={A:"Autonomo",S:"Con supporto",N:"Non ancora",X:"Non osservata",bad:"Firma non valida"};
+const st=n=>n==null?"–":"★".repeat(n)+"☆".repeat(3-n);
+
+function parse(raw){
+  const c=raw.replace(/\s+/g," ").trim(), k=c.lastIndexOf(" | #"), body=c.slice(0,k), sg=c.slice(k+4);
+  const tool=c.slice(4,c.indexOf(" |")), parts=body.split(" | ");
+  const o={raw:c, tool, name:(parts[1]||"").trim(), valid:sig(body,tool)===sg, initial:null};
+  const f=re=>{ for(const p of parts){ const m=p.match(re); if(m) return m; } return null; };
+  const n=v=>(v==null||/^[—–-]?$/.test(v))?null:+String(v).replace(",",".");
+  let m=f(/^nome iniziale: (.+)$/); if(m) o.initial=m[1];
+  if(tool==="L1"){
+    m=f(/^SIMBOLI (\S+)\/25 aiuti (\S+)/); o.sym=m?{first:n(m[1]),helps:n(m[2])}:null;
+    m=f(/^CODICI (\S+)\/10 primo (\S+)\/10 controlli (\S+)/); o.cod=m?{ok:n(m[1]),att:n(m[3])}:null;
+    m=f(/^MOUSE (\S+) clic (\S+)\/8/); o.mou=m?{clicks:n(m[1]),ok:n(m[2])}:null;
+  } else if(tool==="SCO"){
+    o.st={}; m=f(/TROVA \S/); if(m) m.input.split(" · ").forEach(x=>{ const q=x.match(/^([A-Z]+) (\d)$/); if(q) o.st[q[1]]=+q[2]; });
+    m=f(/^suggerimenti (\d+)/); o.hints=m?+m[1]:0; m=f(/^MOUSE menu (\d+) trascina (\d+)/); o.menu=m?(+m[1])+(+m[2]):0;
+  } else if(tool==="SEL"){
+    m=f(/^FILE (\d+)\/24 stelle \((\d+)\/8 sfide\)/); o.file=m?{s:+m[1],n:+m[2]}:null;
+    m=f(/^TESTO (\d+)\/24 stelle \((\d+)\/8 sfide\)/); o.testo=m?{s:+m[1],n:+m[2]}:null;
+    m=f(/^suggerimenti (\d+)/); o.hints=m?+m[1]:0;
+  } else {
+    o.dec={}; m=f(/^DECISIONI (.+)$/); if(m) m[1].split(" ").forEach(x=>{ const q=x.match(/^(\d+)([PA-])$/); if(q) o.dec[q[1]]=q[2]; });
+    m=f(/^MITTENTI (\d+)\/(\d+)/); o.snd=m?[+m[1],+m[2]]:[0,0]; m=f(/^LINK (\d+)\/(\d+)/); o.lk=m?[+m[1],+m[2]]:[0,0];
+    m=f(/^CLIC (\d+)/); o.clk=m?+m[1]:0;
+  }
+  return o;
+}
+const R=(l,d)=>({l,d});
+function level(col, byTool){
+  const c=byTool[col.tool];
+  if(!c) return R("X","codice mancante");
+  if(!c.valid) return R("bad","firma non valida");
+  const id=col.id.split(" ")[0];
+  const one=v=>v==null?R("X","—"):v===3?R("A",st(v)):v>=1?R("S",st(v)):R("N","non superata");
+  const two=(a,b,la,lb)=>{ const d=la+" "+st(a)+" · "+lb+" "+st(b); if(a==null&&b==null) return R("X","—"); return (a===3&&b===3)?R("A",d):(a>=1&&b>=1)?R("S",d):R("N",d); };
+  switch(id){
+    case "1.2": { const s=c.sym; if(!s||s.first==null) return R("X","non fatta"); const d=s.first+"/25 · "+(s.helps??0)+" aiuti";
+      return (s.first>=20&&s.helps<=2)?R("A",d):s.first>=15?R("S",d):R("N",d); }
+    case "1.3": { const q=c.cod; if(!q||q.ok==null) return R("X","non fatta"); const d=q.ok+"/10 · "+(q.att??0)+" controlli";
+      return (q.ok===10&&q.att<=2)?R("A",d):q.ok>=8?R("S",d):R("N",d); }
+    case "1.4": { const q=c.mou; if(!q||q.ok==null) return R("X","non fatta"); const d=q.ok+"/8 · "+(q.clicks??0)+" clic";
+      return (q.ok===8&&q.clicks===0)?R("A",d):((q.ok===8&&q.clicks<=3)||(q.ok===7&&q.clicks===0))?R("S",d):R("N",d); }
+    case "2.1": case "2.2": case "2.3": case "2.4": if(!Object.values(c.st).some(v=>v>0)) return R("X","nessuna sfida fatta");
+      if(id==="2.1") return two(c.st.SPOSTA,c.st.COPIA,"sposta","copia");
+      if(id==="2.2") return one(c.st.ANNULLA);
+      if(id==="2.3") return two(c.st.TROVA,c.st.CONTA,"trova","conta");
+      return one(c.st.SALVA);
+    case "2.5": case "2.6": { const q=id==="2.5"?c.file:c.testo; if(!q) return R("X","—"); if(q.n===0) return R("X","nessuna sfida fatta"); const d=q.n+"/8 sfide · "+q.s+"/24 ★";
+      return (q.n===8&&q.s>=20)?R("A",d):q.n===8?R("S",d):R("N",d); }
+    case "9.1": { const got=c.snd[0]+c.lk[0], tot=c.snd[1]+c.lk[1]; const d="mittenti "+c.snd[0]+"/"+c.snd[1]+" · link "+c.lk[0]+"/"+c.lk[1];
+      return (tot&&got===tot)?R("A",d):(got*2>=tot)?R("S",d):R("N",d); }
+    case "9.2": { const key=KEYS[col.tool].split(" "); let ok=0, und=0; key.forEach(x=>{ const i=x.slice(0,-1), v=c.dec[i]; if(!v||v==="-") und++; else if(v===x.slice(-1)) ok++; });
+      const d=ok+"/"+key.length+" giuste"+(und?" · "+und+" non decise":""); return ok===key.length?R("A",d):ok===key.length-1?R("S",d):R("N",d); }
+  }
+  return R("X","—");
+}
+const PTS={A:2,S:1};
+function score(tool,c){ const b={[tool]:c}; return COLS.filter(x=>x.tool===tool).reduce((s,x)=>s+(PTS[level(x,b).l]||0),0); }
+
+function collect(text){
+  const lines=text.replace(/\u00a0/g," ").split(/\r?\n/), G=new Map(), order=[]; let n=0;
+  lines.forEach(line=>{
+    const codes=line.match(RE_ALL); if(!codes) return; n+=codes.length;
+    const cells=line.split("\t").map(x=>x.trim()).filter(x=>x && !RE_ONE.test(x));
+    const email=cells.find(x=>/@/.test(x))||"";
+    const formName=cells.find(x=>!/@|\d/.test(x) && /\S \S/.test(x))||"";
+    const cls=cells.find(x=>/^[1-5]\s?[A-Za-z]{1,3}$/.test(x))||"";
+    const parsed=codes.map(parse);
+    const key=email?"e:"+email.toLowerCase():"n:"+nameKey(formName||parsed[0].name);
+    if(!G.has(key)){ G.set(key,{email,formName,cls,codes:[]}); order.push(key); }
+    const g=G.get(key); g.codes.push(...parsed); if(!g.formName&&formName) g.formName=formName; if(!g.cls&&cls) g.cls=cls;
+  });
+  return {groups:order.map(k=>G.get(k)), n};
+}
+function student(g){
+  const by={}, flags=[], T=Object.keys(TOOLS);
+  T.forEach(t=>{ const cs=g.codes.filter(c=>c.tool===t); if(!cs.length) return;
+    const ok=cs.filter(c=>c.valid); if(ok.length<cs.length) flags.push(["bad",TOOLS[t].s+": codice modificato a mano (firma non valida)"]);
+    const pool=ok.length?ok:cs; let best=pool[0], bs=-1; pool.forEach(c=>{ const s=score(t,c); if(s>bs){ bs=s; best=c; } });
+    if(cs.length>1) flags.push(["info",TOOLS[t].s+": "+cs.length+" codici, considerato il migliore"]); by[t]=best; });
+  const names=g.codes.map(c=>c.name); const freq={}; names.forEach(x=>freq[x]=(freq[x]||0)+1);
+  const display=g.formName||Object.keys(freq).sort((a,b)=>freq[b]-freq[a])[0]||"(senza nome)";
+  const odd=[...new Set(g.codes.filter(c=>nameKey(c.name)!==nameKey(display)).map(c=>TOOLS[c.tool].s+" «"+c.name+"»"))];
+  if(odd.length) flags.push(["warn","nome diverso nei codici: "+odd.join(", ")]);
+  g.codes.filter(c=>c.initial).forEach(c=>flags.push(["warn",TOOLS[c.tool].s+": nome cambiato sullo stesso PC (prima «"+c.initial+"»)"]));
+  const miss=T.filter(t=>!by[t]).map(t=>TOOLS[t].s); if(miss.length) flags.push(["info","mancano: "+miss.join(", ")]);
+  const h=(by.SCO&&by.SCO.valid?by.SCO.hints:0)+(by.SEL&&by.SEL.valid?by.SEL.hints:0); if(h) flags.push(["info","suggerimenti usati: "+h]);
+  if(by.SCO&&by.SCO.valid&&by.SCO.menu) flags.push(["info","scorciatoie: "+by.SCO.menu+" azioni con il mouse"]);
+  ["PHI","PMF"].forEach(t=>{ if(by[t]&&by[t].valid&&by[t].clk) flags.push(["warn",TOOLS[t].s+": "+by[t].clk+(by[t].clk===1?" link cliccato":" link cliccati")]); });
+  return {display, email:g.email, cls:g.cls, cells:COLS.map(c=>level(c,by)), flags};
+}
+
+let LAST=[];
+function run(){
+  const text=$("#in").value, {groups,n}=collect(text); LAST=groups.map(student);
+  $("#ex").classList.toggle("on", text.trim()===EXAMPLE.trim());
+  const bad=LAST.reduce((s,x)=>s+x.flags.filter(f=>f[0]==="bad").length,0), warn=LAST.reduce((s,x)=>s+x.flags.filter(f=>f[0]==="warn").length,0);
+  $("#stats").innerHTML=`<li><b>${LAST.length}</b>studenti</li><li><b>${n}</b>codici letti</li><li class="${bad?"bad":""}"><b>${bad}</b>codici con firma non valida</li><li class="${warn?"warn":""}"><b>${warn}</b>segnalazioni da guardare</li>`;
+  if(!LAST.length){ $("#out").innerHTML=`<div class="empty">Nessun codice trovato. I codici iniziano con <b>O23-</b> e finiscono con <b>#</b> seguito da 5 caratteri.</div>`; $("#exp").hidden=true; return; }
+  const groupsHead=[]; let prev=null; COLS.forEach(c=>{ if(c.tool!==prev){ groupsHead.push({tool:c.tool,span:1}); prev=c.tool; } else groupsHead[groupsHead.length-1].span++; });
+  let h=`<table><thead><tr class="grp"><th class="st"></th>${groupsHead.map(g=>`<th class="g" colspan="${g.span}">${esc(TOOLS[g.tool].s)} · ${TOOLS[g.tool].lez}</th>`).join("")}<th class="g"></th></tr>`;
+  h+=`<tr><th class="st">Studente</th>${COLS.map((c,i)=>`<th class="mic${i===0||COLS[i-1].tool!==c.tool?" g":""}" title="${esc(c.descr+" — "+c.rule)}"><span class="id">${esc(c.id)}</span>${esc(c.t)}</th>`).join("")}<th class="g">Da guardare</th></tr></thead><tbody>`;
+  LAST.forEach(s=>{ h+=`<tr><td class="st"><b>${esc(s.display)}</b><span class="tiny">${esc([s.cls,s.email].filter(Boolean).join(" · "))}</span></td>`;
+    s.cells.forEach((x,i)=>{ const c=COLS[i]; h+=`<td class="${i===0||COLS[i-1].tool!==c.tool?"g":""}"><span class="lv lv-${x.l}" title="${LV[x.l]}">${x.l==="bad"?"✘":x.l==="X"?"—":x.l}</span><span class="d">${esc(x.d)}</span></td>`; });
+    h+=`<td class="g fl">${s.flags.length?`<ul class="flags">${s.flags.map(f=>`<li class="${f[0]}">${esc(f[1])}</li>`).join("")}</ul>`:`<span class="tiny">niente</span>`}</td></tr>`; });
+  h+=`</tbody><tfoot><tr><td class="st">In classe</td>${COLS.map((c,i)=>{ const k={A:0,S:0,N:0}; LAST.forEach(s=>{ const l=s.cells[i].l; if(k[l]!=null) k[l]++; });
+    return `<td class="${i===0||COLS[i-1].tool!==c.tool?"g":""}"><span>A ${k.A}</span><span>S ${k.S}</span><span>N ${k.N}</span></td>`; }).join("")}<td class="g"></td></tr></tfoot></table>`;
+  $("#out").innerHTML=`<div class="tw">${h}</div>`; $("#exp").hidden=false;
+}
+function tsv(sep){
+  const q=v=>sep===";"?`"${String(v).replace(/"/g,'""')}"`:String(v).replace(/[\t\n]/g," ");
+  const head=["Studente","Classe","Email",...COLS.map(c=>c.id+" "+c.t),"Da guardare"];
+  const rows=LAST.map(s=>[s.display,s.cls,s.email,...s.cells.map(x=>x.l==="X"?"—":x.l==="bad"?"firma non valida":x.l),s.flags.map(f=>f[1]).join("; ")]);
+  return [head,...rows].map(r=>r.map(q).join(sep)).join("\n");
+}
+function copyText(t,btn){ const done=()=>{ const o=btn.textContent; btn.textContent="Copiato ✓"; setTimeout(()=>btn.textContent=o,1500); };
+  if(navigator.clipboard&&window.isSecureContext) navigator.clipboard.writeText(t).then(done,()=>fb()); else fb();
+  function fb(){ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); try{ document.execCommand("copy"); done(); }catch(e){} a.remove(); } }
+$("#go").onclick=run;
+$("#ex-load").onclick=()=>{ $("#in").value=EXAMPLE; run(); };
+$("#clear").onclick=()=>{ $("#in").value=""; run(); $("#in").focus(); };
+$("#in").addEventListener("keydown",e=>{ if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){ e.preventDefault(); run(); } });
+$("#copy-tsv").onclick=e=>copyText(tsv("\t"),e.currentTarget);
+if($("#dl-csv")) $("#dl-csv").onclick=()=>{ const b=new Blob(["\ufeff"+tsv(";")],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download="missione0_codici.csv"; document.body.appendChild(a); a.click(); a.remove(); };
+document.querySelectorAll(".cp,.cp2").forEach(b=>b.onclick=()=>copyText(document.getElementById(b.dataset.target).textContent,b));
+$("#in").value=EXAMPLE; run();
+</script>
+</body>
+</html>
