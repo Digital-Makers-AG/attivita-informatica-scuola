@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercitazione: Mouse e Tastiera</title>
+    <!-- Caricamento Tailwind CSS per lo styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc; /* Slate 50 */
+            overflow-x: hidden;
+        }
+        
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Effetti per i bersagli del Livello 1 */
+        .target {
+            transition: transform 0.1s;
+        }
+        .target:active {
+            transform: scale(0.8);
+        }
+
+        /* Stili per Drag & Drop del Livello 2 */
+        .draggable {
+            cursor: grab;
+            user-select: none;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .dropzone.dragover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #38bdf8; /* Tailwind Sky 400 */
+        }
+
+        /* Animazioni generiche */
+        @keyframes pulse-fast {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 1s infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <main class="w-full max-w-4xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden relative border border-slate-700 min-h-[600px] flex flex-col">
+        
+        <!-- Header decorativo -->
+        <header class="bg-slate-900 p-4 text-center border-b border-slate-700">
+            <h1 class="text-2xl font-bold tracking-wider text-sky-400">SYS_TRAINING_MODULE_v2.0</h1>
+            <p class="text-xs text-slate-400 mono">Esercitazione Input Periferiche</p>
+        </header>
+
+        <div class="flex-grow relative flex flex-col items-center justify-center p-6 w-full h-full" id="game-container">
+            
+            <div id="screen-intro" class="screen active flex-col items-center text-center w-full max-w-md">
+                <h2 class="text-3xl font-bold mb-4">Benvenuto Cadetto</h2>
+                <p class="text-slate-300 mb-8">
+                    Questa simulazione valuterà la tua velocità e precisione nell'uso di 
+                    <span class="text-sky-400 font-semibold">Mouse</span> e 
+                    <span class="text-emerald-400 font-semibold">Tastiera</span>.
+                </p>
+                
+                <div class="w-full mb-6">
+                    <label for="student-name" class="block text-sm font-medium text-slate-400 mb-2 text-left">Identificazione (Nome e Cognome):</label>
+                    <input type="text" id="student-name" placeholder="Inserisci qui..." class="w-full px-4 py-3 bg-slate-900 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition">
+                </div>
+                
+                <button onclick="startGame()" class="w-full py-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(2,132,199,0.5)] transition-all transform hover:scale-105">
+                    INIZIA ADDESTRAMENTO
+                </button>
+                <p id="intro-error" class="text-red-400 text-sm mt-4 hidden">Richiesto inserimento identificazione.</p>
+            </div>
+
+            <div id="screen-level1" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-sky-400">LIV 1: Precisione Mouse</h3>
+                    <div class="mono text-lg bg-slate-900 px-4 py-1 rounded border border-slate-700">Tempo: <span id="l1-timer" class="text-rose-400">15</span>s</div>
+                </div>
+                <p class="text-sm text-slate-400 mb-4 text-center">Clicca sui bersagli rossi il più velocemente possibile.</p>
+                
+                <div id="l1-area" class="relative w-full h-80 bg-slate-900 rounded-lg border border-slate-700 overflow-hidden cursor-crosshair">
+                    <!-- Overlay per iniziare -->
+                    <div id="l1-start-overlay" class="absolute inset-0 flex items-center justify-center bg-slate-900/80 z-10">
+                        <button onclick="startLevel1()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 rounded font-bold transition">AVVIA LIVELLO</button>
+                    </div>
+                    <!-- Bersaglio generato dinamicamente -->
+                    <div id="l1-target" class="target absolute w-10 h-10 bg-red-500 rounded-full hidden shadow-[0_0_10px_rgba(239,68,68,0.8)] border-2 border-white" onclick="hitTarget(event)"></div>
+                </div>
+                <div class="mt-4 text-xl mono">Punteggio: <span id="l1-score" class="text-sky-400 font-bold">0</span></div>
+            </div>
+
+            <div id="screen-level2" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-sky-400">LIV 2: Gestione Trascinamento</h3>
+                    <div class="mono text-lg bg-slate-900 px-4 py-1 rounded border border-slate-700">Tempo: <span id="l2-timer" class="text-rose-400">0</span>s</div>
+                </div>
+                <p class="text-sm text-slate-400 mb-2 text-center">Trascina gli elementi nella zona del colore corrispondente. Il tempo scorre!</p>
+                
+                <div id="l2-start-overlay" class="w-full flex items-center justify-center my-4">
+                     <button onclick="startLevel2()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 rounded font-bold transition">AVVIA LIVELLO</button>
+                </div>
+
+                <div id="l2-game-area" class="w-full flex flex-col gap-8 opacity-0 pointer-events-none transition-opacity duration-300">
+                    <div class="grid grid-cols-3 gap-4 w-full">
+                        <div class="dropzone h-32 rounded-xl border-4 border-dashed border-red-500 flex flex-col items-center justify-center gap-2 transition-colors" data-color="red">
+                            <span class="text-red-500 font-bold opacity-50">ZONA ROSSA</span>
+                        </div>
+                        <div class="dropzone h-32 rounded-xl border-4 border-dashed border-emerald-500 flex flex-col items-center justify-center gap-2 transition-colors" data-color="green">
+                            <span class="text-emerald-500 font-bold opacity-50">ZONA VERDE</span>
+                        </div>
+                        <div class="dropzone h-32 rounded-xl border-4 border-dashed border-blue-500 flex flex-col items-center justify-center gap-2 transition-colors" data-color="blue">
+                            <span class="text-blue-500 font-bold opacity-50">ZONA BLU</span>
+                        </div>
+                    </div>
+
+                    <div id="l2-items-container" class="flex flex-wrap justify-center gap-4 bg-slate-900 p-4 rounded-xl border border-slate-700 min-h-[100px]">
+                        <!-- Items inseriti qui via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-level3" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-emerald-400">LIV 3: Selezioni Avanzate</h3>
+                    <div class="mono text-lg bg-slate-900 px-4 py-1 rounded border border-slate-700">Tempo: <span id="l3-timer" class="text-rose-400">0</span>s</div>
+                </div>
+                <p class="text-sm text-slate-400 mb-4 text-center">Impara a selezionare più elementi usando la tastiera come supporto al mouse.</p>
+                
+                <div id="l3-start-overlay" class="w-full flex items-center justify-center my-4">
+                     <button onclick="startLevel3()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 rounded font-bold transition">AVVIA LIVELLO</button>
+                </div>
+
+                <div id="l3-game-area" class="w-full flex flex-col items-center gap-6 opacity-0 pointer-events-none transition-opacity duration-300">
+                    <div id="l3-instruction" class="bg-slate-700/50 p-4 rounded-lg border border-slate-600 text-center w-full max-w-lg text-lg">
+                        <!-- Istruzioni dinamiche -->
+                    </div>
+                    
+                    <div id="l3-warning" class="text-rose-400 font-bold opacity-0 transition-opacity absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-900 p-4 rounded-xl border-2 border-rose-500 z-10 shadow-2xl">
+                        Usa il tasto corretto!
+                    </div>
+
+                    <div id="l3-files-container" class="grid grid-cols-4 gap-4 bg-slate-900 p-6 rounded-xl border border-slate-700">
+                        <!-- File generati via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-level4" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-amber-400">LIV 4: Scorciatoie Rapide</h3>
+                    <div class="mono text-lg bg-slate-900 px-4 py-1 rounded border border-slate-700">Tempo: <span id="l4-timer" class="text-rose-400">0</span>s</div>
+                </div>
+                <p class="text-sm text-slate-400 mb-6 text-center">Usa le scorciatoie da tastiera (CTRL o CMD su Mac) per gestire i documenti.</p>
+                
+                <div id="l4-start-overlay" class="w-full flex items-center justify-center my-4">
+                     <button onclick="startLevel4()" class="px-6 py-3 bg-amber-600 hover:bg-amber-500 rounded font-bold transition text-white">AVVIA LIVELLO</button>
+                </div>
+
+                <div id="l4-game-area" class="w-full flex flex-col items-center gap-4 opacity-0 pointer-events-none transition-opacity duration-300 w-full max-w-2xl">
+                    <div id="l4-instruction" class="bg-slate-700/50 p-4 rounded-lg border border-slate-600 text-center w-full text-lg text-white">
+                        <!-- Istruzioni dinamiche -->
+                    </div>
+
+                    <div class="flex w-full gap-8 mt-4 h-48">
+                        <!-- Cartella Origine -->
+                        <div class="flex-1 bg-slate-900 border border-slate-600 rounded-xl p-4 flex flex-col relative">
+                            <span class="text-xs text-slate-400 absolute -top-3 left-4 bg-slate-800 px-2">Cartella Origine</span>
+                            <div id="l4-source-box" class="flex-1 flex gap-2 flex-wrap content-start">
+                                <div class="l4-doc w-12 h-14 bg-slate-700 border-2 border-transparent rounded flex items-center justify-center transition-all"><svg class="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg></div>
+                                <div class="l4-doc w-12 h-14 bg-slate-700 border-2 border-transparent rounded flex items-center justify-center transition-all"><svg class="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg></div>
+                                <div class="l4-doc w-12 h-14 bg-slate-700 border-2 border-transparent rounded flex items-center justify-center transition-all"><svg class="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg></div>
+                                <div class="l4-doc w-12 h-14 bg-slate-700 border-2 border-transparent rounded flex items-center justify-center transition-all"><svg class="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg></div>
+                                <div class="l4-doc w-12 h-14 bg-slate-700 border-2 border-transparent rounded flex items-center justify-center transition-all"><svg class="w-6 h-6 text-slate-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg></div>
+                            </div>
+                            <div id="l4-copy-feedback" class="absolute bottom-2 right-2 bg-emerald-500 text-white text-xs px-2 py-1 rounded hidden font-bold">COPIATO!</div>
+                        </div>
+
+                        <div class="flex items-center justify-center text-slate-500">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                        </div>
+
+                        <!-- Cartella Destinazione -->
+                        <div class="flex-1 bg-slate-900 border-2 border-dashed border-emerald-500/50 rounded-xl p-4 flex flex-col relative transition-colors" id="l4-dest-container">
+                            <span class="text-xs text-emerald-500/80 absolute -top-3 left-4 bg-slate-800 px-2">Cartella Destinazione</span>
+                            <div id="l4-dest-box" class="flex-1 flex gap-2 flex-wrap content-start">
+                                <!-- I file verranno incollati qui -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-summary" class="screen flex-col w-full h-full items-center justify-start">
+                <h2 class="text-3xl font-bold text-white mb-2">Simulazione Completata</h2>
+                <p class="text-slate-400 mb-6">Operatore: <span id="summary-name" class="font-bold text-sky-400">Sconosciuto</span></p>
+                
+                <div class="w-full bg-slate-900 rounded-xl border border-slate-700 p-6 mb-6 shadow-inner">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-700 text-slate-500 uppercase text-sm">
+                                <th class="pb-3 font-semibold">Test</th>
+                                <th class="pb-3 font-semibold text-right">Tempo / Risultato</th>
+                            </tr>
+                        </thead>
+                        <tbody class="mono text-sm">
+                            <tr class="border-b border-slate-800/50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-500"></span> Livello 1: Precisione Mouse</td>
+                                <td class="py-4 text-right text-sky-400 font-bold"><span id="res-l1">0</span> bersagli</td>
+                            </tr>
+                            <tr class="border-b border-slate-800/50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-500"></span> Livello 2: Drag & Drop</td>
+                                <td class="py-4 text-right text-indigo-400 font-bold"><span id="res-l2">0</span> sec</td>
+                            </tr>
+                            <tr class="border-b border-slate-800/50">
+                                <td class="py-4 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Livello 3: Selezioni Avanzate</td>
+                                <td class="py-4 text-right text-emerald-400 font-bold"><span id="res-l3">0</span> sec</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Livello 4: Scorciatoie Tastiera</td>
+                                <td class="py-4 text-right text-amber-400 font-bold"><span id="res-l4">0</span> sec</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="flex gap-4 w-full">
+                    <button onclick="copyResults()" id="btn-copy" class="flex-1 py-4 bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold rounded-lg transition-all flex justify-center items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                        COPIA RISULTATI (PER INSEGNANTE)
+                    </button>
+                    <button onclick="location.reload()" class="flex-1 py-4 bg-sky-600 hover:bg-sky-500 text-white font-bold rounded-lg shadow-lg transition-all">
+                        RIPROVA
+                    </button>
+                </div>
+                
+                <div id="copy-feedback" class="absolute bottom-10 bg-emerald-600 text-white px-6 py-2 rounded-full font-bold opacity-0 transition-opacity duration-300 pointer-events-none">
+                    Risultati copiati negli appunti!
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const gameState = {
+            studentName: "",
+            scores: { l1: 0, l2: 0, l3: 0, l4: 0 },
+            timers: { l1: 15, l2: 0, l3: 0, l4: 0 },
+            intervals: {}
+        };
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            setTimeout(() => document.getElementById(screenId).classList.add('active'), 50);
+        }
+
+        function startGame() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (nameInput.length < 2) {
+                document.getElementById('intro-error').classList.remove('hidden');
+                return;
+            }
+            gameState.studentName = nameInput;
+            document.getElementById('summary-name').innerText = nameInput;
+            showScreen('screen-level1');
+        }
+
+        let l1Area, l1Target;
+
+        function startLevel1() {
+            document.getElementById('l1-start-overlay').classList.add('hidden');
+            l1Area = document.getElementById('l1-area');
+            l1Target = document.getElementById('l1-target');
+            l1Target.classList.remove('hidden');
+            
+            gameState.scores.l1 = 0;
+            document.getElementById('l1-score').innerText = '0';
+            document.getElementById('l1-timer').innerText = gameState.timers.l1;
+            
+            moveTargetL1();
+
+            let timeLeft = gameState.timers.l1;
+            gameState.intervals.l1 = setInterval(() => {
+                timeLeft--;
+                document.getElementById('l1-timer').innerText = timeLeft;
+                if (timeLeft <= 0) endLevel1();
+            }, 1000);
+        }
+
+        function moveTargetL1() {
+            if(!l1Area) return;
+            const areaRect = l1Area.getBoundingClientRect();
+            const maxX = areaRect.width - 40;
+            const maxY = areaRect.height - 40;
+            
+            const randomX = Math.max(0, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(0, Math.floor(Math.random() * maxY));
+            
+            l1Target.style.left = `${randomX}px`;
+            l1Target.style.top = `${randomY}px`;
+        }
+
+        function hitTarget(e) {
+            e.stopPropagation();
+            gameState.scores.l1++;
+            document.getElementById('l1-score').innerText = gameState.scores.l1;
+            moveTargetL1();
+        }
+
+        function endLevel1() {
+            clearInterval(gameState.intervals.l1);
+            l1Target.classList.add('hidden');
+            
+            const endMsg = document.createElement('div');
+            endMsg.className = "absolute inset-0 flex items-center justify-center bg-slate-900/90 z-20 flex-col";
+            endMsg.innerHTML = `<h2 class="text-3xl font-bold text-sky-400 mb-2">Completato!</h2><p>Bersagli colpiti: ${gameState.scores.l1}</p>`;
+            document.getElementById('l1-area').appendChild(endMsg);
+            
+            setTimeout(() => showScreen('screen-level2'), 2500);
+        }
+
+        let draggedItem = null;
+        let l2ItemsLeft = 6;
+        let l2StartTime = 0;
+
+        function startLevel2() {
+            document.getElementById('l2-start-overlay').classList.add('hidden');
+            const gameArea = document.getElementById('l2-game-area');
+            gameArea.classList.remove('opacity-0', 'pointer-events-none');
+            
+            generateDraggableItems();
+            setupDropzones();
+            
+            l2ItemsLeft = 6;
+            l2StartTime = Date.now();
+            
+            gameState.intervals.l2 = setInterval(() => {
+                const elapsedSeconds = Math.floor((Date.now() - l2StartTime) / 1000);
+                document.getElementById('l2-timer').innerText = elapsedSeconds;
+            }, 1000);
+        }
+
+        function generateDraggableItems() {
+            const container = document.getElementById('l2-items-container');
+            container.innerHTML = '';
+            const colors = ['red', 'red', 'green', 'green', 'blue', 'blue'].sort(() => Math.random() - 0.5);
+            const colorClasses = {
+                'red': 'bg-red-500 hover:bg-red-400',
+                'green': 'bg-emerald-500 hover:bg-emerald-400',
+                'blue': 'bg-blue-500 hover:bg-blue-400'
+            };
+
+            colors.forEach((color, index) => {
+                const item = document.createElement('div');
+                item.className = `draggable w-12 h-12 rounded-lg shadow-lg flex items-center justify-center font-bold text-white ${colorClasses[color]}`;
+                item.setAttribute('draggable', 'true');
+                item.setAttribute('data-color', color);
+                item.id = `item-${index}`;
+                
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                // Touch events per mobile
+                item.addEventListener('touchstart', handleTouchStart, {passive: false});
+                item.addEventListener('touchmove', handleTouchMove, {passive: false});
+                item.addEventListener('touchend', handleTouchEnd);
+
+                container.appendChild(item);
+            });
+        }
+
+        function setupDropzones() {
+            document.querySelectorAll('.dropzone').forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function handleDragStart(e) {
+            draggedItem = this;
+            setTimeout(() => this.classList.add('opacity-50'), 0);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('opacity-50');
+            draggedItem = null;
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            if (draggedItem && this.getAttribute('data-color') === draggedItem.getAttribute('data-color')) {
+                this.appendChild(draggedItem);
+                draggedItem.setAttribute('draggable', 'false');
+                draggedItem.classList.remove('draggable');
+                draggedItem.classList.add('cursor-default');
+                draggedItem.removeEventListener('dragstart', handleDragStart);
+                checkL2Win();
+            } else if(draggedItem) {
+                draggedItem.classList.add('border-4', 'border-white');
+                setTimeout(() => draggedItem.classList.remove('border-4', 'border-white'), 300);
+            }
+        }
+
+        let initialX = 0, initialY = 0, activeTouchItem = null;
+
+        function handleTouchStart(e) {
+            if(this.getAttribute('draggable') === 'false') return;
+            initialX = e.touches[0].clientX - this.offsetLeft;
+            initialY = e.touches[0].clientY - this.offsetTop;
+            activeTouchItem = this;
+            this.style.position = 'absolute';
+            this.style.zIndex = '1000';
+            this.classList.add('opacity-80');
+        }
+
+        function handleTouchMove(e) {
+            if (!activeTouchItem) return;
+            e.preventDefault();
+            const currentX = e.touches[0].clientX - initialX;
+            const currentY = e.touches[0].clientY - initialY;
+            activeTouchItem.style.left = `${currentX}px`;
+            activeTouchItem.style.top = `${currentY}px`;
+        }
+
+        function handleTouchEnd(e) {
+            if (!activeTouchItem) return;
+            activeTouchItem.classList.remove('opacity-80');
+            
+            const changedTouch = e.changedTouches[0];
+            activeTouchItem.style.display = 'none';
+            const elemBelow = document.elementFromPoint(changedTouch.clientX, changedTouch.clientY);
+            activeTouchItem.style.display = 'flex';
+            
+            const dropzone = elemBelow ? elemBelow.closest('.dropzone') : null;
+
+            if (dropzone && dropzone.getAttribute('data-color') === activeTouchItem.getAttribute('data-color')) {
+                dropzone.appendChild(activeTouchItem);
+                activeTouchItem.style.position = 'static';
+                activeTouchItem.setAttribute('draggable', 'false');
+                activeTouchItem.removeEventListener('touchstart', handleTouchStart);
+                checkL2Win();
+            } else {
+                activeTouchItem.style.position = 'relative';
+                activeTouchItem.style.left = 'auto';
+                activeTouchItem.style.top = 'auto';
+            }
+            activeTouchItem = null;
+        }
+
+        function checkL2Win() {
+            l2ItemsLeft--;
+            if (l2ItemsLeft <= 0) {
+                clearInterval(gameState.intervals.l2);
+                gameState.scores.l2 = Math.floor((Date.now() - l2StartTime) / 1000);
+                
+                const endMsg = document.createElement('div');
+                endMsg.className = "absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 z-20 rounded-xl mt-[60px]";
+                endMsg.innerHTML = `<h2 class="text-3xl font-bold text-emerald-400 mb-2">Ordinamento Completato!</h2><p class="text-white">Tempo totale: ${gameState.scores.l2} secondi</p>`;
+                document.getElementById('screen-level2').appendChild(endMsg);
+                
+                setTimeout(() => showScreen('screen-level3'), 3000);
+            }
+        }
+
+        let l3StartTime = 0;
+        let l3Phase = 1;
+        let l3SelectedCtrl = new Set();
+        const l3TargetsPhase1 = ['file-1', 'file-4', 'file-7'];
+        let shiftStartFile = null;
+
+        function startLevel3() {
+            document.getElementById('l3-start-overlay').classList.add('hidden');
+            document.getElementById('l3-game-area').classList.remove('opacity-0', 'pointer-events-none');
+            
+            l3StartTime = Date.now();
+            l3Phase = 1;
+            l3SelectedCtrl.clear();
+            shiftStartFile = null;
+            
+            setupL3Files();
+            updateL3Instruction();
+
+            gameState.intervals.l3 = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - l3StartTime) / 1000);
+                document.getElementById('l3-timer').innerText = elapsed;
+            }, 1000);
+        }
+
+        function setupL3Files() {
+            const container = document.getElementById('l3-files-container');
+            container.innerHTML = '';
+            for(let i=1; i<=8; i++) {
+                const file = document.createElement('div');
+                file.id = `file-${i}`;
+                file.className = 'w-16 h-20 bg-slate-800 rounded-lg border-2 border-transparent flex flex-col items-center justify-center cursor-pointer transition-all select-none hover:bg-slate-700';
+                file.innerHTML = `
+                    <svg class="w-8 h-8 text-slate-400 mb-1 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"></path></svg>
+                    <span class="text-xs text-slate-300 font-mono pointer-events-none">Doc_${i}</span>
+                `;
+                file.addEventListener('mousedown', handleL3Click);
+                container.appendChild(file);
+            }
+        }
+
+        function updateL3Instruction() {
+            const inst = document.getElementById('l3-instruction');
+            if (l3Phase === 1) {
+                inst.innerHTML = `Fase 1: Tieni premuto <b>CTRL</b> <span class="text-sm">(CMD su Mac)</span> e clicca sui file evidenziati per selezionarli tutti e tre simultaneamente.`;
+                l3TargetsPhase1.forEach(id => {
+                    document.getElementById(id).classList.add('border-rose-500', 'bg-rose-900/30', 'animate-pulse');
+                });
+            } else if (l3Phase === 2) {
+                inst.innerHTML = `Fase 2: Ottimo! Ora clicca sul <b>Doc_2</b>, poi tieni premuto <b>SHIFT</b> e clicca sul <b>Doc_8</b> per selezionare tutto l'intervallo.`;
+                document.querySelectorAll('#l3-files-container div').forEach(el => {
+                    el.classList.remove('bg-sky-600', 'border-sky-400', 'border-rose-500', 'bg-rose-900/30', 'animate-pulse');
+                    el.classList.add('bg-slate-800');
+                });
+            }
+        }
+
+        function handleL3Click(e) {
+            e.preventDefault(); 
+            const fileId = this.id;
+            const fileNum = parseInt(fileId.split('-')[1]);
+
+            if (l3Phase === 1) {
+                if (e.ctrlKey || e.metaKey) {
+                    if (l3TargetsPhase1.includes(fileId)) {
+                        this.classList.remove('bg-slate-800', 'border-rose-500', 'bg-rose-900/30', 'animate-pulse');
+                        this.classList.add('bg-sky-600', 'border-sky-400');
+                        l3SelectedCtrl.add(fileId);
+                        
+                        if (l3SelectedCtrl.size === 3) {
+                            l3Phase = 2;
+                            setTimeout(updateL3Instruction, 800);
+                        }
+                    } else {
+                        showL3Warning("Hai cliccato il file sbagliato!");
+                    }
+                } else {
+                    showL3Warning("Ricorda di tenere premuto CTRL/CMD!");
+                }
+            } else if (l3Phase === 2) {
+                if (e.shiftKey) {
+                    if (shiftStartFile === 2 && fileNum === 8) {
+                        for(let i=2; i<=8; i++) {
+                            const el = document.getElementById(`file-${i}`);
+                            el.classList.remove('bg-slate-800');
+                            el.classList.add('bg-emerald-600', 'border-emerald-400');
+                        }
+                        endLevel3();
+                    } else {
+                        showL3Warning("Devi cliccare prima sul Doc 2, e poi SHIFT+Clic sul Doc 8.");
+                        resetL3Phase2();
+                    }
+                } else {
+                    if (fileNum === 2) {
+                        shiftStartFile = 2;
+                        document.querySelectorAll('#l3-files-container div').forEach(el => {
+                            el.classList.remove('bg-sky-600', 'border-sky-400');
+                            el.classList.add('bg-slate-800');
+                        });
+                        this.classList.remove('bg-slate-800');
+                        this.classList.add('bg-sky-600', 'border-sky-400');
+                    } else {
+                        showL3Warning("Senza SHIFT stai selezionando un file singolo. Parti dal Doc_2.");
+                        resetL3Phase2();
+                    }
+                }
+            }
+        }
+
+        function resetL3Phase2() {
+            shiftStartFile = null;
+            document.querySelectorAll('#l3-files-container div').forEach(el => {
+                el.classList.remove('bg-sky-600', 'border-sky-400');
+                el.classList.add('bg-slate-800');
+            });
+        }
+
+        function showL3Warning(msg) {
+            const warningBox = document.getElementById('l3-warning');
+            warningBox.innerText = msg;
+            warningBox.classList.remove('opacity-0');
+            setTimeout(() => warningBox.classList.add('opacity-0'), 2000);
+        }
+
+        function endLevel3() {
+            clearInterval(gameState.intervals.l3);
+            gameState.scores.l3 = Math.floor((Date.now() - l3StartTime) / 1000);
+            
+            const endMsg = document.createElement('div');
+            endMsg.className = "absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 z-20 rounded-xl mt-[60px]";
+            endMsg.innerHTML = `<h2 class="text-3xl font-bold text-emerald-400 mb-2">Selezioni Padroneggiate!</h2><p class="text-white">Tempo totale: ${gameState.scores.l3} secondi</p>`;
+            document.getElementById('screen-level3').appendChild(endMsg);
+            
+            setTimeout(() => showScreen('screen-level4'), 3000);
+        }
+
+        let l4StartTime = 0;
+        let l4State = 'A';
+
+        function startLevel4() {
+            document.getElementById('l4-start-overlay').classList.add('hidden');
+            document.getElementById('l4-game-area').classList.remove('opacity-0', 'pointer-events-none');
+            
+            l4StartTime = Date.now();
+            l4State = 'A';
+            updateL4UI();
+
+            document.addEventListener('keydown', handleL4Keydown);
+
+            gameState.intervals.l4 = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - l4StartTime) / 1000);
+                document.getElementById('l4-timer').innerText = elapsed;
+            }, 1000);
+        }
+
+        function updateL4UI() {
+            const inst = document.getElementById('l4-instruction');
+            if (l4State === 'A') {
+                inst.innerHTML = `Passo 1: Premi <b>CTRL + A</b> (o CMD + A) per <b>selezionare tutti</b> i documenti.`;
+            } else if (l4State === 'C') {
+                inst.innerHTML = `Passo 2: Ottimo! Ora premi <b>CTRL + C</b> (o CMD + C) per <b>copiarli</b> in memoria.`;
+            } else if (l4State === 'V') {
+                inst.innerHTML = `Passo 3: Fatto! Ora premi <b>CTRL + V</b> (o CMD + V) per <b>incollarli</b> nella cartella di destinazione.`;
+                document.getElementById('l4-dest-container').classList.add('bg-emerald-900/20', 'border-emerald-500');
+            }
+        }
+
+        function handleL4Keydown(e) {
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                
+                if (l4State === 'A' && key === 'a') {
+                    e.preventDefault(); 
+                    document.querySelectorAll('.l4-doc').forEach(el => {
+                        el.classList.remove('bg-slate-700');
+                        el.classList.add('bg-sky-600', 'border-sky-400');
+                    });
+                    l4State = 'C';
+                    updateL4UI();
+                } 
+                else if (l4State === 'C' && key === 'c') {
+                    e.preventDefault();
+                    const feedback = document.getElementById('l4-copy-feedback');
+                    feedback.classList.remove('hidden');
+                    setTimeout(() => feedback.classList.add('hidden'), 1500);
+                    
+                    l4State = 'V';
+                    updateL4UI();
+                } 
+                else if (l4State === 'V' && key === 'v') {
+                    e.preventDefault();
+                    const destBox = document.getElementById('l4-dest-box');
+                    document.querySelectorAll('.l4-doc').forEach(doc => {
+                        doc.classList.remove('bg-sky-600', 'border-sky-400');
+                        doc.classList.add('bg-emerald-600', 'border-emerald-400');
+                        destBox.appendChild(doc);
+                    });
+                    endLevel4();
+                }
+            }
+        }
+
+        function endLevel4() {
+            clearInterval(gameState.intervals.l4);
+            document.removeEventListener('keydown', handleL4Keydown);
+            
+            gameState.scores.l4 = Math.floor((Date.now() - l4StartTime) / 1000);
+            
+            const endMsg = document.createElement('div');
+            endMsg.className = "absolute inset-0 flex flex-col items-center justify-center bg-slate-900/95 z-20 rounded-xl mt-[60px]";
+            endMsg.innerHTML = `<h2 class="text-3xl font-bold text-amber-400 mb-2">Scorciatoie Completate!</h2><p class="text-white">Tempo totale: ${gameState.scores.l4} secondi</p>`;
+            document.getElementById('screen-level4').appendChild(endMsg);
+            
+            setTimeout(() => showSummaryScreen(), 3000);
+        }
+
+        function showSummaryScreen() {
+            document.getElementById('res-l1').innerText = gameState.scores.l1;
+            document.getElementById('res-l2').innerText = gameState.scores.l2;
+            document.getElementById('res-l3').innerText = gameState.scores.l3;
+            document.getElementById('res-l4').innerText = gameState.scores.l4;
+            
+            showScreen('screen-summary');
+        }
+
+        function copyResults() {
+            const resultsText = `
+--- REPORT ADDESTRAMENTO PERIFERICHE ---
+Operatore: ${gameState.studentName}
+Data: ${new Date().toLocaleDateString('it-IT')}
+
+RISULTATI:
+- Livello 1 (Precisione Mouse): ${gameState.scores.l1} bersagli colpiti in 15s
+- Livello 2 (Drag & Drop): Completato in ${gameState.scores.l2}s
+- Livello 3 (Selezioni Mouse+Tastiera): Completato in ${gameState.scores.l3}s
+- Livello 4 (Scorciatoie di Sistema): Completato in ${gameState.scores.l4}s
+
+Giudizio: Esercitazione completata con successo.
+Generato da SYS_TRAINING_MODULE_v2.0
+----------------------------------------
+            `.trim();
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(resultsText).then(showCopyFeedback);
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = resultsText;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopyFeedback();
+                } catch (err) {
+                    console.error('Fallback Copy Error', err);
+                }
+                textArea.remove();
+            }
+        }
+
+        function showCopyFeedback() {
+            const btn = document.getElementById('btn-copy');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> COPIATO!`;
+            btn.classList.add('bg-emerald-600', 'border-emerald-500');
+            btn.classList.remove('bg-slate-700', 'border-slate-500');
+            
+            const feedbackBox = document.getElementById('copy-feedback');
+            feedbackBox.classList.remove('opacity-0');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-emerald-600', 'border-emerald-500');
+                btn.classList.add('bg-slate-700', 'border-slate-500');
+                feedbackBox.classList.add('opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
