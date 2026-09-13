@@ -58,8 +58,8 @@ h1 span{color:var(--teal)}
 .ov-ax{padding:0}
 
 /* inviti */
-.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.4rem 0 0}
-.go{display:flex;flex-direction:column;gap:.15rem;padding:.75rem 1.1rem;border-radius:10px;border:1.5px solid var(--teal);text-decoration:none;color:var(--teal-ink);background:var(--surface);min-width:min(100%,17rem)}
+.cta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:1.4rem 0 0} @media (max-width:760px){.cta{grid-template-columns:1fr}}
+.go{display:flex;flex-direction:column;gap:.15rem;padding:.75rem 1.1rem;border-radius:10px;border:1.5px solid var(--teal);text-decoration:none;color:var(--teal-ink);background:var(--surface);min-width:0}
 .go b{font-family:Archivo,"Arial Narrow",Arial,sans-serif;font-size:1.02rem} .go span{font-size:.86rem;color:var(--ink-2)}
 .go.primary{background:var(--teal);border-color:var(--teal);color:var(--surface)} .go.primary span{color:var(--surface);opacity:.85}
 .go:hover{box-shadow:0 0 0 3px var(--teal-soft)} .go:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
@@ -67,6 +67,7 @@ h1 span{color:var(--teal)}
 .use li{position:relative;padding-left:2.7rem;color:var(--ink-2)} .use li b{color:var(--ink)}
 .use li::before{counter-increment:u;content:counter(u);position:absolute;left:0;top:-.05rem;width:1.85rem;height:1.85rem;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font:700 .95rem/1.85rem "IBM Plex Mono",monospace;text-align:center}
 .use .tiny{display:block;font-size:.86rem;color:var(--muted);margin-top:.25rem}
+.repo{margin:.7rem 0 0;font-size:.9rem;color:var(--ink-2)}
 /* competenze */
 .sec{padding:2.5rem 0 0}
 .sec>h2{font-size:1.5rem;font-stretch:108%;margin-bottom:.35rem}
@@ -174,8 +175,10 @@ footer .small{font-size:.85rem;color:var(--muted);max-width:62ch;margin-top:1rem
   </ul>
   <div class="cta">
     <a class="go primary" href="https://classroom.google.com/c/ODg0NTAxODI0MzI3?cjc=tk3ybqrr" target="_blank" rel="noopener"><b>Entra nella Classroom di Missione 0 ↗</b><span>Tutti i compiti già pronti, con istruzioni e file</span></a>
+    <a class="go" href="https://digital-makers-ag.github.io/attivita-informatica-scuola/index.html"><b>Guida completa e pianificazione</b><span>Lezione per lezione: compiti, istruzioni, file, soluzioni</span></a>
     <a class="go" href="https://docs.google.com/forms/d/1cuLJJBjOHtYPphP9jPy0yxT0zlABZtZfbzNZe7zmyZ0/template/preview" target="_blank" rel="noopener"><b>Copia il modulo dei codici ↗</b><span>Il Modulo Google in cui gli studenti consegnano i codici</span></a>
   </div>
+  <p class="repo">Tutto il materiale è anche su GitHub: <a href="https://github.com/Digital-Makers-AG/attivita-informatica-scuola" target="_blank" rel="noopener">repository del pacchetto ↗</a> (Code › Download ZIP per scaricarlo in un colpo solo).</p>
   <div class="ov" role="group" aria-labelledby="ov-h">
     <div class="ov-head"><h2 id="ov-h">Come usiamo il tempo · <span class="dur-now">2 ore</span></h2>
       <p class="legend"><span><span class="sw k-tu"></span>Parli tu</span><span><span class="sw k-loro"></span>Lavorano gli studenti</span><span><span class="sw k-fine"></span>Consegne e riserva</span></p></div>
@@ -332,7 +335,8 @@ footer .small{font-size:.85rem;color:var(--muted);max-width:62ch;margin-top:1rem
 <footer><div class="wrap">
   <h2>Dove trovi tutto</h2>
   <ul>
-    <li><a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/index.html">Pagina del docente</a>: per ogni compito titolo e istruzioni da copiare, file da allegare, versioni BES, soluzioni.</li>
+    <li><a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/index.html">Guida completa e pianificazione</a> (pagina del docente): per ogni compito titolo e istruzioni da copiare, file da allegare, versioni BES, soluzioni.</li>
+    <li><a href="https://github.com/Digital-Makers-AG/attivita-informatica-scuola" target="_blank" rel="noopener">Repository GitHub</a>: tutti i file del pacchetto; con Code › Download ZIP li scarichi in un unico archivio.</li>
     <li><a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/00_GUIDA_DOCENTE/GUIDA_DOCENTE_MISSIONE_0.docx">Guida completa (Word)</a>: preparazione, conduzione, errori frequenti, piani B.</li>
     <li><a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/00_GUIDA_DOCENTE/SCALETTA_RAPIDA_da_stampare.docx">Scaletta da stampare (Word)</a>: una pagina da tenere sulla cattedra.</li>
     <li><a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/verifica_codici.html">Verifica codici</a>: incolli i codici della classe (anche dal Modulo Google) e vedi i livelli proposti.</li>
