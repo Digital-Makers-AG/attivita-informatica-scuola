@@ -57,6 +57,16 @@ h1 span{color:var(--teal)}
 .ticks span:first-child{transform:none} .ticks span:last-child{transform:translateX(-100%)}
 .ov-ax{padding:0}
 
+/* inviti */
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.4rem 0 0}
+.go{display:flex;flex-direction:column;gap:.15rem;padding:.75rem 1.1rem;border-radius:10px;border:1.5px solid var(--teal);text-decoration:none;color:var(--teal-ink);background:var(--surface);min-width:min(100%,17rem)}
+.go b{font-family:Archivo,"Arial Narrow",Arial,sans-serif;font-size:1.02rem} .go span{font-size:.86rem;color:var(--ink-2)}
+.go.primary{background:var(--teal);border-color:var(--teal);color:var(--surface)} .go.primary span{color:var(--surface);opacity:.85}
+.go:hover{box-shadow:0 0 0 3px var(--teal-soft)} .go:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.use{counter-reset:u;list-style:none;margin:0;padding:0;display:grid;gap:.85rem;max-width:72ch}
+.use li{position:relative;padding-left:2.7rem;color:var(--ink-2)} .use li b{color:var(--ink)}
+.use li::before{counter-increment:u;content:counter(u);position:absolute;left:0;top:-.05rem;width:1.85rem;height:1.85rem;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font:700 .95rem/1.85rem "IBM Plex Mono",monospace;text-align:center}
+.use .tiny{display:block;font-size:.86rem;color:var(--muted);margin-top:.25rem}
 /* competenze */
 .sec{padding:2.5rem 0 0}
 .sec>h2{font-size:1.5rem;font-stretch:108%;margin-bottom:.35rem}
@@ -158,10 +168,14 @@ footer .small{font-size:.85rem;color:var(--muted);max-width:62ch;margin-top:1rem
 <header class="top"><div class="wrap">
   <p class="eyebrow">Per i colleghi · Classe terza · IP Servizi Commerciali</p>
   <h1>Missione 0: <span>riattiviamo</span> le competenze digitali</h1>
-  <p class="lead">Quattro lezioni pratiche e una missione finale per recuperare le competenze digitali del biennio. Gli studenti fanno gli stagisti digitali di <b>Officina 23</b>, una bottega di biciclette inventata, e lavorano su file veri. Il docente spiega poco, a pezzi di pochi minuti, e osserva quello che producono.</p>
+  <p class="lead">Abbiamo preparato un <b>repertorio di attività pratiche</b> per recuperare le competenze digitali del biennio: quattro lezioni e una missione finale, <b>già caricate in Classroom</b>. Gli studenti fanno gli stagisti digitali di <b>Officina 23</b>, una bottega di biciclette inventata, e si allenano in <b>palestre</b> interattive e su file veri. Il docente spiega poco, a pezzi di pochi minuti.</p>
   <ul class="facts">
     <li><b>5</b>incontri da 2 ore</li><li><b>4</b>lezioni + la missione finale</li><li><b>9</b>competenze</li><li><b>51</b>microcompetenze osservabili</li><li><b>10</b>compiti in Classroom</li>
   </ul>
+  <div class="cta">
+    <a class="go primary" href="https://classroom.google.com/c/ODg0NTAxODI0MzI3?cjc=tk3ybqrr" target="_blank" rel="noopener"><b>Entra nella Classroom di Missione 0 ↗</b><span>Tutti i compiti già pronti, con istruzioni e file</span></a>
+    <a class="go" href="https://docs.google.com/forms/d/1cuLJJBjOHtYPphP9jPy0yxT0zlABZtZfbzNZe7zmyZ0/template/preview" target="_blank" rel="noopener"><b>Copia il modulo dei codici ↗</b><span>Il Modulo Google in cui gli studenti consegnano i codici</span></a>
+  </div>
   <div class="ov" role="group" aria-labelledby="ov-h">
     <div class="ov-head"><h2 id="ov-h">Come usiamo il tempo · <span class="dur-now">2 ore</span></h2>
       <p class="legend"><span><span class="sw k-tu"></span>Parli tu</span><span><span class="sw k-loro"></span>Lavorano gli studenti</span><span><span class="sw k-fine"></span>Consegne e riserva</span></p></div>
@@ -170,6 +184,18 @@ footer .small{font-size:.85rem;color:var(--muted);max-width:62ch;margin-top:1rem
 </div></header>
 
 <main>
+<section class="sec wrap" aria-labelledby="u-h">
+  <h2 id="u-h">Come si usa</h2>
+  <p class="intro"><b>È una proposta, non un percorso obbligato.</b> Scegli tu quali attività fare, in che ordine e come; anche la consegna dei codici è facoltativa.</p>
+  <ol class="use">
+    <li><b>Entra nella Classroom di Missione 0</b> con il link qui sopra: trovi tutti i compiti già caricati, con istruzioni e file.
+      <span class="tiny">Per copiarli nella tua classe con «Riutilizza post» devi essere co-docente della Classroom; se entri con il link come studente puoi comunque leggere le istruzioni e scaricare i file.</span></li>
+    <li><b>Porta nella tua classe solo le attività che ti servono.</b> Qui sotto, lezione per lezione, trovi che cosa si fa e quanto dura (2 ore o 80 minuti).</li>
+    <li><b>Gli studenti si allenano nelle palestre</b>: tastiera, scorciatoie, selezione del testo e dei file, casella di posta con il phishing. Alla fine di ogni palestra ricevono un <b>codice risultato</b>.</li>
+    <li><b>Se vuoi raccogliere i risultati</b>, fai una copia del <a href="https://docs.google.com/forms/d/1cuLJJBjOHtYPphP9jPy0yxT0zlABZtZfbzNZe7zmyZ0/template/preview" target="_blank" rel="noopener">modulo dei codici</a> e allegala ai compiti: gli studenti ci incollano i codici. Poi incolli le risposte del modulo nella <a href="https://digital-makers-ag.github.io/attivita-informatica-scuola/verifica_codici.html">pagina di verifica</a> e vedi, studente per studente, il livello di ogni competenza.</li>
+  </ol>
+</section>
+
 <section class="sec wrap" aria-labelledby="c-h">
   <h2 id="c-h">Che cosa vogliamo recuperare</h2>
   <p class="intro">Nove competenze, ognuna scomposta in microcompetenze con un'evidenza osservabile (un file, un link, un'email, un codice degli strumenti). Accanto: dove si lavorano.</p>
@@ -182,9 +208,9 @@ footer .small{font-size:.85rem;color:var(--muted);max-width:62ch;margin-top:1rem
     <li><b>Poca teoria, subito le mani</b><p>Il docente parla al massimo 10 minuti per lezione, in micro-spiegazioni di 1–5 minuti. Il resto è esercizio sui file.</p></li>
     <li><b>Un solo scenario, file veri</b><p>La chiavetta disordinata di Marta, un documento da sistemare, fonti da verificare, email truffa: sempre per Officina 23.</p></li>
     <li><b>Dalla guida all'autonomia</b><p>La Lezione 1 ha passi numerati; poi obiettivi e criteri; la missione finale dà solo scenario, obiettivo e vincoli.</p></li>
-    <li><b>Si valuta quello che producono</b><p>Passaporto PRIMA e DOPO, griglia a tre livelli (autonomo · con supporto · non ancora), codici verificabili delle palestre online.</p></li>
+    <li><b>Si valuta quello che producono</b><p>Passaporto PRIMA e DOPO, griglia a tre livelli (autonomo · con supporto · non ancora) e i codici delle palestre, raccolti con il modulo e controllati nella pagina di verifica.</p></li>
     <li><b>BES: stessa competenza, meno barriere</b><p>Ogni attività ha una versione con checklist; dove serve, una guidata. L'obiettivo non si abbassa.</p></li>
-    <li><b>Classroom già pronto</b><p>Per ogni compito: titolo, istruzioni da incollare, file da allegare e opzione da scegliere, nella pagina del docente.</p></li>
+    <li><b>Un repertorio, non un obbligo</b><p>Puoi fare tutto il percorso o solo alcune attività, anche in lezioni da 80 minuti. I compiti sono già in Classroom: li copi e decidi tu.</p></li>
   </ul>
 </section>
 
