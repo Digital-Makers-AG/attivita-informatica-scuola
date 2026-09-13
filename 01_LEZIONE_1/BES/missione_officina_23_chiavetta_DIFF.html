@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missione 0: Officina 23 - La Chiavetta di Marta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        .mono { font-family: 'JetBrains Mono', monospace; }
+
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Stili per i file (Livello 1 e 2) */
+        .file-item {
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .file-item:active { cursor: grabbing; transform: scale(0.95); }
+        .file-item.dragging { opacity: 0.5; z-index: 50; position: absolute; }
+        
+        .folder-zone { transition: all 0.3s ease; }
+        .folder-zone.dragover {
+            background-color: rgba(56, 189, 248, 0.2); /* Sky 400 */
+            border-color: #38bdf8;
+            transform: scale(1.02);
+        }
+        .trash-zone.dragover {
+            background-color: rgba(244, 63, 94, 0.2); /* Rose 500 */
+            border-color: #f43f5e;
+            transform: scale(1.05);
+        }
+
+        /* Animazione file nel cestino */
+        @keyframes throwAway {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(90deg); opacity: 0; }
+        }
+        .thrown { animation: throwAway 0.5s forwards; pointer-events: none; }
+
+        /* Custom Scrollbar per input */
+        input.error-shake { animation: shake 0.4s 1 linear; border-color: #f43f5e; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 lg:p-8">
+
+    <main class="w-full max-w-5xl bg-slate-800 rounded-2xl shadow-2xl overflow-hidden relative border border-slate-700 min-h-[650px] flex flex-col">
+        
+        <!-- Header -->
+        <header class="bg-slate-900 p-4 text-center border-b border-slate-700 flex justify-between items-center px-6">
+            <div class="text-left">
+                <h1 class="text-xl md:text-2xl font-bold tracking-wider text-amber-400">OFFICINA 23</h1>
+                <p class="text-xs text-slate-400 mono">Missione 0: Organizzazione File</p>
+            </div>
+            <div class="hidden md:flex gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            </div>
+        </header>
+
+        <!-- Container Livelli -->
+        <div class="flex-grow relative flex flex-col items-center justify-center p-4 md:p-8 w-full h-full" id="game-container">
+            
+            <div id="screen-intro" class="screen active flex-col items-center text-center w-full max-w-lg">
+                <div class="w-20 h-20 bg-amber-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                    <svg class="w-10 h-10 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 text-white">Il disastro di Marta</h2>
+                <p class="text-slate-300 mb-6 leading-relaxed">
+                    Marta ti ha consegnato la sua chiavetta USB per l'Open Day. È un caos totale!<br>
+                    Per preparare i materiali servono le tue abilità: dovrai <b>smistare, rinominare e pulire</b> i file seguendo le regole aziendali.
+                </p>
+                
+                <div class="w-full mb-6 bg-slate-900 p-4 rounded-xl border border-slate-600">
+                    <label for="student-name" class="block text-sm font-medium text-slate-400 mb-2 text-left">Nome operatore (Tuo Nome e Cognome):</label>
+                    <input type="text" id="student-name" placeholder="Es. Mario Rossi" class="w-full px-4 py-3 bg-slate-800 border border-slate-600 rounded-lg text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition">
+                    <p id="intro-error" class="text-rose-400 text-sm mt-2 hidden text-left">Inserisci il tuo nome per iniziare.</p>
+                </div>
+                
+                <button onclick="startGame()" class="w-full py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-lg shadow-[0_0_15px_rgba(217,119,6,0.5)] transition-all transform hover:scale-105">
+                    INSERISCI CHIAVETTA E INIZIA
+                </button>
+            </div>
+
+            <div id="screen-l1" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-sky-400">FASE 1: Smistamento File</h3>
+                    <div class="mono text-sm bg-slate-900 px-3 py-1 rounded border border-slate-700">File rimasti: <span id="l1-count" class="text-sky-400 font-bold">5</span></div>
+                </div>
+                <p class="text-sm text-slate-400 mb-6 text-center">Trascina ogni file nella cartella corretta in base alla sua estensione (.docx, .jpg, .mp4, ecc).</p>
+
+                <div class="flex flex-col md:flex-row w-full gap-6 h-full">
+                    <!-- File Source -->
+                    <div class="w-full md:w-1/3 bg-slate-900 p-4 rounded-xl border border-slate-700 min-h-[250px] flex flex-col gap-3" id="l1-source">
+                        <!-- File iniettati via JS -->
+                    </div>
+
+                    <!-- Folders Destination -->
+                    <div class="w-full md:w-2/3 grid grid-cols-2 gap-4">
+                        <div class="folder-zone bg-slate-800 border-2 border-dashed border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center text-slate-400" data-type="doc">
+                            <svg class="w-10 h-10 mb-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                            <span class="font-bold">01_documenti</span>
+                            <span class="text-xs mt-1">(.docx, .txt, .pdf)</span>
+                        </div>
+                        <div class="folder-zone bg-slate-800 border-2 border-dashed border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center text-slate-400" data-type="img">
+                            <svg class="w-10 h-10 mb-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            <span class="font-bold">02_foto</span>
+                            <span class="text-xs mt-1">(.jpg, .png, .zip)</span>
+                        </div>
+                        <div class="folder-zone bg-slate-800 border-2 border-dashed border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center text-slate-400" data-type="media">
+                            <svg class="w-10 h-10 mb-2 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            <span class="font-bold">04_video_audio</span>
+                            <span class="text-xs mt-1">(.mp4, .mp3)</span>
+                        </div>
+                        <div class="folder-zone bg-slate-800 border-2 border-dashed border-slate-600 rounded-xl p-4 flex flex-col items-center justify-center text-slate-400" data-type="admin">
+                            <svg class="w-10 h-10 mb-2 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                            <span class="font-bold">05_amministrazione</span>
+                            <span class="text-xs mt-1">(preventivi, registri)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-l2" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-rose-400">FASE 2: Pulizia Disastro</h3>
+                    <div class="mono text-sm bg-slate-900 px-3 py-1 rounded border border-slate-700">Da cestinare: <span id="l2-count" class="text-rose-400 font-bold">4</span></div>
+                </div>
+                <p class="text-sm text-slate-400 mb-6 text-center">Trascina nel cestino i file inutili: file vuoti (0 KB), file temporanei (~$), copie inutili e cartelle vecchie.</p>
+
+                <div class="flex flex-col md:flex-row w-full gap-8 items-center h-full">
+                    <!-- Files to clean -->
+                    <div class="w-full md:w-2/3 grid grid-cols-2 gap-3" id="l2-source">
+                        <!-- Generato da JS -->
+                    </div>
+
+                    <!-- Trash -->
+                    <div class="w-full md:w-1/3 flex justify-center">
+                        <div class="trash-zone w-40 h-48 bg-slate-900 border-4 border-dashed border-slate-700 rounded-b-3xl rounded-t-lg flex flex-col items-center justify-center text-slate-500 transition-all">
+                            <svg class="w-16 h-16 mb-2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            <span class="font-bold pointer-events-none">CESTINO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-l3" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-full flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-emerald-400">FASE 3: Regola dei Nomi</h3>
+                    <div class="mono text-sm bg-slate-900 px-3 py-1 rounded border border-slate-700">Da correggere: <span id="l3-count" class="text-emerald-400 font-bold">3</span></div>
+                </div>
+                
+                <!-- Regole -->
+                <div class="w-full bg-slate-900 p-4 rounded-xl border border-emerald-900/50 mb-6 shadow-inner text-sm">
+                    <h4 class="font-bold text-emerald-400 mb-2 uppercase">Il Poster di Officina 23</h4>
+                    <ul class="text-slate-300 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <li><span class="text-emerald-500 mr-2">1.</span> Tutto minuscolo</li>
+                        <li><span class="text-emerald-500 mr-2">2.</span> Niente spazi: usa il trattino basso (_)</li>
+                        <li><span class="text-emerald-500 mr-2">3.</span> Niente accenti/simboli</li>
+                        <li><span class="text-emerald-500 mr-2">4.</span> Usa versioni _v1, _v2 (MAI "definitivo")</li>
+                        <li class="md:col-span-2 text-rose-300 mt-1">⚠️ L'estensione finale (.txt, .jpg, ecc) NON si tocca!</li>
+                    </ul>
+                </div>
+
+                <div class="w-full flex flex-col gap-4" id="l3-form">
+                    <!-- Form generato da JS -->
+                </div>
+            </div>
+
+            <div id="screen-l4" class="screen flex-col w-full h-full items-center justify-center">
+                <div class="bg-rose-900/40 border border-rose-500 p-6 rounded-2xl text-center max-w-lg relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-rose-500 animate-pulse"></div>
+                    <svg class="w-16 h-16 text-rose-500 mx-auto mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <h3 class="text-2xl font-bold text-white mb-2">MESSAGGIO URGENTE DA MARTA</h3>
+                    <p class="text-slate-300 mb-6">
+                        "Aspetta! Hai svuotato il cestino? Nella <i>roba vecchia</i> c'era il <b>preventivo della Tipografia</b>! Mi serve per l'Open Day, recuperalo subito!"
+                    </p>
+                    
+                    <div class="w-full bg-slate-900 p-4 rounded-xl border border-slate-700 mb-4 text-left">
+                        <p class="text-xs text-slate-500 mb-2 uppercase">Contenuto Cestino Attuale:</p>
+                        <div class="flex flex-col gap-2" id="l4-trash-contents">
+                            <!-- JS Inject -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="screen-summary" class="screen flex-col w-full h-full items-center justify-start">
+                <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(16,185,129,0.4)]">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2">Missione Compiuta</h2>
+                <p class="text-slate-400 mb-6">Ottimo lavoro, operatore <span id="summary-name" class="font-bold text-sky-400"></span>.</p>
+                
+                <div class="w-full max-w-2xl bg-slate-900 rounded-xl border border-slate-700 p-6 mb-6 shadow-inner">
+                    <h4 class="text-sm text-slate-500 uppercase font-bold mb-4 border-b border-slate-700 pb-2">Log delle Operazioni (da consegnare)</h4>
+                    <pre id="result-text" class="text-xs md:text-sm text-emerald-400 mono whitespace-pre-wrap overflow-auto h-40 custom-scrollbar"></pre>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 w-full max-w-2xl">
+                    <button onclick="copyResults()" id="btn-copy" class="flex-1 py-4 bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white font-bold rounded-lg transition-all flex justify-center items-center gap-2">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                        COPIA TESTO PER CLASSROOM
+                    </button>
+                    <button onclick="location.reload()" class="py-4 px-6 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold rounded-lg border border-slate-700 transition-all">
+                        Ricomincia
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Stato Globale
+        const state = {
+            name: '',
+            startTime: 0,
+            times: { l1: 0, l2: 0, l3: 0, l4: 0 },
+            draggedItem: null
+        };
+
+        // Utility: Cambia schermata
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            setTimeout(() => {
+                document.getElementById(id).classList.add('active');
+            }, 50);
+        }
+
+        // Avvio Gioco
+        function startGame() {
+            const input = document.getElementById('student-name');
+            if(input.value.trim().length < 2) {
+                document.getElementById('intro-error').classList.remove('hidden');
+                return;
+            }
+            state.name = input.value.trim();
+            document.getElementById('summary-name').innerText = state.name;
+            
+            initLevel1();
+        }
+
+        const l1Files = [
+            { id: 'f1', name: 'Documento senza titolo.docx', type: 'doc', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
+            { id: 'f2', name: 'foto festa 2025.zip', type: 'img', icon: 'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
+            { id: 'f3', name: 'video festa.mp4', type: 'media', icon: 'M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z' },
+            { id: 'f4', name: 'registro_vendite_2025.txt', type: 'admin', icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
+            { id: 'f5', name: 'logo nuovo DEFINITIVO.png', type: 'img', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' }
+        ];
+        let l1Remaining = l1Files.length;
+
+        function initLevel1() {
+            showScreen('screen-l1');
+            state.startTime = Date.now();
+            const source = document.getElementById('l1-source');
+            source.innerHTML = '';
+            
+            l1Files.forEach(f => {
+                const el = document.createElement('div');
+                el.className = 'file-item bg-slate-800 p-3 rounded border border-slate-600 flex items-center gap-3 text-sm';
+                el.draggable = true;
+                el.dataset.type = f.type;
+                el.innerHTML = `<svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${f.icon}"></path></svg> <span>${f.name}</span>`;
+                
+                setupDragEvents(el, handleL1Drop);
+                source.appendChild(el);
+            });
+
+            document.querySelectorAll('#screen-l1 .folder-zone').forEach(zone => {
+                zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+                zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+                zone.addEventListener('drop', handleL1Drop);
+            });
+        }
+
+        function setupDragEvents(el) {
+            el.addEventListener('dragstart', function(e) {
+                state.draggedItem = this;
+                setTimeout(() => this.classList.add('opacity-50'), 0);
+            });
+            el.addEventListener('dragend', function() {
+                this.classList.remove('opacity-50');
+                state.draggedItem = null;
+            });
+
+            // Touch support for Mobile
+            el.addEventListener('touchstart', function(e) {
+                state.draggedItem = this;
+                this.classList.add('dragging');
+            }, {passive: true});
+            
+            el.addEventListener('touchmove', function(e) {
+                if(!state.draggedItem) return;
+                e.preventDefault(); // Prevent scroll
+                const touchLocation = e.targetTouches[0];
+                this.style.left = touchLocation.pageX - 50 + 'px';
+                this.style.top = touchLocation.pageY - 20 + 'px';
+            }, {passive: false});
+
+            el.addEventListener('touchend', function(e) {
+                this.classList.remove('dragging');
+                this.style.left = 'auto';
+                this.style.top = 'auto';
+                
+                const touch = e.changedTouches[0];
+                this.style.display = 'none'; // hide to get element below
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                this.style.display = 'flex';
+
+                if(target) {
+                    const zone = target.closest('.folder-zone, .trash-zone');
+                    if(zone) {
+                        // Simulate drop event
+                        const event = new Event('drop');
+                        event.targetZone = zone;
+                        zone.dispatchEvent(event);
+                    }
+                }
+                state.draggedItem = null;
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 left-1/2 transform -translate-x-1/2 bg-rose-600 text-white px-6 py-3 rounded-xl shadow-2xl z-50 animate-bounce font-bold';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => toast.remove(), 500);
+            }, 2500);
+        }
+
+        function handleL1Drop(e) {
+            e.preventDefault();
+            const zone = e.targetZone || this;
+            zone.classList.remove('dragover');
+            
+            const item = state.draggedItem;
+            if (!item) return;
+            
+            // Check if dropped in correct zone
+            if(zone.dataset.type === item.dataset.type) {
+                zone.appendChild(item);
+                item.draggable = false;
+                item.classList.remove('file-item');
+                item.classList.add('bg-emerald-900/40', 'border-emerald-700', 'text-slate-300');
+                
+                l1Remaining--;
+                document.getElementById('l1-count').innerText = l1Remaining;
+                
+                if(l1Remaining === 0) {
+                    state.times.l1 = Math.floor((Date.now() - state.startTime) / 1000);
+                    setTimeout(initLevel2, 1000);
+                }
+            } else {
+                // Wrong zone visual feedback
+                item.classList.add('border-rose-500', 'error-shake');
+                showToast("Estensione errata per questa cartella!");
+                setTimeout(() => { item.classList.remove('border-rose-500', 'error-shake'); }, 500);
+            }
+        }
+
+        const l2Files = [
+            { name: '~$cumento senza titolo.docx', bad: true, reason: 'File temporaneo' },
+            { name: 'Copia di logo nuovo.png', bad: true, reason: 'Duplicato inutile' },
+            { name: 'appunti_vuoti.txt (0 byte)', bad: true, reason: 'File vuoto' },
+            { name: 'cartella_roba_vecchia', bad: true, reason: 'Materiale vecchio' },
+            { name: 'scan0002.pdf (2 MB)', bad: false },
+            { name: 'icona_bici.svg (15 KB)', bad: false }
+        ];
+        let l2Targets = 4;
+
+        function initLevel2() {
+            showScreen('screen-l2');
+            state.startTime = Date.now();
+            const source = document.getElementById('l2-source');
+            source.innerHTML = '';
+            
+            l2Files.sort(() => Math.random() - 0.5).forEach(f => {
+                const el = document.createElement('div');
+                el.className = 'file-item bg-slate-800 p-3 rounded border border-slate-600 text-sm break-words';
+                el.draggable = true;
+                el.dataset.bad = f.bad;
+                el.innerText = f.name;
+                setupDragEvents(el);
+                source.appendChild(el);
+            });
+
+            const trash = document.querySelector('#screen-l2 .trash-zone');
+            trash.addEventListener('dragover', e => { e.preventDefault(); trash.classList.add('dragover'); });
+            trash.addEventListener('dragleave', () => trash.classList.remove('dragover'));
+            trash.addEventListener('drop', handleL2Drop);
+        }
+
+        function handleL2Drop(e) {
+            e.preventDefault();
+            const zone = e.targetZone || this;
+            zone.classList.remove('dragover');
+            
+            const item = state.draggedItem;
+            if (!item) return;
+            
+            if(item.dataset.bad === "true") {
+                item.classList.add('thrown');
+                setTimeout(() => item.remove(), 500);
+                l2Targets--;
+                document.getElementById('l2-count').innerText = l2Targets;
+                
+                if(l2Targets === 0) {
+                    state.times.l2 = Math.floor((Date.now() - state.startTime) / 1000);
+                    setTimeout(initLevel3, 1000);
+                }
+            } else {
+                item.classList.add('border-rose-500', 'error-shake');
+                showToast("Attenzione! Questo file serve, non eliminarlo!");
+                setTimeout(() => item.classList.remove('border-rose-500', 'error-shake'), 500);
+            }
+        }
+
+        const l3Tasks = [
+            { old: 'Listino Prezzi 2026.txt', expected: 'listino_prezzi_2026.txt' },
+            { old: 'logo nuovo DEFINITIVO.png', expected: ['logo_nuovo_v1.png', 'logo_nuovo_v2.png'] },
+            { old: "foto Nicolò D'Angelo.jpg", expected: 'foto_nicolo_dangelo.jpg' }
+        ];
+
+        function initLevel3() {
+            showScreen('screen-l3');
+            state.startTime = Date.now();
+            const form = document.getElementById('l3-form');
+            form.innerHTML = '';
+
+            l3Tasks.forEach((t, i) => {
+                const box = document.createElement('div');
+                box.className = 'bg-slate-800 p-4 rounded-xl border border-slate-600 flex flex-col md:flex-row items-center gap-4';
+                box.innerHTML = `
+                    <div class="w-full md:w-1/2 text-rose-300 font-mono text-sm break-all">${t.old}</div>
+                    <div class="w-full md:w-1/2 flex gap-2">
+                        <input type="text" id="rename-${i}" class="w-full px-3 py-2 bg-slate-900 border border-slate-600 rounded text-white font-mono text-sm focus:border-emerald-500 outline-none" autocomplete="off">
+                        <button onclick="checkRename(${i})" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-bold">OK</button>
+                    </div>
+                `;
+                form.appendChild(box);
+            });
+        }
+
+        function checkRename(index) {
+            const input = document.getElementById(`rename-${index}`);
+            const val = input.value.trim();
+            const task = l3Tasks[index];
+            
+            let isCorrect = false;
+            if(Array.isArray(task.expected)) {
+                isCorrect = task.expected.includes(val);
+            } else {
+                isCorrect = val === task.expected;
+            }
+
+            if(isCorrect) {
+                input.disabled = true;
+                input.classList.remove('bg-slate-900', 'border-slate-600');
+                input.classList.add('bg-emerald-900/50', 'border-emerald-500', 'text-emerald-400');
+                input.nextElementSibling.style.display = 'none';
+                
+                checkL3Complete();
+            } else {
+                input.classList.remove('error-shake');
+                void input.offsetWidth; // trigger reflow
+                input.classList.add('error-shake');
+            }
+        }
+
+        function checkL3Complete() {
+            const remaining = document.querySelectorAll('#l3-form input:not(:disabled)').length;
+            document.getElementById('l3-count').innerText = remaining;
+            
+            if(remaining === 0) {
+                state.times.l3 = Math.floor((Date.now() - state.startTime) / 1000);
+                setTimeout(initLevel4, 1500);
+            }
+        }
+
+        function initLevel4() {
+            showScreen('screen-l4');
+            state.startTime = Date.now();
+            
+            const container = document.getElementById('l4-trash-contents');
+            container.innerHTML = '';
+            
+            // Creiamo i file finti nel cestino
+            const trashItems = [
+                { name: '~$cumento.docx', isTarget: false },
+                { name: 'preventivo_tipografia_lampo_2026.pdf', isTarget: true },
+                { name: 'Copia di logo.png', isTarget: false }
+            ];
+
+            trashItems.forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'flex justify-between items-center p-3 bg-slate-800 rounded border border-slate-700';
+                el.innerHTML = `
+                    <span class="text-sm font-mono text-slate-300 truncate pr-2">${item.name}</span>
+                    <button onclick="recoverFile(this, ${item.isTarget})" class="px-3 py-1 bg-slate-700 hover:bg-emerald-600 text-xs font-bold rounded transition-colors whitespace-nowrap">Ripristina</button>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function recoverFile(btn, isTarget) {
+            if(isTarget) {
+                btn.parentElement.classList.add('bg-emerald-900/50', 'border-emerald-500');
+                btn.innerText = 'Recuperato!';
+                btn.classList.replace('bg-slate-700', 'bg-emerald-600');
+                
+                state.times.l4 = Math.floor((Date.now() - state.startTime) / 1000);
+                setTimeout(generateSummary, 1500);
+            } else {
+                btn.classList.add('bg-rose-600');
+                btn.innerText = 'File Errato';
+                setTimeout(() => {
+                    btn.classList.remove('bg-rose-600');
+                    btn.innerText = 'Ripristina';
+                }, 1000);
+            }
+        }
+
+        function generateSummary() {
+            showScreen('screen-summary');
+            
+            const totalTime = state.times.l1 + state.times.l2 + state.times.l3 + state.times.l4;
+            
+            const report = `=======================================
+REPORT MISSIONE 0: OFFICINA 23
+=======================================
+Operatore: ${state.name}
+Data: ${new Date().toLocaleDateString('it-IT')}
+
+ATTIVITÀ COMPLETATE:
+[X] 1. Smistamento File in cartelle: Completato in ${state.times.l1} sec.
+[X] 2. Pulizia: Eliminati 4 file/cartelle inutili in ${state.times.l2} sec.
+[X] 3. Rinomina: Applicata regola dei nomi a 3 file in ${state.times.l3} sec.
+[X] 4. Emergenza: Recuperato preventivo dal cestino in ${state.times.l4} sec.
+
+TEMPO TOTALE IMPIEGATO: ${totalTime} sec.
+Archivio ZIP 'officina23_archivio_${state.name.split(' ').pop().toLowerCase()}.zip' simulato e pronto.
+=======================================`;
+
+            document.getElementById('result-text').innerText = report;
+        }
+
+        function copyResults() {
+            const text = document.getElementById('result-text').innerText;
+            const btn = document.getElementById('btn-copy');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopiedState(btn);
+                });
+            } else {
+                // Fallback
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopiedState(btn);
+                } catch (err) {
+                    console.error('Fallback Copy Error', err);
+                }
+                textArea.remove();
+            }
+        }
+
+        function showCopiedState(btn) {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> COPIATO!`;
+            btn.classList.replace('bg-slate-700', 'bg-emerald-600');
+            btn.classList.replace('border-slate-500', 'border-emerald-500');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-600', 'bg-slate-700');
+                btn.classList.replace('border-emerald-500', 'border-slate-500');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
