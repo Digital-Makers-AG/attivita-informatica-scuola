@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missione 0: Officina 23 - Sistema il Documento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 600: '#0B6E75', 700: '#085055', 100: '#E3F2F2' },
+                        orange: { 500: '#D9661A', 100: '#FDEBDC' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Merriweather', 'serif'], // Font per il documento
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f7f5f0; color: #1d2329; overflow-x: hidden; }
+        
+        .screen { display: none; opacity: 0; transition: opacity 0.5s ease-in-out; }
+        .screen.active { display: flex; opacity: 1; }
+
+        /* Stili per il Mock Documento */
+        .mock-doc {
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            min-height: 600px;
+            font-family: 'Merriweather', serif;
+            transition: all 0.3s ease;
+        }
+
+        .doc-title { font-size: 2rem; font-weight: 800; color: #0B6E75; margin-bottom: 1rem; border-bottom: 2px solid #0B6E75; padding-bottom: 0.5rem; }
+        .doc-h1 { font-size: 1.5rem; font-weight: 700; color: #1d2329; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .doc-p { font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; color: #4a5568; }
+        .doc-list { list-style-type: disc; padding-left: 2rem; margin-bottom: 1rem; color: #4a5568; line-height: 1.6;}
+        
+        /* Error highlighting */
+        .error-block { border: 2px dashed #f43f5e; padding: 0.5rem; border-radius: 0.5rem; position: relative; transition: all 0.3s; }
+        .error-block::before {
+            content: '!'; position: absolute; top: -10px; right: -10px; background: #f43f5e; color: white;
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: sans-serif;
+        }
+        .fixed-block { border: 2px solid #10b981; padding: 0.5rem; border-radius: 0.5rem; background-color: #ecfdf5; transition: all 0.3s; }
+        
+        /* Immagini distorte */
+        .squished-logo { transform: scaleY(0.4); transform-origin: top; cursor: pointer; transition: transform 0.4s ease; border: 2px dashed #f43f5e;}
+        .fixed-logo { transform: scaleY(1); border: 2px solid transparent;}
+
+        /* Custom Input Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        .error-shake { animation: shake 0.4s 1 linear; border-color: #f43f5e !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+
+    <header class="bg-teal-600 text-white p-4 shadow-md flex justify-between items-center z-10 relative">
+        <div>
+            <h1 class="text-xl md:text-2xl font-bold flex items-center gap-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Officina 23
+            </h1>
+            <p class="text-teal-100 text-sm">Missione 0 · Lezione 2: Sistema il Documento</p>
+        </div>
+        <div id="header-progress" class="hidden md:flex gap-2">
+            <span class="w-3 h-3 rounded-full bg-slate-300" id="dot-1"></span>
+            <span class="w-3 h-3 rounded-full bg-slate-300" id="dot-2"></span>
+            <span class="w-3 h-3 rounded-full bg-slate-300" id="dot-3"></span>
+            <span class="w-3 h-3 rounded-full bg-slate-300" id="dot-4"></span>
+        </div>
+    </header>
+
+    <main class="flex-grow flex justify-center p-2 sm:p-4 md:p-6 h-[calc(100vh-80px)] overflow-hidden">
+        
+        <!-- SCHERMATA INTRO -->
+        <div id="screen-intro" class="screen active flex-col items-center justify-center w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 border border-slate-200 m-auto">
+            <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mb-6 border-4 border-orange-500">
+                <span class="text-4xl">🤯</span>
+            </div>
+            <h2 class="text-3xl font-bold mb-4 text-teal-700 text-center">Il pasticcio di Marta</h2>
+            <p class="text-slate-600 mb-6 leading-relaxed text-center">
+                Marta ha scritto di corsa la scheda del nuovo servizio <b>Noleggio e-bike</b>. 
+                <br>"L'ho fatta di notte, è venuta un pasticcio. Tu che sei giovane, me la sistemi? Deve diventare un PDF da mandare ai clienti e deve sembrare fatta da un'azienda seria."
+            </p>
+            
+            <div class="w-full mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-2">Nome Operatore (Tuo Nome e Cognome):</label>
+                <input type="text" id="student-name" placeholder="Es. Mario Rossi" class="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-800 focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition">
+                <p id="intro-error" class="text-rose-500 text-sm mt-2 hidden font-medium">Inserisci il tuo nome per iniziare i lavori.</p>
+            </div>
+            
+            <button onclick="startGame()" class="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg shadow-lg transition-all transform hover:-translate-y-1">
+                APRI IL DOCUMENTO
+            </button>
+        </div>
+
+        <!-- SCHERMATE DI GIOCO (Workspace Split) -->
+        <div id="screen-workspace" class="screen w-full h-full gap-4 max-w-7xl mx-auto flex-col lg:flex-row hidden">
+            
+            <div class="w-full lg:w-1/3 bg-white rounded-xl shadow-lg border border-slate-200 flex flex-col overflow-hidden shrink-0 h-[35vh] lg:h-full">
+                <div class="bg-slate-100 border-b border-slate-200 p-3 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <h3 class="font-bold text-slate-700" id="task-title">Fase 1: Stili e Struttura</h3>
+                </div>
+                
+                <div class="p-4 flex-grow overflow-y-auto custom-scrollbar bg-orange-50/50" id="task-content">
+                    <!-- Contenuto dinamico delle task -->
+                </div>
+
+                <!-- NUOVO BLOCCO SUGGERIMENTI -->
+                <div class="p-3 bg-slate-50 border-t border-slate-200" id="hint-container">
+                    <button id="btn-hint" onclick="showHint()" class="text-sm font-semibold text-teal-700 hover:text-teal-900 flex items-center gap-1 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        Richiedi Suggerimento
+                    </button>
+                    <div id="hint-text" class="hidden text-sm text-slate-700 bg-white p-3 rounded border border-orange-200 shadow-sm mt-2 font-medium"></div>
+                </div>
+
+                <div class="p-4 border-t border-slate-200 bg-white">
+                    <button id="btn-next-phase" onclick="checkPhase()" class="w-full py-3 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg shadow transition-colors">
+                        VERIFICA E PROCEDI
+                    </button>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-2/3 bg-slate-200 rounded-xl shadow-inner p-4 overflow-y-auto custom-scrollbar flex-1 lg:h-full flex justify-center relative">
+                
+                <!-- Nome File -->
+                <div class="absolute top-0 left-0 right-0 bg-white border-b border-slate-300 p-2 flex items-center gap-2 rounded-t-xl z-10 shadow-sm">
+                    <svg class="w-5 h-5 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2.5L17.5 9H13V4.5z"/></svg>
+                    <input type="text" id="doc-filename" value="scheda noleggio DEFINITIVA_v3 (copia).docx" class="text-sm font-medium text-slate-700 w-full bg-transparent border-b border-dashed border-slate-400 focus:border-teal-500 outline-none px-1">
+                </div>
+
+                <!-- Il Documento -->
+                <div id="the-document" class="mock-doc w-full max-w-[800px] mt-10 p-8 sm:p-12 pb-20 relative">
+                    
+                    <!-- Fase 4: Immagini (Inizialmente nascoste/da sistemare) -->
+                    <div id="media-section" class="mb-8 text-center hidden">
+                        <!-- Logo schiacciato -->
+                        <img id="doc-logo" src="https://placehold.co/400x400/0B6E75/FFFFFF?text=OFFICINA+23" alt="Logo" class="w-32 mx-auto squished-logo mb-4" title="Clicca per correggere le proporzioni">
+                    </div>
+
+                    <!-- Fase 1: Testo Flat -->
+                    <div id="doc-title-block" class="error-block mb-4">
+                        <div class="text-base text-slate-800" id="txt-title">SCHEDA SERVIZIO NOLEGGIO E-BIKE - OFFICINA 23</div>
+                        <select id="sel-title" class="mt-2 text-xs border border-slate-300 rounded p-1 w-full bg-slate-50">
+                            <option value="">-- Applica Stile --</option>
+                            <option value="p">Testo Normale</option>
+                            <option value="h1">Titolo Documento</option>
+                            <option value="h2">Intestazione 1</option>
+                        </select>
+                    </div>
+
+                    <div id="doc-h1-block" class="error-block mb-4">
+                        <div class="text-base text-slate-800 uppercase" id="txt-h1">Chi siamo</div>
+                        <select id="sel-h1" class="mt-2 text-xs border border-slate-300 rounded p-1 w-full bg-slate-50">
+                            <option value="">-- Applica Stile --</option>
+                            <option value="p">Testo Normale</option>
+                            <option value="h1">Titolo Documento</option>
+                            <option value="h2">Intestazione 1</option>
+                        </select>
+                    </div>
+
+                    <p class="doc-p">Officina 23 è una piccola bottega di Montelieto che dal 1998 vende e ripara biciclette. Da quest'anno abbiamo aggiunto un servizio che molti clienti ci chiedevano: il noleggio di biciclette elettriche (e-bike) per giri in città e sulle colline.</p>
+
+                    <div id="doc-h2-block" class="error-block mb-4">
+                        <div class="text-base text-slate-800 uppercase" id="txt-h2">IL SERVIZIO</div>
+                        <select id="sel-h2" class="mt-2 text-xs border border-slate-300 rounded p-1 w-full bg-slate-50">
+                            <option value="">-- Applica Stile --</option>
+                            <option value="p">Testo Normale</option>
+                            <option value="h1">Titolo Documento</option>
+                            <option value="h2">Intestazione 1</option>
+                        </select>
+                    </div>
+
+                    <!-- Fase 2: Coerenza (Spazi doppi e invii a caso interattivi) -->
+                    <p class="doc-p" id="doc-messy-p">
+                        Puoi noleggiare una e-bike per mezza giornata,<span class="clickable-err cursor-pointer bg-rose-200 text-rose-800 px-1 rounded font-mono mx-1 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixErr(this, ' ')" title="Clicca per rimuovere gli spazi doppi">__</span>per una giornata intera o per tutto il weekend.<span class="clickable-err cursor-pointer bg-rose-200 text-rose-800 px-1 rounded font-mono mx-1 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixErr(this, ' ')" title="Clicca per rimuovere l'a capo errato">↵</span>Ogni bici viene controllata<span class="clickable-err cursor-pointer bg-rose-200 text-rose-800 px-1 rounded font-mono mx-1 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixErr(this, ' ')" title="Clicca per rimuovere gli spazi doppi">__</span>dal nostro meccanico prima della consegna.
+                    </p>
+
+                    <!-- Fase 2: Elenco Interattivo -->
+                    <h2 class="doc-h1">Cosa comprende il noleggio</h2>
+                    <div id="doc-list-block" class="error-block mb-4">
+                        <ul id="messy-list-ul" class="list-none pl-0 space-y-2 text-slate-600">
+                            <li><span class="clickable-bullet cursor-pointer bg-rose-200 px-2 py-0.5 rounded text-rose-800 font-mono mr-2 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixBullet(this)" title="Clicca per convertire in punto elenco vero">-</span>casco</li>
+                            <li><span class="clickable-bullet cursor-pointer bg-rose-200 px-2 py-0.5 rounded text-rose-800 font-mono mr-2 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixBullet(this)" title="Clicca per convertire in punto elenco vero">*</span>mappa dei percorsi in bici</li>
+                            <li><span class="clickable-bullet cursor-pointer bg-rose-200 px-2 py-0.5 rounded text-rose-800 font-mono mr-2 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixBullet(this)" title="Clicca per convertire in punto elenco vero">1)</span>kit luci anteriore e posteriore</li>
+                            <li id="indent-li" class="ml-8"><span class="clickable-bullet cursor-pointer bg-rose-200 px-2 py-0.5 rounded text-rose-800 font-mono mr-2 shadow-sm border border-rose-300 hover:bg-rose-300 transition-colors" onclick="fixIndentBullet(this)" title="Clicca per rimuovere il rientro e convertire">-</span>borraccia Officina 23</li>
+                        </ul>
+                    </div>
+
+                    <!-- Fase 3: Tabella -->
+                    <div id="table-section" class="hidden mb-8">
+                        <h2 class="doc-h1">Tariffe</h2>
+                        <table class="w-full text-left border-collapse border border-slate-300">
+                            <thead>
+                                <tr class="bg-teal-100">
+                                    <th class="border border-slate-300 p-2 font-bold text-teal-800">Tipo di bici</th>
+                                    <th class="border border-slate-300 p-2 font-bold text-teal-800">Mezza giornata</th>
+                                    <th class="border border-slate-300 p-2 font-bold text-teal-800">Giornata intera</th>
+                                    <th class="border border-slate-300 p-2 font-bold text-teal-800">Weekend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <tr>
+                                    <td class="border border-slate-300 p-2">City bike</td>
+                                    <td class="border border-slate-300 p-2">8 €</td>
+                                    <td class="border border-slate-300 p-2">12 €</td>
+                                    <td class="border border-slate-300 p-2"><input type="text" id="t-city-we" class="w-16 p-1 border border-slate-300 rounded text-sm text-center" placeholder="???"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">E-bike</td>
+                                    <td class="border border-slate-300 p-2"><input type="text" id="t-ebike-mezza" class="w-16 p-1 border border-slate-300 rounded text-sm text-center" placeholder="???"></td>
+                                    <td class="border border-slate-300 p-2">30 €</td>
+                                    <td class="border border-slate-300 p-2"><input type="text" id="t-ebike-we" class="w-16 p-1 border border-slate-300 rounded text-sm text-center" placeholder="???"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">Bici bimbo</td>
+                                    <td class="border border-slate-300 p-2">5 €</td>
+                                    <td class="border border-slate-300 p-2"><input type="text" id="t-bimbo-intera" class="w-16 p-1 border border-slate-300 rounded text-sm text-center" placeholder="???"></td>
+                                    <td class="border border-slate-300 p-2">14 €</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button onclick="addRow()" id="btn-add-row" class="mt-3 text-sm bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 shadow">Inerisci riga "Seggiolino bimbo"</button>
+                    </div>
+
+                    <!-- Fase 4: Foto e Link -->
+                    <div id="link-section" class="hidden mb-8">
+                        <div id="photo-box" class="w-full h-48 bg-yellow-100 border-2 border-dashed border-yellow-400 flex items-center justify-center mb-6 transition-all duration-300" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" ondrop="dropPhoto(event)">
+                            <span class="font-bold text-yellow-800 pointer-events-none text-center px-4">[QUI VA LA FOTO DELL'E-BIKE<br><span class="text-sm font-normal">Trascina e rilascia qui il file dell'immagine</span>]</span>
+                        </div>
+
+                        <h2 class="doc-h1">Regole per circolare</h2>
+                        <p class="doc-p">Prima di partire leggi le regole sul sito del <span id="link-1-text" class="text-blue-600 underline cursor-pointer" onclick="editLink(1)">Ministero delle Infrastrutture</span>.</p>
+                        <p class="doc-p">Aggiungi anche il link alla <span id="link-2-text" class="text-blue-600 underline cursor-pointer" onclick="editLink(2)">Settimana europea della mobilità</span>.</p>
+                        
+                        <div id="link-editor" class="hidden bg-slate-800 p-3 rounded-lg shadow-lg absolute mt-2 z-20 w-64">
+                            <input type="text" id="link-input" class="w-full p-2 rounded text-sm mb-2" placeholder="Incolla URL qui...">
+                            <button onclick="saveLink()" class="w-full bg-teal-500 text-white rounded p-1 text-sm font-bold hover:bg-teal-400">Applica Link</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-summary" class="screen flex-col w-full h-full items-center justify-center max-w-3xl mx-auto hidden">
+            <div class="w-24 h-24 bg-teal-500 rounded-full flex items-center justify-center mb-6 shadow-xl">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="text-3xl font-bold text-teal-800 mb-2 text-center">Lavoro Completato!</h2>
+            <p class="text-slate-600 mb-8 text-center text-lg">Ottimo lavoro, <span id="summary-name" class="font-bold text-orange-600"></span>. Il documento ora è pronto per essere esportato in PDF.</p>
+            
+            <div class="w-full bg-white rounded-xl border border-slate-200 p-6 mb-6 shadow-sm">
+                <h4 class="text-sm text-slate-500 uppercase font-bold mb-4 border-b border-slate-100 pb-2">Codice di Consegna (copia su Classroom)</h4>
+                <pre id="result-text" class="text-sm text-slate-700 bg-slate-50 p-4 rounded-lg font-mono whitespace-pre-wrap border border-slate-200"></pre>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 w-full">
+                <button onclick="copyResults()" id="btn-copy" class="flex-1 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg shadow transition-all flex justify-center items-center gap-2">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                    COPIA TESTO
+                </button>
+                <button onclick="location.reload()" class="py-4 px-6 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg transition-all">
+                    Ricomincia
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Stato Globale
+        const state = {
+            name: '',
+            phase: 1,
+            startTime: 0,
+            times: { p1: 0, p2: 0, p3: 0, p4: 0 },
+            hintsUsed: { p1: false, p2: false, p3: false, p4: false },
+            links: { 1: '', 2: '' },
+            activeLinkEdit: null
+        };
+
+        const notes = {
+            1: `<b>Caccia agli Errori: Stili e Struttura</b><br><br>
+                Marta non ha usato gli stili! Il testo è tutto piatto.<br>
+                1. Rinomina il file in alto usando la regola: <code>officina23_scheda_noleggio_ebike</code><br>
+                2. Usa i menu a tendina nel documento per assegnare:<br>
+                - <b>Titolo Documento</b> al titolo principale.<br>
+                - <b>Intestazione 1</b> ai titoli di sezione ("Chi siamo", "IL SERVIZIO").`,
+            2: `<b>Coerenza e Pulizia</b><br><br>
+                1. Marta ha scritto l'elenco a mano usando trattini, asterischi e numeri. <b>Clicca sui simboli rossi</b> nell'elenco per trasformarli in un vero Elenco Puntato.<br>
+                2. Ci sono doppi spazi e ritorni a capo sbagliati nel paragrafo "Il Servizio". <b>Clicca sui blocchi rossi</b> nel testo per correggerli.`,
+            3: `<b>Appunti di Marta: Prezzi mancanti</b><br><br>
+                - City bike, weekend: 20 €<br>
+                - E-bike, mezza giornata: 18 €<br>
+                - E-bike, weekend: 50 €<br>
+                - Bici bimbo, giornata intera: 8 €<br>
+                - Lucchetto, weekend: 4 €<br><br>
+                <i>Inserisci i prezzi nelle caselle col '???'. Inserisci il solo numero (il simbolo € lo aggiungiamo noi). Clicca il pulsante per aggiungere la riga Seggiolino.</i>`,
+            4: `<b>Immagini e Link</b><br><br>
+                1. Clicca sul <b>logo schiacciato</b> in cima per sistemare le proporzioni.<br>
+                2. <b>Trascina dal tuo computer</b> (Drag & Drop) il file della foto nel riquadro giallo.<br>
+                3. Clicca sulle scritte blu per <b>inserire i link veri</b>:<br>
+                - Ministero: <code>www.mit.gov.it</code><br>
+                - Settimana Mobilità: <code>https://mobilityweek.eu</code>`
+        };
+
+        const hints = {
+            1: "Rinomina il file in alto esattamente in 'officina23_scheda_noleggio_ebike'. Per gli stili usa le tendine nel documento: il primo testo va in 'Titolo Documento', gli altri due in 'Intestazione 1'.",
+            2: "Clicca sui simboli rossi (-, *, 1)) per trasformarli in punti elenco. Nel testo sotto 'IL SERVIZIO' clicca sui simboli rossi (__) e (↵) per togliere spazi e ritorni a capo errati.",
+            3: "City bike weekend = 20. E-bike mezza = 18. E-bike weekend = 50. Bici bimbo intera = 8. Inserisci i numeri e poi clicca il bottone 'Inerisci riga'.",
+            4: "Clicca sul logo in alto per allargarlo. Trascina la foto dal tuo PC (drag&drop) nel riquadro giallo. Clicca sui testi blu e incolla i link esatti che vedi negli appunti."
+        };
+
+        function showHint() {
+            state.hintsUsed[`p${state.phase}`] = true;
+            document.getElementById('hint-text').innerText = hints[state.phase];
+            document.getElementById('hint-text').classList.remove('hidden');
+            document.getElementById('btn-hint').classList.add('hidden');
+        }
+
+        // Utility: Toast
+        function showToast(msg, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-xl shadow-2xl z-50 font-bold transition-opacity duration-500 ${isError ? 'bg-rose-600' : 'bg-teal-600'}`;
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        // Avvio
+        function startGame() {
+            const input = document.getElementById('student-name');
+            if(input.value.trim().length < 2) {
+                document.getElementById('intro-error').classList.remove('hidden');
+                return;
+            }
+            state.name = input.value.trim();
+            document.getElementById('summary-name').innerText = state.name;
+            
+            document.getElementById('screen-intro').classList.remove('active');
+            document.getElementById('screen-intro').classList.add('hidden');
+            
+            const ws = document.getElementById('screen-workspace');
+            ws.classList.remove('hidden');
+            setTimeout(() => ws.classList.add('active'), 50);
+
+            loadPhase(1);
+        }
+
+        // Gestione Fasi
+        function loadPhase(phase) {
+            state.phase = phase;
+            state.startTime = Date.now();
+            
+            // Aggiorna UI Headers
+            document.getElementById('task-title').innerText = `Fase ${phase} di 4`;
+            document.getElementById('task-content').innerHTML = notes[phase];
+            
+            // Aggiorna Pallini progress
+            for(let i=1; i<=4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if(i < phase) dot.className = "w-3 h-3 rounded-full bg-teal-500";
+                else if(i === phase) dot.className = "w-3 h-3 rounded-full bg-orange-500 animate-pulse";
+                else dot.className = "w-3 h-3 rounded-full bg-slate-300";
+            }
+
+            // Mostra/Nascondi elementi documento in base alla fase
+            document.getElementById('hint-text').classList.add('hidden');
+            document.getElementById('btn-hint').classList.remove('hidden');
+
+            if(phase === 2) {
+                document.getElementById('doc-messy-p').classList.add('error-block');
+            }
+            if(phase === 3) {
+                document.getElementById('table-section').classList.remove('hidden');
+            }
+            if(phase === 4) {
+                document.getElementById('media-section').classList.remove('hidden');
+                document.getElementById('link-section').classList.remove('hidden');
+                document.getElementById('btn-next-phase').innerText = "ESPORTA IN PDF E CONCLUDI";
+            }
+        }
+
+        function checkPhase() {
+            let passed = false;
+
+            if(state.phase === 1) {
+                const title = document.getElementById('sel-title').value;
+                const h1 = document.getElementById('sel-h1').value;
+                const h2 = document.getElementById('sel-h2').value;
+                const filename = document.getElementById('doc-filename').value.trim();
+
+                if(filename !== 'officina23_scheda_noleggio_ebike' && filename !== 'officina23_scheda_noleggio_ebike.docx') {
+                    showToast("Attenzione: Rinomina correttamente il file in alto!", true);
+                    document.getElementById('doc-filename').classList.add('error-shake');
+                    setTimeout(()=> document.getElementById('doc-filename').classList.remove('error-shake'), 400);
+                    return;
+                }
+
+                if(title === 'h1' && h1 === 'h2' && h2 === 'h2') {
+                    passed = true;
+                    // Fix visual
+                    document.getElementById('txt-title').className = 'doc-title';
+                    document.getElementById('txt-h1').className = 'doc-h1';
+                    document.getElementById('txt-h1').classList.remove('uppercase');
+                    document.getElementById('txt-h2').className = 'doc-h1';
+                    document.getElementById('txt-h2').classList.remove('uppercase');
+                    document.querySelectorAll('.error-block').forEach(b => {
+                        if(b.id.includes('block') && !b.id.includes('list')) {
+                            b.classList.remove('error-block');
+                            b.classList.add('fixed-block');
+                            b.querySelector('select').remove();
+                        }
+                    });
+                } else {
+                    showToast("Hai assegnato gli stili sbagliati. Controlla bene le note!", true);
+                }
+            }
+            else if(state.phase === 2) {
+                const isListFixed = !document.getElementById('doc-list-block').classList.contains('error-block');
+                const isTextFixed = !document.getElementById('doc-messy-p').classList.contains('error-block');
+                
+                if(isListFixed && isTextFixed) { passed = true; }
+                else { showToast("Devi correggere tutti gli errori nel testo e nell'elenco cliccandoci sopra.", true); }
+            }
+            else if(state.phase === 3) {
+                // Rimuove eventuali simboli euro o spazi lasciando solo i numeri
+                const cleanNum = (str) => str ? str.replace(/[^0-9]/g, '') : '';
+                
+                const cWe = cleanNum(document.getElementById('t-city-we')?.value);
+                const eMe = cleanNum(document.getElementById('t-ebike-mezza')?.value);
+                const eWe = cleanNum(document.getElementById('t-ebike-we')?.value);
+                const bIn = cleanNum(document.getElementById('t-bimbo-intera')?.value);
+                
+                const hasNewRow = document.getElementById('row-seggiolino') !== null;
+
+                if(cWe === '20' && eMe === '18' && eWe === '50' && bIn === '8' && hasNewRow) {
+                    passed = true;
+                    document.querySelectorAll('input[type="text"]').forEach(i => {
+                        if(i.id.startsWith('t-')) { i.disabled = true; i.classList.add('bg-teal-50', 'border-teal-500'); }
+                    });
+                } else {
+                    showToast("I prezzi non sono corretti o manca la nuova riga. Ricontrolla i valori!", true);
+                }
+            }
+            else if(state.phase === 4) {
+                const isLogoFixed = document.getElementById('doc-logo').classList.contains('fixed-logo');
+                const photoEl = document.getElementById('photo-box');
+                const isPhotoInserted = photoEl && photoEl.tagName === 'IMG';
+                
+                // Validazione ultra-tollerante: basta che ci sia scritto qualcosa di minimo 3 caratteri (es. a.it)
+                const link1 = state.links[1] && state.links[1].trim().length > 2;
+                const link2 = state.links[2] && state.links[2].trim().length > 2;
+
+                // Controlli divisi per far capire esattamente all'utente dove sta sbagliando
+                if (!isLogoFixed) {
+                    showToast("Attenzione: devi sistemare il logo schiacciato in alto (cliccaci sopra)!", true);
+                } else if (!isPhotoInserted) {
+                    showToast("Attenzione: devi trascinare una foto nel riquadro giallo!", true);
+                } else if (!link1 || !link2) {
+                    showToast("Attenzione: devi applicare due link validi alle scritte blu!", true);
+                } else {
+                    passed = true;
+                }
+            }
+
+            if (passed) {
+                state.times[`p${state.phase}`] = Math.round((Date.now() - state.startTime) / 1000);
+                if (state.phase === 4) {
+                    showSummary();
+                } else {
+                    showToast(`Fase ${state.phase} completata!`);
+                    loadPhase(state.phase + 1);
+                }
+            }
+        }
+
+        // Azioni Fase 2: Interattività Point & Click
+        function fixErr(el, replacement) {
+            if (state.phase < 2) {
+                showToast("Ottimo occhio! Ma per ora concentrati sugli stili (Fase 1).", true);
+                return;
+            }
+            const textNode = document.createTextNode(replacement);
+            el.parentNode.replaceChild(textNode, el);
+            checkFase2Text();
+        }
+
+        function fixBullet(el) {
+            if (state.phase < 2) {
+                showToast("Ottimo occhio! Ma per ora concentrati sugli stili (Fase 1).", true);
+                return;
+            }
+            const li = el.parentNode;
+            const span = document.createElement('span');
+            span.className = "mr-2 text-slate-800 text-lg leading-none";
+            span.innerHTML = "&bull;";
+            li.insertBefore(span, el);
+            el.remove();
+            checkFase2List();
+        }
+
+        function fixIndentBullet(el) {
+            if (state.phase < 2) {
+                showToast("Ottimo occhio! Ma per ora concentrati sugli stili (Fase 1).", true);
+                return;
+            }
+            const li = el.parentNode;
+            li.classList.remove('ml-8');
+            fixBullet(el);
+        }
+
+        function checkFase2Text() {
+            const p = document.getElementById('doc-messy-p');
+            if (p.querySelectorAll('.clickable-err').length === 0) {
+                p.classList.replace('error-block', 'fixed-block');
+            }
+        }
+
+        function checkFase2List() {
+            const listBlock = document.getElementById('doc-list-block');
+            if (listBlock.querySelectorAll('.clickable-bullet').length === 0) {
+                listBlock.classList.replace('error-block', 'fixed-block');
+            }
+        }
+
+        // Azioni Fase 3
+        function addRow() {
+            if(document.getElementById('row-seggiolino')) return;
+            const tbody = document.getElementById('table-body');
+            const tr = document.createElement('tr');
+            tr.id = 'row-seggiolino';
+            tr.innerHTML = `
+                <td class="border border-slate-300 p-2 font-semibold text-teal-700">Seggiolino bimbo</td>
+                <td class="border border-slate-300 p-2">3 €</td>
+                <td class="border border-slate-300 p-2">4 €</td>
+                <td class="border border-slate-300 p-2">7 €</td>
+            `;
+            tbody.appendChild(tr);
+            tr.classList.add('bg-teal-50');
+            document.getElementById('btn-add-row').classList.add('hidden');
+        }
+
+        // Azioni Fase 4
+        document.getElementById('doc-logo').addEventListener('click', function() {
+            this.classList.remove('squished-logo');
+            this.classList.add('fixed-logo');
+        });
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            document.getElementById('photo-box').classList.add('bg-yellow-300', 'border-yellow-500', 'scale-[1.02]');
+        }
+
+        function leaveDrop(ev) {
+            ev.preventDefault();
+            document.getElementById('photo-box').classList.remove('bg-yellow-300', 'border-yellow-500', 'scale-[1.02]');
+        }
+
+        function dropPhoto(ev) {
+            ev.preventDefault();
+            const box = document.getElementById('photo-box');
+            leaveDrop(ev); // Rimuove gli stili di hover
+
+            if (ev.dataTransfer.files && ev.dataTransfer.files.length > 0) {
+                const file = ev.dataTransfer.files[0];
+                
+                // Controlla che sia un'immagine
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result; // Usa l'immagine vera trascinata dall'utente!
+                        img.className = "w-full rounded shadow-md mb-6 border-2 border-teal-500";
+                        img.id = "photo-box"; // Mantiene l'ID per il checkPhase()
+                        box.replaceWith(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    showToast("Attenzione: devi trascinare un file immagine!", true);
+                }
+            }
+        }
+
+        function editLink(id) {
+            state.activeLinkEdit = id;
+            const editor = document.getElementById('link-editor');
+            const span = document.getElementById(`link-${id}-text`);
+            const rect = span.getBoundingClientRect();
+            const docRect = document.getElementById('the-document').getBoundingClientRect();
+            
+            editor.style.top = (rect.bottom - docRect.top + 5) + 'px';
+            editor.style.left = (rect.left - docRect.left) + 'px';
+            editor.classList.remove('hidden');
+            document.getElementById('link-input').value = state.links[id];
+            document.getElementById('link-input').focus();
+        }
+
+        function saveLink() {
+            const val = document.getElementById('link-input').value.trim();
+            if(state.activeLinkEdit) {
+                state.links[state.activeLinkEdit] = val;
+                const span = document.getElementById(`link-${state.activeLinkEdit}-text`);
+                span.classList.add('bg-teal-100', 'px-1', 'rounded');
+            }
+            document.getElementById('link-editor').classList.add('hidden');
+            state.activeLinkEdit = null;
+        }
+
+        // Chiusura Summary
+        function showSummary() {
+            document.getElementById('screen-workspace').classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('screen-workspace').classList.add('hidden');
+                const sum = document.getElementById('screen-summary');
+                sum.classList.remove('hidden');
+                setTimeout(() => sum.classList.add('active'), 50);
+            }, 500);
+
+            const totalRaw = state.times.p1 + state.times.p2 + state.times.p3 + state.times.p4;
+            const hintsCount = (state.hintsUsed.p1 ? 1 : 0) + (state.hintsUsed.p2 ? 1 : 0) + (state.hintsUsed.p3 ? 1 : 0) + (state.hintsUsed.p4 ? 1 : 0);
+            const penalty = hintsCount * 15; // 15 secondi di penalità per ogni aiuto
+            const total = totalRaw + penalty;
+            
+            const report = `=======================================
+CODICE CONSEGNA: SISTEMA IL DOCUMENTO
+=======================================
+Operatore: ${state.name}
+Data: ${new Date().toLocaleDateString('it-IT')}
+
+[X] Fase 1 (Stili e Struttura): OK in ${state.times.p1} sec. ${state.hintsUsed.p1 ? '[Aiuto]' : ''}
+[X] Fase 2 (Coerenza e Elenchi): OK in ${state.times.p2} sec. ${state.hintsUsed.p2 ? '[Aiuto]' : ''}
+[X] Fase 3 (Tabelle e Dati): OK in ${state.times.p3} sec. ${state.hintsUsed.p3 ? '[Aiuto]' : ''}
+[X] Fase 4 (Media e Link): OK in ${state.times.p4} sec. ${state.hintsUsed.p4 ? '[Aiuto]' : ''}
+
+Suggerimenti usati: ${hintsCount} (+${penalty} sec. penalità)
+TEMPO TOTALE ESPORTAZIONE PDF: ${total} sec.
+Il documento rispetta le regole aziendali di Officina 23.
+[HASH VALIDAZIONE: O23-DOC-${Math.random().toString(36).substring(2,8).toUpperCase()}]
+=======================================`;
+
+            document.getElementById('result-text').innerText = report;
+        }
+
+        function copyResults() {
+            const text = document.getElementById('result-text').innerText;
+            const btn = document.getElementById('btn-copy');
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => { showCopiedState(btn); });
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try { document.execCommand('copy'); showCopiedState(btn); } catch (err) {}
+                textArea.remove();
+            }
+        }
+
+        function showCopiedState(btn) {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `✔ COPIATO!`;
+            btn.classList.replace('bg-teal-600', 'bg-emerald-600');
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-600', 'bg-teal-600');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
