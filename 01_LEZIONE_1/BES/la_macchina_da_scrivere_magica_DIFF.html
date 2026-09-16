@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Macchina da Scrivere Magica</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Uso del font monospazio 'JetBrains Mono' o 'Courier Prime' per simulare la macchina da scrivere con altissima leggibilità -->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        typewriter: ['"Courier Prime"', 'monospace'],
+                        sans: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4F46E5',
+                        success: '#10B981',
+                        error: '#EF4444',
+                        highlight: '#FEF08A'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F8FAFC;
+            overscroll-behavior: none; /* Previene lo scroll elastico su tablet/mobile */
+        }
+
+        /* Lettere della macchina da scrivere */
+        .letter {
+            display: inline-block;
+            transition: all 0.2s ease;
+            padding: 0 4px;
+            border-bottom: 4px solid transparent;
+        }
+
+        /* Stati delle lettere */
+        .letter.typed { color: #10B981; } /* Verde scuro/Smeraldo per le lettere fatte */
+        .letter.current { 
+            color: #1E293B; 
+            background-color: #FEF08A; /* Giallo evidenziatore */
+            border-radius: 8px;
+            border-bottom: 4px solid #F59E0B; /* Bordo inferiore per dare tridimensionalità */
+            transform: scale(1.15); /* Leggermente più grande per attirare l'attenzione */
+        }
+        .letter.upcoming { color: #CBD5E1; } /* Grigio chiaro per le lettere future */
+
+        /* Animazioni di Feedback */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); color: #10B981; }
+            100% { transform: scale(1); }
+        }
+        .animate-pop { animation: pop 0.3s ease-out; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); color: #EF4444; }
+            40%, 80% { transform: translateX(8px); color: #EF4444; }
+        }
+        .animate-shake { animation: shake 0.4s ease-in-out; }
+
+        @keyframes tada {
+            0% { transform: scale(1); }
+            10%, 20% { transform: scale(0.9) rotate(-3deg); }
+            30%, 50%, 70%, 90% { transform: scale(1.2) rotate(3deg); }
+            40%, 60%, 80% { transform: scale(1.2) rotate(-3deg); }
+            100% { transform: scale(1); }
+        }
+        .animate-tada { animation: tada 1s; }
+
+        /* Tasto della tastiera virtuale (puramente visivo per feedback) */
+        .key-hint {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 4px solid #E2E8F0;
+            border-bottom-width: 8px;
+            border-radius: 16px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #334155;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans text-slate-800">
+
+    <header class="bg-white p-4 shadow-sm flex justify-between items-center z-10">
+        <h1 class="text-2xl font-extrabold text-primary flex items-center gap-2">
+            <span class="text-3xl">⌨️</span> La Macchina Magica
+        </h1>
+        <div class="flex items-center gap-4">
+            <div id="level-indicator" class="font-bold text-slate-500 hidden uppercase tracking-wider text-sm"></div>
+            <div id="progress-container" class="flex gap-2 hidden">
+                <!-- I pallini dei progressi verranno inseriti qui -->
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">
+        
+        <!-- SCHERMATA INIZIALE -->
+        <div id="screen-intro" class="w-full max-w-xl bg-white rounded-3xl shadow-xl p-10 text-center border-4 border-indigo-50">
+            <div class="text-6xl mb-6 animate-bounce">👋</div>
+            <h2 class="text-4xl font-extrabold text-slate-800 mb-6">Ciao!</h2>
+            <p class="text-xl text-slate-600 mb-10 leading-relaxed font-medium">
+                Prepariamo le dita sulla tastiera.<br>
+                Guarda la figura e copia la parola lettera per lettera. Non c'è fretta!
+            </p>
+            <button onclick="startGame()" class="text-2xl w-full py-5 bg-primary hover:bg-indigo-700 text-white font-extrabold rounded-2xl shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                INIZIA A GIOCARE ▶
+            </button>
+        </div>
+
+        <!-- SCHERMATA DI GIOCO -->
+        <div id="screen-game" class="w-full max-w-4xl flex flex-col items-center hidden">
+            
+            <!-- Immagine/Emoji di riferimento grande -->
+            <div id="word-emoji" class="text-[120px] leading-none mb-4 drop-shadow-lg transition-transform duration-500">
+                <!-- Emoji inserita da JS -->
+            </div>
+
+            <!-- Area della parola -->
+            <div class="bg-white p-8 sm:p-12 rounded-3xl shadow-2xl border-4 border-slate-100 w-full text-center mb-12">
+                <div id="word-display" class="font-typewriter text-6xl sm:text-7xl md:text-8xl font-bold tracking-widest uppercase">
+                    <!-- Lettere generate da JS -->
+                </div>
+            </div>
+
+            <!-- Suggerimento Tasto da Premere -->
+            <div class="text-center opacity-80 transition-opacity duration-300" id="hint-area">
+                <p class="text-slate-500 font-bold uppercase tracking-wider mb-3 text-lg">Trova questo tasto:</p>
+                <div id="key-hint" class="key-hint font-typewriter uppercase">
+                    A
+                </div>
+            </div>
+
+            <!-- Pulsante Salta -->
+            <button onclick="skipWord()" class="mt-8 text-lg font-bold text-white bg-amber-500 hover:bg-amber-600 py-3 px-8 rounded-2xl shadow-lg transition-transform transform hover:scale-105 active:scale-95 flex items-center gap-2">
+                SALTA PAROLA ⏭
+            </button>
+
+            <!-- Messaggio di rinforzo -->
+            <div id="cheer-message" class="absolute inset-0 pointer-events-none flex items-center justify-center hidden z-50">
+                <div class="bg-green-500 text-white text-5xl md:text-7xl font-extrabold py-8 px-16 rounded-[3rem] shadow-2xl transform rotate-[-5deg] animate-tada border-8 border-green-300">
+                    BRAVISSIMO! 🌟
+                </div>
+            </div>
+        </div>
+
+        <!-- SCHERMATA FINALE -->
+        <div id="screen-end" class="w-full max-w-xl bg-white rounded-3xl shadow-xl p-10 text-center border-4 border-green-50 hidden">
+            <div class="text-8xl mb-6 animate-tada">🏆</div>
+            <h2 class="text-4xl font-extrabold text-green-600 mb-6">Missione Compiuta!</h2>
+            <p class="text-2xl text-slate-600 mb-8 font-bold">
+                Hai completato tutti i livelli bravissimo!
+            </p>
+
+            <!-- NUOVO: Resoconto -->
+            <div class="bg-slate-50 p-6 rounded-2xl mb-10 border-2 border-slate-100 shadow-inner text-left max-w-sm mx-auto">
+                <h3 class="text-xl font-bold text-slate-800 mb-4 text-center border-b-2 border-slate-200 pb-2">Il tuo Resoconto</h3>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-slate-500 font-bold text-lg">⏱️ Tempo impiegato:</span>
+                    <span id="final-time" class="text-2xl font-extrabold text-primary">00:00</span>
+                </div>
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-slate-500 font-bold text-lg">❌ Tasti errati:</span>
+                    <span id="final-errors" class="text-2xl font-extrabold text-rose-500">0</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-500 font-bold text-lg">⏭️ Parole saltate:</span>
+                    <span id="final-skipped" class="text-2xl font-extrabold text-amber-500">0</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="copyReport()" id="btn-copy" class="text-xl w-full py-4 bg-blue-500 hover:bg-blue-600 text-white font-extrabold rounded-2xl shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                    COPIA RESOCONTO 📋
+                </button>
+                <button onclick="resetGame()" class="text-xl w-full py-4 bg-green-500 hover:bg-green-600 text-white font-extrabold rounded-2xl shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+                    GIOCA ANCORA ↺
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Dati delle parole divisi per livelli
+        const levels = [
+            {
+                name: "Livello 1: Parole Semplici",
+                dictionary: [
+                    { text: "APE", emoji: "🐝" },
+                    { text: "SOLE", emoji: "☀️" },
+                    { text: "MELA", emoji: "🍎" },
+                    { text: "CANE", emoji: "🐶" }
+                ]
+            },
+            {
+                name: "Livello 2: Punteggiatura",
+                dictionary: [
+                    { text: "L'OCA", emoji: "🦆" },
+                    { text: "CIAO!", emoji: "👋" },
+                    { text: "SI, NO", emoji: "👍" },
+                    { text: "DOVE?", emoji: "🤔" },
+                    { text: "TRE.", emoji: "3️⃣" }
+                ]
+            }
+        ];
+
+        // Stato del gioco
+        let gameState = {
+            currentLevelIndex: 0,
+            currentWordIndex: 0,
+            currentLetterIndex: 0,
+            isPlaying: false,
+            errors: 0,
+            skipped: 0,
+            startTime: 0
+        };
+
+        // Riferimenti DOM
+        const screens = {
+            intro: document.getElementById('screen-intro'),
+            game: document.getElementById('screen-game'),
+            end: document.getElementById('screen-end')
+        };
+        const wordDisplay = document.getElementById('word-display');
+        const wordEmoji = document.getElementById('word-emoji');
+        const keyHint = document.getElementById('key-hint');
+        const progressContainer = document.getElementById('progress-container');
+        const levelIndicator = document.getElementById('level-indicator');
+        const cheerMessage = document.getElementById('cheer-message');
+        const finalTime = document.getElementById('final-time');
+        const finalErrors = document.getElementById('final-errors');
+        const finalSkipped = document.getElementById('final-skipped');
+
+        // Setup Suoni con Tone.js
+        let synthTypewriter, synthSuccess;
+
+        function initAudio() {
+            // Un suono breve e legnoso per imitare il tasto
+            synthTypewriter = new Tone.MembraneSynth({
+                pitchDecay: 0.01,
+                octaves: 0.1,
+                oscillator: { type: "square" },
+                envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.01 }
+            }).toDestination();
+            synthTypewriter.volume.value = -10;
+
+            // Un suono felice e morbido per il completamento della parola
+            synthSuccess = new Tone.PolySynth(Tone.Synth, {
+                oscillator: { type: "triangle" },
+                envelope: { attack: 0.05, decay: 0.2, sustain: 0.4, release: 1 }
+            }).toDestination();
+            synthSuccess.volume.value = -8;
+        }
+
+        function playTypeSound() {
+            if (synthTypewriter) synthTypewriter.triggerAttackRelease("C2", "32n");
+        }
+
+        function playSuccessSound() {
+            if (synthSuccess) {
+                const now = Tone.now();
+                synthSuccess.triggerAttackRelease(["C4", "E4", "G4", "C5"], "4n", now);
+            }
+        }
+
+        function playErrorSound() {
+            // Suono basso e sordo per errore (non punitivo)
+            if (synthTypewriter) synthTypewriter.triggerAttackRelease("C1", "16n");
+        }
+
+        // Funzioni principali di gioco
+        async function startGame() {
+            await Tone.start(); // Necessario per sbloccare l'audio nei browser
+            initAudio();
+            
+            gameState.isPlaying = true;
+            gameState.currentLevelIndex = 0;
+            gameState.currentWordIndex = 0;
+            gameState.errors = 0;
+            gameState.skipped = 0;
+            gameState.startTime = Date.now();
+            
+            buildProgress();
+
+            switchScreen('game');
+            loadWord();
+        }
+
+        function resetGame() {
+            switchScreen('intro');
+        }
+
+        function buildProgress() {
+            const currentLevel = levels[gameState.currentLevelIndex];
+            levelIndicator.textContent = currentLevel.name;
+            levelIndicator.classList.remove('hidden');
+            
+            progressContainer.innerHTML = '';
+            progressContainer.classList.remove('hidden');
+            currentLevel.dictionary.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `w-4 h-4 rounded-full border-2 ${i === 0 ? 'border-primary bg-primary' : 'border-slate-300 bg-transparent'}`;
+                dot.id = `dot-${i}`;
+                progressContainer.appendChild(dot);
+            });
+        }
+
+        function switchScreen(screenName) {
+            Object.values(screens).forEach(s => s.classList.add('hidden'));
+            screens[screenName].classList.remove('hidden');
+        }
+
+        function loadWord() {
+            const currentData = levels[gameState.currentLevelIndex].dictionary[gameState.currentWordIndex];
+            gameState.currentLetterIndex = 0;
+            
+            wordEmoji.textContent = currentData.emoji;
+            // Animazione ingresso emoji
+            wordEmoji.classList.remove('scale-100');
+            wordEmoji.classList.add('scale-0');
+            setTimeout(() => {
+                wordEmoji.classList.remove('scale-0');
+                wordEmoji.classList.add('scale-100');
+            }, 50);
+            
+            renderWord();
+        }
+
+        function renderWord() {
+            const word = levels[gameState.currentLevelIndex].dictionary[gameState.currentWordIndex].text;
+            wordDisplay.innerHTML = '';
+
+            for (let i = 0; i < word.length; i++) {
+                const span = document.createElement('span');
+                
+                // Gestione visiva dello spazio bianco
+                span.textContent = word[i] === " " ? "_" : word[i];
+                span.className = 'letter ';
+                if(word[i] === " ") span.classList.add('opacity-30');
+                
+                if (i < gameState.currentLetterIndex) {
+                    span.className += 'typed';
+                    if(word[i] === " ") span.classList.replace('opacity-30', 'opacity-0');
+                } else if (i === gameState.currentLetterIndex) {
+                    span.className += 'current';
+                    span.id = 'current-letter';
+                    
+                    if(word[i] === " ") {
+                        keyHint.textContent = "SPAZIO";
+                        keyHint.classList.add('text-3xl');
+                    } else {
+                        keyHint.textContent = word[i];
+                        keyHint.classList.remove('text-3xl');
+                    }
+                } else {
+                    span.className += 'upcoming';
+                }
+                
+                wordDisplay.appendChild(span);
+            }
+        }
+
+        function updateProgress() {
+            const currentLevel = levels[gameState.currentLevelIndex];
+            for (let i = 0; i < currentLevel.dictionary.length; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < gameState.currentWordIndex) {
+                    dot.className = 'w-4 h-4 rounded-full border-2 border-success bg-success';
+                } else if (i === gameState.currentWordIndex) {
+                    dot.className = 'w-4 h-4 rounded-full border-2 border-primary bg-primary animate-pulse';
+                } else {
+                    dot.className = 'w-4 h-4 rounded-full border-2 border-slate-300 bg-transparent';
+                }
+            }
+        }
+
+        window.addEventListener('keydown', function(e) {
+            if (!gameState.isPlaying) return;
+
+            // Evita lo scrolling con la barra spaziatrice/frecce e previene la ricerca rapida di Firefox con l'apostrofo
+            if (["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code) || e.key === "'" || e.key === "’") {
+                e.preventDefault();
+            }
+
+            // Ignora tasti speciali (Shift, CapsLock, Tab, ecc.)
+            if (e.key.length > 1 && e.code !== "Space") return;
+
+            const currentWord = levels[gameState.currentLevelIndex].dictionary[gameState.currentWordIndex].text;
+            const targetLetter = currentWord[gameState.currentLetterIndex];
+            const currentLetterElement = document.getElementById('current-letter');
+
+            // Normalizzazione: i tablet e i Mac spesso usano l'apostrofo curvo o l'accento grave invece dell'apostrofo dritto
+            let typedKey = e.key.toUpperCase();
+            let expectedKey = targetLetter.toUpperCase();
+
+            if (["'", "’", "`", "‘", "´"].includes(typedKey)) typedKey = "'";
+            if (["'", "’", "`", "‘", "´"].includes(expectedKey)) expectedKey = "'";
+
+            // Controllo insensibile al maiuscolo/minuscolo e tollerante agli apostrofi
+            if (typedKey === expectedKey) {
+                // Lettera corretta
+                playTypeSound();
+                gameState.currentLetterIndex++;
+                
+                // Animazione POP sulla lettera appena digitata
+                if (currentLetterElement) {
+                    currentLetterElement.classList.add('animate-pop');
+                }
+
+                // Controllo se parola completata
+                if (gameState.currentLetterIndex >= currentWord.length) {
+                    wordCompleted();
+                } else {
+                    // Renderizza stato successivo dopo un istante per far vedere il passaggio
+                    renderWord();
+                }
+
+            } else {
+                // Lettera errata
+                gameState.errors++; // Registra l'errore
+                playErrorSound();
+                if (currentLetterElement) {
+                    // Rimuove la classe se già presente per poter riattivare l'animazione
+                    currentLetterElement.classList.remove('animate-shake');
+                    // Forza un reflow (piccolo trucco CSS) per far ripartire l'animazione
+                    void currentLetterElement.offsetWidth;
+                    currentLetterElement.classList.add('animate-shake');
+                }
+                
+                const hintBox = document.getElementById('key-hint');
+                hintBox.classList.remove('animate-shake', 'border-red-400', 'text-red-500');
+                void hintBox.offsetWidth;
+                hintBox.classList.add('animate-shake', 'border-red-400', 'text-red-500');
+                setTimeout(() => {
+                    hintBox.classList.remove('border-red-400', 'text-red-500');
+                }, 400);
+            }
+        });
+
+        function wordCompleted() {
+            gameState.isPlaying = false; // Blocca input durante l'animazione
+            renderWord(); // Mette l'ultima lettera in verde
+            playSuccessSound();
+            
+            // Animazione Word Emoji
+            wordEmoji.classList.add('animate-tada');
+            
+            // Mostra mega messaggio "Bravissimo"
+            cheerMessage.classList.remove('hidden');
+
+            setTimeout(() => {
+                wordEmoji.classList.remove('animate-tada');
+                cheerMessage.classList.add('hidden');
+                nextWord();
+            }, 1800); // Pausa di 1.8 secondi per godersi il successo
+        }
+
+        function skipWord() {
+            if (!gameState.isPlaying) return;
+            gameState.isPlaying = false;
+            gameState.skipped++;
+            nextWord();
+        }
+
+        function nextWord() {
+            gameState.currentWordIndex++;
+            const currentLevel = levels[gameState.currentLevelIndex];
+            
+            if (gameState.currentWordIndex >= currentLevel.dictionary.length) {
+                // Livello completato
+                gameState.currentLevelIndex++;
+                if (gameState.currentLevelIndex >= levels.length) {
+                    gameFinished(); // Gioco completamente finito
+                } else {
+                    // Passa al livello successivo
+                    gameState.currentWordIndex = 0;
+                    buildProgress();
+                    loadWord();
+                    gameState.isPlaying = true;
+                }
+            } else {
+                updateProgress();
+                loadWord();
+                gameState.isPlaying = true;
+            }
+        }
+
+        function gameFinished() {
+            progressContainer.classList.add('hidden');
+            levelIndicator.classList.add('hidden');
+            
+            // Calcolo Tempo
+            const timeTakenMs = Date.now() - gameState.startTime;
+            const totalSeconds = Math.floor(timeTakenMs / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            
+            finalTime.textContent = `${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
+            finalErrors.textContent = gameState.errors;
+            finalSkipped.textContent = gameState.skipped;
+            
+            switchScreen('end');
+        }
+
+        function copyReport() {
+            const timeText = document.getElementById('final-time').textContent;
+            const errorsText = document.getElementById('final-errors').textContent;
+            const skippedText = document.getElementById('final-skipped').textContent;
+            
+            const report = `=======================================
+LA MACCHINA DA SCRIVERE MAGICA
+=======================================
+⏱️ Tempo impiegato: ${timeText}
+❌ Tasti errati: ${errorsText}
+⏭️ Parole saltate: ${skippedText}
+=======================================`;
+
+            const btn = document.getElementById('btn-copy');
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(report).then(() => { showCopiedState(btn); });
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = report;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try { document.execCommand('copy'); showCopiedState(btn); } catch (err) {}
+                textArea.remove();
+            }
+        }
+
+        function showCopiedState(btn) {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `COPIATO! ✔`;
+            btn.classList.replace('bg-blue-500', 'bg-emerald-600');
+            btn.classList.replace('hover:bg-blue-600', 'hover:bg-emerald-700');
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.replace('bg-emerald-600', 'bg-blue-500');
+                btn.classList.replace('hover:bg-emerald-700', 'hover:bg-blue-600');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
