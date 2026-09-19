@@ -280,6 +280,10 @@ Deno.test('dati/moduli.json e\' un array valido e senza voci da sistemare', asyn
   const esito = normalizza(letto);
   assertEquals(esito.avvisi, []);
   assert(esito.moduli.length > 0, 'l\'elenco dei moduli e\' vuoto');
+  const tag = tagConConteggio(esito.moduli);
+  assert(tag.length > TAG_VISIBILI,
+    `con ${tag.length} tag la tendina "mostra tutti i tag" non comparirebbe (servono piu' di ${TAG_VISIBILI})`);
+  assertEquals(aree(esito.moduli).map((a) => a.chiave), ['COMPETENZE_DIGITALI_BASE', 'SERVIZI_COMMERCIALI']);
 });
 
 Deno.test('ogni modulo elencato esiste davvero e ha la sua pagina index.html', async () => {

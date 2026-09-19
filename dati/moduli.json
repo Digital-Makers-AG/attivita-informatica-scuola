@@ -4,6 +4,75 @@
     "percorso": "COMPETENZE_DIGITALI_BASE/MISSIONE_0/",
     "titolo": "Missione 0 · Riattiviamo le competenze digitali",
     "descrizione": "Quattro lezioni pratiche e una missione finale per riattivare le competenze informatiche del biennio: file e cartelle, ricerca di fonti, posta e sicurezza. Include guida per il docente, versioni BES e materiali pronti per Classroom.",
-    "tag": ["competenze-base", "file", "documenti", "ricerca", "sicurezza"]
+    "tag": [
+      "competenze-base",
+      "file",
+      "documenti",
+      "ricerca",
+      "sicurezza"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/BRAND/",
+    "titolo": "Brand identity: dal nome al logo",
+    "descrizione": "Il cliente ha una storia e un pubblico, ma nessuna immagine coordinata: si parte dal posizionamento e si arriva a un logo, a una palette e a un biglietto da visita pronti da presentare.",
+    "tag": [
+      "brand",
+      "grafica"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/CREAZIONE_SITI_WEB/",
+    "titolo": "Creare un sito web: dal dominio alla prima pagina online",
+    "descrizione": "Che cosa serve per mettere un sito online: dominio, spazio web, hosting e scelta del sistema. Si arriva a una prima pagina raggiungibile da un indirizzo vero.",
+    "tag": [
+      "siti-web",
+      "cms",
+      "hosting"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/FOGLI_DI_CALCOLO/",
+    "titolo": "Fogli di calcolo per l'ufficio: preventivi e tabelle",
+    "descrizione": "Dalle celle ai grafici: si costruisce un preventivo con formule, riferimenti e formattazione, e si chiude con un grafico da mostrare al cliente.",
+    "tag": [
+      "fogli-di-calcolo"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/LINGUAGGI_WEB/",
+    "titolo": "I linguaggi del web: HTML e CSS",
+    "descrizione": "Che cosa c'è sotto una pagina web: la struttura in HTML e l'aspetto in CSS. Si scrivono a mano una pagina e un foglio di stile, imparando a leggere gli errori del browser.",
+    "tag": [
+      "siti-web",
+      "html",
+      "css"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/SEO/",
+    "titolo": "Farsi trovare: SEO di base",
+    "descrizione": "Perché un sito da solo non basta: titoli, descrizioni, parole chiave, immagini e link. Si analizza un sito esistente e si prepara un piano di miglioramento misurabile.",
+    "tag": [
+      "siti-web",
+      "seo"
+    ]
+  },
+  {
+    "area": "SERVIZI_COMMERCIALI",
+    "percorso": "SERVIZI_COMMERCIALI/WORDPRESS/",
+    "titolo": "WordPress: il sito del cliente",
+    "descrizione": "Installare e configurare WordPress su un hosting, scegliere un tema, creare pagine e menu, gestire utenti e aggiornamenti, con le prime regole di sicurezza.",
+    "tag": [
+      "siti-web",
+      "cms",
+      "wordpress",
+      "hosting"
+    ]
   }
 ]
