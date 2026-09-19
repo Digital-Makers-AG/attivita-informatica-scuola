@@ -3,8 +3,8 @@
 Missione 0 – Lezione 1 – Parte A. Marta, la titolare di Officina 23, ha bisogno di uno stagista veloce ma soprattutto PRECISO.
 
 1. Apri la tua scheda di lavoro (allegata) e seguila parte per parte.
-2. Palestra della tastiera (Parti 1–4): https://digital-makers-ag.github.io/attivita-informatica-scuola/01_LEZIONE_1/MATERIALI/typing_officina23.html
-3. Palestra delle scorciatoie (Parte 5): https://digital-makers-ag.github.io/attivita-informatica-scuola/01_LEZIONE_1/MATERIALI/scorciatoie_officina23.html
+2. Palestra della tastiera (Parti 1–4): https://digital-makers-ag.github.io/attivita-informatica-scuola/COMPETENZE_DIGITALI_BASE/MISSIONE_0/01_LEZIONE_1/MATERIALI/typing_officina23.html
+3. Palestra delle scorciatoie (Parte 5): https://digital-makers-ag.github.io/attivita-informatica-scuola/COMPETENZE_DIGITALI_BASE/MISSIONE_0/01_LEZIONE_1/MATERIALI/scorciatoie_officina23.html
    Se un link non si apre, scarica il file allegato con lo stesso nome e aprilo con doppio clic.
 4. Lavorerai in coppia per il test iniziale: uno scrive, l'altro osserva le mani.
 5. Alla fine incolla i due codici risultato (O23-L1 e O23-SCO) nella scheda e nel Modulo «Missione 0 · codici risultato» allegato a questa consegna.
