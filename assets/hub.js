@@ -283,12 +283,13 @@ let righeTendina = [];
 let indiceAttivo = -1;
 
 function prendiDom() {
-  const nomi = ['filtro-area', 'filtro-modo', 'q', 'sugg', 'filtro-tag', 'mostra-tutti-tag',
-    'conteggio', 'filtri-attivi', 'azzera', 'cards', 'stato-vuoto', 'errore', 'avvisi'];
-  for (const nome of nomi) {
-    const chiave = nome.replace(/^filtro-/, '').replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-    dom[chiave] = document.getElementById(nome);
-  }
+  const id = {
+    area: 'filtro-area', modo: 'filtro-modo', tag: 'filtro-tag',
+    q: 'q', sugg: 'sugg', mostraTag: 'mostra-tutti-tag',
+    conteggio: 'conteggio', filtriAttivi: 'filtri-attivi', azzera: 'azzera',
+    cards: 'cards', statoVuoto: 'stato-vuoto', errore: 'errore', avvisi: 'avvisi',
+  };
+  for (const [chiave, valore] of Object.entries(id)) dom[chiave] = document.getElementById(valore);
 }
 
 function leggiModoRicordato() {
@@ -372,7 +373,7 @@ function rendiModo() {
 function rendiTag() {
   const tutti = tagConConteggio(MODULI);
   const conteggi = conteggiDinamici(MODULI, stato);
-  const visibili = tutti.filter((v, i) => i < TAG_VISIBILI || stato.tag.includes(v.tag));
+  const visibili = tutti.filter((v, i) => tuttiITag || i < TAG_VISIBILI || stato.tag.includes(v.tag));
   dom.tag.replaceChildren();
   for (const { tag } of visibili) {
     const attivo = stato.tag.includes(tag);
