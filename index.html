@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attività di informatica · hub dei moduli</title>
+<meta name="description" content="Elenco dei moduli di attività informatiche: filtra per area, combina i tag o cerca una parola chiave.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/hub.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="in">
+    <div class="kicker">Attività di informatica</div>
+    <h1>Hub dei moduli</h1>
+    <p>Le attività sono raccolte in moduli. Scegli un'<b>area</b>, combina i <b>tag</b> o cerca una parola: l'elenco qui sotto si aggiorna subito. Ogni riquadro apre il modulo completo, con guida per il docente, materiali e consegne.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="filtri" aria-label="Filtri">
+    <div class="riga">
+      <div class="campo breve">
+        <span class="lbl" id="lbl-area">Area</span>
+        <div class="gruppo-chip" id="filtro-area" role="group" aria-labelledby="lbl-area"></div>
+      </div>
+      <div class="campo breve">
+        <span class="lbl" id="lbl-modo">Come combinare i tag</span>
+        <div class="gruppo-chip" id="filtro-modo" role="group" aria-labelledby="lbl-modo"></div>
+      </div>
+    </div>
+    <div class="riga">
+      <div class="campo q">
+        <label class="lbl" for="q">Cerca fra titoli e descrizioni</label>
+        <div class="qwrap">
+          <input id="q" type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="sugg" aria-describedby="aiuto-q" autocomplete="off" spellcheck="false" placeholder="Scrivi un tag, un titolo o una parola…">
+          <ul id="sugg" role="listbox" aria-label="Suggerimenti" hidden></ul>
+        </div>
+        <span class="aiuto" id="aiuto-q">Frecce su e giù per scorrere i suggerimenti, Invio per confermare, Esc per chiudere.</span>
+      </div>
+    </div>
+    <div class="riga">
+      <div class="campo">
+        <span class="lbl" id="lbl-tag">Tag</span>
+        <div class="gruppo-chip" id="filtro-tag" role="group" aria-labelledby="lbl-tag"></div>
+        <div><button type="button" class="tendina" id="mostra-tutti-tag" aria-controls="filtro-tag" aria-expanded="false" hidden></button></div>
+      </div>
+    </div>
+    <div class="riepilogo">
+      <span id="conteggio" role="status" aria-live="polite"></span>
+      <span class="attivi" id="filtri-attivi"></span>
+      <button type="button" class="azzera" id="azzera" hidden>Azzera i filtri</button>
+    </div>
+  </section>
+
+  <section aria-label="Elenco dei moduli">
+    <div class="errore" id="avvisi" hidden></div>
+    <div class="errore" id="errore" hidden></div>
+    <div class="cards" id="cards"></div>
+    <p class="vuoto" id="stato-vuoto" hidden></p>
+  </section>
+</main>
+
+<footer>
+  <p>Elenco dei moduli letto da <code>dati/moduli.json</code>: si aggiorna aggiungendo una voce, senza toccare questa pagina. Sul sito pubblicato funziona sempre; se apri il file con doppio clic l'elenco può restare vuoto.</p>
+</footer>
+
+<script type="module" src="assets/hub.js"></script>
+</body>
+</html>
