@@ -1,0 +1,94 @@
+<!--
+  _TEMPLATE_ATTIVITA — pagina di una singola attività (guida per il docente, materiali, consegna).
+
+  COME SI USA
+  1. copia questa cartella in AREA/ARGOMENTO/ATTIVITA/  (es. SERVIZI_COMMERCIALI/WORDPRESS/MENU_E_PAGINE/);
+  2. riempi <title>, la testata (kicker, h1, descrizione) e le sezioni qui sotto;
+  3. in catalogo.json aggiungi una voce con quel percorso a tre segmenti (più "titolo",
+     "descrizione", "tag", "minuti"): la scheda compare da sola nell'hub e nella pagina
+     dell'argomento. Questa pagina resta invece scritta a mano, come i materiali.
+
+  ATTENZIONE: questa copia vive nella radice del progetto, quindi gli indirizzi che
+  contiene (../../../assets/..., ../ per tornare all'argomento) sono pensati per una
+  pagina TRE livelli più in basso: aprendola così com'è i collegamenti non funzionano.
+  È voluto: questo file è solo il modello da copiare.
+-->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Titolo dell'attività · Attività di informatica</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../../../assets/hub.css">
+<style>
+/* Poche regole in più, solo per questa attività: i colori sono quelli del foglio di stile condiviso. */
+.attivita-testata{background:var(--orange);color:#fff;padding:6px 14px;border-radius:20px;display:inline-block;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.blocchi{display:grid;gap:16px}
+.blocchi .card{gap:8px}
+.blocchi h2{margin:0;font-size:19px}
+.blocchi ol,.blocchi ul{margin:6px 0 0;padding-left:22px}
+.blocchi li{margin:4px 0}
+.materiali{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:8px}
+.materiali a{display:block;background:#fff;border:1px solid var(--line);border-left:5px solid var(--orange);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink)}
+.materiali a:hover{border-color:var(--orange)}
+.materiali span{display:block;font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="in">
+    <div class="kicker">Servizi commerciali · Nome dell'argomento</div>
+    <h1>Titolo dell'attività</h1>
+    <p>Una frase che spiega che cosa si fa e che cosa si porta a casa alla fine dell'attività.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <p>
+    <span class="attivita-testata">Attività</span>
+    <a href="../" style="margin-left:10px">← Torna all'argomento</a>
+  </p>
+
+  <div class="blocchi">
+    <section class="card">
+      <h2>Che cosa si impara</h2>
+      <ul>
+        <li>Primo obiettivo: che cosa saprà fare lo studente.</li>
+        <li>Secondo obiettivo.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Passi dell'attività</h2>
+      <ol>
+        <li>Primo passo.</li>
+        <li>Secondo passo.</li>
+        <li>Terzo passo, con il prodotto finale da consegnare.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Materiali</h2>
+      <div class="materiali">
+        <a href="MATERIALI/scheda.pdf">Scheda dello studente<span>PDF, da stampare o distribuire</span></a>
+        <a href="SOLUZIONI/soluzioni.docx">Soluzioni per il docente<span>DOCX, non pubblicare</span></a>
+      </div>
+      <p class="aiuto">Metti i file in MATERIALI/ e in SOLUZIONI/, come nella Missione 0.</p>
+    </section>
+
+    <section class="card">
+      <h2>Consegna</h2>
+      <p>Che cosa carica lo studente, dove e con quale nome di file.</p>
+      <p class="aiuto">Per le classi con BES: versione guidata e checklist, come nelle consegne della Missione 0.</p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p>Attività di informatica · pagina scritta a mano, come i materiali che elenca.</p>
+</footer>
+
+</body>
+</html>

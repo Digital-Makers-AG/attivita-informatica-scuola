@@ -1,0 +1,25 @@
+{
+  "etichette": {
+    "COMPETENZE_DIGITALI_BASE": "Competenze digitali base",
+    "SERVIZI_COMMERCIALI": "Servizi commerciali",
+    "SOCIO_SANITARIO": "Socio sanitario",
+    "WORDPRESS": "WordPress",
+    "SEO": "SEO"
+  },
+  "voci": [
+    {
+      "tipo": "argomento",
+      "titolo": "Missione 0 · Riattiviamo le competenze digitali",
+      "percorso": "COMPETENZE_DIGITALI_BASE/MISSIONE_0/",
+      "minuti": 600,
+      "descrizione": "Quattro lezioni pratiche e una missione finale per riattivare le competenze informatiche del biennio: file e cartelle, ricerca di fonti, posta e sicurezza. Include guida per il docente, versioni BES e materiali pronti per Classroom.",
+      "tag": [
+        "competenze-base",
+        "file",
+        "documenti",
+        "ricerca",
+        "sicurezza"
+      ]
+    }
+  ]
+}

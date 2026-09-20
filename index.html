@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Attività di informatica · hub dei moduli</title>
-<meta name="description" content="Elenco dei moduli di attività informatiche: filtra per area, combina i tag o cerca una parola chiave.">
+<title>Attività di informatica · hub</title>
+<meta name="description" content="Argomenti e attività di informatica: filtra per area, scegli se vedere argomenti o attività, combina i tag o cerca una parola chiave.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/hub.css">
 </head>
-<body>
+<body data-base="">
 
 <header class="hero">
   <div class="in">
     <div class="kicker">Attività di informatica</div>
-    <h1>Hub dei moduli</h1>
-    <p>Le attività sono raccolte in moduli. Scegli un'<b>area</b>, combina i <b>tag</b> o cerca una parola: l'elenco qui sotto si aggiorna subito. Ogni riquadro apre il modulo completo, con guida per il docente, materiali e consegne.</p>
+    <h1>Hub delle attività</h1>
+    <p>Le attività sono raccolte in <b>argomenti</b>. Scegli un'<b>area</b>, decidi se vedere <b>argomenti o attività</b>, combina i <b>tag</b> o cerca una parola: l'elenco qui sotto si aggiorna subito. Ogni riquadro apre la pagina completa, con guida per il docente, materiali e consegne.</p>
   </div>
 </header>
 
@@ -26,11 +26,11 @@
         <div class="gruppo-chip" id="filtro-area" role="group" aria-labelledby="lbl-area"></div>
       </div>
       <div class="campo breve">
-        <span class="lbl" id="lbl-modo">Come combinare i tag</span>
-        <div class="gruppo-chip" id="filtro-modo" role="group" aria-labelledby="lbl-modo"></div>
+        <span class="lbl" id="lbl-mostra">Mostra</span>
+        <div class="gruppo-chip" id="filtro-mostra" role="group" aria-labelledby="lbl-mostra"></div>
       </div>
     </div>
-    <div class="riga">
+    <div class="riga cerca-modo">
       <div class="campo q">
         <label class="lbl" for="q">Cerca fra titoli e descrizioni</label>
         <div class="qwrap">
@@ -38,6 +38,10 @@
           <ul id="sugg" role="listbox" aria-label="Suggerimenti" hidden></ul>
         </div>
         <span class="aiuto" id="aiuto-q">Frecce su e giù per scorrere i suggerimenti, Invio per confermare, Esc per chiudere.</span>
+      </div>
+      <div class="campo modo">
+        <span class="lbl" id="lbl-modo">Come combinare i tag</span>
+        <div class="gruppo-chip" id="filtro-modo" role="group" aria-labelledby="lbl-modo"></div>
       </div>
     </div>
     <div class="riga">
@@ -54,7 +58,7 @@
     </div>
   </section>
 
-  <section aria-label="Elenco dei moduli">
+  <section aria-label="Elenco di argomenti e attività">
     <div class="errore" id="avvisi" hidden></div>
     <div class="errore" id="errore" hidden></div>
     <div class="cards" id="cards"></div>
@@ -63,9 +67,12 @@
 </main>
 
 <footer>
-  <p>Elenco dei moduli letto da <code>dati/moduli.json</code>: si aggiorna aggiungendo una voce, senza toccare questa pagina. Sul sito pubblicato funziona sempre; se apri il file con doppio clic l'elenco può restare vuoto.</p>
+  <p>Elenco letto da <code>catalogo.json</code>: si aggiorna aggiungendo una voce, senza toccare questa pagina. Gli argomenti si costruiscono da soli dalle loro attività; il tipo di ogni scheda (argomento o attività) lo decide il percorso.</p>
 </footer>
 
-<script type="module" src="assets/hub.js"></script>
+<!-- Script classici, non moduli ES: assets/catalogo.js deve venire per primo,
+     perché assets/hub.js lo usa per leggere il catalogo e disegnare le schede. -->
+<script src="assets/catalogo.js"></script>
+<script src="assets/hub.js"></script>
 </body>
 </html>

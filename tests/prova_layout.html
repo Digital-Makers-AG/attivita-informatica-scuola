@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Prova di layout · hub delle attività</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
+<!--
+  Pagina di prova del layout: NON fa parte del sito, non è linkata da nessuna pagina
+  e serve a guardare con gli occhi quello che i test automatici non vedono.
+
+  Si apre con doppio clic (funziona anche da file://, non legge nessun JSON) oppure
+  dall'indirizzo /tests/prova_layout.html del sito pubblicato.
+
+  Che cosa guardare:
+  - i tre tipi di scheda: argomento (teal), attività (arancione), argomento ricavato;
+  - i chip dei filtri: area (arancione quando è attiva), mostra, modo, tag;
+  - il chip tag spento (non può dare risultati con i filtri scelti: barrato);
+  - la tendina dei suggerimenti, che deve stare SOPRA le schede;
+  - sotto i 900px di larghezza: le schede vanno a una colonna e la riga della
+    ricerca non deve più spingere i chip "come combinare i tag" a destra.
+-->
+<link rel="stylesheet" href="../assets/hub.css">
+<style>
+/* solo per la pagina di prova: avviso in testa e riquadri delle spiegazioni */
+.avviso{background:#fff7e6;border:1px solid #f0c36d;border-radius:var(--radius);padding:14px 18px;margin:0 0 18px}
+.avviso h2{margin:0 0 6px;font-size:18px;color:var(--orange-d)}
+.avviso ul{margin:6px 0 0;padding-left:22px}
+.avviso code{background:#fff;border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.marchio{display:inline-block;background:var(--ink);color:#fff;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;letter-spacing:.04em}
+</style>
+</head>
+<body data-base="../">
+
+<header class="hero">
+  <div class="in">
+    <div class="kicker">Attività di informatica</div>
+    <h1>Hub delle attività <span class="marchio">PAGINA DI PROVA</span></h1>
+    <p>Qui sotto c'è la stessa impalcatura dell'hub, riempita a mano con schede di esempio: serve a controllare colori, spaziature e comportamento allo schermo stretto, senza dipendere dal catalogo.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="avviso">
+    <h2>Che cosa guardare</h2>
+    <ul>
+      <li>Schede: <b>argomento</b> con la barra e il titolo teal, <b>attività</b> con la barra e il titolo arancioni.</li>
+      <li>Chip: area attiva in arancione, mostra attiva in teal chiaro, AND/OR attivo in teal scuro.</li>
+      <li>Il chip <code>tag</code> scritto in grigio e barrato è quello che, con i filtri scelti, non darebbe risultati.</li>
+      <li>La tendina dei suggerimenti (aperta qui sotto, sotto il campo di ricerca) deve stare sopra le schede.</li>
+      <li>Restringi la finestra <b>sotto i 900px</b>: schede a una colonna, ricerca e chip che si impilano senza margini strani.</li>
+      <li>Stampa (Ctrl+P): filtri e riquadri "Apri ..." spariscono, le schede restano.</li>
+    </ul>
+  </div>
+
+  <section class="filtri" aria-label="Filtri">
+    <div class="riga">
+      <div class="campo breve">
+        <span class="lbl">Area</span>
+        <div class="gruppo-chip">
+          <button type="button" class="chip area" aria-pressed="false"><span class="nome">Tutte le aree</span></button>
+          <button type="button" class="chip area" aria-pressed="true"><span class="nome">Servizi commerciali</span><span class="n">6</span></button>
+          <button type="button" class="chip area" aria-pressed="false"><span class="nome">Competenze digitali base</span><span class="n">1</span></button>
+        </div>
+      </div>
+      <div class="campo breve">
+        <span class="lbl">Mostra</span>
+        <div class="gruppo-chip">
+          <button type="button" class="chip mostra" aria-pressed="false">Tutto</button>
+          <button type="button" class="chip mostra" aria-pressed="true">Argomenti</button>
+          <button type="button" class="chip mostra" aria-pressed="false">Attività</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="riga cerca-modo">
+      <div class="campo q">
+        <label class="lbl" for="q">Cerca fra titoli e descrizioni</label>
+        <div class="qwrap">
+          <input id="q" type="text" value="sit" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="sugg" autocomplete="off" spellcheck="false" placeholder="Scrivi un tag, un titolo o una parola…">
+          <ul id="sugg" role="listbox" aria-label="Suggerimenti">
+            <li role="option" aria-selected="false"><span class="tipo">tag</span><span class="testo">siti-web</span><span class="n">3 risultati</span></li>
+            <li role="option" aria-selected="true"><span class="tipo">argomento</span><span class="testo">Creare un sito web: dal dominio alla prima pagina online</span><span class="n">Servizi commerciali</span></li>
+            <li role="option" aria-selected="false"><span class="tipo">attività</span><span class="testo">Installare WordPress e scegliere il tema</span><span class="n">Servizi commerciali</span></li>
+            <li class="cerca" role="option" aria-selected="false"><span class="tipo"></span><span class="testo">cerca "sit"</span><span class="n">4 risultati</span></li>
+          </ul>
+        </div>
+        <span class="aiuto">Frecce su e giù per scorrere i suggerimenti, Invio per confermare, Esc per chiudere.</span>
+      </div>
+      <div class="campo modo">
+        <span class="lbl">Come combinare i tag</span>
+        <div class="gruppo-chip">
+          <button type="button" class="chip modo" aria-pressed="false">Almeno un tag</button>
+          <button type="button" class="chip modo" aria-pressed="true">Tutti i tag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="riga">
+      <div class="campo">
+        <span class="lbl">Tag</span>
+        <div class="gruppo-chip">
+          <button type="button" class="chip tag" aria-pressed="true"><span class="x">×</span><span class="nome">siti-web</span><span class="n">3</span></button>
+          <button type="button" class="chip tag" aria-pressed="false"><span class="nome">hosting</span><span class="n">2</span></button>
+          <button type="button" class="chip tag" aria-pressed="false"><span class="nome">cms</span><span class="n">2</span></button>
+          <button type="button" class="chip tag" disabled><span class="nome">brand</span><span class="n">0</span></button>
+          <button type="button" class="chip tag" aria-pressed="false"><span class="nome">seo</span><span class="n">1</span></button>
+          <button type="button" class="chip tag" aria-pressed="false"><span class="nome">wordpress</span><span class="n">1</span></button>
+        </div>
+        <div><button type="button" class="tendina" aria-expanded="false">mostra tutti i tag (13)</button></div>
+      </div>
+    </div>
+
+    <div class="riepilogo">
+      <span id="conteggio"><span class="n">4 argomenti</span></span>
+      <span class="attivi">
+        <button type="button" class="chip" aria-pressed="true"><span class="x">×</span><span class="nome">testo «sit»</span></button>
+      </span>
+      <button type="button" class="azzera">Azzera i filtri</button>
+    </div>
+  </section>
+
+  <section class="cards">
+    <article class="card argomento">
+      <span class="tipo-badge">ARGOMENTO</span>
+      <div class="area-badge">Competenze digitali base</div>
+      <h2><a class="titolo" href="../COMPETENZE_DIGITALI_BASE/MISSIONE_0/">Missione 0 · Riattiviamo le competenze digitali</a></h2>
+      <p class="descrizione">Quattro lezioni pratiche e una missione finale per riattivare le competenze informatiche del biennio: file e cartelle, ricerca di fonti, posta e sicurezza.</p>
+      <div class="tagmini"><span>competenze-base</span><span>file</span><span>documenti</span><span>ricerca</span><span>sicurezza</span></div>
+      <span class="badge-durata">600 min</span>
+      <a class="vai" href="../COMPETENZE_DIGITALI_BASE/MISSIONE_0/">Apri l'argomento →</a>
+    </article>
+
+    <article class="card argomento">
+      <span class="tipo-badge">ARGOMENTO</span>
+      <div class="area-badge">Servizi commerciali</div>
+      <h2><a class="titolo" href="../SERVIZI_COMMERCIALI/WORDPRESS/">WordPress</a></h2>
+      <p class="descrizione">Il sito del cliente con WordPress: hosting, tema, pagine e prime regole di sicurezza.</p>
+      <div class="tagmini"><span>wordpress</span><span>hosting</span><span>pagine</span></div>
+      <span class="badge-durata">2 attività · 210 min</span>
+      <a class="vai" href="../SERVIZI_COMMERCIALI/WORDPRESS/">Apri l'argomento →</a>
+    </article>
+
+    <article class="card attivita">
+      <span class="tipo-badge">ATTIVITÀ</span>
+      <div class="area-badge">Servizi commerciali</div>
+      <h2><a class="titolo" href="../SERVIZI_COMMERCIALI/BRAND/">Brand identity: dal nome al logo</a></h2>
+      <p class="descrizione">Dal posizionamento a un logo, una palette e un biglietto da visita pronti da presentare.</p>
+      <div class="tagmini"><span>brand</span><span>grafica</span></div>
+      <span class="badge-durata">120 min</span>
+      <a class="vai" href="../SERVIZI_COMMERCIALI/BRAND/">Apri l'attività →</a>
+    </article>
+
+    <article class="card attivita">
+      <span class="tipo-badge">ATTIVITÀ</span>
+      <div class="area-badge">Servizi commerciali</div>
+      <h2><a class="titolo" href="../SERVIZI_COMMERCIALI/SEO/">Farsi trovare: SEO di base</a></h2>
+      <p class="descrizione">Titoli, descrizioni, parole chiave, immagini e link: si analizza un sito esistente e si prepara un piano di miglioramento.</p>
+      <div class="tagmini"><span>siti-web</span><span>seo</span></div>
+      <span class="badge-durata">90 min</span>
+      <a class="vai" href="../SERVIZI_COMMERCIALI/SEO/">Apri l'attività →</a>
+    </article>
+
+    <article class="card argomento">
+      <span class="tipo-badge">ARGOMENTO</span>
+      <div class="area-badge">Servizi commerciali</div>
+      <h2><a class="titolo" href="../SERVIZI_COMMERCIALI/FOGLI_DI_CALCOLO/">Argomento senza attività</a></h2>
+      <p class="descrizione">Questa scheda non ha descrizione: serve a vedere come si comporta la griglia con schede di altezza diversa.</p>
+      <span class="badge-durata">nessuna attività</span>
+      <a class="vai" href="../SERVIZI_COMMERCIALI/FOGLI_DI_CALCOLO/">Apri l'argomento →</a>
+    </article>
+  </section>
+
+  <h2 style="margin-top:28px">Messaggi</h2>
+  <div class="errore">
+    <p><b>Da sistemare in catalogo.json: 1 problema</b></p>
+    <ul><li>voce 3 (SERVIZI_COMMERCIALI/BRAND/): "percorso" è senza la "/" finale, l'ho aggiunta io.</li></ul>
+  </div>
+  <p class="vuoto" style="margin-top:14px">
+    Nessun argomento o attività con area «Servizi commerciali», tag «brand» + «seo», testo «logo».
+    <button type="button" class="all" style="display:block;margin:12px auto 0">Azzera i filtri</button>
+  </p>
+</main>
+
+<footer>
+  <p>Pagina di prova del layout · fa parte della cartella <code>tests/</code> e non del sito pubblicato.</p>
+</footer>
+
+</body>
+</html>

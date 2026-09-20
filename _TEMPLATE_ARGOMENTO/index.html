@@ -1,18 +1,37 @@
+<!--
+  _TEMPLATE_ARGOMENTO — pagina di un argomento (elenco delle sue attività).
+
+  COME SI USA
+  1. copia questa cartella in AREA/ARGOMENTO/  (es. SERVIZI_COMMERCIALI/WORDPRESS/);
+  2. nel <body> sostituisci il segnaposto:
+       data-argomento="AREA/ARGOMENTO/"  ->  data-argomento="SERVIZI_COMMERCIALI/WORDPRESS/"
+     e, se vuoi, il <title>;
+  3. in catalogo.json aggiungi le attività di quell'argomento (percorso a tre segmenti):
+     l'elenco qui sotto si riempie da solo, senza toccare questa pagina.
+
+  Nome dell'area e nome dell'argomento non si scrivono qui: arrivano dalle
+  etichette di catalogo.json (assets/argomento.js li riempie all'apertura).
+
+  ATTENZIONE: questa copia vive nella radice del progetto, quindi gli indirizzi
+  che contiene (../../assets/...) sono pensati per una pagina DUE livelli più in
+  basso: aprendola così com'è i collegamenti non funzionano. È voluto: questo file
+  è solo il modello da copiare.
+-->
 <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WordPress · Attività di informatica</title>
+<title>Nome dell'argomento · Attività di informatica</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%B0%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="../../assets/hub.css">
 </head>
-<body data-base="../../" data-argomento="SERVIZI_COMMERCIALI/WORDPRESS/">
+<body data-base="../../" data-argomento="AREA/ARGOMENTO/">
 
 <header class="hero">
   <div class="in">
-    <div class="kicker" id="argomento-area">Servizi commerciali</div>
-    <h1 id="argomento-titolo">WordPress</h1>
+    <div class="kicker" id="argomento-area">Nome dell'area</div>
+    <h1 id="argomento-titolo">Nome dell'argomento</h1>
     <p>Le attività di questo argomento si aprono una per una: ogni scheda porta alla pagina con guida per il docente, materiali e consegna.</p>
   </div>
 </header>

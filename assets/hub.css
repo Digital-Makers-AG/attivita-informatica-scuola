@@ -1,8 +1,9 @@
-/* Hub dei moduli — foglio di stile condiviso
-   Token allineati a COMPETENZE_DIGITALI_BASE/MISSIONE_0/index.html */
+/* Foglio di stile dell'hub (index.html) e delle pagine argomento.
+   Token allineati a COMPETENZE_DIGITALI_BASE/MISSIONE_0/index.html:
+   stesso teal per gli argomenti, stesso arancione per le attività. */
 :root{
   --teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;
-  --ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff;--radius:14px;
+  --orange-d:#8f4210;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff;--radius:14px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -11,6 +12,7 @@ a{color:var(--teal-d)}
 :focus-visible{outline:3px solid var(--orange);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding:24px}
 .kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);font-weight:700}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* ---------- testata ---------- */
 .hero{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:34px 24px 28px}
@@ -28,6 +30,8 @@ a{color:var(--teal-d)}
 .campo{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1 1 240px}
 .campo.q{flex:1 1 320px;position:relative}
 .campo.breve{flex:0 1 auto}
+/* riga 2: la ricerca cresce, i chip AND/OR restano a destra */
+.filtri .riga.cerca-modo > .campo.modo{flex:0 1 auto;margin-left:auto}
 .lbl{font-weight:700;font-size:14px}
 .aiuto{font-weight:400;font-size:13px;color:var(--muted)}
 .gruppo-chip{display:flex;gap:8px;flex-wrap:wrap}
@@ -41,6 +45,7 @@ a{color:var(--teal-d)}
 .chip[aria-pressed="true"] .x{font-weight:700;opacity:.85}
 .chip:disabled{opacity:.42;cursor:not-allowed;text-decoration:line-through}
 .chip.area[aria-pressed="true"]{background:var(--orange);border-color:var(--orange)}
+.chip.mostra[aria-pressed="true"]{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}
 .chip.modo[aria-pressed="true"]{background:var(--teal-d);border-color:var(--teal-d)}
 .chip .x{font-size:13px;line-height:1}
 .tendina{font:inherit;font-size:14px;font-weight:600;background:#fff;border:2px solid var(--teal);color:var(--teal-d);border-radius:8px;padding:6px 12px;cursor:pointer}
@@ -52,7 +57,7 @@ a{color:var(--teal-d)}
 .qwrap{position:relative}
 #q{width:100%;font:inherit;font-size:15px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
 #q:focus{border-color:var(--teal);outline:2px solid var(--teal-l)}
-#sugg{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);margin:0;padding:4px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.13);max-height:330px;overflow-y:auto}
+#sugg{position:absolute;z-index:40;left:0;right:0;top:calc(100% + 4px);margin:0;padding:4px;list-style:none;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px rgba(0,0,0,.13);max-height:330px;overflow-y:auto}
 #sugg[hidden]{display:none}
 #sugg li{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:14.5px}
 #sugg li .tipo{font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);flex:none}
@@ -66,41 +71,52 @@ a{color:var(--teal-d)}
 #conteggio .n{font-size:19px}
 .attivi{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
 
-/* ---------- schede dei moduli ---------- */
+/* ---------- schede: argomenti (teal) e attività (arancione) ---------- */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
-.modulo{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-.modulo:hover{border-color:var(--teal);border-left-color:var(--orange)}
-.modulo .area-nome{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
-.modulo h2{margin:0;font-size:21px;line-height:1.25;color:var(--teal-d)}
-.modulo a.titolo{text-decoration:none;color:inherit}
-.modulo a.titolo:hover{text-decoration:underline}
-.modulo p{margin:0;font-size:15px;color:#333c44}
-.modulo .tagmini{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
-.modulo .tagmini span{background:var(--teal-l);color:var(--teal-d);border-radius:12px;padding:2px 10px;font-size:12.5px;font-weight:600}
-.modulo .vai{align-self:flex-start;margin-top:4px;font-weight:700;text-decoration:none}
-.modulo .vai:hover{text-decoration:underline}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card.argomento{border-left-color:var(--teal)}
+.card.attivita{border-left-color:var(--orange)}
+.card.argomento:hover{border-color:var(--teal);border-left-color:var(--orange)}
+.card.attivita:hover{border-color:var(--orange)}
+.card .tipo-badge{align-self:flex-start;font-size:11.5px;font-weight:800;letter-spacing:.05em;border-radius:12px;padding:2px 9px;background:var(--teal-l);color:var(--teal-d)}
+.card.attivita .tipo-badge{background:var(--orange-l);color:var(--orange-d)}
+.card .area-badge{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+.card h2{margin:0;font-size:21px;line-height:1.25;color:var(--teal-d)}
+.card.attivita h2{color:var(--orange-d)}
+.card a.titolo{text-decoration:none;color:inherit}
+.card a.titolo:hover{text-decoration:underline}
+.card p{margin:0;font-size:15px;color:#333c44}
+.card .tagmini{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.card .tagmini span{background:var(--teal-l);color:var(--teal-d);border-radius:12px;padding:2px 10px;font-size:12.5px;font-weight:600}
+.card.attivita .tagmini span{background:var(--orange-l);color:var(--orange-d)}
+.card .badge-durata{align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .vai{align-self:flex-start;margin-top:4px;font-weight:700;text-decoration:none;color:var(--teal-d)}
+.card.attivita .vai{color:var(--orange-d)}
+.card .vai:hover{text-decoration:underline}
 
 /* ---------- messaggi ---------- */
 .vuoto{background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:26px 20px;text-align:center;color:var(--muted)}
 .vuoto b{color:var(--ink)}
 .vuoto .all{margin-top:12px;background:var(--teal);border:0;color:#fff;border-radius:8px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:15px}
 .errore{background:#fff7e6;border:1px solid #f0c36d;border-radius:var(--radius);padding:16px 18px}
-.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:30px}
 footer a{color:var(--teal-d)}
+footer code{color:var(--ink)}
 
 /* ---------- adattamenti ---------- */
 @media(max-width:900px){
   .wrap{padding:16px}
   .filtri .riga{gap:16px}
   .campo,.campo.q{flex:1 1 100%}
+  /* la riga di ricerca si impila: via il margine che spingeva i chip a destra */
+  .filtri .riga.cerca-modo > .campo.modo{flex:1 1 100%;margin-left:0}
   .cards{grid-template-columns:minmax(0,1fr)}
-  .modulo{padding:15px 16px}
+  .card{padding:15px 16px}
 }
 @media print{
   .filtri,.vai,footer{display:none}
   .hero{color:#000;background:none;padding:0 0 12px}
   .hero .kicker{color:#000}
   .cards{display:block}
-  .modulo{break-inside:avoid;border-color:#000;margin-bottom:10px;box-shadow:none}
+  .card{break-inside:avoid;border-color:#000;margin-bottom:10px;box-shadow:none}
 }
