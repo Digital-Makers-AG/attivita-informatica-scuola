@@ -9,7 +9,7 @@
 html{scroll-behavior:smooth}
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
 a{color:var(--teal-d)}
-:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .wrap{max-width:1180px;margin:0 auto;padding:24px}
 .kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);font-weight:700}
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -73,11 +73,14 @@ a{color:var(--teal-d)}
 
 /* ---------- schede: argomenti (teal) e attività (arancione) ---------- */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:18px}
-.card{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--teal);border-radius:var(--radius);padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:border-color .15s ease,box-shadow .15s ease,transform .15s ease}
 .card.argomento{border-left-color:var(--teal)}
 .card.attivita{border-left-color:var(--orange)}
-.card.argomento:hover{border-color:var(--teal);border-left-color:var(--orange)}
-.card.attivita:hover{border-color:var(--orange)}
+/* l'evidenziazione è la stessa per i due tipi (inchiostro): i colori teal e arancione
+   restano ai bordi delle schede, dove dicono che cosa sono */
+.card:hover,.card:focus-within{border-color:var(--ink);box-shadow:0 6px 18px rgba(29,35,41,.18)}
+.card.argomento:hover{border-left-color:var(--teal)}
+.card.attivita:hover{border-left-color:var(--orange)}
 .card .tipo-badge{align-self:flex-start;font-size:11.5px;font-weight:800;letter-spacing:.05em;border-radius:12px;padding:2px 9px;background:var(--teal-l);color:var(--teal-d)}
 .card.attivita .tipo-badge{background:var(--orange-l);color:var(--orange-d)}
 .card .area-badge{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
@@ -93,6 +96,11 @@ a{color:var(--teal-d)}
 .card .vai{align-self:flex-start;margin-top:4px;font-weight:700;text-decoration:none;color:var(--teal-d)}
 .card.attivita .vai{color:var(--orange-d)}
 .card .vai:hover{text-decoration:underline}
+
+/* la scheda si solleva solo a chi non ha chiesto meno animazioni al sistema */
+@media (prefers-reduced-motion: no-preference){
+  .card:hover,.card:focus-within{transform:translateY(-2px)}
+}
 
 /* ---------- messaggi ---------- */
 .vuoto{background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:26px 20px;text-align:center;color:var(--muted)}

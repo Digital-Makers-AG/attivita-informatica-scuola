@@ -366,7 +366,9 @@
     return nodo;
   }
 
-  /** La scheda si disegna qui e in nessun altro posto: la usano l'hub e le pagine argomento. */
+  /** La scheda si disegna qui e in nessun altro posto: la usano l'hub e le pagine argomento.
+   *  I due link sono link veri, senza target: la pagina si apre nella stessa scheda, e chi vuole
+   *  una scheda nuova ha Ctrl+clic, il clic con la rotellina e «Apri in una nuova scheda». */
   function creaCard(voce, base) {
     const indirizzo = href(base, voce.percorso);
     const argomento = voce.tipo === TIPO_ARGOMENTO;
@@ -374,11 +376,11 @@
     return el('article', { classe: argomento ? 'card argomento' : 'card attivita' },
       el('span', { classe: 'tipo-badge', testo: argomento ? 'ARGOMENTO' : 'ATTIVITÀ' }),
       el('div', { classe: 'area-badge', testo: voce.areaEtichetta }),
-      el('h2', {}, el('a', { classe: 'titolo', href: indirizzo, target: '_blank', rel: 'noopener', testo: voce.titolo })),
+      el('h2', {}, el('a', { classe: 'titolo', href: indirizzo, testo: voce.titolo })),
       voce.descrizione ? el('p', { classe: 'descrizione', testo: voce.descrizione }) : null,
       voce.tag.length ? el('div', { classe: 'tagmini' }, voce.tag.map((tag) => el('span', { testo: tag }))) : null,
       badge ? el('span', { classe: 'badge-durata', testo: badge }) : null,
-      el('a', { classe: 'vai', href: indirizzo, target: '_blank', rel: 'noopener',
+      el('a', { classe: 'vai', href: indirizzo,
         testo: argomento ? 'Apri l\u2019argomento →' : 'Apri l\u2019attività →' }));
   }
 

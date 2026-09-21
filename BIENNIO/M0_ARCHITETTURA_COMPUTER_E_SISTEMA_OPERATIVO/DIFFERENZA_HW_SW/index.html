@@ -238,7 +238,7 @@ table{font-size:13.5px} th:nth-child(4),td.note{display:none} .task,.card{paddin
 <div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">Hardware e software · 01 · L&#x27;identikit del computer</div><button class="cp" data-target="t01">Copia</button></div>
 <div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Lezione 1. Abbiamo guardato dentro un computer. Adesso scrivi la carta d&#x27;identità di quello che hai davanti.
 
-1. Palestra dei componenti (20 minuti): https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_E_SISTEMA_OPERATIVO/DIFFERENZA_HARDWARE_SOFTWARE/01_LEZIONE_1/MATERIALI/palestra_componenti.html
+1. Palestra dei componenti (20 minuti): <span data-url="01_LEZIONE_1/MATERIALI/palestra_componenti.html">https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/DIFFERENZA_HW_SW/01_LEZIONE_1/MATERIALI/palestra_componenti.html</span>
    Se il link non si apre, scarica il file palestra_componenti.html allegato e aprilo con doppio clic.
 2. Alla fine premi «Riepilogo e codice», copia la riga che inizia con HWS-CMP e incollala nella prima pagina dell&#x27;identikit. Fallo anche se non hai finito tutte le domande.
 3. Apri l&#x27;identikit (è una tua copia) e compilalo con i dati del PC su cui stai lavorando: processore, quantità di RAM, memoria di massa, sistema operativo.
@@ -250,7 +250,7 @@ table{font-size:13.5px} th:nth-child(4),td.note{display:none} .task,.card{paddin
 <div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
 <p class="small">In Classroom: <b>Aggiungi › Link</b>, uno alla volta.</p>
 <div class="tw"><table><thead><tr><th>Link</th><th>Che cos&#x27;è</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
-<tr><td><div class="copybox" id="k01a" style="font-size:12.5px">https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_E_SISTEMA_OPERATIVO/DIFFERENZA_HARDWARE_SOFTWARE/01_LEZIONE_1/MATERIALI/palestra_componenti.html</div><button class="cp" data-target="k01a" style="margin-top:6px">Copia</button></td><td>Palestra dei componenti</td><td><span class="b link">Link</span></td><td class="note">è già citato nelle istruzioni: il link separato serve a chi legge di fretta</td></tr>
+<tr><td><div class="copybox" id="k01a" style="font-size:12.5px"><span data-url="01_LEZIONE_1/MATERIALI/palestra_componenti.html">https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/DIFFERENZA_HW_SW/01_LEZIONE_1/MATERIALI/palestra_componenti.html</span></div><button class="cp" data-target="k01a" style="margin-top:6px">Copia</button></td><td>Palestra dei componenti</td><td><span class="b link">Link</span></td><td class="note">è già citato nelle istruzioni: il link separato serve a chi legge di fretta</td></tr>
 </tbody></table></div></div></div>
 
 <div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
@@ -437,6 +437,20 @@ table{font-size:13.5px} th:nth-child(4),td.note{display:none} .task,.card{paddin
     },{rootMargin:"-20% 0px -70% 0px"});
     Array.prototype.forEach.call(secs,function(s){ io.observe(s); });
   }
+})();
+</script>
+
+<script>
+/* Indirizzi pubblici delle pagine collegate: calcolati dalla posizione di questa pagina, così il testo
+   copiato in Classroom è lo stesso in locale (http://localhost/attivita-informatica-scuola/...)
+   e online. Se la pagina è aperta da un percorso diverso resta il testo già scritto nel file. */
+(function(){
+  var SITO="https://digital-makers-ag.github.io/attivita-informatica-scuola/";
+  var m=location.pathname.match(/\/attivita-informatica-scuola\/((?:[^\/]+\/)*)[^\/]*$/);
+  if(!m) return;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-url]'),function(el){
+    el.textContent=SITO+m[1]+el.getAttribute('data-url');
+  });
 })();
 </script>
 </body></html>

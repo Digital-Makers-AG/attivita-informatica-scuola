@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Palestra dei colori · Il brand oltre il logo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%A8%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#A84A0C;--ink:#1d2329;--muted:#566169;--line:#cfd8dd;--bg:#f7f5f0;--card:#fff;--good:#1E7B3A;--good-l:#E6F4EA;--bad:#B42318;--bad-l:#FDECEA}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.5}
+button{font:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.skip{position:absolute;left:-999px} .skip:focus{left:8px;top:8px;background:#fff;padding:8px;z-index:9}
+#topbar{position:sticky;top:0;z-index:5;background:var(--teal-d);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.tb-in{max-width:860px;margin:0 auto;display:flex;gap:14px;align-items:center;padding:8px 16px;flex-wrap:wrap}
+.tb-t{display:flex;flex-direction:column;line-height:1.2;min-width:0} .tb-t b{font-size:16px} .tb-t span{font-size:13px;opacity:.9}
+.tb-p{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:14px}
+.pbar{width:120px;height:8px;background:rgba(255,255,255,.25);border-radius:6px;overflow:hidden} .pbar div{height:100%;background:#FFB27A}
+#app{max-width:860px;margin:0 auto;padding:18px 16px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange-d);font-weight:700}
+h1{margin:4px 0 8px;font-size:clamp(28px,5vw,38px);color:var(--teal-d);line-height:1.15} h2{margin:4px 0 10px;font-size:clamp(21px,3.4vw,26px);line-height:1.25;color:var(--ink)}
+h1:focus,h2:focus{outline:none}
+.lead{font-size:18px;margin:6px 0 12px}
+.tiny{font-size:13px;color:var(--muted)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.btn{border:2px solid var(--teal);background:var(--teal);color:#fff;border-radius:10px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:16px}
+.btn:hover{background:var(--teal-d);border-color:var(--teal-d)}
+.btn.big{padding:12px 20px;font-size:17px}
+.btn.ghost{background:#fff;color:var(--teal-d)} .btn.ghost:hover{background:var(--teal-l)}
+.btn.star{background:var(--orange-d);border-color:var(--orange-d)} .btn.star:hover{background:#8a3d05;border-color:#8a3d05}
+#topbar .btn.star{padding:6px 12px;font-size:14px;background:#fff;color:var(--orange-d);border-color:#fff}
+#topbar .btn.star:hover{background:#FDEBDC}
+.secs{margin:10px 0 18px;padding-left:22px} .secs li{margin:4px 0}
+.namebox{background:var(--teal-l);border-radius:12px;padding:16px;margin:14px 0 10px}
+.namebox label{display:block;font-weight:700;margin-bottom:6px}
+.namebox input{width:100%;max-width:360px;font:inherit;padding:10px 12px;border:2px solid var(--line);border-radius:10px;background:#fff;margin-right:10px;margin-bottom:10px}
+.namebox input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px rgba(11,110,117,.25)}
+.err{color:var(--bad);font-weight:700;margin:6px 0 0;min-height:1em}
+.resume{background:#FFF7E6;border-color:#E9B949;margin:14px 0} .resume p{margin:0}
+.ripasso{background:var(--teal-l);border-left:5px solid var(--teal);border-radius:10px;padding:14px 16px;margin:12px 0 4px}
+.ripasso p{margin:6px 0} .ripasso ul{margin:6px 0;padding-left:20px}
+.qhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:14px;color:var(--muted);margin-bottom:6px}
+.qhead .sec{font-weight:700;color:var(--teal-d)}
+.prompt{font-size:clamp(19px,3vw,23px);font-weight:700}
+.visual{margin:14px 0 16px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;text-align:left;width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;color:var(--ink);font-size:17px}
+.opt:hover:not(:disabled){border-color:var(--teal);background:#F4FAFA}
+.opt .k{width:30px;height:30px;border-radius:50%;background:var(--teal-l);color:var(--teal-d);display:grid;place-items:center;font-weight:800;font-size:15px}
+.opt .st{font-size:14px;font-weight:800;white-space:nowrap}
+.opt:disabled{cursor:default;opacity:1}
+.opt.right{border-color:var(--good);background:var(--good-l)} .opt.right .st{color:var(--good)} .opt.right .k{background:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-l);border-style:dashed} .opt.wrong .st{color:var(--bad)} .opt.wrong .k{background:var(--bad);color:#fff}
+.fb{margin-top:14px;border-radius:12px;padding:0;display:none}
+.fb.on{display:block;padding:14px 16px;border:2px solid var(--line)}
+.fb.good{background:var(--good-l);border-color:#9fd3ae} .fb.bad{background:#FFF6F5;border-color:#f1b0a8}
+.fb p{margin:6px 0} .verdict{font-weight:800;font-size:18px} .verdict.good{color:var(--good)} .verdict.bad{color:var(--bad)}
+.fb .then{border-top:1px solid rgba(0,0,0,.1);padding-top:8px;margin-top:8px}
+.after{margin-top:10px}
+.nav{justify-content:flex-end}
+.score{border-collapse:collapse;width:100%;margin:10px 0} .score td{padding:8px 10px;border-bottom:1px solid var(--line)} .score td.n{font-weight:800;white-space:nowrap;text-align:right}
+.score tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
+.tw{overflow-x:auto}
+.warn{background:#FFF7E6;border:1px solid #E9B949;border-radius:10px;padding:10px 14px;margin:8px 0}
+.codelbl{display:block;font-weight:700;margin:16px 0 6px}
+.code{width:100%;font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:15px;padding:12px;border:2px solid var(--teal);border-radius:10px;background:#F4FAFA;color:var(--ink);resize:vertical}
+details.teacher{margin-top:22px;border-top:1px solid var(--line);padding-top:12px} details.teacher summary{cursor:pointer;font-weight:700;color:var(--muted)}
+.vok{color:var(--good);font-weight:700} .vbad{color:var(--bad);font-weight:700}
+footer{max-width:860px;margin:0 auto;padding:0 16px 30px;color:var(--muted);font-size:13px}
+footer details summary{cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:600px){.card{padding:16px} .opt{grid-template-columns:28px 1fr;font-size:16px} .opt .st{grid-column:2} .tb-p .pbar{width:70px} body{font-size:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.pal .palbar{display:flex;height:84px;border:2px solid #1d2329;border-radius:12px;overflow:hidden}
+.pal .palbar span{display:block;height:100%} .pal .palbar span+span{border-left:2px solid #1d2329}
+.legend{list-style:none;padding:0;margin:10px 0 0;display:flex;gap:8px 20px;flex-wrap:wrap}
+.legend li{display:flex;align-items:center;gap:8px;font-size:16px}
+.sw{width:24px;height:24px;border-radius:6px;border:2px solid #1d2329;display:inline-block;flex:none}
+.mkwrap .mk{display:flex;justify-content:center;align-items:center;padding:28px 16px 20px;background:#E9EDEF;border-radius:12px;min-height:230px}
+/* Fresco */
+.carton{width:150px;height:210px;border-radius:4px 4px 10px 10px;position:relative;box-shadow:0 5px 12px rgba(0,0,0,.2)}
+.carton .cap{position:absolute;top:-16px;left:52px;width:44px;height:16px;border-radius:6px 6px 0 0}
+.carton .lab{position:absolute;left:14px;right:14px;top:62px;height:96px;background:#fff;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.carton .leaf{width:28px;height:15px;border-radius:15px 0;background:#3A9D23;transform:rotate(-18deg)}
+.carton .lab b{font-size:23px;letter-spacing:.05em;color:#1d2329} .carton .lab small{font-size:11px;color:#333}
+/* Voltaggio */
+.web{width:min(100%,380px);border:2px solid #1d2329;border-radius:10px;overflow:hidden;background:#fff;font-size:14px;text-align:left}
+.web .w3{height:18px;background:#DDE2E5;display:flex;gap:5px;align-items:center;padding:0 8px} .web .w3 i{width:8px;height:8px;border-radius:50%;background:#8a949b;display:block}
+.web .hd{background:#1B2A4A;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.web .hd span{font-weight:400;font-size:12px}
+.web .bd{padding:16px 14px 22px;color:#1B2A4A} .web .bd b{font-size:19px;display:block;margin-bottom:4px} .web .bd p{margin:0 0 14px}
+.web .cta{display:inline-block;background:#FFC20E;color:#1B2A4A;font-weight:800;padding:9px 18px;border-radius:8px}
+.web .ft{background:#1B2A4A;height:26px}
+/* Casa Moro */
+.lbl{width:min(100%,320px);background:#F3E9D2;border:6px double #C9A227;border-radius:14px;padding:18px 16px;text-align:center;color:#A23B2A;position:relative}
+.lbl b{font-family:Georgia,"Times New Roman",serif;font-size:32px;display:block;line-height:1.1;margin:4px 0}
+.lbl small{font-size:12px;display:block}
+.lbl .band{background:#A23B2A;color:#F3E9D2;font-weight:700;letter-spacing:.14em;font-size:12px;padding:7px 4px;margin:10px -16px}
+.lbl .seal{position:absolute;top:-18px;right:-12px;width:48px;height:48px;border-radius:50%;background:#C9A227;color:#2b1d00;font-size:12px;font-weight:800;display:grid;place-items:center;border:2px solid #F3E9D2}
+/* Pizza Lampo */
+.fly{width:min(100%,300px);background:#FFD000;color:#111;border:2px solid #1d2329;border-radius:10px;padding:20px 18px;text-align:center;position:relative}
+.fly .bdg{position:absolute;top:-18px;right:-18px;background:#FFD000;border:2px solid #111;border-radius:50%;width:50px;height:50px;display:grid;place-items:center;font-weight:800;font-size:14px}
+.fly b{font-size:28px;display:block;letter-spacing:.03em;margin-top:8px} .fly p{margin:6px 0 0}
+.fly .fbtn{display:inline-block;margin-top:16px;background:#FFD000;border:1px solid rgba(0,0,0,.2);border-radius:8px;padding:8px 18px;font-weight:700}
+/* contesti */
+.ctx{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ctxc{border-radius:12px;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:2px solid #1d2329;text-align:center;padding:12px}
+.ctxc .ico{font-size:42px;line-height:1} .ctxc b{font-size:18px}
+.same{margin:10px 0 0;display:flex;align-items:center;gap:8px;font-size:15px}
+/* HEX */
+code{font-family:ui-monospace,Consolas,"Courier New",monospace;background:#EEF1F2;border-radius:4px;padding:0 4px}
+.hexbig{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:clamp(34px,8vw,56px);font-weight:800;letter-spacing:.06em;text-align:center;background:#E9EDEF;border-radius:12px;padding:20px 10px}
+.hexbig.pairs span{display:inline-block;border-bottom:4px solid #1d2329;margin:0 .15em;padding:0 .05em}
+.opt code.mono{font-size:19px;background:none;padding:0;font-weight:700}
+.reveal{display:flex;gap:14px;flex-wrap:wrap} .reveal>div{display:flex;align-items:center;gap:8px;font-size:14px}
+.swbig{width:48px;height:48px;border-radius:8px;border:2px solid #1d2329;flex:none;display:inline-block}
+@media (max-width:600px){.ctxc{min-height:120px} .ctxc .ico{font-size:34px} .ctxc b{font-size:16px}}
+
+</style></head><body>
+<header id="topbar" hidden></header>
+<main id="app"></main>
+<noscript><p style="max-width:700px;margin:20px auto;padding:16px;background:#FFF7E6;border:1px solid #E9B949;border-radius:10px">Questa palestra ha bisogno di JavaScript. Aprila con Chrome, Edge o Firefox.</p></noscript>
+<footer><details><summary>Crediti e fonti</summary><p>Tutti i marchi citati appartengono ai rispettivi proprietari e sono usati solo a scopo didattico: la palestra mostra campioni di colore e nomi, nessun logo.</p><p>Colori dei marchi reali della sezione A: IKEA blu #0058A3 e giallo #FFDB00 come usati su ikea.com; Netflix rosso #E50914 come usato su netflix.com; Spotify verde #1ED760 e fondo #121212 come usati su spotify.com e nelle linee guida per sviluppatori; Twitch viola #9146FF, il colore del rebranding 2019. Pizza Lampo, Voltaggio, Casa Moro e Fresco sono marchi inventati.</p><p>Palestra per il percorso «Il brand oltre il logo» · Servizi commerciali.</p></details></footer>
+<script>
+(function(){
+"use strict";
+/* ---- campioni di colore ---- */
+function lum(hex){ var c=hex.replace("#",""); var v=[0,2,4].map(function(i){ var x=parseInt(c.substr(i,2),16)/255; return x<=0.03928?x/12.92:Math.pow((x+0.055)/1.055,2.4); }); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; }
+function legend(segs){
+  return '<ul class="legend">'+segs.map(function(s){ return '<li><span class="sw" style="background:'+s.hex+'"></span>'+s.name+' <b>'+s.pct+'%</b></li>'; }).join("")+'</ul>';
+}
+function pal(segs){
+  return '<div class="pal"><div class="palbar" aria-hidden="true">'+segs.map(function(s){ return '<span style="flex:'+s.pct+';background:'+s.hex+'"></span>'; }).join("")+'</div>'+legend(segs)+'</div>';
+}
+function ctx(hex,name,a,b){
+  var ink = lum(hex)>0.3 ? "#111" : "#fff";
+  function card(x){ return '<div class="ctxc" style="background:'+hex+';color:'+ink+'"><span class="ico" aria-hidden="true">'+x[0]+'</span><b>'+x[1]+'</b></div>'; }
+  return '<div class="ctx">'+card(a)+card(b)+'</div><p class="same"><span class="sw" style="background:'+hex+'"></span>Stesso colore nei due casi: <b>'+name+'</b></p>';
+}
+function mk(inner,segs){ return '<div class="mkwrap"><div class="mk">'+inner+'</div>'+legend(segs)+'</div>'; }
+function hexReveal(list){ return '<div class="reveal">'+list.map(function(x){ return '<div><span class="swbig" style="background:'+x[0]+'"></span><span><code>'+x[0]+'</code><br>'+x[1]+'</span></div>'; }).join("")+'</div>'; }
+
+var R=["Primario","Secondario o d'accento","Neutro"];
+
+window.PALESTRA = {
+  tool:"COL", prefix:"BRD-COL",
+  title:"Palestra dei colori",
+  kicker:"Il brand oltre il logo · Lezione 1",
+  slot:"Codice palestra dei colori",
+  intro:"Dodici domande in tre sezioni, circa 20 minuti. Ogni risposta ti spiega il perché: leggi il commento anche quando indovini. Alla fine copi un codice e lo incolli nella tua scheda.",
+  bonusButton:"Bonus facoltativo: il codice HEX",
+  messages:[[0.9,"Ottimo lavoro: hai l'occhio di un grafico."],[0.7,"Bene! Rileggi i commenti delle risposte sbagliate e sei a posto."],[0.5,"Ci sei quasi. Rifai la palestra: le risposte tornano in un ordine diverso."],[0,"Riparti dai ripassi all'inizio di ogni sezione e rifai la palestra: ogni giro insegna qualcosa."]],
+  sections:[
+  { code:"PALETTE", label:"A. Palette misteriosa",
+    intro:"<p>Ogni barra mostra i colori di un marchio famoso e quanto spazio occupano. Niente logo, niente nome.</p><p>Riconosci l'azienda dai colori <b>e dalle proporzioni</b>: quale colore domina conta quanto il colore stesso.</p>",
+    qs:[
+    { id:"a1", prompt:"Questi sono i colori di un marchio famoso, con lo spazio che occupano. Di quale azienda si tratta?",
+      visual:pal([{hex:"#0058A3",name:"blu",pct:55},{hex:"#FFDB00",name:"giallo",pct:30},{hex:"#FFFFFF",name:"bianco",pct:15}]),
+      options:[
+        {t:"IKEA", ok:true, fb:"Blu e giallo, e quasi solo quelli: sono i colori della bandiera svedese, e IKEA li usa per il logo, le insegne e le borse."},
+        {t:"Lidl", fb:"Anche Lidl usa blu e giallo, ma nel suo marchio c'è sempre anche il rosso. Qui il rosso non c'è."},
+        {t:"Coca-Cola", fb:"Coca-Cola è rosso e bianco: qui non c'è traccia di rosso."},
+        {t:"Starbucks", fb:"Starbucks è verde, e qui il verde non c'è."}
+      ]},
+    { id:"a2", prompt:"Di quale azienda sono questi colori?",
+      visual:pal([{hex:"#000000",name:"nero",pct:60},{hex:"#E50914",name:"rosso",pct:30},{hex:"#FFFFFF",name:"bianco",pct:10}]),
+      options:[
+        {t:"Netflix", ok:true, fb:"Domina il nero e il rosso spicca sopra: è lo schermo di Netflix, uno sfondo scuro da sala cinematografica con il rosso del marchio."},
+        {t:"Coca-Cola", fb:"Il rosso di Coca-Cola è il colore principale e sta sul bianco. Qui invece domina il nero."},
+        {t:"Vodafone", fb:"Vodafone abbina il rosso al bianco, e il bianco occupa tanto spazio. Qui domina il nero."},
+        {t:"Ferrari", fb:"Ferrari accompagna il rosso con il giallo dello scudetto. Qui il giallo non c'è e domina il nero."}
+      ]},
+    { id:"a3", prompt:"Occhio alle sfumature: sono tutti marchi verdi. Qual è quello giusto?",
+      visual:pal([{hex:"#121212",name:"nero",pct:60},{hex:"#FFFFFF",name:"bianco",pct:25},{hex:"#1ED760",name:"verde brillante",pct:15}]),
+      options:[
+        {t:"Spotify", ok:true, fb:"Sfondo quasi nero e un verde brillante usato poco, solo sui pulsanti e nel logo: è l'app di Spotify."},
+        {t:"WhatsApp", fb:"Anche WhatsApp è verde, ma nel marchio e nel sito il suo verde sta quasi sempre su fondi chiari. Qui domina il nero."},
+        {t:"Starbucks", fb:"Il verde di Starbucks è scuro, quasi verde bosco, e sta su fondi chiari. Qui il verde è brillante e lo sfondo è nero."},
+        {t:"Duolingo", fb:"Duolingo usa un verde prato brillante con tanto bianco intorno. Qui domina il nero."}
+      ]},
+    { id:"a4", prompt:"La più difficile della sezione. Di chi sono questi colori?",
+      visual:pal([{hex:"#9146FF",name:"viola acceso",pct:55},{hex:"#0E0E10",name:"nero",pct:30},{hex:"#FFFFFF",name:"bianco",pct:15}]),
+      options:[
+        {t:"Twitch", ok:true, fb:"Un viola acceso e deciso, con il nero: è la piattaforma di streaming Twitch, che nel 2019 ha scelto proprio questa tonalità di viola."},
+        {t:"Milka", fb:"Il viola di Milka è chiaro, un lilla delicato, accostato al bianco: comunica dolcezza, non l'energia di un viola elettrico sul nero."},
+        {t:"Discord", fb:"Discord usa un blu-violetto che tira più al blu, con molto bianco o grigio scuro. Qui il viola è pieno."},
+        {t:"Instagram", fb:"Instagram usa una sfumatura che passa dal viola al rosa all'arancione, non un viola pieno come questo."}
+      ]}
+    ]},
+  { code:"RUOLI", label:"B. Primario, secondario o neutro?",
+    intro:"<ul><li><b>Primario</b>: il colore che fa riconoscere il marchio. Fra i colori «veri» è il più presente.</li><li><b>Secondario o d'accento</b>: si usa poco, per far notare pulsanti e dettagli.</li><li><b>Neutro</b>: bianco, nero, grigi, beige, crema. Fa da sfondo, <b>anche quando occupa tanto spazio</b>.</li></ul><p>Proporzione tipica: 60-30-10. Tutti i marchi di questa sezione sono inventati.</p>",
+    qs:[
+    { id:"b1", fixed:true, prompt:"La confezione del succo «Fresco». Che ruolo ha l'arancione?",
+      visual:mk('<div class="carton" style="background:#F28C28"><span class="cap" style="background:#3A9D23"></span><div class="lab"><span class="leaf"></span><b>FRESCO</b><small>succo d\'arancia 100%</small></div></div>',
+        [{hex:"#F28C28",name:"arancione",pct:60},{hex:"#FFFFFF",name:"bianco",pct:30},{hex:"#3A9D23",name:"verde",pct:10}]),
+      options:[
+        {t:R[0], ok:true, fb:"È il colore «vero» più presente e fa riconoscere il succo sullo scaffale da lontano: è il primario."},
+        {t:R[1], fb:"L'accento si usa poco, per i dettagli: qui è il verde della foglia e del tappo. L'arancione copre quasi tutta la confezione."},
+        {t:R[2], fb:"I neutri sono bianco, nero, grigi e beige. L'arancione è un colore pieno, e qui fa da protagonista."}
+      ]},
+    { id:"b2", fixed:true, prompt:"La pagina web di «Voltaggio», noleggio di monopattini. Che ruolo ha il giallo?",
+      visual:mk('<div class="web"><div class="w3" aria-hidden="true"><i></i><i></i><i></i></div><div class="hd">⚡ Voltaggio <span>Mappa · Prezzi · Aiuto</span></div><div class="bd"><b>Monopattini elettrici in città</b><p>Trova il più vicino e parti in 30 secondi.</p><span class="cta">Sblocca</span></div><div class="ft"></div></div>',
+        [{hex:"#FFFFFF",name:"bianco",pct:60},{hex:"#1B2A4A",name:"blu notte",pct:30},{hex:"#FFC20E",name:"giallo",pct:10}]),
+      options:[
+        {t:R[0], fb:"Il primario è il blu notte: fra i colori «veri» è il più presente e identifica il marchio. Il giallo compare solo sul pulsante."},
+        {t:R[1], ok:true, fb:"Compare solo sul pulsante «Sblocca»: pochissimo spazio, ma è la prima cosa che vedi. È esattamente il lavoro del colore d'accento."},
+        {t:R[2], fb:"Il giallo non è un neutro. Il neutro qui è il bianco dello sfondo."}
+      ]},
+    { id:"b3", fixed:true, prompt:"L'etichetta dell'olio «Casa Moro». Il crema occupa più spazio di tutti: che ruolo ha?",
+      visual:mk('<div class="lbl"><span class="seal">DOP</span><small>dal 1958</small><b>Casa Moro</b><div class="band">OLIO EXTRAVERGINE</div><small>raccolto a mano · 0,75 l</small></div>',
+        [{hex:"#F3E9D2",name:"crema",pct:60},{hex:"#A23B2A",name:"rosso mattone",pct:30},{hex:"#C9A227",name:"oro",pct:10}]),
+      options:[
+        {t:R[0], fb:"Sembra la risposta ovvia perché è il più esteso, ma il crema fa da sfondo, come farebbe il bianco. Il colore che fa riconoscere Casa Moro è il rosso mattone."},
+        {t:R[1], fb:"L'accento si usa poco e per far notare: qui è l'oro della cornice e del bollino."},
+        {t:R[2], ok:true, fb:"Occupare più spazio non basta per essere primario. Il crema è un neutro caldo: fa da sfondo e lascia parlare il rosso mattone, che è il vero colore del marchio."}
+      ]},
+    { id:"b4", prompt:"Il volantino di «Pizza Lampo». Il pulsante «Ordina ora» non si nota. Perché?",
+      visual:mk('<div class="fly"><span class="bdg">-20%</span><b>PIZZA LAMPO</b><p>Consegna in 20 minuti</p><span class="fbtn">Ordina ora</span></div>',
+        [{hex:"#FFD000",name:"giallo",pct:85},{hex:"#111111",name:"nero",pct:15}]),
+      options:[
+        {t:"Il giallo fa sia da primario sia da accento: un pulsante dello stesso colore dello sfondo non può staccare.", ok:true, fb:"L'accento funziona solo se è diverso e usato poco. Basterebbe un pulsante rosso o nero per farlo saltare all'occhio."},
+        {t:"Il pulsante è troppo piccolo.", fb:"La misura conta poco: anche un pulsante enorme sparisce se ha lo stesso colore di quello che gli sta intorno."},
+        {t:"Manca un colore neutro.", fb:"Il neutro c'è già: il nero delle scritte. Il problema è che il colore d'accento è uguale al primario."}
+      ]}
+    ]},
+  { code:"SENSAZIONI", label:"C. Che sensazione?",
+    intro:"<p>Ogni colore ha le sue sensazioni tipiche: rosso energia, blu fiducia, giallo ottimismo, verde natura, nero forza o lusso.</p><p>Ma <b>conta il contesto</b>: lo stesso colore in due settori diversi può dire cose diverse. Ogni risposta ha un messaggio e un perché: scegli quella in cui sono giusti tutti e due.</p>",
+    qs:[
+    { id:"c1", prompt:"Nel fast food, che cosa comunica soprattutto questo rosso?",
+      visual:ctx("#C8102E","rosso",["🍔","Fast food"],["🏎️","Auto sportiva"]),
+      options:[
+        {t:"Appetito ed energia: il rosso attira lo sguardo e mette fretta, perfetto per un pasto veloce.", ok:true, fb:"Il rosso stimola e accende: nei locali di cibo veloce invita a entrare, ordinare e ripartire."},
+        {t:"Velocità e potenza dei motori.", fb:"È il messaggio del rosso nell'auto sportiva, non nel fast food. Stesso colore, settore diverso, significato diverso."},
+        {t:"Calma e relax: invita a fermarsi a lungo.", fb:"Il rosso è un colore che accende, non che calma. Per il relax si scelgono colori tenui, come l'azzurro o il verde chiaro."}
+      ]},
+    { id:"c2", prompt:"Nell'app per gli investimenti, perché usare il verde?",
+      visual:ctx("#1E7B45","verde",["🌿","Prodotti biologici"],["📈","App per investire"]),
+      options:[
+        {t:"Indica crescita e segno positivo: nei grafici della borsa quello che sale è verde.", ok:true, fb:"In finanza il verde è il colore del guadagno: numeri che salgono, conto in positivo."},
+        {t:"Indica che l'app è naturale e biologica.", fb:"Natura e salute sono il messaggio del verde nei prodotti biologici. In un'app per investire lo stesso verde parla di soldi che crescono."},
+        {t:"Indica pericolo, per mettere in guardia chi investe.", fb:"Per il pericolo si usano rosso e giallo. Il verde di solito dice il contrario: via libera, tutto bene."}
+      ]},
+    { id:"c3", prompt:"Nell'abbigliamento sportivo, che cosa comunica il nero?",
+      visual:ctx("#111111","nero",["💎","Profumo di lusso"],["🏋️","Abbigliamento sportivo"]),
+      options:[
+        {t:"Forza e determinazione: è un colore deciso, senza fronzoli, che fa pensare alla grinta.", ok:true, fb:"Nello sport il nero è sinonimo di concentrazione e potenza: niente decorazioni, solo prestazione."},
+        {t:"Eleganza ed esclusività.", fb:"È il messaggio del nero nel profumo di lusso. Nello sport lo stesso nero parla di grinta."},
+        {t:"Tristezza e lutto.", fb:"In certi contesti sì, ma nessun marchio sportivo vuole comunicare tristezza: nel mondo dei brand il nero significa forza oppure eleganza."}
+      ]},
+    { id:"c4", prompt:"Stesso giallo, due messaggi diversi. Quale frase è corretta?",
+      visual:ctx("#FFC20E","giallo",["🚧","Segnaletica di cantiere"],["🍦","Gelateria"]),
+      options:[
+        {t:"Nel cantiere avvisa di un pericolo, nella gelateria comunica allegria: è il contesto che decide il significato.", ok:true, fb:"È il punto di tutta la sezione: un colore non ha un solo significato, lo decidono il settore e gli elementi che gli stanno accanto."},
+        {t:"Il giallo significa sempre allegria, anche nel cantiere.", fb:"Nel cantiere il giallo, spesso con il nero, serve a farsi notare e ad avvisare: non è allegria, è attenzione."},
+        {t:"Una gelateria non dovrebbe mai usare il giallo, perché ricorda il pericolo.", fb:"Il significato cambia con il contesto: accanto a coni e gusti di frutta il giallo diventa sole ed estate."}
+      ]}
+    ]}
+  ],
+  bonus:{ code:"BONUS HEX", label:"Bonus: il codice HEX",
+    intro:"<p>Sullo schermo un colore si scrive con <b>#</b> e sei caratteri: <code>#RRGGBB</code>.</p><ul><li>Tre coppie: <b>rosso</b>, <b>verde</b>, <b>blu</b>, sempre in quest'ordine.</li><li>Ogni coppia va da <code>00</code> (niente) a <code>FF</code> (il massimo).</li><li>Più una coppia è alta, più quel colore pesa nel risultato.</li></ul><p>Il bonus non cambia il punteggio: compare a parte nel codice.</p>",
+    qs:[
+    { id:"h1", prompt:"Che colore è <code>#FFFFFF</code>?",
+      visual:'<div class="hexbig">#FFFFFF</div>',
+      options:[
+        {t:"Bianco", ok:true, fb:"FF è il valore massimo: rosso, verde e blu tutti al massimo si sommano e danno il bianco. Al contrario, <code>#000000</code>, tutto a zero, è il nero."},
+        {t:"Nero", fb:"Il nero è <code>#000000</code>, tutto a zero: nessuna luce."},
+        {t:"Rosso", fb:"Il rosso puro è <code>#FF0000</code>: solo la prima coppia al massimo, le altre a zero."},
+        {t:"Grigio chiaro", fb:"Un grigio ha le tre coppie uguali ma non al massimo, per esempio <code>#CCCCCC</code>."}
+      ],
+      after:hexReveal([["#FFFFFF","bianco"],["#000000","nero"]])},
+    { id:"h2", fixed:true, prompt:"In un codice <code>#RRGGBB</code>, quale coppia di caratteri controlla il <b>verde</b>?",
+      visual:'<div class="hexbig pairs">#<span>RR</span><span>GG</span><span>BB</span></div><p class="tiny" style="text-align:center">prima coppia · seconda coppia · terza coppia</p>',
+      options:[
+        {t:"La prima coppia", fb:"La prima coppia è il rosso: R come red."},
+        {t:"La seconda coppia", ok:true, fb:"L'ordine è sempre rosso, verde, blu (in inglese red, green, blue). Quindi <code>#00FF00</code> è verde puro."},
+        {t:"La terza coppia", fb:"La terza coppia è il blu: B come blue."}
+      ],
+      after:hexReveal([["#FF0000","#FF0000 · solo rosso"],["#00FF00","#00FF00 · solo verde"],["#0000FF","#0000FF · solo blu"]])},
+    { id:"h3", prompt:"Uno di questi codici è il rosso di Netflix. Quale?",
+      visual:'<p class="tiny" style="text-align:center">Suggerimento: cerca il codice in cui la coppia del rosso è alta e le altre sono basse.</p>',
+      options:[
+        {t:"<code class=\"mono\">#E50914</code>", label:"<code>#E50914</code>", ok:true, fb:"La prima coppia, il rosso, è alta (E5); le altre due sono quasi a zero (09 e 14). Domina il rosso."},
+        {t:"<code class=\"mono\">#1409E5</code>", label:"<code>#1409E5</code>", fb:"Qui la coppia alta è la terza, il blu: è un blu elettrico."},
+        {t:"<code class=\"mono\">#14E509</code>", label:"<code>#14E509</code>", fb:"Qui la coppia alta è la seconda, il verde: è un verde acceso."}
+      ],
+      after:hexReveal([["#E50914","rosso Netflix"],["#1409E5","blu"],["#14E509","verde"]])}
+    ]}
+};
+})();
+
+</script>
+<script>
+(function(){
+"use strict";
+var C = window.PALESTRA;
+var app = document.getElementById("app");
+var topbar = document.getElementById("topbar");
+
+/* ---------- utilità ---------- */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+var store = {
+  get:function(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set:function(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del:function(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+var KEY = "brd-" + C.tool.toLowerCase() + ":";
+function sig(s,tag){ var h=5381, t="BRD*"+s+"*"+tag; for(var k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+function cleanName(s){ return String(s||"").replace(/[|#]/g," ").replace(/\s+/g," ").trim(); }
+function nameKey(s){ return cleanName(s).toLowerCase(); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function plural(n,one,many){ return n===1?one:many; }
+
+/* ---------- percorso ---------- */
+var STEPS=[], BSTEPS=[];
+C.sections.forEach(function(sec){ STEPS.push({type:"intro",sec:sec}); sec.qs.forEach(function(q){ STEPS.push({type:"q",q:q,sec:sec}); }); });
+STEPS.push({type:"end"});
+if(C.bonus){ BSTEPS.push({type:"intro",sec:C.bonus,bonus:true}); C.bonus.qs.forEach(function(q){ BSTEPS.push({type:"q",q:q,sec:C.bonus,bonus:true}); }); BSTEPS.push({type:"bend"}); }
+var NMAIN = C.sections.reduce(function(s,x){ return s+x.qs.length; },0);
+function qNumber(q){ var n=0; for(var i=0;i<C.sections.length;i++){ var qs=C.sections[i].qs; for(var j=0;j<qs.length;j++){ n++; if(qs[j].id===q.id) return n; } } return 0; }
+
+/* ---------- stato ---------- */
+var S=null;
+function newState(name){
+  var order={};
+  C.sections.concat(C.bonus?[C.bonus]:[]).forEach(function(sec){ sec.qs.forEach(function(q){
+    var idx=q.options.map(function(_,i){ return i; }); order[q.id]= q.fixed ? idx : shuffle(idx);
+  }); });
+  var att = JSON.parse(store.get(KEY+"tentativi")||"{}"); var k=nameKey(name); att[k]=(att[k]||0)+1; store.set(KEY+"tentativi",JSON.stringify(att));
+  return {name:name, rip:att[k]-1, answers:{}, bonus:{}, order:order, mode:"main", step:0, bstep:0, back:null};
+}
+function save(){ if(S) store.set(KEY+"stato",JSON.stringify(S)); }
+function load(){ try{ var s=JSON.parse(store.get(KEY+"stato")||"null"); return s&&s.name&&s.order?s:null; }catch(e){ return null; } }
+function mainDone(){ var d=0; C.sections.forEach(function(sec){ sec.qs.forEach(function(q){ if(S.answers[q.id]) d++; }); }); return d; }
+function firstOpenStep(){
+  for(var i=0;i<STEPS.length;i++){ var st=STEPS[i];
+    if(st.type==="q"&&!S.answers[st.q.id]){ var started=st.sec.qs.some(function(q){ return S.answers[q.id]; }); return started? i : i-1; } }
+  return STEPS.length-1;
+}
+function secScore(sec,bag){ var ok=0,done=0; sec.qs.forEach(function(q){ var a=bag[q.id]; if(a){ done++; if(a.ok) ok++; } }); return {ok:ok,done:done,n:sec.qs.length}; }
+
+/* ---------- codice ---------- */
+function codeLine(){
+  var parts=[C.prefix, S.name], tot=0;
+  C.sections.forEach(function(sec){ var s=secScore(sec,S.answers); tot+=s.ok; var miss=s.n-s.done;
+    parts.push(sec.code+" "+s.ok+"/"+s.n+(miss?" ("+miss+" "+plural(miss,"non fatta","non fatte")+")":"")); });
+  parts.push("TOT "+tot+"/"+NMAIN);
+  if(C.bonus){ var b=secScore(C.bonus,S.bonus); var bm=b.n-b.done;
+    parts.push(b.done? C.bonus.code+" "+b.ok+"/"+b.n+(bm?" ("+bm+" "+plural(bm,"non fatta","non fatte")+")":"") : C.bonus.code+" -"); }
+  parts.push("ripetizioni "+S.rip);
+  var body=parts.join(" | ");
+  return body+" | #"+sig(body,C.tool);
+}
+function verify(raw){
+  var c=String(raw||"").replace(/\s+/g," ").trim(); var k=c.lastIndexOf(" | #");
+  if(!/^BRD-[A-Z]{3} \|/.test(c)||k<0) return {ok:false,msg:"Non sembra un codice delle palestre del brand: deve iniziare con BRD- e finire con # e 5 caratteri."};
+  var body=c.slice(0,k), sg=c.slice(k+4), tool=c.slice(4,7);
+  if(!/^[0-9A-Z]{5}$/.test(sg)) return {ok:false,msg:"La firma finale deve essere # seguito da 5 caratteri."};
+  return sig(body,tool)===sg ? {ok:true,msg:"Firma valida: il codice non è stato modificato a mano."} : {ok:false,msg:"Firma NON valida: il codice è stato modificato dopo essere stato generato, oppure è stato copiato solo in parte."};
+}
+
+/* ---------- barra in alto ---------- */
+function renderTop(){
+  if(!S||S.mode==="start"){ topbar.innerHTML=""; topbar.hidden=true; return; }
+  topbar.hidden=false;
+  var d=mainDone();
+  topbar.innerHTML='<div class="tb-in"><div class="tb-t"><b>'+esc(C.title)+'</b><span>'+esc(S.name)+'</span></div>'+
+    '<div class="tb-p" aria-label="Domande fatte: '+d+' su '+NMAIN+'"><span>'+d+' / '+NMAIN+'</span><div class="pbar"><div style="width:'+Math.round(d/NMAIN*100)+'%"></div></div></div>'+
+    '<button class="btn star" id="goSum" type="button">★ Riepilogo e codice</button></div>';
+  document.getElementById("goSum").onclick=function(){ if(S.mode!=="summary"){ S.back={mode:S.mode,step:S.step,bstep:S.bstep}; } S.mode="summary"; save(); render(); };
+}
+
+/* ---------- schermate ---------- */
+function render(){
+  renderTop();
+  if(!S||S.mode==="start") return renderStart();
+  if(S.mode==="summary") return renderSummary();
+  var list = S.mode==="bonus"?BSTEPS:STEPS, i = S.mode==="bonus"?S.bstep:S.step, st=list[i];
+  if(st.type==="intro") return renderIntro(st);
+  if(st.type==="q") return renderQ(st);
+  if(st.type==="end") return renderEnd();
+  if(st.type==="bend") return renderBonusEnd();
+}
+function go(delta){ if(S.mode==="bonus") S.bstep=Math.max(0,Math.min(BSTEPS.length-1,S.bstep+delta)); else S.step=Math.max(0,Math.min(STEPS.length-1,S.step+delta)); save(); render(); window.scrollTo(0,0); }
+function focusMain(){ var h=app.querySelector("[data-focus]"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); } }
+
+function renderStart(){
+  var saved=load(), resume="";
+  if(saved){ var tot=0; C.sections.forEach(function(sec){ sec.qs.forEach(function(q){ if(saved.answers[q.id]) tot++; }); });
+    resume='<div class="card resume"><p><b>Su questo computer c\'è un lavoro in corso di '+esc(saved.name)+'</b> ('+tot+' domande su '+NMAIN+').</p>'+
+      '<div class="row"><button class="btn" id="resume" type="button">Sono '+esc(saved.name)+': riprendo</button>'+
+      '<button class="btn ghost" id="notme" type="button">Non sono io: inizio da capo</button></div></div>'; }
+  var secs=C.sections.map(function(s){ return '<li><b>'+esc(s.label)+'</b> · '+s.qs.length+' domande</li>'; }).join("");
+  if(C.bonus) secs+='<li><b>'+esc(C.bonus.label)+'</b> · '+C.bonus.qs.length+' domande, facoltativo, fuori punteggio</li>';
+  app.innerHTML='<section class="card start"><div class="kicker">'+esc(C.kicker)+'</div><h1 data-focus>'+esc(C.title)+'</h1>'+
+    '<p class="lead">'+C.intro+'</p><ol class="secs">'+secs+'</ol>'+resume+
+    '<div class="namebox"><label for="nm">Nome e cognome</label><input id="nm" autocomplete="name" maxlength="40" placeholder="es. Sara Bianchi">'+
+    '<button class="btn big" id="start" type="button">Inizia →</button><p class="err" id="nmErr" role="alert"></p></div>'+
+    '<p class="tiny">Funziona anche senza internet. Puoi rifarla quante volte vuoi: il codice finale riporta le ripetizioni.</p></section>';
+  var nm=document.getElementById("nm");
+  if(saved) nm.value="";
+  function begin(){ var n=cleanName(nm.value); if(n.length<3){ document.getElementById("nmErr").textContent="Scrivi il tuo nome e cognome, così il codice è tuo."; nm.focus(); return; }
+    store.del(KEY+"stato"); S=newState(n); save(); render(); }
+  document.getElementById("start").onclick=begin;
+  nm.addEventListener("keydown",function(e){ if(e.key==="Enter") begin(); });
+  if(saved){ document.getElementById("resume").onclick=function(){ S=saved; if(S.mode==="start") S.mode="main"; render(); };
+    document.getElementById("notme").onclick=function(){ store.del(KEY+"stato"); nm.focus(); document.querySelector(".resume").remove(); }; }
+  focusMain();
+}
+
+function renderIntro(st){
+  var sec=st.sec, first = S.mode==="bonus"? "" : '<span class="tiny">'+sec.qs.length+' domande</span>';
+  app.innerHTML='<section class="card intro"><div class="kicker">'+(st.bonus?"Bonus facoltativo · fuori punteggio":"Sezione")+'</div>'+
+    '<h2 data-focus>'+esc(sec.label)+'</h2>'+first+'<div class="ripasso">'+sec.intro+'</div>'+
+    '<div class="row"><button class="btn big" id="nx" type="button">Inizia la sezione →</button></div></section>';
+  document.getElementById("nx").onclick=function(){ go(1); };
+  focusMain();
+}
+
+function renderQ(st){
+  var q=st.q, bag = st.bonus?S.bonus:S.answers, a=bag[q.id], ord=S.order[q.id];
+  var head = st.bonus ? 'Bonus · domanda '+(C.bonus.qs.indexOf(q)+1)+' di '+C.bonus.qs.length : 'Domanda '+qNumber(q)+' di '+NMAIN;
+  var opts = ord.map(function(oi,pos){ var o=q.options[oi];
+    return '<button class="opt'+(o.cls?" "+o.cls:"")+'" type="button" data-oi="'+oi+'"'+(o.aria?' aria-label="'+esc(o.aria)+'"':'')+'>'+
+      '<span class="k" aria-hidden="true">'+(pos+1)+'</span><span class="t">'+o.t+'</span><span class="st" aria-hidden="true"></span></button>'; }).join("");
+  app.innerHTML='<section class="card q"><div class="qhead"><span class="sec">'+esc(st.sec.label)+'</span><span class="qn">'+head+'</span></div>'+
+    '<h2 class="prompt" data-focus>'+q.prompt+'</h2>'+(q.visual?'<div class="visual">'+q.visual+'</div>':'')+
+    '<div class="opts" role="group" aria-label="Scegli una risposta">'+opts+'</div>'+
+    '<div class="fb" id="fb" aria-live="polite"></div>'+
+    '<div class="row nav"><button class="btn big" id="nx" type="button" hidden>Avanti →</button></div></section>';
+  var buttons=[].slice.call(app.querySelectorAll(".opt"));
+  function show(chosen){
+    var right=q.options.findIndex(function(o){ return o.ok; });
+    buttons.forEach(function(b){ var oi=+b.dataset.oi; b.disabled=true; b.setAttribute("aria-disabled","true");
+      if(oi===right){ b.classList.add("right"); b.querySelector(".st").textContent="✓ giusta"; }
+      if(oi===chosen&&oi!==right){ b.classList.add("wrong"); b.querySelector(".st").textContent="✗ la tua"; }
+      if(oi===chosen) b.setAttribute("aria-pressed","true"); });
+    var ok=chosen===right, h;
+    if(ok) h='<p class="verdict good">✓ Giusto!</p><p>'+q.options[chosen].fb+'</p>';
+    else h='<p class="verdict bad">✗ Non proprio.</p><p>'+q.options[chosen].fb+'</p><p class="then"><b>Risposta giusta:</b> '+(q.options[right].label||q.options[right].t)+'. '+q.options[right].fb+'</p>';
+    if(q.after) h+='<div class="after">'+q.after+'</div>';
+    var fb=document.getElementById("fb"); fb.innerHTML=h; fb.className="fb on "+(ok?"good":"bad");
+    var nx=document.getElementById("nx"); nx.hidden=false; nx.focus();
+  }
+  buttons.forEach(function(b){ b.onclick=function(){ if(bag[q.id]) return; var oi=+b.dataset.oi; bag[q.id]={c:oi,ok:!!q.options[oi].ok}; save(); renderTop(); show(oi); }; });
+  document.getElementById("nx").onclick=function(){ go(1); };
+  if(a){ show(a.c); } else focusMain();
+}
+
+function scoreTable(){
+  var rows=C.sections.map(function(sec){ var s=secScore(sec,S.answers);
+    return '<tr><td>'+esc(sec.label)+'</td><td class="n">'+s.ok+' / '+s.n+'</td><td class="tiny">'+(s.done<s.n?(s.n-s.done)+' '+plural(s.n-s.done,"non fatta","non fatte"):"completa")+'</td></tr>'; }).join("");
+  var tot=C.sections.reduce(function(t,sec){ return t+secScore(sec,S.answers).ok; },0);
+  rows+='<tr class="tot"><td>Totale</td><td class="n">'+tot+' / '+NMAIN+'</td><td></td></tr>';
+  if(C.bonus){ var b=secScore(C.bonus,S.bonus); rows+='<tr><td>'+esc(C.bonus.label)+' <span class="tiny">(fuori punteggio)</span></td><td class="n">'+(b.done?b.ok+' / '+b.n:"–")+'</td><td class="tiny">'+(b.done?(b.done<b.n?(b.n-b.done)+" non fatte":"completo"):"non fatto")+'</td></tr>'; }
+  return {html:'<div class="tw"><table class="score"><tbody>'+rows+'</tbody></table></div>', tot:tot};
+}
+function message(t){ var p=t/NMAIN; for(var i=0;i<C.messages.length;i++){ if(p>=C.messages[i][0]) return C.messages[i][1]; } return ""; }
+
+function renderEnd(){
+  var sc=scoreTable(), b=C.bonus?secScore(C.bonus,S.bonus):null;
+  app.innerHTML='<section class="card end"><div class="kicker">Palestra finita</div><h2 data-focus>'+sc.tot+' risposte giuste su '+NMAIN+'</h2>'+
+    '<p class="lead">'+message(sc.tot)+'</p>'+sc.html+
+    '<div class="row"><button class="btn big star" id="sum" type="button">★ Riepilogo e codice</button>'+
+    (C.bonus&&b.done<b.n?'<button class="btn ghost" id="bon" type="button">'+esc(C.bonusButton)+'</button>':'')+
+    '<button class="btn ghost" id="again" type="button">Rifai da capo</button></div></section>';
+  document.getElementById("sum").onclick=function(){ S.back={mode:"main",step:S.step,bstep:S.bstep}; S.mode="summary"; save(); render(); };
+  if(document.getElementById("bon")) document.getElementById("bon").onclick=startBonus;
+  document.getElementById("again").onclick=again;
+  focusMain();
+}
+function renderBonusEnd(){
+  var b=secScore(C.bonus,S.bonus);
+  app.innerHTML='<section class="card end"><div class="kicker">Bonus finito</div><h2 data-focus>'+b.ok+' su '+b.n+' nel bonus</h2>'+
+    '<p class="lead">Il bonus non cambia il punteggio della palestra, ma compare nel codice: chi legge la scheda vede che hai provato anche questo.</p>'+
+    '<div class="row"><button class="btn big star" id="sum" type="button">★ Riepilogo e codice</button></div></section>';
+  document.getElementById("sum").onclick=function(){ S.back={mode:"bonus",step:S.step,bstep:S.bstep}; S.mode="summary"; save(); render(); };
+  focusMain();
+}
+function startBonus(){ S.mode="bonus"; var firstOpen=BSTEPS.findIndex(function(st){ return st.type==="q"&&!S.bonus[st.q.id]; }); S.bstep = firstOpen>0 && Object.keys(S.bonus).length ? firstOpen : 0; save(); render(); window.scrollTo(0,0); }
+function again(){
+  if(!window.confirm("Ricominci da zero con le risposte in ordine diverso. Il codice segnerà una ripetizione in più. Vuoi continuare?")) return;
+  var n=S.name; S=newState(n); save(); render(); window.scrollTo(0,0);
+}
+
+function renderSummary(){
+  var sc=scoreTable(), d=mainDone(), code=codeLine(), b=C.bonus?secScore(C.bonus,S.bonus):null;
+  var warn = d<NMAIN ? '<div class="warn">Hai fatto '+d+' domande su '+NMAIN+'. Puoi tornare alle domande oppure copiare il codice così com\'è: segna le domande non fatte.</div>' : '';
+  app.innerHTML='<section class="card sum"><div class="kicker">Riepilogo</div><h2 data-focus>Il tuo codice</h2>'+warn+sc.html+
+    '<label class="codelbl" for="code">Copia questa riga e incollala nella prima pagina della scheda, nello spazio «'+esc(C.slot)+'».</label>'+
+    '<textarea id="code" class="code" readonly rows="3" spellcheck="false">'+esc(code)+'</textarea>'+
+    '<div class="row"><button class="btn big" id="copy" type="button">Copia il codice</button><span id="copied" class="tiny" role="status"></span></div>'+
+    '<div class="row">'+(d<NMAIN?'<button class="btn ghost" id="back" type="button">← Torna alle domande</button>':'')+
+    (C.bonus&&b.done<b.n?'<button class="btn ghost" id="bon" type="button">'+esc(C.bonusButton)+'</button>':'')+
+    '<button class="btn ghost" id="again" type="button">Rifai da capo</button></div>'+
+    '<details class="teacher"><summary>Area docente · verifica un codice</summary><p class="tiny">Incolla il codice di uno studente: la pagina controlla la firma finale. La firma dimostra che la riga non è stata ritoccata a mano, non chi l\'ha prodotta.</p>'+
+    '<textarea id="vin" class="code" rows="3" spellcheck="false" aria-label="Codice da verificare"></textarea><div class="row"><button class="btn ghost" id="vbtn" type="button">Verifica</button></div><p id="vout" role="status"></p></details>'+
+    '</section>';
+  var ta=document.getElementById("code");
+  ta.onclick=function(){ ta.select(); };
+  document.getElementById("copy").onclick=function(){
+    var done=function(){ document.getElementById("copied").textContent="Copiato! Ora incollalo nella scheda con Ctrl+V."; };
+    ta.select();
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(code).then(done,function(){ try{ document.execCommand("copy"); done(); }catch(e){ document.getElementById("copied").textContent="Seleziona il codice e premi Ctrl+C."; } }); }
+    else { try{ document.execCommand("copy"); done(); }catch(e){ document.getElementById("copied").textContent="Seleziona il codice e premi Ctrl+C."; } }
+  };
+  if(document.getElementById("back")) document.getElementById("back").onclick=function(){
+    S.mode="main"; S.step=firstOpenStep(); save(); render(); window.scrollTo(0,0); };
+  if(document.getElementById("bon")) document.getElementById("bon").onclick=startBonus;
+  document.getElementById("again").onclick=again;
+  document.getElementById("vbtn").onclick=function(){ var r=verify(document.getElementById("vin").value); var o=document.getElementById("vout"); o.textContent=(r.ok?"✓ ":"✗ ")+r.msg; o.className=r.ok?"vok":"vbad"; };
+  focusMain();
+}
+
+/* ---------- tastiera ---------- */
+document.addEventListener("keydown",function(e){
+  var t=e.target; if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA")) return;
+  if(e.altKey||e.ctrlKey||e.metaKey) return;
+  if(/^[1-4]$/.test(e.key)){ var b=app.querySelectorAll(".opt")[+e.key-1]; if(b&&!b.disabled){ b.click(); e.preventDefault(); } }
+});
+
+/* ---------- avvio ---------- */
+S = null;
+render();
+})();
+
+</script>
+</body></html>

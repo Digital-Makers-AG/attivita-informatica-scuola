@@ -14,8 +14,8 @@ await import('../assets/hub.js');
 const H = globalThis.Hub;
 const {
   FILTRI_VUOTI, SUGGERIMENTI_MAX, TAG_VISIBILI,
-  conteggiDinamici, filtra, filtriUguali, haFiltri, leggiHash, messaggioVuoto,
-  normalizzaFiltri, normalizzaMostra, scriviHash, suggerimenti, testoConteggio,
+  conteggiDinamici, filtra, filtriUguali, haFiltri, leggiHash, leggiQuery, messaggioVuoto,
+  normalizzaFiltri, normalizzaMostra, scriviQuery, suggerimenti, testoConteggio, validaControCatalogo,
 } = H;
 
 /* ---------- catalogo di prova: 5 argomenti e 2 attività, 13 tag ---------- */
@@ -177,39 +177,65 @@ Deno.test('i tag trovati per primi vengono prima', () => {
 
 /* ---------- indirizzo condivisibile ---------- */
 
-Deno.test('leggiHash legge sia la forma con i nomi sia quella corta', () => {
-  assertEquals(leggiHash('#area=SERVIZI_COMMERCIALI&tag=hosting,cms&modo=or&q=brand'), {
+Deno.test('leggiQuery legge la query string e butta i valori che non stanno in piedi', () => {
+  assertEquals(leggiQuery('?area=SERVIZI_COMMERCIALI&tag=hosting,cms&modo=or&q=brand'), {
     area: 'SERVIZI_COMMERCIALI', tag: ['hosting', 'cms'], modo: 'or', q: 'brand', mostra: '',
   });
-  assertEquals(leggiHash('#mostra=argomenti'), {
+  assertEquals(leggiQuery('?mostra=argomenti'), {
     area: '', tag: [], modo: 'or', q: '', mostra: 'argomenti',
   });
-  assertEquals(leggiHash('#hosting,cms'), { area: '', tag: ['hosting', 'cms'], modo: 'or', q: '', mostra: '' });
-  assertEquals(leggiHash(''), normalizzaFiltri(FILTRI_VUOTI));
-  assertEquals(leggiHash('#'), normalizzaFiltri(FILTRI_VUOTI));
-});
-
-Deno.test('leggiHash ignora tag non validi e accetta modo scritto in maiuscolo', () => {
-  assertEquals(leggiHash('#tag=-inizio,seo').tag, ['seo']);
-  assertEquals(leggiHash('#modo=AND').modo, 'and');
-  assertEquals(leggiHash('#modo=strano').modo, 'or');
-  assertEquals(leggiHash('#mostra=Attività').mostra, 'attivita');
+  assertEquals(leggiQuery('?tag=hosting&tag=siti-web').tag, ['hosting'], 'di un campo ripetuto conta il primo');
+  assertEquals(leggiQuery('?tag=-inizio,seo').tag, ['seo']);
+  assertEquals(leggiQuery('?modo=AND').modo, 'and');
+  assertEquals(leggiQuery('?modo=strano').modo, 'or');
+  assertEquals(leggiQuery('?mostra=Attività').mostra, 'attivita');
+  assertEquals(leggiQuery('?q=due%20parole'), base({ q: 'due parole' }), 'il testo arriva decodificato');
+  assertEquals(leggiQuery(''), normalizzaFiltri(FILTRI_VUOTI));
+  assertEquals(leggiQuery('?'), normalizzaFiltri(FILTRI_VUOTI));
+  assertEquals(leggiQuery('?area=&tag=&q='), normalizzaFiltri(FILTRI_VUOTI));
 });
 
 Deno.test('l\'indirizzo resta pulito quando non c\'è nessun filtro', () => {
-  assertEquals(scriviHash(FILTRI_VUOTI), '');
-  assertEquals(scriviHash(base({ modo: 'and' })), '');
+  assertEquals(scriviQuery(FILTRI_VUOTI), '');
+  assertEquals(scriviQuery(base({ modo: 'and' })), '', 'la sola preferenza AND/OR non sporca l\'indirizzo');
 });
 
-Deno.test('scriviHash scrive "mostra" e si rilegge identico', () => {
-  assertEquals(scriviHash(base({ mostra: 'argomenti' })), '#mostra=argomenti&modo=or');
+Deno.test('scriviQuery scrive "mostra" e si rilegge identico', () => {
+  assertEquals(scriviQuery(base({ mostra: 'argomenti' })), '?mostra=argomenti&modo=or');
   const filtri = base({ area: 'SERVIZI_COMMERCIALI', tag: ['siti-web', 'cms'], modo: 'and', q: 'brand', mostra: 'attivita' });
-  assertEquals(scriviHash(filtri),
-    '#area=SERVIZI_COMMERCIALI&tag=siti-web,cms&q=brand&mostra=attivita&modo=and');
-  assertEquals(leggiHash(scriviHash(filtri)), filtri);
+  assertEquals(scriviQuery(filtri),
+    '?area=SERVIZI_COMMERCIALI&tag=siti-web,cms&q=brand&mostra=attivita&modo=and');
+  assertEquals(leggiQuery(scriviQuery(filtri)), filtri);
   const soloTag = base({ tag: ['hosting'], modo: 'and' });
-  assertEquals(scriviHash(soloTag), '#tag=hosting&modo=and');
-  assertEquals(leggiHash(scriviHash(soloTag)), soloTag);
+  assertEquals(scriviQuery(soloTag), '?tag=hosting&modo=and');
+  assertEquals(leggiQuery(scriviQuery(soloTag)), soloTag);
+});
+
+Deno.test('testo con spazi e accenti sopravvive al giro nell\'indirizzo', () => {
+  const filtri = base({ tag: ['hosting'], q: 'perché? & così' });
+  assertEquals(scriviQuery(filtri), '?tag=hosting&q=perch%C3%A9%3F%20%26%20cos%C3%AC&modo=or');
+  assertEquals(leggiQuery(scriviQuery(filtri)), filtri);
+});
+
+Deno.test('validaControCatalogo butta l\'area che nel catalogo non esiste', () => {
+  assertEquals(validaControCatalogo(base({ area: 'SERVIZI_COMMERCIALI' }), VOCI).area, 'SERVIZI_COMMERCIALI');
+  // un'area sbagliata (o di un catalogo di un'altra annata) svuoterebbe la pagina: si butta da sola
+  assertEquals(validaControCatalogo(base({ area: 'NON_ESISTE' }), VOCI).area, '');
+  assertEquals(validaControCatalogo(base({ area: 'NON_ESISTE', tag: ['seo'], q: 'x' }), VOCI).tag, ['seo'],
+    'gli altri filtri restano');
+  assertEquals(validaControCatalogo(base({ area: '' }), VOCI).area, '');
+});
+
+Deno.test('leggiHash legge ancora i vecchi indirizzi con il cancelletto', () => {
+  assertEquals(leggiHash('#area=SERVIZI_COMMERCIALI&tag=hosting,cms&modo=or&q=brand'),
+    base({ area: 'SERVIZI_COMMERCIALI', tag: ['hosting', 'cms'], modo: 'or', q: 'brand' }));
+  assertEquals(leggiHash('#mostra=argomenti'), base({ mostra: 'argomenti' }));
+  assertEquals(leggiHash('#hosting,cms'), base({ tag: ['hosting', 'cms'] }), 'la vecchia forma corta');
+  assertEquals(leggiHash(''), normalizzaFiltri(FILTRI_VUOTI));
+  assertEquals(leggiHash('#'), normalizzaFiltri(FILTRI_VUOTI));
+  assertEquals(leggiHash('#tag=-inizio,seo').tag, ['seo']);
+  assertEquals(leggiHash('#modo=AND').modo, 'and');
+  assertEquals(leggiHash('#mostra=Attività').mostra, 'attivita');
 });
 
 Deno.test('filtriUguali tiene conto anche di "mostra"', () => {

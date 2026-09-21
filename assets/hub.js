@@ -8,6 +8,13 @@
  * Qui dentro non compare nessun nome di area, di argomento o di tag: tutto arriva da catalogo.json.
  * La distinzione argomento/attività non è scritta a mano: la deduce il catalogo dal percorso
  * (2 segmenti = argomento, 3 = attività).
+ *
+ * I filtri stanno nella query string (?area=...&tag=...&q=...&mostra=...&modo=...), scritta con
+ * history.replaceState: cambiare un filtro non crea un passo nella cronologia, e un indirizzo
+ * copiato riapre la stessa vista. Al ritorno con il pulsante Indietro l'hub ritrova anche lo
+ * scorrimento: le schede arrivano solo dopo catalogo.json, quindi il browser da solo non ci
+ * riesce; lo scrollY si annota in history.state al clic su una scheda e su pagehide, e si
+ * rimette dopo il disegno (da bfcache non serve: la pagina torna esattamente com'era).
  */
 (function (globale) {
   'use strict';
@@ -140,10 +147,50 @@
   }
 
   /* ------------------------------------------------------------------ *
-   * indirizzo della pagina (#area=...&tag=...&q=...&mostra=...&modo=...)
+   * indirizzo della pagina (?area=...&tag=...&q=...&mostra=...&modo=...)
    * ------------------------------------------------------------------ */
 
-  /** Legge l'hash in due forme: quella con i nomi dei campi e quella corta #hosting,cms. */
+  /** Legge i filtri dalla query string. I valori non validi li butta normalizzaFiltri. */
+  function leggiQuery(search) {
+    const p = new URLSearchParams(String(search === undefined || search === null ? '' : search).replace(/^\?/, ''));
+    return normalizzaFiltri({
+      area: p.get('area') || '',
+      tag: (p.get('tag') || '').split(','),
+      modo: p.get('modo') || '',
+      q: p.get('q') || '',
+      mostra: p.get('mostra') || '',
+    });
+  }
+
+  /** Scrive la query string canonica; stringa vuota quando non c'è nessun filtro.
+   *  Il modo AND/OR compare solo insieme a un filtro vero, così l'indirizzo pulito resta pulito. */
+  function scriviQuery(filtri) {
+    const f = normalizzaFiltri(filtri);
+    const parti = [];
+    if (f.area) parti.push('area=' + encodeURIComponent(f.area));
+    if (f.tag.length) parti.push('tag=' + f.tag.map(encodeURIComponent).join(','));
+    if (f.q) parti.push('q=' + encodeURIComponent(f.q));
+    if (f.mostra) parti.push('mostra=' + f.mostra);
+    if (parti.length && f.modo) parti.push('modo=' + f.modo);
+    return parti.length ? '?' + parti.join('&') : '';
+  }
+
+  /** I filtri nell'indirizzo: prima la query string, poi il ripiego sui vecchi link #area=... */
+  function filtriDallIndirizzo(search, hash) {
+    const dallaQuery = leggiQuery(search);
+    return haFiltri(dallaQuery) ? dallaQuery : leggiHash(hash);
+  }
+
+  /** Butta i filtri che nel catalogo non esistono: un'area sbagliata nell'indirizzo svuoterebbe la pagina. */
+  function validaControCatalogo(filtri, voci) {
+    const f = normalizzaFiltri(filtri);
+    if (!f.area) return f;
+    const esiste = C.aree(voci).some((area) => area.chiave === f.area);
+    return esiste ? f : normalizzaFiltri(Object.assign({}, f, { area: '' }));
+  }
+
+  /** Legge i vecchi indirizzi con i filtri dopo il cancelletto (#area=...&tag=..., oppure #hosting,cms).
+   *  Li scriveva la versione precedente dell'hub: si leggono ancora, poi l'indirizzo diventa canonico. */
   function leggiHash(hash) {
     const h = String(hash === undefined || hash === null ? '' : hash).replace(/^#/, '').trim();
     if (!h) return normalizzaFiltri(FILTRI_VUOTI);
@@ -158,19 +205,6 @@
       q: p.get('q') || '',
       mostra: p.get('mostra') || '',
     });
-  }
-
-  /** Scrive l'hash canonico; stringa vuota quando non c'è nessun filtro.
-   *  Il modo AND/OR compare solo insieme a un filtro vero, così l'indirizzo pulito resta pulito. */
-  function scriviHash(filtri) {
-    const f = normalizzaFiltri(filtri);
-    const parti = [];
-    if (f.area) parti.push('area=' + encodeURIComponent(f.area));
-    if (f.tag.length) parti.push('tag=' + f.tag.map(encodeURIComponent).join(','));
-    if (f.q) parti.push('q=' + encodeURIComponent(f.q));
-    if (f.mostra) parti.push('mostra=' + f.mostra);
-    if (parti.length && f.modo) parti.push('modo=' + f.modo);
-    return parti.length ? '#' + parti.join('&') : '';
   }
 
   function filtriUguali(a, b) {
@@ -225,6 +259,7 @@
   let tuttiITag = false;
   let righeTendina = [];
   let indiceAttivo = -1;
+  let disegnato = false; // le schede sono già state disegnate almeno una volta (serve allo scorrimento)
 
   function prendiDom() {
     const id = {
@@ -253,13 +288,57 @@
     }
   }
 
+  /** Scrive i filtri nell'indirizzo con replaceState, mai pushState: cambiare filtro non è un passo
+   *  della cronologia, quindi il pulsante Indietro porta all'hub e non all'ultimo filtro toccato.
+   *  Lo stato della voce di cronologia si passa avanti com'è, altrimenti si perderebbe lo scrollY. */
   function sincronizzaUrl(scrivere) {
     if (!scrivere) return;
-    const indirizzo = window.location.pathname + window.location.search + scriviHash(stato);
+    const indirizzo = window.location.pathname + scriviQuery(stato);
     try {
-      window.history.replaceState(null, '', indirizzo);
+      window.history.replaceState(window.history.state, '', indirizzo);
     } catch (errore) {
       // file:// o anteprima locale: l'indirizzo resta com'era
+    }
+  }
+
+  /** Il link dentro cui è finito il clic: una scheda ne ha due (il titolo e «Apri l'attività»). */
+  function linkDi(nodo) {
+    let corrente = nodo;
+    while (corrente) {
+      if (corrente.tagName === 'A') return corrente;
+      corrente = corrente.parentElement;
+    }
+    return null;
+  }
+
+  /** Annota dove sta lo scorrimento nella voce di cronologia corrente. Serve prima di seguire il
+   *  link di una scheda: al ritorno (Indietro) la pagina si ridisegna vuota, perché le schede
+   *  arrivano solo dopo catalogo.json, quindi il browser da solo non saprebbe dove rimettersi. */
+  function salvaScorrimento() {
+    const prima = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+    try {
+      window.history.replaceState(
+        Object.assign({}, prima, { scrollY: Math.round(window.scrollY || 0) }),
+        '',
+        window.location.pathname + window.location.search,
+      );
+    } catch (errore) {
+      // niente cronologia: pazienza, al ritorno si resta in cima
+    }
+  }
+
+  /** Rimette lo scorrimento dov'era, e solo dopo il disegno delle schede: prima la pagina è corta
+   *  e non c'è niente da scorrere. Dalla cache del browser (pageshow persisted) non si tocca nulla:
+   *  la pagina torna esattamente com'era. */
+  function ripristinaScorrimento() {
+    if (!disegnato) return;
+    const statoUrl = window.history.state;
+    const y = statoUrl && typeof statoUrl.scrollY === 'number' ? statoUrl.scrollY : 0;
+    if (y <= 0) return;
+    try {
+      window.scrollTo(0, y);
+    } catch (errore) {
+      // pazienza, si resta in cima
     }
   }
 
@@ -377,6 +456,7 @@
   function rendiSchede(risultati) {
     const schede = risultati.map((voce) => C.creaCard(voce, BASE));
     dom.cards.replaceChildren.apply(dom.cards, schede);
+    disegnato = true; // da qui in giù la pagina è alta: lo scorrimento si può rimettere
   }
 
   function rendiVuoto(risultati) {
@@ -516,20 +596,32 @@
     document.addEventListener('click', (evento) => {
       if (!dom.q.parentElement.contains(evento.target)) chiudiTendina();
     });
-    window.addEventListener('hashchange', () => {
-      const nuovo = leggiHash(window.location.hash);
-      if (filtriUguali(nuovo, stato)) return;
-      stato = nuovo;
-      dom.q.value = stato.q;
-      disegna();
+    // Prima di seguire il link di una scheda ci si annota lo scorrimento: le schede sono link
+    // veri, quindi il clic non passa da nessuna funzione dell'hub.
+    dom.cards.addEventListener('click', (evento) => {
+      if (linkDi(evento.target)) salvaScorrimento();
+    });
+    window.addEventListener('pagehide', salvaScorrimento);
+    // Tornando dalla cache del browser (pageshow persisted) la pagina è già com'era, filtri e
+    // scorrimento compresi: non si tocca niente.
+    window.addEventListener('pageshow', (evento) => {
+      if (evento.persisted) return;
+      ripristinaScorrimento();
     });
   }
 
-  /** Avvia l'hub: legge catalogo.json, l'indirizzo e la preferenza AND/OR ricordata. */
+  /** Avvia l'hub: legge catalogo.json, i filtri nell'indirizzo e la preferenza AND/OR ricordata. */
   async function avvia() {
     prendiDom();
     legaEventi();
     BASE = C.baseDaBody(document);
+    // Lo scorrimento lo rimettiamo noi, dopo il disegno delle schede: al browser la pagina sembra
+    // vuota, perché le schede arrivano solo con catalogo.json.
+    try {
+      window.history.scrollRestoration = 'manual';
+    } catch (errore) {
+      // cronologia non disponibile: pazienza
+    }
     let letto;
     try {
       letto = C.normalizzaCatalogo(await C.caricaCatalogo(BASE));
@@ -542,15 +634,20 @@
     for (const avviso of letto.avvisi) console.warn('[hub]', avviso);
     rendiAvvisi(letto.avvisi);
 
+    // I filtri si leggono dall'indirizzo prima del primo disegno; i vecchi link con l'hash
+    // funzionano ancora (filtriDallIndirizzo), poi l'indirizzo diventa la query string canonica.
+    const search = String(window.location.search === undefined || window.location.search === null ? '' : window.location.search);
     const hash = String(window.location.hash === undefined || window.location.hash === null ? '' : window.location.hash);
-    stato = leggiHash(hash);
-    if (!/(^|[#&])modo=/.test(hash)) {
+    stato = validaControCatalogo(filtriDallIndirizzo(search, hash), VOCI);
+    const modoNellIndirizzo = /(^|[?&])modo=/.test(search) || /(^|[#&])modo=/.test(hash);
+    if (!modoNellIndirizzo) {
       const ricordato = leggiModoRicordato();
       if (ricordato) stato = normalizzaFiltri(Object.assign({}, stato, { modo: ricordato }));
     }
     dom.q.value = stato.q;
     disegna();
-    sincronizzaUrl(true); // porta la forma corta #hosting,cms nella forma con i nomi dei campi
+    sincronizzaUrl(true); // forma canonica: ?area=...&tag=...&q=...&mostra=...&modo=...
+    ripristinaScorrimento();
   }
 
   globale.Hub = {
@@ -563,8 +660,10 @@
     filtra: filtra,
     conteggiDinamici: conteggiDinamici,
     suggerimenti: suggerimenti,
+    leggiQuery: leggiQuery,
+    scriviQuery: scriviQuery,
+    validaControCatalogo: validaControCatalogo,
     leggiHash: leggiHash,
-    scriviHash: scriviHash,
     filtriUguali: filtriUguali,
     haFiltri: haFiltri,
     messaggioVuoto: messaggioVuoto,

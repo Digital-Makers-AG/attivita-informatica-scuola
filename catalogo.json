@@ -1,4 +1,36 @@
 {
+      "istruzioni": {
+    "che_cosa_contiene": [
+      "Solo le ATTIVITÀ, una voce per ciascuna.",
+      "Percorso di ogni attività: AREA/ARGOMENTO/ATTIVITA/ con la barra finale.",
+      "Aree e argomenti non si dichiarano: l'hub li ricava dai percorsi."
+    ],
+    "card_nell_hub": [
+      "Generate in automatico: una card ATTIVITÀ per ogni voce.",
+      "Una sola card ARGOMENTO per ogni AREA/ARGOMENTO/, anche se lo condividono più attività.",
+      "Esempio: SERVIZI_COMMERCIALI/BRAND/ATTIVITA_A/ e SERVIZI_COMMERCIALI/BRAND/ATTIVITA_B/ → 2 card attività, 1 card argomento (BRAND).",
+      "Per creare un argomento nuovo basta la prima attività con quel percorso."
+    ],
+    "link_automatici": [
+      "Nel catalogo non si scrivono URL: il link di ogni card lo costruisce l'hub a partire da «percorso».",
+      "I link sono relativi, quindi funzionano uguale in locale (localhost) e online (GitHub Pages).",
+      "La cartella indicata in «percorso» deve contenere un index.html: è la pagina che si apre dalla card.",
+      "Nelle pagine delle attività vale la stessa regola: link cliccabili sempre relativi.",
+      "Gli indirizzi da copiare in Classroom si scrivono in uno span con l'attributo data-url (percorso relativo alla pagina): lo script url-pubblici li trasforma da solo nell'indirizzo pubblico su GitHub Pages, anche quando la pagina è aperta in locale."
+    ],
+    "override_dei_nomi": [
+      "Attività: il nome nella card è il campo «titolo» della voce.",
+      "Aree e argomenti, e quindi anche le card argomento: il nome viene dalla cartella, salvo override in «etichette».",
+      "Override: in «etichette» aggiungi NOME_CARTELLA → nome da mostrare. La chiave deve essere identica al nome della cartella.",
+      "Esempio: M0_ARCHITETTURA_E_SISTEMA_OPERATIVO → M0 - Architettura del computer e Sistema Operativo"
+    ],
+    "da_non_fare": [
+      "Non usare il campo «tipo»: argomento o attività lo decide il percorso.",
+      "Non scrivere a mano indirizzi https://digital-makers-ag.github.io/... né http://localhost/... nei link.",
+      "Questo blocco «istruzioni» è solo una nota: l'hub non lo usa."
+    ]
+  },
+
   "etichette": {
     "COMPETENZE_DIGITALI_BASE": "Competenze digitali base",
     "SERVIZI_COMMERCIALI": "Servizi commerciali",
@@ -35,8 +67,8 @@
       ]
     },
     {
-      "titolo": "Differenza tra hardware e software",
-      "percorso": "BIENNIO/M0_ARCHITETTURA_PC_E_SO/DIFFERENZA_HW_SW/",
+      "titolo": "Differenza tra hardware e software [BOZZA INCOMPLETA]",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/DIFFERENZA_HW_SW/",
       "minuti": 240,
       "descrizione": "Due lezioni da due ore per il biennio: componenti del PC (CPU, RAM, memoria di massa, periferiche di input e output), architettura di Von Neumann, avvio e interfaccia del sistema operativo, cartelle e sottocartelle in Google Drive, copia sposta rinomina elimina, compressione in ZIP. Palestra interattiva con codice, schede di lavoro e versioni BES.",
       "tag": [

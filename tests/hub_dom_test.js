@@ -5,6 +5,9 @@
  * cerca un contenitore che non esiste, ottiene null e la prova fallisce.
  *
  *     deno test --allow-read tests/hub_dom_test.js
+ *
+ * La finestra finta sa anche di cronologia e di scorrimento (history.state, scrollY, scrollTo,
+ * pagehide, pageshow): sono quelli che servono all'hub per ritrovare la posizione al ritorno.
  */
 import { assertEquals, assert, assertStringIncludes } from 'jsr:@std/assert@1';
 
@@ -103,8 +106,18 @@ const fintaFinestra = {
   location: { pathname: '/attivita-informatica-scuola/', search: '', hash: '' },
   history: {
     ultimoIndirizzo: null,
-    replaceState(_stato, _titolo, indirizzo) { this.ultimoIndirizzo = indirizzo; },
+    state: null,
+    scrollRestoration: 'auto',
+    replaceState(stato, _titolo, indirizzo) {
+      this.ultimoIndirizzo = indirizzo;
+      this.state = stato === undefined ? null : stato;
+    },
+    // l'hub non deve creare passi nella cronologia: se ci provasse, la prova lo scoprirebbe
+    pushState() { throw new Error('hub.js non deve usare pushState'); },
   },
+  scrollY: 0,
+  scorrimenti: [],
+  scrollTo(_x, y) { this.scorrimenti.push(y); this.scrollY = y; },
   localStorage: {
     memoria: new Map(),
     getItem(chiave) { return this.memoria.has(chiave) ? this.memoria.get(chiave) : null; },
@@ -161,13 +174,23 @@ const badgeDurata = (scheda) => scheda.trova((n) => n.className.includes('badge-
 const indirizzo = () => fintaFinestra.history.ultimoIndirizzo;
 const titoloScheda = (scheda) => scheda.trova((n) => n.tagName === 'H2').figli[0];
 
-/* ---------- prove ---------- */
-
-Deno.test('all\'avvio si vedono argomenti e attività, con i chip di tutti i filtri', async () => {
-  fintaFinestra.location.hash = '';
+/** Riporta la pagina finta in cima all'hub, o all'indirizzo indicato, prima di una prova. */
+function apriHub(search = '', stato = null, hash = '') {
+  fintaFinestra.location.search = search;
+  fintaFinestra.location.hash = hash;
+  fintaFinestra.history.state = stato;
+  fintaFinestra.history.ultimoIndirizzo = null;
+  fintaFinestra.scrollY = 0;
+  fintaFinestra.scorrimenti.length = 0;
   erroreFinto = null;
   // la preferenza AND/OR ricordata non deve passare da una prova all'altra
   fintaFinestra.localStorage.memoria.clear();
+}
+
+/* ---------- prove ---------- */
+
+Deno.test('all\'avvio si vedono argomenti e attività, con i chip di tutti i filtri', async () => {
+  apriHub();
   await avvia();
 
   assertEquals(schede().length, ARGOMENTI + ATTIVITA, 'una scheda per argomento e una per attività');
@@ -175,8 +198,9 @@ Deno.test('all\'avvio si vedono argomenti e attività, con i chip di tutti i fil
 
   for (const scheda of schede()) {
     for (const link of scheda.tutti().filter((n) => n.tagName === 'A')) {
-      assertEquals(link.getAttribute('target'), '_blank', 'ogni link apre una scheda nuova');
-      assertEquals(link.getAttribute('rel'), 'noopener');
+      assertEquals(link.getAttribute('target'), null, 'le schede si aprono nella stessa scheda');
+      assertEquals(link.getAttribute('rel'), null);
+      assertStringIncludes(link.getAttribute('href'), '/', 'restano link veri, con l\'indirizzo dentro');
     }
     assert(scheda.getAttribute('class') === null);
   }
@@ -241,21 +265,18 @@ Deno.test('all\'avvio si vedono argomenti e attività, con i chip di tutti i fil
 });
 
 Deno.test('area, tag, modo "e", azzera: l\'elenco e l\'indirizzo seguono i clic', async () => {
-  fintaFinestra.location.hash = '';
-  erroreFinto = null;
-  // la preferenza AND/OR ricordata non deve passare da una prova all'altra
-  fintaFinestra.localStorage.memoria.clear();
+  apriHub();
   await avvia();
 
   chipDi('filtro-area', 'Servizi commerciali').succede('click');
   assertEquals(schede().length, 6);
-  assertEquals(indirizzo(), '/attivita-informatica-scuola/#area=SERVIZI_COMMERCIALI&modo=or');
+  assertEquals(indirizzo(), '/attivita-informatica-scuola/?area=SERVIZI_COMMERCIALI&modo=or');
   assertEquals(nodo('azzera').hidden, false);
   assertEquals(premuti('filtro-area').length, 1);
 
   chipDi('filtro-tag', 'siti-web').succede('click');
   assertEquals(schede().length, 3);
-  assertEquals(indirizzo(), '/attivita-informatica-scuola/#area=SERVIZI_COMMERCIALI&tag=siti-web&modo=or');
+  assertEquals(indirizzo(), '/attivita-informatica-scuola/?area=SERVIZI_COMMERCIALI&tag=siti-web&modo=or');
   const chipSitiWeb = chipDi('filtro-tag', 'siti-web');
   assertEquals(chipSitiWeb.getAttribute('aria-pressed'), 'true');
   assertStringIncludes(chipSitiWeb.textContent, '\u00d7');
@@ -284,17 +305,14 @@ Deno.test('area, tag, modo "e", azzera: l\'elenco e l\'indirizzo seguono i clic'
 });
 
 Deno.test('il filtro "Mostra" stringe l\'elenco ad argomenti o ad attività', async () => {
-  fintaFinestra.location.hash = '';
-  erroreFinto = null;
-  // la preferenza AND/OR ricordata non deve passare da una prova all'altra
-  fintaFinestra.localStorage.memoria.clear();
+  apriHub();
   await avvia();
 
   chipDi('filtro-mostra', 'Attività').succede('click');
   assertEquals(schede().length, ATTIVITA);
   assertEquals(nodo('conteggio').textContent, '2 attività');
   assertEquals(schede().every((s) => s.className.includes('attivita')), true);
-  assertEquals(indirizzo(), '/attivita-informatica-scuola/#mostra=attivita&modo=or');
+  assertEquals(indirizzo(), '/attivita-informatica-scuola/?mostra=attivita&modo=or');
   assertEquals(nodo('azzera').hidden, false);
 
   chipDi('filtro-mostra', 'Argomenti').succede('click');
@@ -322,10 +340,7 @@ Deno.test('il filtro "Mostra" stringe l\'elenco ad argomenti o ad attività', as
 });
 
 Deno.test('tendina di autocompletamento: tag, titoli, "cerca" e tastiera', async () => {
-  fintaFinestra.location.hash = '';
-  erroreFinto = null;
-  // la preferenza AND/OR ricordata non deve passare da una prova all'altra
-  fintaFinestra.localStorage.memoria.clear();
+  apriHub();
   await avvia();
 
   const campo = nodo('q');
@@ -385,10 +400,7 @@ Deno.test('tendina di autocompletamento: tag, titoli, "cerca" e tastiera', async
 });
 
 Deno.test('indirizzo condiviso senza risultati: la pagina lo spiega e propone di azzerare', async () => {
-  fintaFinestra.location.hash = '#area=SERVIZI_COMMERCIALI&tag=siti-web,cms&modo=or&q=brand';
-  erroreFinto = null;
-  // la preferenza AND/OR ricordata non deve passare da una prova all'altra
-  fintaFinestra.localStorage.memoria.clear();
+  apriHub('?area=SERVIZI_COMMERCIALI&tag=siti-web,cms&modo=or&q=brand');
   await avvia();
 
   assertEquals(schede().length, 0);
@@ -401,7 +413,7 @@ Deno.test('indirizzo condiviso senza risultati: la pagina lo spiega e propone di
   assertEquals(premuti('filtro-area').length, 1);
   // l'indirizzo viene riscritto nella forma canonica
   assertEquals(indirizzo(),
-    '/attivita-informatica-scuola/#area=SERVIZI_COMMERCIALI&tag=siti-web,cms&q=brand&modo=or');
+    '/attivita-informatica-scuola/?area=SERVIZI_COMMERCIALI&tag=siti-web,cms&q=brand&modo=or');
 
   nodo('stato-vuoto').trova((n) => n.className.includes('all')).succede('click');
   assertEquals(schede().length, 7);
@@ -411,6 +423,7 @@ Deno.test('indirizzo condiviso senza risultati: la pagina lo spiega e propone di
 });
 
 Deno.test('se il catalogo non arriva la pagina lo dice invece di restare vuota', async () => {
+  apriHub();
   erroreFinto = new Error('rete assente');
   await avvia();
 
@@ -424,13 +437,83 @@ Deno.test('se il catalogo non arriva la pagina lo dice invece di restare vuota',
   fintaFinestra.localStorage.memoria.clear();
 });
 
+Deno.test('le schede sono link veri e il clic annota lo scorrimento per il ritorno', async () => {
+  apriHub();
+  await avvia();
+  assertEquals(fintaFinestra.history.scrollRestoration, 'manual', 'lo scorrimento lo rimette l\'hub');
+  assertEquals(fintaFinestra.history.state, null, 'finché non si clicca non c\'è niente da annotare');
+
+  // il clic su una scheda: si finisce dentro al link del titolo, come farebbe il browser
+  fintaFinestra.scrollY = 812;
+  nodo('cards').succede('click', { target: titoloScheda(schede()[1]) });
+  assertEquals(fintaFinestra.history.state, { scrollY: 812 });
+  assertEquals(fintaFinestra.history.ultimoIndirizzo, '/attivita-informatica-scuola/',
+    'annotare lo scorrimento non cambia l\'indirizzo');
+
+  // un clic sull\'articolo (fuori dai link) non annota niente
+  fintaFinestra.scrollY = 400;
+  nodo('cards').succede('click', { target: schede()[1] });
+  assertEquals(fintaFinestra.history.state, { scrollY: 812 });
+
+  // e quando la pagina se ne va lo scorrimento si annota comunque
+  fintaFinestra.scrollY = 1234;
+  ascoltatoriFinestra.get('pagehide')();
+  assertEquals(fintaFinestra.history.state, { scrollY: 1234 });
+});
+
+Deno.test('arrivando con i filtri nell\'indirizzo si vede subito la vista filtrata e la posizione di prima', async () => {
+  apriHub('?area=COMPETENZE_DIGITALI_BASE&tag=documenti&q=Missione&mostra=argomenti&modo=and', { scrollY: 700 });
+  await avvia();
+
+  assertEquals(schede().length, 1, 'i filtri scritti nell\'indirizzo valgono dal primo disegno');
+  assertEquals(nodo('q').value, 'Missione');
+  assertEquals(premuti('filtro-area').length, 1);
+  assertEquals(premuti('filtro-tag')[0].textContent.includes('documenti'), true);
+  assertEquals(premuti('filtro-mostra')[0].textContent, 'Argomenti');
+  assertEquals(premuti('filtro-modo')[0].textContent.includes('Tutti i tag'), true);
+  assertEquals(indirizzo(),
+    '/attivita-informatica-scuola/?area=COMPETENZE_DIGITALI_BASE&tag=documenti&q=Missione&mostra=argomenti&modo=and');
+  assertEquals(fintaFinestra.scorrimenti, [700], 'lo scorrimento torna dov\'era, dopo le schede');
+});
+
+Deno.test('un\'area che non esiste si butta, e i vecchi link col cancelletto funzionano ancora', async () => {
+  apriHub('?area=NON_ESISTE&tag=-inizio,seo&mostra=strano');
+  await avvia();
+
+  assertEquals(schede().length, 1, 'resta il filtro buono, il tag seo');
+  assertEquals(premuti('filtro-area')[0].textContent, 'Tutte le aree', 'l\'area sconosciuta si butta');
+  assertEquals(indirizzo(), '/attivita-informatica-scuola/?tag=seo&modo=or', 'l\'indirizzo torna in forma canonica');
+
+  // un indirizzo scritto dalla versione precedente dell\'hub (#area=...) si legge lo stesso
+  apriHub('', null, '#area=SERVIZI_COMMERCIALI&tag=siti-web&modo=and');
+  await avvia();
+
+  assertEquals(premuti('filtro-area').length, 1);
+  assertEquals(premuti('filtro-tag')[0].textContent.includes('siti-web'), true);
+  assertEquals(premuti('filtro-modo')[0].textContent.includes('Tutti i tag'), true);
+  assertEquals(indirizzo(), '/attivita-informatica-scuola/?area=SERVIZI_COMMERCIALI&tag=siti-web&modo=and');
+});
+
+Deno.test('dalla cache del browser la pagina non si tocca, altrimenti lo scorrimento si rimette', async () => {
+  apriHub('?q=Missione', { scrollY: 300 });
+  await avvia();
+  assertEquals(fintaFinestra.scorrimenti, [300]);
+
+  fintaFinestra.scorrimenti.length = 0;
+  ascoltatoriFinestra.get('pageshow')({ persisted: true });
+  assertEquals(fintaFinestra.scorrimenti, [], 'pageshow dalla cache: la pagina è già com\'era');
+
+  ascoltatoriFinestra.get('pageshow')({ persisted: false });
+  assertEquals(fintaFinestra.scorrimenti, [300]);
+});
+
 Deno.test('con il catalogo vero su disco si vede la scheda della Missione 0', async () => {
   rispostaFinta = async () => ({
     ok: true,
     status: 200,
     json: () => Deno.readTextFile(new URL('../catalogo.json', import.meta.url)).then(JSON.parse),
   });
-  fintaFinestra.location.hash = '';
+  apriHub();
   await avvia();
 
   assertEquals(schede().length, 1);
