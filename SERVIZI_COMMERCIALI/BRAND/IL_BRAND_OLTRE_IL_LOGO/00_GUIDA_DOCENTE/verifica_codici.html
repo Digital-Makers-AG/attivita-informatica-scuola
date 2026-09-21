@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%85%3C/text%3E%3C/svg%3E">
+<title>Verifica dei codici · Il brand oltre il logo</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--or-d:#A84A0C;--ink:#1d2329;--muted:#566169;--line:#d5dde2;--bg:#f7f5f0;--good:#1E7B3A;--good-l:#E6F4EA;--bad:#B42318;--bad-l:#FDECEA;--warn-l:#FFF4E5}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--teal-d)} :focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.back{margin:0;padding:8px 16px;background:var(--teal);font:600 13px/1.4 system-ui,sans-serif} .back a{color:#fff;text-decoration:none}
+.hero{background:linear-gradient(135deg,var(--teal),var(--teal-d));color:#fff;padding:26px 20px 22px}
+.in{max-width:1120px;margin:0 auto} .hero h1{margin:4px 0 6px;font-size:clamp(24px,3.6vw,34px);line-height:1.15} .hero p{margin:0;max-width:780px;opacity:.95}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--or-d)} .hero .kicker{color:#ffd9bf}
+main{max-width:1120px;margin:0 auto;padding:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+h2{font-size:22px;margin:0 0 10px;color:var(--teal-d)} h3{font-size:17px;margin:14px 0 6px;color:var(--teal-d)}
+.small{font-size:14px;color:var(--muted)} .tiny{font-size:12.5px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.opt{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fbfcfc} .opt b{color:var(--teal-d)}
+ol{padding-left:22px} ol li{margin:4px 0}
+textarea{width:100%;min-height:190px;font:14px/1.45 ui-monospace,Consolas,"Courier New",monospace;padding:12px;border:2px solid var(--line);border-radius:10px;resize:vertical;background:#fff;color:var(--ink)}
+textarea:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px rgba(11,110,117,.2)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{border:2px solid var(--teal);background:var(--teal);color:#fff;border-radius:10px;padding:9px 16px;font:700 15px system-ui,sans-serif;cursor:pointer}
+.btn:hover{background:var(--teal-d);border-color:var(--teal-d)} .btn.ghost{background:#fff;color:var(--teal-d)} .btn.ghost:hover{background:var(--teal-l)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 6px}
+.chip{border-radius:12px;padding:10px 14px;background:var(--teal-l);min-width:120px} .chip b{display:block;font-size:24px;line-height:1.1;color:var(--teal-d)} .chip span{font-size:13px;color:var(--muted)}
+.chip.bad{background:var(--bad-l)} .chip.bad b{color:var(--bad)}
+.alerts{list-style:none;padding:0;margin:6px 0 0} .alerts li{border-radius:10px;padding:8px 12px;margin:6px 0;font-size:14.5px}
+.alerts .e{background:var(--bad-l);border-left:5px solid var(--bad)} .alerts .w{background:var(--warn-l);border-left:5px solid var(--orange)} .alerts .i{background:#EEF2F4;border-left:5px solid #7a8a94}
+.alerts code{font-size:12.5px;background:rgba(0,0,0,.05);padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}
+.bars{display:grid;gap:8px;margin-top:6px}
+.bar{display:grid;grid-template-columns:230px 1fr 92px;gap:10px;align-items:center;font-size:14.5px}
+.track{height:16px;background:#e6ebee;border-radius:8px;overflow:hidden;border:1px solid #cfd8dd} .track div{height:100%;background:var(--teal)}
+.bar.weak .track div{background:var(--orange)} .bar .pct{font-weight:800;text-align:right;white-space:nowrap}
+.weakmsg{margin-top:10px;background:var(--warn-l);border-radius:10px;padding:8px 12px;font-size:14.5px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:#fff}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+th{background:var(--teal);color:#fff;font-size:12.5px;position:sticky;top:0} th.grp{background:var(--teal-d);font-size:13px}
+td.nm,th.nm{text-align:left} td.nm{font-weight:700} td.note{text-align:left;white-space:normal;min-width:220px;font-size:13px;color:var(--muted)}
+td.tot{font-weight:800} td.sep,th.sep{border-left:2px solid var(--teal-d)}
+td .nf{display:block;font-size:11px;color:var(--or-d);font-weight:700}
+tr.inv td{background:var(--bad-l)} .ok{color:var(--good);font-weight:800} .ko{color:var(--bad);font-weight:800}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:10px;background:#fff} summary{cursor:pointer;font-weight:700}
+pre.gs{background:#1d2329;color:#f5f5f7;border-radius:10px;padding:12px;font-size:12.5px;overflow:auto;max-height:340px}
+.foot{font-size:13px;color:var(--muted);text-align:center;padding:10px 20px 30px}
+#status{font-weight:700}
+@media(max-width:800px){.two{grid-template-columns:1fr} .bar{grid-template-columns:1fr 70px} .bar .track{grid-column:1/-1;order:3}}
+@media print{.back,.hero,#raccolta,#input,.row,.foot,#esporta{display:none} body{background:#fff} .card{border:0;padding:0} th{position:static}}
+</style></head><body>
+<p class="back"><a href="../index.html">&#8592; Guida dell'attività</a></p>
+<header class="hero"><div class="in"><div class="kicker">Il brand oltre il logo · Strumento per il docente</div>
+<h1>Verifica dei codici e riepilogo della classe</h1>
+<p>Incolla i codici delle palestre: la pagina controlla la firma di ciascuno, unisce i due codici di ogni studente e ti mostra dove la classe è sicura e dove è incerta. Tutto resta in questa pagina: nessun dato viene inviato o salvato.</p></div></header>
+<main>
+
+<section class="card" id="raccolta"><h2>1 · Raccogli i codici</h2>
+<div class="two">
+<div class="opt"><b>A mano</b> <span class="tiny">· per pochi studenti</span>
+<p class="small" style="margin:6px 0 0">Da Classroom apri le schede consegnate una dopo l'altra, copia la prima pagina e incollala qui sotto, anche così com'è: la pagina trova da sola le righe che iniziano con <code>BRD-</code>. Puoi incollare più schede di seguito.</p></div>
+<div class="opt"><b>Tutta la classe in un colpo</b> <span class="tiny">· con uno script, una volta sola</span>
+<p class="small" style="margin:6px 0 0">Lo script legge tutte le schede della cartella Drive del compito e crea un documento «Codici raccolti», con il nome della scheda accanto a ogni codice. Poi incolli qui il contenuto di quel documento. In più, la pagina controlla che il nome scritto nel codice corrisponda alla scheda da cui arriva.</p></div>
+</div>
+<details><summary>Istruzioni e script per raccogliere i codici di tutta la classe</summary>
+<ol class="small">
+<li>In Drive apri la cartella del compito: <b>Classroom › nome del corso › titolo del compito</b>. Dentro ci sono le schede degli studenti.</li>
+<li>Copia l'<b>ID della cartella</b>: è la parte dell'indirizzo che viene dopo <code>/folders/</code>.</li>
+<li>Vai su <b>script.google.com</b> › <b>Nuovo progetto</b>, cancella il contenuto e incolla lo script qui sotto.</li>
+<li>Nella riga <code>ID_CARTELLA</code> sostituisci il segnaposto con l'ID copiato, salva e premi <b>Esegui</b>. La prima volta Google chiede l'autorizzazione a leggere Drive e Documenti: concedila con il tuo account della scuola.</li>
+<li>Nella stessa cartella compare il documento <b>Codici raccolti</b>: aprilo, seleziona tutto, copia e incolla qui sotto.</li>
+</ol>
+<pre class="gs" id="gs">/**
+ * Raccoglie i codici delle palestre (BRD-COL e BRD-FON) da tutti i Documenti Google
+ * di una cartella di Drive, per esempio la cartella di un compito di Classroom.
+ * Crea nella stessa cartella il documento «Codici raccolti»: una riga per codice,
+ * con il nome della scheda da cui arriva.
+ */
+const ID_CARTELLA = 'INCOLLA-QUI-ID-CARTELLA';
+
+function raccogliCodici() {
+  const cartella = DriveApp.getFolderById(ID_CARTELLA);
+  const schede = cartella.getFilesByType(MimeType.GOOGLE_DOCS);
+  const codice = /BRD-(?:COL|FON) \|[^\n\r]*?\| #[0-9A-Z]{5}/g;
+  const righe = [];
+  while (schede.hasNext()) {
+    const f = schede.next();
+    if (f.getName().indexOf('Codici raccolti') === 0) continue;
+    const testo = DocumentApp.openById(f.getId()).getBody().getText().replace(/\u00a0/g, ' ');
+    const trovati = testo.match(codice) || [];
+    if (trovati.length === 0) righe.push(f.getName() + '\t(nessun codice)');
+    trovati.forEach(function (c) { righe.push(f.getName() + '\t' + c); });
+  }
+  const quando = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd HH.mm');
+  const doc = DocumentApp.create('Codici raccolti ' + quando);
+  doc.getBody().setText(righe.join('\n'));
+  doc.saveAndClose();
+  DriveApp.getFileById(doc.getId()).moveTo(cartella);
+  Logger.log(righe.length + ' righe raccolte: ' + doc.getUrl());
+}</pre>
+<div class="row" style="margin-top:6px"><button class="btn ghost" type="button" id="copyGs">Copia lo script</button><span class="tiny" id="gsStatus" role="status"></span></div>
+</details>
+</section>
+
+<section class="card" id="input"><h2>2 · Incolla e analizza</h2>
+<label for="src" class="small">Incolla qui i codici, le schede o il documento «Codici raccolti». Le righe che non contengono codici vengono ignorate.</label>
+<textarea id="src" spellcheck="false" placeholder="BRD-COL | Sara Bianchi | PALETTE 3/4 | RUOLI 3/4 | SENSAZIONI 4/4 | TOT 10/12 | BONUS HEX 2/3 | ripetizioni 0 | #7UT2Z"></textarea>
+<div class="row"><button class="btn" type="button" id="go">Analizza</button><button class="btn ghost" type="button" id="demo">Carica un esempio</button><button class="btn ghost" type="button" id="clear">Svuota</button><span id="status" role="status" aria-live="polite"></span></div>
+</section>
+
+<div id="out" hidden>
+<section class="card"><h2>3 · Risultato</h2>
+<div class="chips" id="chips"></div>
+<ul class="alerts" id="alerts"></ul>
+</section>
+<section class="card" id="classe"></section>
+<section class="card"><h2>Studente per studente</h2>
+<p class="small">Per ogni studente e ogni palestra si usa il codice valido dell'ultimo tentativo (quello con più ripetizioni). Le righe in rosso hanno solo codici con firma non valida e non entrano nelle medie.</p>
+<div class="tw"><table id="tab"></table></div>
+<div class="row" id="esporta"><button class="btn" type="button" id="csv">Scarica il foglio (CSV)</button><button class="btn ghost" type="button" id="tsv">Copia per Google Fogli</button><button class="btn ghost" type="button" id="print">Stampa</button><span class="tiny" id="expStatus" role="status"></span></div>
+</section>
+</div>
+</main>
+<p class="foot">La firma finale (#) dimostra che la riga non è stata ritoccata a mano, non chi l'ha prodotta: per questo, quando il codice arriva con il nome della scheda, la pagina controlla anche che i due nomi corrispondano.</p>
+
+<script>
+(function(){
+"use strict";
+var PAL={
+  COL:{nome:"Palestra dei colori",breve:"Colori",sez:[["PALETTE","A. Palette misteriosa"],["RUOLI","B. Primario, secondario o neutro?"],["SENSAZIONI","C. Che sensazione?"]],bonus:"BONUS HEX"},
+  FON:{nome:"Palestra dei font",breve:"Font",sez:[["FAMIGLIE","A. Serif o sans-serif?"],["COMUNICA","B. Che cosa comunica?"],["BRAND","C. Abbina il font al brand"],["VALORI","D. Valori e prove"]]}
+};
+var ORD=["COL","FON"];
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function sig(s,tag){ var h=5381,t="BRD*"+s+"*"+tag; for(var k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+function norm(s){ return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim(); }
+function chiave(n){ return norm(n).split(" ").filter(Boolean).sort().join(" "); }
+function pct(ok,n){ return n? Math.round(ok/n*100) : 0; }
+function nf(n){ return n===1?"1 non fatta":n+" non fatte"; }
+
+/* ---- lettura ---- */
+function leggi(testo){
+  testo=testo.replace(/\u00a0/g," ").replace(/\r/g,"");
+  var codici=[], vuoti=[];
+  testo.split("\n").forEach(function(riga,i){
+    var v=riga.match(/^(.*?)\t\(nessun codice\)\s*$/); if(v){ vuoti.push(v[1].trim()); return; }
+    var re=/BRD-(COL|FON) \|[^\n]*?\| #[0-9A-Z]{5}/g, m;
+    while((m=re.exec(riga))){
+      var fonte=riga.slice(0,m.index).replace(/[\s:>|\u2192\u2013\u2014-]+$/,"").trim();
+      codici.push(decodifica(m[0],fonte,i+1));
+    }
+  });
+  return {codici:codici,vuoti:vuoti};
+}
+function decodifica(raw,fonte,riga){
+  var k=raw.lastIndexOf(" | #"), body=raw.slice(0,k), firma=raw.slice(k+4), tool=raw.slice(4,7), parti=body.split(" | ");
+  var d={raw:raw,fonte:fonte,riga:riga,tool:tool,valido:sig(body,tool)===firma,nome:(parti[1]||"").trim(),sez:{},tot:null,bonus:null,rip:0,nonFatte:0};
+  parti.slice(2).forEach(function(p){
+    var m;
+    if((m=p.match(/^TOT (\d+)\/(\d+)$/))) d.tot={ok:+m[1],n:+m[2]};
+    else if((m=p.match(/^ripetizioni (\d+)$/))) d.rip=+m[1];
+    else if((m=p.match(/^BONUS HEX (?:-|(\d+)\/(\d+)(?: \((\d+) non fatt[ae]\))?)$/))) d.bonus= m[1]!=null? {ok:+m[1],n:+m[2],nf:+(m[3]||0)} : "-";
+    else if((m=p.match(/^([A-Z]+) (\d+)\/(\d+)(?: \((\d+) non fatt[ae]\))?$/))){ d.sez[m[1]]={ok:+m[2],n:+m[3],nf:+(m[4]||0)}; d.nonFatte+=+(m[4]||0); }
+  });
+  return d;
+}
+
+/* ---- analisi ---- */
+var ULTIMO=null;
+function analizza(){
+  var L=leggi($("src").value), avvisi=[], visti={}, dup=0, studenti={}, ordine=[];
+  if(!L.codici.length && !L.vuoti.length){ $("out").hidden=true; $("status").textContent="Nessun codice trovato: le righe devono iniziare con BRD-COL o BRD-FON."; return; }
+  L.codici.forEach(function(c){
+    var kv=c.raw+"\u0001"+c.fonte; if(visti[kv]){ dup++; return; } visti[kv]=true;
+    var k=chiave(c.nome)||"(senza nome)";
+    if(!studenti[k]){ studenti[k]={nome:c.nome||"(senza nome)",COL:[],FON:[],fonti:[]}; ordine.push(k); }
+    if(PAL[c.tool]) studenti[k][c.tool].push(c);
+    if(c.fonte && studenti[k].fonti.indexOf(c.fonte)<0) studenti[k].fonti.push(c.fonte);
+    if(!c.valido) avvisi.push(["e","<b>Firma non valida</b> · "+esc(c.nome)+" · "+PAL[c.tool].nome+" (riga "+c.riga+"). La riga è stata modificata a mano o copiata solo in parte: <code>"+esc(c.raw)+"</code>"]);
+    if(c.fonte){ var tk=norm(c.nome).split(" ").filter(Boolean), nf_=norm(c.fonte);
+      if(tk.length && !tk.every(function(t){ return (" "+nf_+" ").indexOf(" "+t+" ")>=0; }))
+        avvisi.push(["w","<b>Nome diverso dalla scheda</b> · il codice è intestato a <b>"+esc(c.nome)+"</b> ma arriva dalla scheda «"+esc(c.fonte)+"». Può essere un codice copiato da un compagno."]); }
+  });
+  var usaFon=L.codici.some(function(c){ return c.tool==="FON"; }), usaCol=L.codici.some(function(c){ return c.tool==="COL"; });
+  ordine.sort(function(a,b){ return studenti[a].nome.localeCompare(studenti[b].nome,"it"); });
+  ordine.forEach(function(k){
+    var s=studenti[k];
+    ORD.forEach(function(t){
+      var u={}, validi=s[t].filter(function(c){ if(!c.valido||u[c.raw]) return false; u[c.raw]=true; return true; });
+      validi.sort(function(a,b){ return (b.rip-a.rip)||((b.tot?b.tot.ok:0)-(a.tot?a.tot.ok:0)); });
+      s["sc"+t]=validi[0]||null; s["inv"+t]=s[t].length>0 && !validi.length;
+      if(validi.length>1) avvisi.push(["i",esc(s.nome)+" ha "+validi.length+" codici validi per la "+PAL[t].nome.toLowerCase()+": uso l'ultimo tentativo (ripetizioni "+validi[0].rip+")."]);
+    });
+    if(usaFon && s.COL.length && !s.FON.length) avvisi.push(["i",esc(s.nome)+": manca il codice della palestra dei font."]);
+    if(usaCol && s.FON.length && !s.COL.length) avvisi.push(["i",esc(s.nome)+": manca il codice della palestra dei colori."]);
+  });
+  L.vuoti.forEach(function(v){ avvisi.push(["w","<b>Scheda senza codici</b> · «"+esc(v)+"»"]); });
+  if(dup) avvisi.push(["i",dup+" "+(dup===1?"codice incollato due volte è stato contato":"codici incollati più volte sono stati contati")+" una volta sola."]);
+  var nInv=L.codici.filter(function(c){ return !c.valido; }).length;
+  ULTIMO={studenti:studenti,ordine:ordine};
+  $("chips").innerHTML=
+    chip(L.codici.length-dup,"codici trovati")+chip(L.codici.length-nInv,"con firma valida")+chip(nInv,"con firma non valida",nInv?"bad":"")+chip(ordine.length,"studenti")+(L.vuoti.length?chip(L.vuoti.length,"schede senza codice","bad"):"");
+  var ord={e:0,w:1,i:2}; avvisi.sort(function(a,b){ return ord[a[0]]-ord[b[0]]; });
+  $("alerts").innerHTML= avvisi.length? avvisi.map(function(a){ return '<li class="'+a[0]+'">'+a[1]+'</li>'; }).join("") : '<li class="i">Nessun problema: tutte le firme sono valide.</li>';
+  classe(studenti,ordine); tabella(studenti,ordine);
+  $("out").hidden=false; $("status").textContent="Analisi fatta: "+ordine.length+" studenti.";
+}
+function chip(n,t,c){ return '<div class="chip '+(c||"")+'"><b>'+n+'</b><span>'+t+'</span></div>'; }
+
+/* ---- la classe ---- */
+function classe(studenti,ordine){
+  var h='<h2>Com\'è andata la classe</h2><p class="small">Percentuale di risposte giuste sezione per sezione, contando solo i codici validi. In arancione la sezione più incerta: è quella da riprendere a lezione.</p>';
+  ORD.forEach(function(t){
+    var P=PAL[t], cod=ordine.map(function(k){ return studenti[k]["sc"+t]; }).filter(Boolean);
+    if(!cod.length) return;
+    var righe=P.sez.map(function(s){ var ok=0,n=0,nfatte=0; cod.forEach(function(c){ var x=c.sez[s[0]]; if(x){ ok+=x.ok; n+=x.n; nfatte+=x.nf; } }); return {cod:s[0],lab:s[1],ok:ok,n:n,p:pct(ok,n),nf:nfatte}; });
+    var min=righe.reduce(function(a,b){ return b.p<a.p?b:a; });
+    var tot=cod.reduce(function(a,c){ return a+(c.tot?c.tot.ok:0); },0), max=cod.length*(cod[0].tot?cod[0].tot.n:0);
+    var complete=cod.filter(function(c){ return !c.nonFatte; }).length;
+    h+='<h3>'+P.nome+' · '+cod.length+' studenti</h3><div class="bars">'+righe.map(function(r){
+      return '<div class="bar'+(r===min&&righe.length>1?' weak':'')+'"><span>'+esc(r.lab)+(r.nf?' <span class="tiny">('+nf(r.nf)+')</span>':'')+'</span><div class="track" role="img" aria-label="'+r.p+' per cento"><div style="width:'+r.p+'%"></div></div><span class="pct">'+r.p+'%</span></div>'; }).join("")+'</div>';
+    if(P.bonus){ var b=cod.filter(function(c){ return c.bonus&&c.bonus!=="-"; }); if(b.length){ var bo=b.reduce(function(a,c){ return a+c.bonus.ok; },0), bn=b.reduce(function(a,c){ return a+c.bonus.n; },0);
+      h+='<p class="small" style="margin:8px 0 0">Bonus HEX, facoltativo: fatto da '+b.length+' studenti su '+cod.length+', '+pct(bo,bn)+'% di risposte giuste.</p>'; } }
+    h+='<p class="small" style="margin:6px 0 0">Media della palestra: <b>'+pct(tot,max)+'%</b> · palestra completata da '+complete+' studenti su '+cod.length+'.</p>';
+    if(righe.length>1) h+='<div class="weakmsg">Sezione più incerta: <b>'+esc(min.lab)+'</b>, '+min.p+'% di risposte giuste.</div>';
+  });
+  $("classe").innerHTML=h;
+}
+
+/* ---- tabella ---- */
+function cella(x){ if(!x) return '<td>–</td>'; return '<td>'+x.ok+'/'+x.n+(x.nf?'<span class="nf">'+nf(x.nf)+'</span>':'')+'</td>'; }
+function tabella(studenti,ordine){
+  var h1='<tr><th class="grp nm" rowspan="2">Studente</th>', h2='<tr>';
+  ORD.forEach(function(t){ var P=PAL[t], span=P.sez.length+2+(P.bonus?1:0);
+    h1+='<th class="grp sep" colspan="'+span+'">'+P.nome+'</th>';
+    P.sez.forEach(function(s,i){ h2+='<th'+(i===0?' class="sep"':'')+' title="'+esc(s[1])+'">'+s[0]+'</th>'; });
+    h2+='<th>TOT</th>'+(P.bonus?'<th>HEX</th>':'')+'<th>rip.</th>'; });
+  h1+='<th class="grp" rowspan="2">Note</th></tr>'; h2+='</tr>';
+  var body=ordine.map(function(k){
+    var s=studenti[k], note=[], inv=true, r='';
+    ORD.forEach(function(t){ var P=PAL[t], c=s["sc"+t];
+      if(c) inv=false;
+      if(s["inv"+t]) note.push(P.breve+": solo firme non valide");
+      P.sez.forEach(function(x,i){ var v=c?c.sez[x[0]]:null; r+= i===0 ? cella(v).replace('<td','<td class="sep"') : cella(v); });
+      r+='<td class="tot">'+(c&&c.tot? c.tot.ok+'/'+c.tot.n+' <span class="tiny">'+pct(c.tot.ok,c.tot.n)+'%</span>' : '–')+'</td>';
+      if(P.bonus) r+='<td>'+(c&&c.bonus&&c.bonus!=="-"? c.bonus.ok+'/'+c.bonus.n : '–')+'</td>';
+      r+='<td>'+(c? c.rip : '–')+'</td>';
+    });
+    if(s.fonti.length) note.push("da: "+s.fonti.join("; "));
+    return '<tr'+(inv?' class="inv"':'')+'><td class="nm">'+esc(s.nome)+'</td>'+r+'<td class="note">'+esc(note.join(" · "))+'</td></tr>';
+  }).join("");
+  $("tab").innerHTML='<thead>'+h1+h2+'</thead><tbody>'+body+'</tbody>';
+}
+
+/* ---- esportazione ---- */
+function righeExport(){
+  var st=ULTIMO.studenti, head=["Studente"];
+  ORD.forEach(function(t){ var P=PAL[t]; P.sez.forEach(function(s){ head.push(P.breve+" "+s[0]); }); head.push(P.breve+" TOT",P.breve+" %"); if(P.bonus) head.push(P.breve+" bonus HEX"); head.push(P.breve+" ripetizioni"); });
+  head.push("Note");
+  var out=[head];
+  ULTIMO.ordine.forEach(function(k){ var s=st[k], r=[s.nome], note=[];
+    ORD.forEach(function(t){ var P=PAL[t], c=s["sc"+t];
+      if(s["inv"+t]) note.push(P.breve+": solo firme non valide");
+      P.sez.forEach(function(x){ var v=c?c.sez[x[0]]:null; r.push(v? v.ok+"/"+v.n+(v.nf?" ("+nf(v.nf)+")":"") : ""); });
+      r.push(c&&c.tot? c.tot.ok+"/"+c.tot.n : "", c&&c.tot? String(pct(c.tot.ok,c.tot.n)) : "");
+      if(P.bonus) r.push(c&&c.bonus&&c.bonus!=="-"? c.bonus.ok+"/"+c.bonus.n : "");
+      r.push(c? String(c.rip) : "");
+    });
+    r.push(note.join(" · ")); out.push(r); });
+  return out;
+}
+$("csv").onclick=function(){
+  var csv=righeExport().map(function(r){ return r.map(function(v){ v=String(v); return /[;"\n]/.test(v)? '"'+v.replace(/"/g,'""')+'"' : v; }).join(";"); }).join("\r\n");
+  var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"}));
+  a.download="codici_brand_oltre_il_logo.csv"; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },500);
+  $("expStatus").textContent="File scaricato: si apre con Excel, LibreOffice o Google Fogli.";
+};
+$("tsv").onclick=function(){
+  var tsv=righeExport().map(function(r){ return r.join("\t"); }).join("\n");
+  copia(tsv,function(ok){ $("expStatus").textContent= ok? "Copiato: in Google Fogli clicca la cella A1 e incolla." : "Copia non riuscita: usa «Scarica il foglio»."; });
+};
+$("print").onclick=function(){ window.print(); };
+function copia(t,cb){
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(function(){ cb(true); },function(){ cb(fallback(t)); }); } else cb(fallback(t));
+  function fallback(x){ var ta=document.createElement("textarea"); ta.value=x; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); var ok=false; try{ ok=document.execCommand("copy"); }catch(e){} ta.remove(); return ok; }
+}
+$("copyGs").onclick=function(){ copia($("gs").textContent,function(ok){ $("gsStatus").textContent= ok? "Script copiato." : "Seleziona lo script e copialo a mano."; }); };
+
+/* ---- esempio ---- */
+function crea(tool,nome,val,rip,bonus){
+  var P=PAL[tool], parti=["BRD-"+tool,nome], ok=0, n=0;
+  P.sez.forEach(function(s,i){ var v=val[i], m=4; ok+=v[0]; n+=m; parti.push(s[0]+" "+v[0]+"/"+m+(v[1]?" ("+nf(v[1])+")":"")); });
+  parti.push("TOT "+ok+"/"+n); if(P.bonus) parti.push("BONUS HEX "+(bonus||"-")); parti.push("ripetizioni "+rip);
+  var b=parti.join(" | "); return b+" | #"+sig(b,tool);
+}
+$("demo").onclick=function(){
+  var r=[
+    "Sara Bianchi - Il brand oltre il logo · 01\t"+crea("COL","Sara Bianchi",[[3],[3],[4]],0,"2/3"),
+    "Sara Bianchi - Il brand oltre il logo · 01\t"+crea("FON","Sara Bianchi",[[4],[3],[4],[3]],1),
+    "Luca Verdi - Il brand oltre il logo · 01\t"+crea("COL","Luca Verdi",[[4],[2],[3]],0),
+    "Luca Verdi - Il brand oltre il logo · 01\t"+crea("COL","Luca Verdi",[[4],[3],[4]],1),
+    "Luca Verdi - Il brand oltre il logo · 01\t"+crea("FON","Luca Verdi",[[3],[4],[2],[1,1]],0),
+    "Aisha Khan - Il brand oltre il logo · 01\t"+crea("COL","Aisha Khan",[[4],[1],[3]],2,"3/3").replace("TOT 8/12","TOT 11/12"),
+    "Aisha Khan - Il brand oltre il logo · 01\t"+crea("FON","Aisha Khan",[[4],[4],[3],[3]],0),
+    "Marco Russo - Il brand oltre il logo · 01\t"+crea("COL","Giulia Neri",[[4],[4],[4]],0,"3/3"),
+    "Giulia Neri - Il brand oltre il logo · 01\t"+crea("COL","Giulia Neri",[[4],[4],[4]],0,"3/3"),
+    "Giulia Neri - Il brand oltre il logo · 01\t"+crea("FON","Giulia Neri",[[4],[3],[4],[2]],0),
+    "Pietro Galli - Il brand oltre il logo · 01\t(nessun codice)"
+  ];
+  $("src").value=r.join("\n"); analizza(); $("status").textContent="Esempio caricato: contiene apposta una firma manomessa, un codice copiato, un doppio tentativo e una scheda vuota.";
+};
+$("clear").onclick=function(){ $("src").value=""; $("out").hidden=true; $("status").textContent=""; ULTIMO=null; $("src").focus(); };
+$("go").onclick=analizza;
+})();
+</script>
+</body></html>
