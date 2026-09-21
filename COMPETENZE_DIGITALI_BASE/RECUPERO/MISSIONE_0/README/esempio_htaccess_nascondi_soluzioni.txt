@@ -1,0 +1,9 @@
+﻿ESEMPIO PER HOSTING APACHE - blocca l'accesso web alle cartelle SOLUZIONI
+
+1. Crea nella cartella principale del pacchetto (dove c'e' index.html) un file chiamato  .htaccess  (con il punto iniziale).
+2. Scrivici questa riga:
+
+RedirectMatch 403 /SOLUZIONI/
+
+3. Da quel momento le soluzioni non si aprono dal web (errore 403): tienile solo sul tuo computer o in Drive.
+Se il tuo hosting non usa Apache (o non accetta .htaccess), proteggi la cartella con la funzione 'directory protetta da password' del pannello, oppure non caricare le cartelle SOLUZIONI.

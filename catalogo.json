@@ -3,22 +3,48 @@
     "COMPETENZE_DIGITALI_BASE": "Competenze digitali base",
     "SERVIZI_COMMERCIALI": "Servizi commerciali",
     "SOCIO_SANITARIO": "Socio sanitario",
+    "BIENNIO": "Biennio",
     "WORDPRESS": "WordPress",
     "SEO": "SEO"
   },
   "voci": [
     {
-      "tipo": "argomento",
       "titolo": "Missione 0 · Riattiviamo le competenze digitali",
-      "percorso": "COMPETENZE_DIGITALI_BASE/MISSIONE_0/",
+      "percorso": "COMPETENZE_DIGITALI_BASE/RECUPERO/MISSIONE_0/",
       "minuti": 600,
-      "descrizione": "Quattro lezioni pratiche e una missione finale per riattivare le competenze informatiche del biennio: file e cartelle, ricerca di fonti, posta e sicurezza. Include guida per il docente, versioni BES e materiali pronti per Classroom.",
+      "descrizione": "Quattro lezioni pratiche e una missione finale per riattivare le competenze informatiche: file e cartelle, ricerca di fonti, posta e sicurezza. Include guida per il docente, versioni BES e materiali pronti per Classroom.",
       "tag": [
         "competenze-base",
         "file",
         "documenti",
         "ricerca",
         "sicurezza"
+      ]
+    },
+    {
+      "titolo": "Il brand oltre il logo",
+      "percorso": "SERVIZI_COMMERCIALI/BRAND/IL_BRAND_OLTRE_IL_LOGO/",
+      "minuti": 240,
+      "descrizione": "Due lezioni da due ore sull'identità di marca: che cosa resta di un'azienda quando togli il logo, colori per ruolo e sensazione, famiglie di caratteri e valori di marca con la catena delle prove. Due palestre interattive con codice riepilogativo, una scheda di analisi su cinque aziende vere, versione BES e materiali pronti per Classroom.",
+      "tag": [
+        "brand",
+        "identita-visiva",
+        "colori",
+        "tipografia",
+        "marketing"
+      ]
+    },
+    {
+      "titolo": "Differenza tra hardware e software",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_PC_E_SO/DIFFERENZA_HW_SW/",
+      "minuti": 240,
+      "descrizione": "Due lezioni da due ore per il biennio: componenti del PC (CPU, RAM, memoria di massa, periferiche di input e output), architettura di Von Neumann, avvio e interfaccia del sistema operativo, cartelle e sottocartelle in Google Drive, copia sposta rinomina elimina, compressione in ZIP. Palestra interattiva con codice, schede di lavoro e versioni BES.",
+      "tag": [
+        "competenze-base",
+        "hardware",
+        "sistema-operativo",
+        "file",
+        "drive"
       ]
     }
   ]

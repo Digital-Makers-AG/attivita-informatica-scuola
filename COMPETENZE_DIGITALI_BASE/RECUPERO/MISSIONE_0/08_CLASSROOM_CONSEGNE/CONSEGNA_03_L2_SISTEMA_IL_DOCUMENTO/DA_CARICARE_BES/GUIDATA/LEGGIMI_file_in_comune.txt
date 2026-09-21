@@ -1,0 +1,6 @@
+﻿Per non duplicare i file, questi file del compito GUIDATA si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- selezione_officina23.html
+- foto_noleggio_ebike.jpg
+- logo_officina23.png
+- appunti_prezzi_marta.txt

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Officina 23 · Palestra della tastiera</title>
+<style>
+:root{--teal:#0B6E75;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--blue:#1a56b0;--bg:#f7f5f0;--card:#fff;--line:#d5dade}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+header{background:var(--teal);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0}
+header .who{margin-left:auto;display:flex;gap:8px;align-items:center}
+header input{padding:6px 8px;border-radius:6px;border:0;font-size:15px;width:210px}
+nav{display:flex;gap:6px;padding:10px 22px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+nav button{border:1px solid var(--line);background:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+nav button .n{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--teal-l);color:var(--teal);font-weight:bold;text-align:center;line-height:20px;margin-right:6px;font-size:12px}
+nav button.on .n{background:#fff}
+main{max-width:1100px;margin:0 auto;padding:18px 22px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.hint{background:var(--orange-l);border-left:5px solid var(--orange);padding:10px 14px;border-radius:6px;margin:10px 0}
+.info{background:var(--teal-l);border-left:5px solid var(--teal);padding:10px 14px;border-radius:6px;margin:10px 0}
+h2{margin:0 0 8px;color:var(--teal)}
+h3{margin:14px 0 6px}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:15px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,nav button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.typearea{font-family:"Courier New",monospace;font-size:21px;line-height:1.8;padding:16px;border:2px solid var(--line);border-radius:10px;background:#fff;min-height:150px;white-space:pre-wrap;word-break:break-word;cursor:text}
+.typearea.focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-l)}
+.typearea span.ok{color:var(--ok)}
+.typearea span.ko{background:var(--ko-l);color:var(--ko);text-decoration:underline}
+.typearea span.cur{border-left:3px solid var(--orange);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{border-color:transparent}}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px}
+.stat b{display:block;font-size:26px;color:var(--teal)}
+.stat small{color:var(--muted)}
+.result{border:2px solid var(--teal);border-radius:12px;padding:14px 16px;background:#fff;margin-top:12px}
+.big{font-size:90px;font-weight:bold;text-align:center;color:var(--teal);font-family:"Courier New",monospace;line-height:1.2}
+.symname{text-align:center;color:var(--muted);font-size:18px}
+.shake{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.flashok{background:var(--ok-l)!important}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--teal-l)}
+.code{font-family:"Courier New",monospace;font-size:18px;background:#f3f3f3;padding:2px 6px;border-radius:4px}
+.row-ok{background:var(--ok-l)}.row-ko{background:var(--ko-l)}
+input.t,textarea.t,select.t{font-size:17px;padding:8px;border:2px solid var(--line);border-radius:8px;width:100%;font-family:Arial,sans-serif}
+input.t:focus,textarea.t:focus,select.t:focus{border-color:var(--teal)}
+label{font-weight:bold;display:block;margin:8px 0 4px}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:1px 7px;background:#fff;font-family:Arial;font-size:14px;margin:0 2px}
+.mousebad{color:var(--ko);font-weight:bold}
+/* tastiera */
+.keyboard{display:inline-block;background:#e9ecef;padding:10px;border-radius:10px;user-select:none}
+.krow{display:flex;gap:4px;margin-bottom:4px}
+.key{position:relative;width:46px;height:46px;background:#fff;border:1px solid #aab3ba;border-bottom-width:3px;border-radius:6px;font-size:13px}
+.key .b{position:absolute;left:5px;bottom:3px;font-size:15px;color:#111}
+.key .s{position:absolute;left:5px;top:2px;color:var(--blue);font-weight:bold}
+.key .a{position:absolute;right:4px;bottom:3px;color:var(--orange);font-weight:bold}
+.key .sa{position:absolute;right:4px;top:2px;color:#8a3b00;font-weight:bold}
+.key.w15{width:70px}.key.w18{width:84px}.key.w2{width:96px}.key.w25{width:118px}.key.sp{width:280px}
+.key.lbl .b{font-size:12px;color:#444}
+.key.home{background:#fff6d5}
+.key.bump::after{content:"";position:absolute;left:17px;bottom:8px;width:12px;height:3px;background:#111;border-radius:2px}
+.key.hl{background:var(--orange);}
+.key.hl span{color:#fff!important}
+.legend span{margin-right:14px}
+.small{font-size:13px;color:var(--muted)}
+.hidden{display:none}
+.badge{display:inline-block;background:var(--orange);color:#fff;border-radius:14px;padding:3px 10px;font-weight:bold;margin:2px}
+.pill{display:inline-block;border-radius:12px;padding:2px 8px;font-size:13px;margin:2px;background:#eee}
+textarea.copy{width:100%;height:84px;font-family:"Courier New",monospace;font-size:14px}
+.progress{height:10px;background:#e3e6e8;border-radius:6px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:var(--orange);width:0}
+</style>
+</head>
+<body>
+<header>
+  <h1>🚲 Officina 23 · Palestra della tastiera</h1>
+  <span class="small" style="color:#e3f2f2">Missione 0 · Lezione 1</span>
+  <div class="who"><label for="nome" style="margin:0;color:#fff">Nome e cognome</label><input id="nome" autocomplete="off" placeholder="scrivi qui il tuo nome">
+    <button type="button" class="btn alt" id="reset" style="padding:6px 10px;font-size:13px;background:#fff">Nuovo studente</button></div>
+  <div id="whoinfo" class="small" style="width:100%;color:#ffd9bf"></div>
+</header>
+<nav id="nav">
+  <button data-tab="t0" class="on"><span class="n">0</span>Posizione</button>
+  <button data-tab="t1"><span class="n">1</span>Test iniziale</button>
+  <button data-tab="t2"><span class="n">2</span>Caccia ai simboli</button>
+  <button data-tab="t3"><span class="n">3</span>Codici Officina</button>
+  <button data-tab="t4"><span class="n">4</span>Sfida senza mouse</button>
+  <button data-tab="t5"><span class="n">5</span>Test finale</button>
+  <button data-tab="t6"><span class="n">★</span>Riepilogo</button>
+</nav>
+<main>
+
+<!-- ============ 0 POSIZIONE ============ -->
+<section id="t0">
+<div class="card">
+  <h2>0 · La posizione di riferimento</h2>
+  <p>Prima di scrivere, sistema le mani. Sui tasti <span class="kbd">F</span> e <span class="kbd">J</span> senti una <b>piccola tacca</b>: lì vanno appoggiati gli <b>indici</b>. Le altre dita si appoggiano sui tasti vicini (sinistra: A S D F · destra: J K L ò). I <b>pollici</b> stanno sulla barra spaziatrice.</p>
+  <div class="info">Dopo ogni parola le dita <b>tornano a casa</b> (F e J). Guarda lo schermo, non la tastiera: se sbagli, correggi con <span class="kbd">Backspace</span>.</div>
+  <h3>La tastiera italiana: dove sono i simboli?</h3>
+  <p class="legend"><span><b>nero</b> = tasto da solo</span><span style="color:var(--blue)"><b>blu</b> = con <span class="kbd">Shift</span></span><span style="color:var(--orange)"><b>arancione</b> = con <span class="kbd">AltGr</span></span><span style="color:#8a3b00"><b>marrone</b> = <span class="kbd">AltGr</span> + <span class="kbd">Shift</span></span></p>
+  <div id="kb0"></div>
+  <div class="hint"><b>Tasti speciali da conoscere:</b> <span class="kbd">Shift</span> maiuscole e simboli blu · <span class="kbd">AltGr</span> simboli arancioni (è l'Alt a destra dello spazio) · <span class="kbd">Invio</span> va a capo o conferma · <span class="kbd">Backspace</span> cancella a sinistra · <span class="kbd">Canc</span> cancella a destra · <span class="kbd">Tab</span> passa al campo successivo · <span class="kbd">Ctrl</span> scorciatoie (Ctrl+C, Ctrl+V…) · <span class="kbd">Alt</span>+<span class="kbd">Tab</span> passa da una finestra all'altra · <span class="kbd">←</span> <span class="kbd">→</span> <span class="kbd">↑</span> <span class="kbd">↓</span> spostano il cursore.</div>
+  <p class="small">Su Mac: al posto di AltGr si usa di solito il tasto Option (⌥) e al posto di Ctrl il tasto Cmd (⌘). Alcuni simboli sono in posizioni diverse.</p>
+  <button class="btn" onclick="go('t1')">Sono pronto: vai al test iniziale →</button>
+</div>
+</section>
+
+<!-- ============ 1 TEST INIZIALE ============ -->
+<section id="t1" class="hidden">
+<div class="card">
+  <h2>1 · Test iniziale (60 secondi)</h2>
+  <p>Clicca nel riquadro e inizia a scrivere il testo. Il tempo parte al primo tasto. <b>Conta la precisione</b>: un errore corretto con Backspace vale meno di un errore lasciato, ma scrivere giusto subito vale di più.</p>
+  <div class="stats"><div class="stat"><small>Tempo</small><b id="t1-time">60</b></div><div class="stat"><small>Caratteri giusti</small><b id="t1-ok">0</b></div><div class="stat"><small>Errori</small><b id="t1-err">0</b></div></div>
+  <div class="typearea" id="t1-area" tabindex="0" aria-label="Area di digitazione test iniziale"></div>
+  <p><button class="btn alt" onclick="tests.t1.reset()">↺ Ricomincia</button></p>
+  <div class="result hidden" id="t1-res"></div>
+</div>
+</section>
+
+<!-- ============ 2 SIMBOLI ============ -->
+<section id="t2" class="hidden">
+<div class="card">
+  <h2>2 · Caccia ai simboli</h2>
+  <p>Compare un simbolo: premi la combinazione di tasti giusta. <b>+10 punti</b> se lo trovi al primo colpo, +5 al secondo, +2 se usi l'aiuto. Serie di risposte giuste = bonus!</p>
+  <p><button class="btn" id="t2-start">▶ Inizia la caccia</button> <label style="display:inline;font-weight:normal;margin-left:10px"><input type="checkbox" id="t2-map"> mostra la mappa della tastiera</label></p>
+  <div id="t2-game" class="hidden">
+    <div class="progress"><div id="t2-prog"></div></div>
+    <div class="stats"><div class="stat"><small>Simbolo</small><b id="t2-count">1/30</b></div><div class="stat"><small>Punti</small><b id="t2-points">0</b></div><div class="stat"><small>Serie</small><b id="t2-streak">0</b></div><div class="stat"><small>Tempo</small><b id="t2-time">0</b></div></div>
+    <div id="t2-box" tabindex="0" class="typearea" style="text-align:center;min-height:0">
+      <div class="big" id="t2-sym">@</div><div class="symname" id="t2-name">chiocciola</div>
+      <div id="t2-feedback" class="small" style="min-height:22px;margin-top:6px"></div>
+    </div>
+    <p><button class="btn alt" id="t2-help">💡 Aiuto (vale meno punti)</button> <button class="btn alt" id="t2-skip">Salta</button></p>
+    <div id="kb2" class="hidden"></div>
+  </div>
+  <div class="result hidden" id="t2-res"></div>
+</div>
+</section>
+
+<!-- ============ 3 CODICI ============ -->
+<section id="t3" class="hidden">
+<div class="card">
+  <h2>3 · Codici Officina</h2>
+  <p>Marta ti detta codici, indirizzi e prezzi da inserire nel gestionale. Ricopia <b>esattamente</b> ogni riga (spazi, maiuscole, simboli e accenti compresi). Incolla disattivato: si scrive! Poi premi <b>Controlla</b>.</p>
+  <table id="t3-table"><thead><tr><th style="width:4%">#</th><th style="width:44%">Da ricopiare</th><th>Scrivi qui</th><th style="width:6%">Esito</th></tr></thead><tbody></tbody></table>
+  <p><button class="btn" id="t3-check">✔ Controlla</button></p>
+  <div class="result hidden" id="t3-res"></div>
+</div>
+</section>
+
+<!-- ============ 4 SENZA MOUSE ============ -->
+<section id="t4" class="hidden">
+<div class="card">
+  <h2>4 · Sfida senza mouse</h2>
+  <p>Una cliente ha chiamato per prenotare un'e-bike. Compila la scheda <b>senza toccare il mouse</b>. Clicca una sola volta su “Inizia la sfida”, poi solo tastiera!</p>
+  <div class="hint"><span class="kbd">Tab</span> campo successivo · <span class="kbd">Shift</span>+<span class="kbd">Tab</span> campo precedente · <span class="kbd">↑</span><span class="kbd">↓</span> scegli nel menu o cambia il numero · <span class="kbd">Spazio</span> spunta la casella · <span class="kbd">←</span><span class="kbd">→</span> sposta il cursore · <span class="kbd">Backspace</span>/<span class="kbd">Canc</span> correggi · <span class="kbd">Invio</span> sul pulsante per inviare</div>
+  <p><button class="btn" id="t4-start">▶ Inizia la sfida</button> &nbsp; Clic del mouse durante la sfida: <b id="t4-clicks">0</b> &nbsp; Tempo: <b id="t4-time">0</b> s</p>
+  <div class="grid2">
+    <div class="card" style="background:#fffdf7">
+      <h3>📞 Dati dettati al telefono</h3>
+      <table>
+        <tr><th>Nome</th><td>Giulia</td></tr><tr><th>Cognome</th><td>Neri</td></tr>
+        <tr><th>Email</th><td class="code">giulia.neri@posta.example</td></tr><tr><th>Telefono</th><td>333 0001234</td></tr>
+        <tr><th>Bici</th><td>E-bike</td></tr><tr><th>Giorni</th><td>3</td></tr><tr><th>Casco</th><td>sì</td></tr>
+        <tr><th>Note</th><td>Casco taglia M, ritiro alle 9:30</td></tr>
+      </table>
+      <p class="small">Attenzione: nel campo Nome c'è già un errore di battitura. Correggilo con le frecce e Backspace/Canc.</p>
+    </div>
+    <form id="t4-form" class="card" autocomplete="off" onsubmit="return false">
+      <h3>🧾 Scheda prenotazione</h3>
+      <label for="f-nome">Nome</label><input class="t" id="f-nome" value="Giuila" disabled>
+      <label for="f-cognome">Cognome</label><input class="t" id="f-cognome" disabled>
+      <label for="f-email">Email</label><input class="t" id="f-email" disabled>
+      <label for="f-tel">Telefono</label><input class="t" id="f-tel" disabled>
+      <label for="f-bici">Bici</label><select class="t" id="f-bici" disabled><option>City bike</option><option>E-bike</option><option>Bici bimbo</option></select>
+      <label for="f-giorni">Giorni</label><input class="t" id="f-giorni" type="number" min="1" max="7" value="1" disabled>
+      <label style="font-weight:normal"><input type="checkbox" id="f-casco" disabled> <b>Casco richiesto</b></label>
+      <label for="f-note">Note</label><textarea class="t" id="f-note" rows="2" disabled></textarea>
+      <p><button type="button" class="btn or" id="f-send" disabled>Invia prenotazione</button></p>
+    </form>
+  </div>
+  <div class="result hidden" id="t4-res"></div>
+</div>
+</section>
+
+<!-- ============ 5 TEST FINALE ============ -->
+<section id="t5" class="hidden">
+<div class="card">
+  <h2>5 · Test finale (60 secondi)</h2>
+  <p>Stesse regole del test iniziale, testo diverso. Obiettivo: <b>essere più precisi</b> di prima (la velocità viene dopo).</p>
+  <div class="stats"><div class="stat"><small>Tempo</small><b id="t5-time">60</b></div><div class="stat"><small>Caratteri giusti</small><b id="t5-ok">0</b></div><div class="stat"><small>Errori</small><b id="t5-err">0</b></div></div>
+  <div class="typearea" id="t5-area" tabindex="0" aria-label="Area di digitazione test finale"></div>
+  <p><button class="btn alt" onclick="tests.t5.reset()">↺ Ricomincia</button></p>
+  <div class="result hidden" id="t5-res"></div>
+</div>
+</section>
+
+<!-- ============ 6 RIEPILOGO ============ -->
+<section id="t6" class="hidden">
+<div class="card">
+  <h2>★ Riepilogo e confronto</h2>
+  <div id="t6-body"></div>
+  <h3>Il tuo codice risultato</h3>
+  <p>Seleziona tutto il testo nel riquadro (clicca dentro e premi <span class="kbd">Ctrl</span>+<span class="kbd">A</span>), copialo con <span class="kbd">Ctrl</span>+<span class="kbd">C</span> e incollalo con <span class="kbd">Ctrl</span>+<span class="kbd">V</span> nella tua scheda di lavoro.</p>
+  <textarea class="copy" id="t6-code" readonly></textarea>
+  <p class="small">I risultati restano solo su questo computer. Se chiudi il browser potrebbero cancellarsi: <b>trascrivili subito nella scheda</b>. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>
+  <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+    <p class="small">Incolla qui un codice risultato copiato da uno studente e premi Verifica.</p>
+    <textarea class="copy" id="t6-verify" style="height:60px"></textarea>
+    <p><button class="btn alt" id="t6-vbtn">Verifica</button> <b id="t6-vres"></b></p>
+  </details>
+</div>
+</section>
+</main>
+
+<script>
+/* ------------------ dati ------------------ */
+const TXT1 = "Officina 23 ripara biciclette dal 1998. Da questo mese c'è anche il noleggio di e-bike: mezza giornata costa 18 euro, la giornata intera 30 euro. Per prenotare scrivi a info@officina23.example oppure passa in negozio, in via Roma 23. Sabato 17 ottobre c'è l'Open Day: controllo gratuito dei freni, sconto del 10% sui caschi e prova delle nuove bici elettriche. Porta un amico!";
+const TXT2 = "Luca, il meccanico di Officina 23, controlla ogni bici prima del noleggio: gomme, freni, luci e batteria. Se trovi un problema durante il giro, chiama subito il negozio o scrivi a assistenza@officina23.example. Il casco è compreso nel prezzo e il lucchetto costa 2 euro al giorno. Chi prenota entro venerdì riceve una borraccia in regalo: è un'idea di Marta, la titolare, che pensa sempre a tutto!";
+const SYMS = [
+ ["@","chiocciola","AltGr + ò"],["#","cancelletto","AltGr + à"],["€","euro","AltGr + E"],["%","percento","Shift + 5"],
+ ["&","e commerciale","Shift + 6"],["/","barra","Shift + 7"],["\\","barra rovesciata (backslash)","tasto \\ a sinistra dell'1"],
+ ["_","trattino basso (underscore)","Shift + -"],["-","trattino / meno","tasto - a sinistra dello Shift destro"],["+","più","tasto + (a sinistra di Invio)"],
+ ["=","uguale","Shift + 0"],["(","parentesi tonda aperta","Shift + 8"],[")","parentesi tonda chiusa","Shift + 9"],
+ ["[","parentesi quadra aperta","AltGr + è"],["]","parentesi quadra chiusa","AltGr + +"],["{","parentesi graffa aperta","AltGr + Shift + è"],
+ ["}","parentesi graffa chiusa","AltGr + Shift + +"],[":","due punti","Shift + ."],[";","punto e virgola","Shift + ,"],
+ ["?","punto interrogativo","Shift + '"],["!","punto esclamativo","Shift + 1"],["\"","virgolette","Shift + 2"],
+ ["'","apostrofo","tasto ' a destra dello 0"],["<","minore","tasto < a sinistra della Z"],[">","maggiore","Shift + <"],
+ ["è","e con accento grave","tasto è"],["é","e con accento acuto (perché)","Shift + è"],["à","a accentata","tasto à"],
+ ["ò","o accentata","tasto ò"],["ù","u accentata","tasto ù"]
+];
+const CODES = [
+ "info@officina23.example","#OpenDayOfficina23","Sconto -15% su caschi & luci!","Codice: EB-23/R [taglia M]",
+ "{PROMO_OTTOBRE} = 10 € + 5 €","Prezzo: € 25,00 (IVA inclusa)","Cartella: C:\\Officina23\\Foto_2026",
+ "\"Pedala con noi\" <sabato 17/10>","Orari: 9:00-12:30; 15:00-19:30","L'e-bike? Perché no: è più comoda, però costa di più!"
+];
+/* layout tastiera italiana (Windows) : [base, shift, altgr, altgr+shift, classe] */
+const KB = [
+ [["\\","|"],["1","!"],["2","\""],["3","£"],["4","$"],["5","%","€"],["6","&"],["7","/"],["8","("],["9",")"],["0","="],["'","?"],["ì","^"],["Backspace","","","","w2 lbl"]],
+ [["Tab","","","","w15 lbl"],["Q"],["W"],["E","","€"],["R"],["T"],["Y"],["U"],["I"],["O"],["P"],["è","é","[","{"],["+","*","]","}"],["Invio","","","","w15 lbl"]],
+ [["Bloc Maiusc","","","","w18 lbl"],["A","","","","home"],["S","","","","home"],["D","","","","home"],["F","","","","home bump"],["G"],["H"],["J","","","","home bump"],["K","","","","home"],["L","","","","home"],["ò","ç","@","","home"],["à","°","#"],["ù","§"]],
+ [["Shift","","","","w15 lbl"],["<",">"],["Z"],["X"],["C"],["V"],["B"],["N"],["M"],[",",";"],[".",":"],["-","_"],["Shift","","","","w25 lbl"]],
+ [["Ctrl","","","","w15 lbl"],["Win","","","","lbl"],["Alt","","","","lbl"],["Spazio","","","","sp lbl"],["AltGr","","","","w15 lbl"],["Ctrl","","","","w15 lbl"]]
+];
+/* ------------------ utilità ------------------ */
+const $ = s => document.querySelector(s);
+const store = {
+  get(k){ try{ const v = localStorage.getItem("o23_"+k); return v ? JSON.parse(v) : null; }catch(e){ return mem[k]||null; } },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem("o23_"+k, JSON.stringify(v)); }catch(e){} }
+};
+const mem = {};
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function kbHTML(highlight){
+  let h='<div class="keyboard">';
+  for(const row of KB){ h+='<div class="krow">';
+    for(const k of row){ const [b,s,a,sa,cls]=[k[0],k[1]||"",k[2]||"",k[3]||"",k[4]||""];
+      const hl = highlight && highlight.includes(b) ? " hl" : "";
+      h+=`<div class="key ${cls}${hl}">${s?`<span class="s">${esc(s)}</span>`:""}<span class="b">${esc(b)}</span>${a?`<span class="a">${esc(a)}</span>`:""}${sa?`<span class="sa">${esc(sa)}</span>`:""}</div>`; }
+    h+='</div>'; }
+  return h+'</div>';
+}
+function keysFor(sym){ // tasti da evidenziare
+  const out=[]; for(const row of KB) for(const k of row){ if(k.slice(0,4).includes(sym) && k[0].length<=2) out.push(k[0]); }
+  const s = SYMS.find(x=>x[0]===sym); if(s){ if(s[2].includes("AltGr")) out.push("AltGr"); if(s[2].includes("Shift")) out.push("Shift"); }
+  return out;
+}
+$("#kb0").innerHTML = kbHTML(["F","J"]);
+/* nome */
+$("#nome").value = store.get("nome")||"";
+$("#nome").addEventListener("input",e=>store.set("nome",e.target.value));
+if(store.get("nome")) $("#whoinfo").textContent = "Su questo computer ci sono i risultati di: "+store.get("nome")+". Non sei tu? Premi «Nuovo studente».";
+$("#reset").addEventListener("click",()=>{
+  if(!confirm("Cancellare nome e risultati salvati su questo computer e ricominciare?")) return;
+  try{ Object.keys(localStorage).filter(k=>k.startsWith("o23_")).forEach(k=>localStorage.removeItem(k)); }catch(e){}
+  for(const k in mem) delete mem[k]; location.reload();
+});
+/* ------------------ navigazione ------------------ */
+function go(id){
+  document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hidden", s.id!==id));
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===id));
+  if(id==="t6") summary();
+  if(id==="t1") $("#t1-area").focus(); if(id==="t5") $("#t5-area").focus();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.tab)));
+/* ------------------ test di digitazione ------------------ */
+function TypingTest(prefix, text, key){
+  const area=$("#"+prefix+"-area"); let typed=[], total=0, errors=0, start=null, timer=null, done=false, wrong={};
+  function render(){
+    let h=""; for(let i=0;i<text.length;i++){ let cls=""; if(i<typed.length) cls = typed[i]===text[i]?"ok":"ko"; if(i===typed.length && !done) cls+=" cur";
+      h+=`<span class="${cls}">${esc(text[i])}</span>`; }
+    area.innerHTML=h;
+    const okc = typed.filter((c,i)=>c===text[i]).length;
+    $("#"+prefix+"-ok").textContent=okc; $("#"+prefix+"-err").textContent=errors;
+  }
+  function finish(){
+    if(done) return; done=true; clearInterval(timer);
+    const secs = Math.max(1,(Date.now()-start)/1000); const mins = Math.min(secs,60)/60;
+    const okc = typed.filter((c,i)=>c===text[i]).length;
+    const cpm = Math.round(okc/mins); const acc = total? Math.round((total-errors)/total*1000)/10 : 0;
+    const worst = Object.entries(wrong).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>`<span class="pill">${esc(x[0]===" "?"spazio":x[0])} ×${x[1]}</span>`).join(" ")||"nessuno";
+    const prev=store.get(key); const r={cpm, wpm:Math.round(cpm/5), acc:String(acc).replace(".",","), errors, total, secs:Math.round(Math.min(secs,60)), n:(prev&&prev.n?prev.n:0)+1};
+    store.set(key,r); render();
+    let medal = acc>=97?"🥇 Precisione d'oro":acc>=93?"🥈 Precisione d'argento":acc>=88?"🥉 Precisione di bronzo":"🎯 Allenati sulla precisione";
+    $("#"+prefix+"-res").classList.remove("hidden");
+    $("#"+prefix+"-res").innerHTML=`<h3>Risultato <span class="badge">${medal}</span></h3>
+      <div class="stats"><div class="stat"><small>Accuratezza</small><b>${r.acc}%</b></div><div class="stat"><small>Caratteri al minuto (netti)</small><b>${cpm}</b></div><div class="stat"><small>Parole al minuto</small><b>${r.wpm}</b></div><div class="stat"><small>Errori</small><b>${errors}</b></div></div>
+      <p>Tasti che hai sbagliato di più: ${worst}</p><p class="small">Accuratezza = tasti giusti ÷ tasti premuti. Caratteri al minuto netti = solo i caratteri giusti. Scrivi questi numeri nella tua scheda.</p>`;
+  }
+  function tick(){ const left = 60-Math.floor((Date.now()-start)/1000); $("#"+prefix+"-time").textContent=Math.max(0,left); if(left<=0) finish(); }
+  area.addEventListener("focus",()=>area.classList.add("focus")); area.addEventListener("blur",()=>area.classList.remove("focus"));
+  area.addEventListener("click",()=>area.focus());
+  area.addEventListener("keydown",e=>{
+    if(done) return; if(e.ctrlKey && !e.altKey) return; // lascia passare le scorciatoie
+    if(e.key==="Backspace"){ e.preventDefault(); typed.pop(); render(); return; }
+    if(e.key.length!==1) return;
+    e.preventDefault();
+    if(!start){ start=Date.now(); timer=setInterval(tick,200); }
+    const i=typed.length; if(i>=text.length) return;
+    total++; if(e.key!==text[i]){ errors++; wrong[text[i]]=(wrong[text[i]]||0)+1; }
+    typed.push(e.key); render(); if(typed.length>=text.length) finish();
+  });
+  function reset(){ typed=[]; total=0; errors=0; start=null; done=false; wrong={}; clearInterval(timer); $("#"+prefix+"-time").textContent="60"; $("#"+prefix+"-res").classList.add("hidden"); render(); area.focus(); }
+  render(); return {reset};
+}
+const tests = { t1: TypingTest("t1",TXT1,"ini"), t5: TypingTest("t5",TXT2,"fin") };
+/* ------------------ caccia ai simboli ------------------ */
+(function(){
+  let order=[], idx=0, points=0, streak=0, tries=0, helped=false, start=0, timer=null, res=[];
+  const box=$("#t2-box");
+  $("#t2-map").addEventListener("change",e=>$("#kb2").classList.toggle("hidden",!e.target.checked));
+  function show(){
+    const s=order[idx]; $("#t2-sym").textContent=s[0]; $("#t2-name").textContent=s[1]; $("#t2-count").textContent=(idx+1)+"/"+order.length;
+    $("#t2-prog").style.width=(idx/order.length*100)+"%"; $("#t2-feedback").textContent=""; tries=0; helped=false;
+    $("#kb2").innerHTML=kbHTML([]); box.focus();
+  }
+  function next(ok){
+    const s=order[idx]; res.push({sym:s[0],name:s[1],combo:s[2],first:ok&&tries===0&&!helped,helped,skipped:!ok});
+    idx++; if(idx>=order.length) return end(); show();
+  }
+  function end(){
+    clearInterval(timer); $("#t2-game").classList.add("hidden");
+    const secs=Math.round((Date.now()-start)/1000);
+    const symOnly=res.filter(r=>SYMS.findIndex(x=>x[0]===r.sym)<25), acc=res.filter(r=>SYMS.findIndex(x=>x[0]===r.sym)>=25);
+    const f1=symOnly.filter(r=>r.first).length, f2=acc.filter(r=>r.first).length;
+    const hard=res.filter(r=>!r.first).map(r=>`<tr><td class="code">${esc(r.sym)}</td><td>${r.name}</td><td><b>${r.combo}</b></td></tr>`).join("");
+    const r={first:f1, acc:f2, points, secs, helps:res.filter(x=>x.helped).length};
+    store.set("symgames",(store.get("symgames")||0)+1);
+    const bestSoFar=store.get("sym");
+    if(!bestSoFar || f1>bestSoFar.first || (f1===bestSoFar.first && points>bestSoFar.points)) store.set("sym",r);
+    const best=store.get("symbest"); if(!best||points>best) store.set("symbest",points);
+    $("#t2-res").classList.remove("hidden");
+    $("#t2-res").innerHTML=`<h3>Caccia finita! ${f1>=23?'<span class="badge">🏆 Cacciatore esperto</span>':f1>=20?'<span class="badge">⭐ Ottima caccia</span>':''}</h3>
+      <div class="stats"><div class="stat"><small>Simboli giusti al primo colpo</small><b>${f1}/25</b></div><div class="stat"><small>Lettere accentate al primo colpo</small><b>${f2}/5</b></div><div class="stat"><small>Punti</small><b>${points}</b></div><div class="stat"><small>Tempo</small><b>${secs} s</b></div></div>
+      ${hard?`<p><b>Da ripassare</b> (scrivili nella scheda):</p><table><tr><th>Simbolo</th><th>Nome</th><th>Combinazione</th></tr>${hard}</table>`:"<p>Nessun simbolo da ripassare. Complimenti!</p>"}
+      <p><button class="btn alt" onclick="document.getElementById('t2-start').click()">↺ Rigioca e batti il tuo record (${Math.max(points,store.get('symbest')||0)} punti)</button></p>`;
+  }
+  $("#t2-start").addEventListener("click",()=>{
+    const syms=SYMS.slice(0,25).sort(()=>Math.random()-.5), accs=SYMS.slice(25).sort(()=>Math.random()-.5);
+    order=syms.slice(0,13).concat(accs.slice(0,2),syms.slice(13),accs.slice(2)); idx=0; points=0; streak=0; res=[];
+    $("#t2-points").textContent="0"; $("#t2-streak").textContent="0"; $("#t2-res").classList.add("hidden"); $("#t2-game").classList.remove("hidden");
+    start=Date.now(); clearInterval(timer); timer=setInterval(()=>$("#t2-time").textContent=Math.round((Date.now()-start)/1000),500); show();
+  });
+  $("#t2-help").addEventListener("click",()=>{ const s=order[idx]; helped=true; $("#t2-feedback").innerHTML="Prova con: <b>"+s[2]+"</b>"; $("#kb2").innerHTML=kbHTML(keysFor(s[0])); $("#kb2").classList.remove("hidden"); box.focus(); });
+  $("#t2-skip").addEventListener("click",()=>{ streak=0; $("#t2-streak").textContent=0; next(false); });
+  box.addEventListener("keydown",e=>{
+    if($("#t2-game").classList.contains("hidden")) return;
+    if(e.ctrlKey && !e.altKey) return; // Ctrl+lettera non conta (AltGr = Ctrl+Alt passa)
+    if(e.key.length!==1) return; e.preventDefault();
+    const s=order[idx];
+    if(e.key===s[0]){
+      let p = helped?2:(tries===0?10:5); if(!helped && tries===0){ streak++; if(streak>=5) p+=5; } else streak=0;
+      points+=p; $("#t2-points").textContent=points; $("#t2-streak").textContent=streak;
+      box.classList.add("flashok"); setTimeout(()=>box.classList.remove("flashok"),180); next(true);
+    } else {
+      tries++; streak=0; $("#t2-streak").textContent=0; box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+      $("#t2-feedback").innerHTML="Hai scritto <b>"+esc(e.key)+"</b>: riprova!";
+    }
+  });
+})();
+/* ------------------ codici ------------------ */
+(function(){
+  const tb=$("#t3-table tbody");
+  CODES.forEach((c,i)=>{ const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td><td class="code">${esc(c)}</td><td><input class="t" id="c${i}" autocomplete="off" spellcheck="false"></td><td id="e${i}"></td>`; tb.appendChild(tr);
+    tr.querySelector("input").addEventListener("paste",e=>{e.preventDefault(); alert("Incolla disattivato: qui si allena la tastiera!");});
+  });
+  $("#t3-check").addEventListener("click",()=>{
+    let ok=0, lines=[];
+    CODES.forEach((c,i)=>{ const v=$("#c"+i).value, tr=$("#c"+i).closest("tr"); const good=v===c; if(good) ok++;
+      tr.className=good?"row-ok":"row-ko";
+      if(good) $("#e"+i).textContent="✔"; else { let k=0; while(k<c.length&&v[k]===c[k]) k++; $("#e"+i).innerHTML="✘"; lines.push(`Riga ${i+1}: differenza al carattere ${k+1} (atteso <span class="code">${esc(c[k]===undefined?"(fine riga)":c[k]===" "?"spazio":c[k])}</span>, scritto <span class="code">${esc(v[k]===undefined?"(niente)":v[k]===" "?"spazio":v[k])}</span>)`); }
+    });
+    const prev=store.get("cod"); const attempts=(prev?prev.attempts:0)+1; store.set("cod",{ok,attempts,first:(prev&&prev.first!==undefined)?prev.first:ok});
+    $("#t3-res").classList.remove("hidden");
+    $("#t3-res").innerHTML=`<h3>Righe corrette: ${ok}/10 ${ok===10?'<span class="badge">✔ Perfetto</span>':''}</h3><p class="small">Controllo n. ${attempts}. Puoi correggere e ricontrollare.</p>${lines.length?"<ul><li>"+lines.join("</li><li>")+"</li></ul>":""}`;
+  });
+})();
+/* ------------------ senza mouse ------------------ */
+(function(){
+  let active=false, clicks=0, start=0, timer=null;
+  const ids=["f-nome","f-cognome","f-email","f-tel","f-bici","f-giorni","f-casco","f-note","f-send"];
+  document.addEventListener("mousedown",e=>{ if(active){ clicks++; $("#t4-clicks").textContent=clicks; $("#t4-clicks").className="mousebad"; } },true);
+  $("#t4-start").addEventListener("click",()=>{
+    ids.forEach(i=>$("#"+i).disabled=false); $("#f-nome").value="Giuila"; ["f-cognome","f-email","f-tel","f-note"].forEach(i=>$("#"+i).value="");
+    $("#f-bici").selectedIndex=0; $("#f-giorni").value=1; $("#f-casco").checked=false;
+    clicks=0; $("#t4-clicks").textContent="0"; $("#t4-clicks").className=""; $("#t4-res").classList.add("hidden");
+    setTimeout(()=>{ active=true; start=Date.now(); clearInterval(timer); timer=setInterval(()=>$("#t4-time").textContent=Math.round((Date.now()-start)/1000),500); $("#f-nome").focus(); },50);
+  });
+  function send(){
+    if(!active) return; active=false; clearInterval(timer);
+    const chk=[["Nome",$("#f-nome").value.trim()==="Giulia"],["Cognome",$("#f-cognome").value.trim()==="Neri"],
+      ["Email",$("#f-email").value.trim()==="giulia.neri@posta.example"],["Telefono",$("#f-tel").value.replace(/\s/g,"")==="3330001234"],
+      ["Bici",$("#f-bici").value==="E-bike"],["Giorni",$("#f-giorni").value==="3"],["Casco",$("#f-casco").checked],
+      ["Note",$("#f-note").value.trim().toLowerCase().replace(/\s+/g," ")==="casco taglia m, ritiro alle 9:30"]];
+    const ok=chk.filter(c=>c[1]).length, secs=Math.round((Date.now()-start)/1000);
+    store.set("mouse",{ok,clicks,secs});
+    ids.forEach(i=>$("#"+i).disabled=true);
+    $("#t4-res").classList.remove("hidden");
+    $("#t4-res").innerHTML=`<h3>${clicks===0&&ok===8?'<span class="badge">🖐️ Mani sulla tastiera: sfida superata!</span>':'Sfida completata'}</h3>
+      <div class="stats"><div class="stat"><small>Dati corretti</small><b>${ok}/8</b></div><div class="stat"><small>Clic del mouse</small><b>${clicks}</b></div><div class="stat"><small>Tempo</small><b>${secs} s</b></div></div>
+      <p>${chk.map(c=>`<span class="pill" style="background:${c[1]?'#dff3e4':'#fbe3e1'}">${c[1]?'✔':'✘'} ${c[0]}</span>`).join(" ")}</p>
+      <p class="small">Per riprovare premi di nuovo “Inizia la sfida”.</p>`;
+  }
+  $("#f-send").addEventListener("click",e=>{ e.preventDefault(); send(); });
+  $("#t4-form").addEventListener("keydown",e=>{ if(e.key==="Enter" && e.target.id==="f-send"){ e.preventDefault(); send(); } });
+})();
+/* ------------------ riepilogo ------------------ */
+function summary(){
+  const i=store.get("ini"), f=store.get("fin"), s=store.get("sym"), c=store.get("cod"), m=store.get("mouse"), n=($("#nome").value||"(nome non inserito)").trim();
+  const v=(o,k,suf="")=>o?o[k]+suf:"—";
+  let delta="";
+  const num=x=>parseFloat(String(x).replace(",","."));
+  if(i&&f){ const da=Math.round((num(f.acc)-num(i.acc))*10)/10, dc=f.cpm-i.cpm;
+    delta=`<div class="info">Accuratezza: <b>${da>=0?"+":""}${String(da).replace(".",",")} punti</b> · Velocità: <b>${dc>=0?"+":""}${dc} caratteri/minuto</b>. ${num(f.acc)>=95?"Precisione ottima: ora puoi puntare anche sulla velocità.":"Prossimo obiettivo: arrivare almeno al 95% di accuratezza, anche andando più piano."}</div>`; }
+  $("#t6-body").innerHTML=`<table><tr><th>Prova</th><th>Risultato</th></tr>
+   <tr><td>Test iniziale</td><td>${v(i,"acc","%")} accuratezza · ${v(i,"cpm")} caratteri/min · ${v(i,"errors")} errori</td></tr>
+   <tr><td>Caccia ai simboli (partita migliore)</td><td>${v(s,"first")}/25 simboli al primo colpo · ${v(s,"acc")}/5 accentate · ${v(s,"points")} punti · aiuti ${v(s,"helps")} · partite giocate ${store.get("symgames")||"—"}</td></tr>
+   <tr><td>Codici Officina</td><td>${v(c,"ok")}/10 righe corrette · al 1° controllo ${v(c,"first")}/10 (controlli: ${v(c,"attempts")})</td></tr>
+   <tr><td>Sfida senza mouse</td><td>${v(m,"ok")}/8 dati corretti · ${v(m,"clicks")} clic · ${v(m,"secs")} s</td></tr>
+   <tr><td>Test finale</td><td>${v(f,"acc","%")} accuratezza · ${v(f,"cpm")} caratteri/min · ${v(f,"errors")} errori</td></tr></table>${delta}`;
+  const body=`O23-L1 | ${n} | INIZIALE ${v(i,"acc","%")} ${v(i,"cpm")}cpm tent.${v(i,"n")} | SIMBOLI ${v(s,"first")}/25 aiuti ${v(s,"helps")} partite ${store.get("symgames")||"—"} | CODICI ${v(c,"ok")}/10 primo ${v(c,"first")}/10 controlli ${v(c,"attempts")} | MOUSE ${v(m,"clicks")} clic ${v(m,"ok")}/8 | FINALE ${v(f,"acc","%")} ${v(f,"cpm")}cpm tent.${v(f,"n")}`;
+  $("#t6-code").value=body+" | #"+sig(body);
+}
+function sig(s){ let h=5381; const t="O23*"+s+"*L1"; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+$("#t6-vbtn").addEventListener("click",()=>{
+  const raw=$("#t6-verify").value.trim(); const k=raw.lastIndexOf(" | #");
+  if(k<0){ $("#t6-vres").textContent="✘ Codice incompleto"; return; }
+  const ok = sig(raw.slice(0,k))===raw.slice(k+4).trim();
+  $("#t6-vres").textContent = ok ? "✔ Codice valido: i numeri non sono stati modificati" : "✘ Codice NON valido: il testo è stato modificato";
+  $("#t6-vres").style.color = ok ? "var(--ok)" : "var(--ko)";
+});
+</script>
+</body>
+</html>

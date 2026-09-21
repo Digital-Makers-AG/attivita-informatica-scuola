@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Officina 23 · Palestra della selezione</title>
+<style>
+:root{--teal:#0B6E75;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--bg:#f7f5f0;--line:#d5dade;--sel:#cce8ff;--selb:#99d1ff}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+header{background:var(--teal);color:#fff;padding:14px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+header h1{font-size:22px;margin:0}
+header .who{margin-left:auto;display:flex;gap:8px;align-items:center}
+header input{padding:6px 8px;border-radius:6px;border:0;font-size:15px;width:210px}
+nav{display:flex;gap:6px;padding:10px 22px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap}
+nav button{border:1px solid var(--line);background:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:14px}
+nav button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+main{max-width:1180px;margin:0 auto;padding:18px 22px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+h2{margin:0 0 8px;color:var(--teal)} h3{margin:12px 0 6px}
+.btn{background:var(--teal);color:#fff;border:0;padding:9px 14px;border-radius:8px;font-size:15px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.btn:focus-visible,nav button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:1px 7px;background:#fff;font-size:14px;margin:0 2px}
+table{border-collapse:collapse;width:100%} td,th{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top} th{background:var(--teal-l)}
+.small{font-size:13px;color:var(--muted)} .hidden{display:none}
+.info{background:var(--teal-l);border-left:5px solid var(--teal);padding:10px 14px;border-radius:6px;margin:10px 0}
+.hint{background:var(--orange-l);border-left:5px solid var(--orange);padding:10px 14px;border-radius:6px;margin:10px 0}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:16px} @media(max-width:900px){.layout{grid-template-columns:1fr}}
+.chlist{list-style:none;margin:0;padding:0} .chlist li{padding:7px 9px;border-radius:8px;margin-bottom:4px;font-size:14px;cursor:pointer;border:1px solid transparent}
+.chlist li.cur{border-color:var(--teal);background:var(--teal-l)} .chlist li .st{float:right;color:var(--orange);letter-spacing:1px}
+.task{border:2px solid var(--teal);border-radius:12px;padding:12px 14px;background:#fff;margin-bottom:12px}
+.task .t{font-size:18px;font-weight:bold} .task .kbonly{display:inline-block;background:#1F3A4D;color:#fff;border-radius:10px;padding:2px 9px;font-size:12px;margin-left:6px}
+.fb{min-height:24px;margin-top:8px;font-weight:bold} .fb.ok{color:var(--ok)} .fb.ko{color:var(--ko)} .fb.mid{color:#8a6d00}
+/* esplora file */
+.explorer{border:1px solid #b9c2c9;border-radius:8px;background:#fff;overflow:hidden;user-select:none}
+.ex-bar{background:#f3f3f3;border-bottom:1px solid #ddd;padding:7px 12px;font-size:14px;color:#333}
+.ex-head,.row{display:grid;grid-template-columns:34px 1fr 210px 110px;align-items:center}
+.ex-head{background:#fafafa;border-bottom:1px solid #e3e3e3;font-size:13px;color:#555}
+.ex-head div{padding:6px 8px;cursor:pointer} .ex-head div:hover{background:#eef6ff}
+.ex-list{position:relative;height:460px;overflow:auto;outline:none}
+.ex-list:focus{box-shadow:inset 0 0 0 2px #7fb7ff}
+.row{height:26px;font-size:14px;border:1px solid transparent;cursor:default}
+.row:hover{background:#eaf4fd}
+.row.sel{background:var(--sel);border-color:var(--selb)}
+.row.foc{outline:2px solid #1F3A4D;outline-offset:-3px}
+.ex-list:not(:focus) .row.foc{outline:1px dotted #555}
+.chlist li:focus-visible,.ex-head div:focus-visible{outline:3px solid var(--orange);outline-offset:1px}
+.row div{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .row .sz{text-align:right}
+.spacer{height:150px}
+.lasso{position:absolute;background:rgba(0,120,215,.18);border:1px solid rgba(0,120,215,.8);pointer-events:none}
+.ex-status{border-top:1px solid #e3e3e3;background:#fafafa;font-size:13px;padding:5px 12px;color:#333;display:flex;gap:18px}
+.bin{margin-left:auto}
+/* testo */
+textarea.txt{width:100%;height:230px;font-family:Georgia,serif;font-size:19px;line-height:1.6;padding:14px;border:2px solid var(--line);border-radius:10px;resize:vertical;background:#fffefb}
+textarea.txt:focus{border-color:var(--teal);outline:none}
+.selview{background:#f3f3f3;border-radius:8px;padding:8px 10px;font-family:"Courier New",monospace;font-size:14px;min-height:36px;margin-top:8px;white-space:pre-wrap;word-break:break-all}
+.badge{display:inline-block;background:var(--orange);color:#fff;border-radius:14px;padding:3px 10px;font-weight:bold;margin:2px}
+textarea.copy{width:100%;height:70px;font-family:"Courier New",monospace;font-size:14px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0} .stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:150px} .stat b{display:block;font-size:24px;color:var(--teal)} .stat small{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🖱️ Officina 23 · Palestra della selezione</h1>
+  <span class="small" style="color:#e3f2f2">Missione 0 · riscaldamento</span>
+  <div class="who"><label for="nome" style="color:#fff">Nome e cognome</label><input id="nome" autocomplete="off" placeholder="scrivi qui il tuo nome">
+    <button type="button" class="btn alt" id="reset" style="padding:6px 10px;font-size:13px;background:#fff">Nuovo studente</button></div>
+  <div id="whoinfo" class="small" style="width:100%;color:#ffd9bf"></div>
+</header>
+<nav id="nav">
+  <button data-tab="g" class="on">0 · Come si seleziona</button>
+  <button data-tab="f">1 · Selezionare file</button>
+  <button data-tab="t">2 · Selezionare testo</button>
+  <button data-tab="r">★ Riepilogo</button>
+</nav>
+<main>
+
+<section id="g">
+<div class="card">
+  <h2>0 · Prima selezioni, poi agisci</h2>
+  <p>Copiare, spostare, eliminare, formattare, allegare: prima di ogni azione devi dire al computer <b>su che cosa</b> agire. Questo si chiama <b>selezionare</b>. Chi seleziona bene lavora il doppio più veloce e sbaglia la metà.</p>
+  <div class="layout" style="grid-template-columns:1fr 1fr">
+  <div><h3>📁 File e cartelle (Esplora file)</h3>
+  <table><tr><th>Voglio selezionare…</th><th>Con il mouse</th><th>Con la tastiera</th></tr>
+  <tr><td>un file</td><td>clic</td><td><span class="kbd">↑</span><span class="kbd">↓</span></td></tr>
+  <tr><td>file vicini (da… a…)</td><td>clic sul primo, <span class="kbd">Shift</span>+clic sull'ultimo<br>oppure trascina un rettangolo partendo da uno spazio vuoto</td><td><span class="kbd">Shift</span>+<span class="kbd">↑</span><span class="kbd">↓</span> · <span class="kbd">Shift</span>+<span class="kbd">Fine</span></td></tr>
+  <tr><td>file sparsi</td><td><span class="kbd">Ctrl</span>+clic su ciascuno (di nuovo per toglierlo)</td><td><span class="kbd">Ctrl</span>+<span class="kbd">↑</span><span class="kbd">↓</span> per muoverti, <span class="kbd">Ctrl</span>+<span class="kbd">Spazio</span> per scegliere</td></tr>
+  <tr><td>tutti</td><td>—</td><td><span class="kbd">Ctrl</span>+<span class="kbd">A</span></td></tr>
+  <tr><td>nessuno</td><td>clic in uno spazio vuoto</td><td>—</td></tr></table>
+  <p class="small">Trucco da professionisti: clicca sull'intestazione <b>Tipo</b> per ordinare i file; i file dello stesso tipo diventano vicini e li prendi con un solo <span class="kbd">Shift</span>+clic.</p>
+  <p class="small">Le sfide sui file imitano <b>Esplora file di Windows</b>: fatele su un PC Windows. Su Mac e Chromebook alcuni tasti sono diversi o usati dal sistema (<span class="kbd">Canc</span>, <span class="kbd">Ctrl</span>+<span class="kbd">Spazio</span>).</p></div>
+  <div><h3>✏️ Testo (documenti, email, moduli)</h3>
+  <table><tr><th>Voglio selezionare…</th><th>Con il mouse</th><th>Con la tastiera</th></tr>
+  <tr><td>una parola</td><td>doppio clic</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">→</span></td></tr>
+  <tr><td>un paragrafo</td><td>triplo clic</td><td>—</td></tr>
+  <tr><td>un carattere alla volta</td><td>—</td><td><span class="kbd">Shift</span>+<span class="kbd">←</span><span class="kbd">→</span></td></tr>
+  <tr><td>fino a fine riga</td><td>—</td><td><span class="kbd">Shift</span>+<span class="kbd">Fine</span> (<span class="kbd">Shift</span>+<span class="kbd">Home</span> verso l'inizio)</td></tr>
+  <tr><td>da un punto a un altro</td><td>clic, poi <span class="kbd">Shift</span>+clic</td><td><span class="kbd">Shift</span>+<span class="kbd">↑</span><span class="kbd">↓</span> riga per riga</td></tr>
+  <tr><td>fino alla fine del testo</td><td>—</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">Fine</span></td></tr>
+  <tr><td>tutto</td><td>—</td><td><span class="kbd">Ctrl</span>+<span class="kbd">A</span></td></tr></table>
+  <p class="small">Su Mac: <b>Cmd</b> (⌘) al posto di Ctrl per Cmd+clic e Cmd+A; <b>Option</b>+Shift+freccia per le parole; Cmd+Shift+freccia per fine riga.</p></div>
+  </div>
+  <div class="info">Ogni sfida vale fino a <b>3 stelle</b>: le ottieni se arrivi alla selezione giusta <b>con la tecnica richiesta</b>. Con un'altra tecnica la sfida è superata ma vale 1 stella; con il suggerimento al massimo 2. Nelle sfide con il bollino <b>SOLO TASTIERA</b>, se usi il mouse prendi 1 stella.<br><b>Tempo: 15 minuti.</b> Prima le 8 sfide sui file e le 8 sul testo; i bonus solo se avanza tempo. Allo scadere apri <b>★ Riepilogo</b> e copia comunque il codice: le sfide mancanti le finisci dopo.</div>
+  <button class="btn" onclick="go('f')">Inizia dai file →</button>
+</div>
+</section>
+
+<section id="f" class="hidden">
+<div class="layout">
+  <div class="card"><h3 style="margin-top:0">Sfide sui file</h3><ul class="chlist" id="f-list"></ul><p class="small">Clicca una sfida per rifarla.</p></div>
+  <div>
+    <div class="task"><div class="t" id="f-title"></div><div id="f-text" style="margin-top:6px"></div>
+      <div style="margin-top:10px"><button class="btn" id="f-check">✔ Controlla <span class="small" style="color:#e3f2f2">(Invio)</span></button>
+      <button class="btn alt" id="f-hint">💡 Suggerimento</button> <button class="btn alt" id="f-redo">↺ Ricomincia la sfida</button> <button class="btn alt hidden" id="f-next">Avanti →</button></div>
+      <div class="fb" id="f-fb"></div><div class="small" id="f-hinttext"></div></div>
+    <div class="explorer">
+      <div class="ex-bar">📁 Questo PC › Documenti › <b>chiavetta_marta</b> <span class="small">(sono mostrati solo i file, non le cartelle)</span> <span class="small" id="ex-tip" style="float:right"></span></div>
+      <div class="ex-head"><div></div><div data-sort="name" tabindex="0" role="button">Nome</div><div data-sort="type" tabindex="0" role="button">Tipo</div><div data-sort="size" tabindex="0" role="button" style="text-align:right">Dimensione</div></div>
+      <div class="ex-list" id="ex-list" tabindex="0" role="listbox" aria-multiselectable="true" aria-label="Elenco dei file"></div>
+      <div class="ex-status"><span id="ex-count"></span><span id="ex-sel"></span><span class="bin" id="ex-bin"></span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="t" class="hidden">
+<div class="layout">
+  <div class="card"><h3 style="margin-top:0">Sfide sul testo</h3><ul class="chlist" id="t-list"></ul><p class="small">Clicca una sfida per rifarla.</p></div>
+  <div>
+    <div class="task"><div class="t" id="t-title"></div><div id="t-text" style="margin-top:6px"></div>
+      <div style="margin-top:10px"><button class="btn" id="t-check">✔ Controlla <span class="small" style="color:#e3f2f2">(Invio)</span></button>
+      <button class="btn alt" id="t-hint">💡 Suggerimento</button> <button class="btn alt" id="t-redo">↺ Ricomincia la sfida</button> <button class="btn alt hidden" id="t-next">Avanti →</button></div>
+      <div class="fb" id="t-fb"></div><div class="small" id="t-hinttext"></div></div>
+    <textarea class="txt" id="txt" spellcheck="false" aria-label="Testo su cui selezionare"></textarea>
+    <div class="small">Hai selezionato (<span id="t-n">0</span> caratteri):</div><div class="selview" id="t-sel"></div>
+    <p class="small">Il testo non si può modificare: qui si allena solo la selezione. Clic del mouse sul testo in questa sfida: <b id="t-clicks">0</b></p>
+  </div>
+</div>
+</section>
+
+<section id="r" class="hidden">
+<div class="card">
+  <h2>★ Riepilogo</h2>
+  <div class="stats"><div class="stat"><small>Stelle file</small><b id="r-f">0</b></div><div class="stat"><small>Stelle testo</small><b id="r-t">0</b></div><div class="stat"><small>Sfide superate</small><b id="r-n">0</b></div></div>
+  <div id="r-body"></div>
+  <h3>Il tuo codice risultato</h3>
+  <p>Clicca nel riquadro, premi <span class="kbd">Ctrl</span>+<span class="kbd">A</span> e <span class="kbd">Ctrl</span>+<span class="kbd">C</span>, poi incollalo con <span class="kbd">Ctrl</span>+<span class="kbd">V</span> nella tua scheda di lavoro.</p>
+  <textarea class="copy" id="r-code" readonly></textarea>
+  <p class="small">I risultati restano solo su questo computer: trascrivili subito nella scheda. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>
+  <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+    <textarea class="copy" id="r-verify" style="height:56px"></textarea><p><button class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres"></b></p></details>
+</div>
+</section>
+</main>
+
+<script>
+const FILES = [{"name": "Documento senza titolo (1).docx", "size": 36870, "type": "Documento di Microsoft Word", "icon": "📘"}, {"name": "Documento senza titolo.docx", "size": 36891, "type": "Documento di Microsoft Word", "icon": "📘"}, {"name": "IMG_20260912_183322.jpg", "size": 3587289, "type": "File JPG", "icon": "🖼️"}, {"name": "IMG_20260912_183340.jpg", "size": 2984660, "type": "File JPG", "icon": "🖼️"}, {"name": "WhatsApp Image 2026-09-14 at 10.12.05.jpeg", "size": 181461, "type": "File JPEG", "icon": "🖼️"}, {"name": "foto festa 2025.zip", "size": 2486298, "type": "Cartella compressa (ZIP)", "icon": "🗜️"}, {"name": "icona bici.svg", "size": 3182, "type": "Documento SVG", "icon": "🖼️"}, {"name": "listino prezzi 2026 - Copia.txt", "size": 1030, "type": "Documento di testo", "icon": "📝"}, {"name": "listino prezzi 2026.txt", "size": 1030, "type": "Documento di testo", "icon": "📝"}, {"name": "logo nuovo DEFINITIVO.png", "size": 175814, "type": "File PNG", "icon": "🖼️"}, {"name": "logo vecchio.jpg", "size": 40052, "type": "File JPG", "icon": "🖼️"}, {"name": "messaggio vocale Luca.mp3", "size": 122087, "type": "File MP3", "icon": "🎵"}, {"name": "nota.txt", "size": 0, "type": "Documento di testo", "icon": "📝"}, {"name": "registro_vendite_2025.txt", "size": 2550012, "type": "Documento di testo", "icon": "📝"}, {"name": "scan0001.pdf", "size": 184655, "type": "Documento PDF", "icon": "📕"}, {"name": "scan0002.pdf", "size": 169151, "type": "Documento PDF", "icon": "📕"}, {"name": "video festa.mp4", "size": 4889437, "type": "File MP4", "icon": "🎬"}, {"name": "~$cumento senza titolo.docx", "size": 160, "type": "Documento di Microsoft Word", "icon": "📘"}];
+const TEXT = "Officina 23 organizza l'Open Day sabato 17 ottobre dalle 9:30 alle 18:30. Durante la giornata offriamo il controllo freni gratuito, lo sconto del 10% sui caschi e la prova delle nuove e-bike.\nOrari del noleggio: da lunedì a sabato, 9:00-12:30 e 15:00-19:30.\nPer prenotare scrivi a info@officina23.example oppure passa in negozio, in via Roma 23. Ti aspettiamo!";
+const $ = s => document.querySelector(s);
+const mem = {};
+const store = { get(k){ try{ const v=localStorage.getItem("o23sel_"+k); return v?JSON.parse(v):(mem[k]??null);}catch(e){ return mem[k]??null; } },
+                set(k,v){ mem[k]=v; try{ localStorage.setItem("o23sel_"+k, JSON.stringify(v)); }catch(e){} } };
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const isCtrl = e => e.ctrlKey || e.metaKey;
+function keyActivate(el, fn){ el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fn(); } }); }
+/* ---------- nome e reset ---------- */
+$("#nome").value = store.get("nome")||"";
+$("#nome").addEventListener("input", e=>store.set("nome", e.target.value));
+const curName = () => ($("#nome").value||"").replace(/\s+/g," ").trim();
+function saveResult(k,v){ if(!store.get("owner")) store.set("owner", curName()); store.set(k,v); }
+function clearResults(){ try{ Object.keys(localStorage).filter(k=>k.startsWith("o23sel_") && k!=="o23sel_nome").forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(k!=="nome") delete mem[k]; }
+$("#nome").addEventListener("change", ()=>{ const nn=curName(), ow=store.get("owner")||""; if(!ow || nn===ow) return;
+  if(confirm("I risultati salvati su questo computer sono di «"+ow+"».\n\nOK = sono un altro studente: riparto da zero.\nAnnulla = sono "+ow+" e ho solo corretto il mio nome.")){ clearResults(); location.reload(); } });
+if(store.get("nome")) $("#whoinfo").textContent = "Su questo computer ci sono i risultati di: "+store.get("nome")+". Non sei tu? Premi «Nuovo studente».";
+$("#reset").addEventListener("click", ()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return;
+  try{ Object.keys(localStorage).filter(k=>k.startsWith("o23sel_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; location.reload(); });
+/* ---------- navigazione ---------- */
+function go(id){ document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hidden", s.id!==id));
+  document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on", b.dataset.tab===id));
+  if(id==="f") F.start(F.cur); if(id==="t") T.start(T.cur); if(id==="r") summary(); window.scrollTo(0,0); }
+document.querySelectorAll("#nav button").forEach(b=>b.addEventListener("click", ()=>go(b.dataset.tab)));
+function stars(n){ return "★".repeat(n)+"☆".repeat(3-n); }
+function fmtSize(b){ if(b<1024) return b+" byte"; if(b<1048576) return Math.ceil(b/1024).toLocaleString("it-IT")+" KB"; return (Math.floor(b/1048576*100)/100).toLocaleString("it-IT")+" MB"; }
+function colSize(b){ return (b===0?0:Math.ceil(b/1024)).toLocaleString("it-IT")+" KB"; }
+const TECH = {click:"clic", ctrlclick:"Ctrl+clic", shiftclick:"Shift+clic", ctrla:"Ctrl+A", lasso:"rettangolo col mouse", sorttype:"ordinamento per Tipo",
+  arrows:"frecce", shiftarrows:"Shift+frecce", ctrlarrows:"Ctrl+frecce", ctrlspace:"Ctrl+Spazio", del:"tasto Canc",
+  dbl:"doppio clic", triple:"triplo clic", tshiftclick:"clic + Shift+clic", tshiftarrow:"Shift+freccia", word:"Ctrl+Shift+freccia", shiftend:"Shift+Fine / Shift+Home", docend:"Ctrl+Shift+Fine"};
+
+/* =====================================================================
+   1 · ESPLORA FILE SIMULATO
+   ===================================================================== */
+const F = (()=>{
+  const list = $("#ex-list");
+  let order=[], sel=new Set(), anchor=0, focus=0, sortBy="name", sortDir=1, deleted=new Set(), used=new Set(), mouse=0, hinted=false, lasso=null, cur=0, done=false;
+  const cmpName=(a,b)=>a.name.toLowerCase().localeCompare(b.name.toLowerCase(),"it",{numeric:true});
+  const visible=()=>FILES.filter(f=>!deleted.has(f.name));
+  function sortNow(){ const v=visible();
+    v.sort((a,b)=> sortBy==="name" ? cmpName(a,b)*sortDir : sortBy==="type" ? (a.type.localeCompare(b.type,"it")||cmpName(a,b))*sortDir : ((a.size-b.size)||cmpName(a,b))*sortDir);
+    order=v.map(f=>f.name); }
+  const byName = n => FILES.find(f=>f.name===n);
+  const nameOrder = () => FILES.slice().sort(cmpName).map(f=>f.name);
+  function range(a,b){ const [i,j]=a<b?[a,b]:[b,a]; return order.slice(i,j+1); }
+  function render(scroll){   // scroll=true solo quando ci si muove con la tastiera
+    const keep = list.scrollTop;
+    list.innerHTML = order.map((n,i)=>{ const f=byName(n); return `<div class="row${sel.has(n)?" sel":""}${i===focus?" foc":""}" id="exr-${i}" role="option" aria-selected="${sel.has(n)}" data-i="${i}"><div>${f.icon}</div><div>${esc(n)}</div><div>${esc(f.type)}</div><div class="sz">${colSize(f.size)}</div></div>`; }).join("") + '<div class="spacer"></div>';
+    const tot=[...sel].reduce((s,n)=>s+byName(n).size,0);
+    $("#ex-count").textContent = order.length+" elementi";
+    $("#ex-sel").textContent = sel.size ? `${sel.size} element${sel.size===1?"o":"i"} selezionat${sel.size===1?"o":"i"} · ${fmtSize(tot)}` : "";
+    $("#ex-bin").textContent = deleted.size ? `🗑️ Cestino: ${deleted.size} element${deleted.size===1?"o":"i"}` : "🗑️ Cestino vuoto";
+    document.querySelectorAll("#f .ex-head div[data-sort]").forEach(h=>{ const s=h.dataset.sort; h.textContent = {name:"Nome",type:"Tipo",size:"Dimensione"}[s] + (s===sortBy?(sortDir>0?" ▲":" ▼"):""); });
+    list.scrollTop = keep; list.setAttribute("aria-activedescendant", "exr-"+focus);
+    const r=list.querySelector(`.row[data-i="${focus}"]`); if(scroll && r){ const top=r.offsetTop, bot=top+r.offsetHeight; if(top<list.scrollTop) list.scrollTop=top; else if(bot>list.scrollTop+list.clientHeight) list.scrollTop=bot-list.clientHeight; }
+  }
+  /* --- sfide --- */
+  const CH = [
+   {t:"Un file solo", d:()=>"Seleziona <b>solo</b> il file <b>listino prezzi 2026.txt</b>.", target:()=>["listino prezzi 2026.txt"], need:["click"], hint:"Un clic sul nome."},
+   {t:"File sparsi", d:()=>"Seleziona <b>tutti i file con estensione .jpg</b> (sono 3 e non sono tutti vicini).", target:()=>FILES.filter(f=>/\.jpg$/i.test(f.name)).map(f=>f.name), need:["ctrlclick"], hint:"Clic sul primo, poi Ctrl+clic sugli altri."},
+   {t:"Da… a…", d:()=>{const o=nameOrder(); return `Seleziona in un colpo tutti i file da <b>${esc(o[o.indexOf("listino prezzi 2026 - Copia.txt")])}</b> a <b>nota.txt</b> (compresi).`;},
+     target:()=>{const o=nameOrder(); return o.slice(o.indexOf("listino prezzi 2026 - Copia.txt"), o.indexOf("nota.txt")+1);}, need:["shiftclick"], hint:"Clic sul primo, poi Shift+clic sull'ultimo."},
+   {t:"Tutti", d:()=>"Seleziona <b>tutti</b> i file della cartella.", target:()=>FILES.map(f=>f.name), need:["ctrla"], hint:"Clic su un file, poi Ctrl+A."},
+   {t:"Tutti tranne due", d:()=>"Seleziona tutti i file <b>tranne</b> i due che si chiamano <b>Documento senza titolo…</b>", target:()=>FILES.filter(f=>!f.name.startsWith("Documento senza titolo")).map(f=>f.name), need:["ctrla","ctrlclick"], hint:"Ctrl+A, poi Ctrl+clic sui due file da togliere."},
+   {t:"Ordina e prendi", d:()=>"Seleziona <b>tutti i documenti di testo (.txt)</b>. Trucco: prima ordina la cartella per <b>Tipo</b>, così diventano vicini.", target:()=>FILES.filter(f=>/\.txt$/i.test(f.name)).map(f=>f.name), need:["sorttype","shiftclick"], hint:"Clic sull'intestazione Tipo, poi clic sul primo .txt e Shift+clic sull'ultimo."},
+   {t:"Solo tastiera: vicini", kb:true, d:()=>"Senza mouse: con le frecce raggiungi <b>scan0001.pdf</b> e seleziona anche <b>i due file sotto</b>.", target:()=>{const o=nameOrder(); const i=o.indexOf("scan0001.pdf"); return o.slice(i,i+3);}, need:["shiftarrows"], setup:"kb", hint:"Freccia giù fino a scan0001.pdf, poi Shift+freccia giù due volte."},
+   {t:"Elimina gli inutili", d:()=>"Metti nel Cestino (tasto <b>Canc</b>) i 3 file inutili: <b>nota.txt</b>, <b>listino prezzi 2026 - Copia.txt</b> e il file che inizia con <b>~$</b>. Tutti insieme, con un solo Canc.", del:["nota.txt","listino prezzi 2026 - Copia.txt"], need:["ctrlclick","del"], hint:"Clic sul primo, Ctrl+clic sugli altri due, poi Canc."},
+   {t:"Bonus · rettangolo", bonus:true, d:()=>"Seleziona <b>gli ultimi 3 file</b> dell'elenco trascinando un <b>rettangolo</b> con il mouse, partendo dallo <b>spazio vuoto sotto l'elenco</b>.", target:()=>nameOrder().slice(-3), need:["lasso"], hint:"Tieni premuto il tasto sinistro nello spazio bianco sotto l'ultimo file e trascina verso l'alto."},
+   {t:"Bonus · Ctrl+Spazio", bonus:true, kb:true, d:()=>"Senza mouse: seleziona <b>icona bici.svg</b> e <b>nota.txt</b> (non sono vicini).", target:()=>["icona bici.svg","nota.txt"], need:["ctrlspace"], setup:"kb", hint:"Freccia fino al primo e Spazio; poi Ctrl+freccia per muoverti senza perdere la selezione e Ctrl+Spazio sul secondo."},
+  ];
+  const tildeName = FILES.find(f=>f.name.startsWith("~$")).name; CH[7].del.push(tildeName);
+  function paintList(){ $("#f-list").innerHTML = CH.map((c,i)=>{ const r=store.get("f"+i); return `<li class="${i===cur?"cur":""}" data-i="${i}" tabindex="0" role="button">${i+1}. ${c.t}${c.kb?" ⌨️":""}<span class="st">${r?stars(r.stars):""}</span></li>`; }).join("");
+    document.querySelectorAll("#f-list li").forEach(li=>{ li.onclick=()=>start(+li.dataset.i); keyActivate(li, ()=>start(+li.dataset.i)); }); }
+  function start(i){ cur=i; done=false; const c=CH[i]; deleted=new Set(); sortBy="name"; sortDir=1; sortNow(); sel=new Set(); anchor=0; focus=0; used=new Set(); mouse=0; hinted=!!store.get("fh"+i);
+    $("#ex-tip").textContent = c.kb ? "SOLO TASTIERA: l'elenco è già attivo, usa le frecce · Invio = Controlla" : "clic su un file per iniziare · qui Invio = Controlla (in Windows apre i file)";
+    $("#f-title").innerHTML = `Sfida ${i+1} · ${c.t}${c.kb?'<span class="kbonly">SOLO TASTIERA</span>':""}${c.bonus?'<span class="kbonly" style="background:#D9661A">BONUS</span>':""}`;
+    $("#f-text").innerHTML = c.d(); $("#f-fb").textContent=""; $("#f-fb").className="fb"; $("#f-hinttext").textContent = hinted ? "💡 "+c.hint : ""; $("#f-next").classList.add("hidden");
+    render(); list.scrollTop=0; paintList(); if(c.kb) setTimeout(()=>list.focus({preventScroll:true}),30); }
+  function check(){
+    const c=CH[cur]; let ok, msg="";
+    if(c.del){ const tgt=new Set(c.del); ok = deleted.size===tgt.size && [...tgt].every(n=>deleted.has(n));
+      if(!ok) msg = deleted.size? "Nel Cestino ci sono: "+[...deleted].join(", ")+". Premi «Ricomincia la sfida» e riprova." : "Seleziona i 3 file e premi Canc.";
+    } else { const tgt=new Set(c.target()); ok = sel.size===tgt.size && [...tgt].every(n=>sel.has(n));
+      if(!ok){ const miss=[...tgt].filter(n=>!sel.has(n)), extra=[...sel].filter(n=>!tgt.has(n)); msg = (miss.length?`Mancano: ${miss.join(", ")}. `:"")+(extra.length?`In più: ${extra.join(", ")}.`:"")+(!sel.size?"Non hai selezionato niente.":""); } }
+    const fb=$("#f-fb");
+    if(!ok){ fb.className="fb ko"; fb.textContent="Non ancora. "+msg; if(c.kb) list.focus({preventScroll:true}); return; }
+    const techOk = c.need.every(t=>used.has(t)) && !(c.kb && mouse>0);
+    let s = techOk ? (hinted?2:3) : 1;
+    const prev=store.get("f"+cur); if(!prev || s>prev.stars) saveResult("f"+cur,{stars:s,hint:hinted,mouse});
+    if(techOk){ fb.className="fb ok"; fb.textContent=`✔ Perfetto: ${stars(s)} ${hinted?"(con suggerimento)":""}`; }
+    else { fb.className="fb mid"; fb.textContent=`✔ Selezione giusta, ma ${c.kb&&mouse>0?"hai usato il mouse ("+mouse+" clic)":"con un'altra tecnica"}: ${stars(1)}. Per 3 stelle usa: ${c.need.map(t=>TECH[t]).join(" + ")}. Premi «Ricomincia la sfida».`; }
+    done=true; paintList();
+    const autoNext = cur<CH.length-1 && !!CH[cur+1].bonus===!!c.bonus, nb=$("#f-next");
+    if(autoNext){ nb.textContent="Avanti →"; nb.onclick=()=>start(cur+1); } else { nb.textContent="Passa al testo →"; nb.onclick=()=>go("t"); if(techOk) fb.textContent += c.bonus ? " Hai finito i bonus: passa al testo." : " Hai finito le sfide sui file: passa al testo. I bonus (nell'elenco a sinistra) solo se ti avanza tempo."; }
+    nb.classList.remove("hidden"); if(c.kb) list.focus({preventScroll:true});
+    if(techOk && autoNext) setTimeout(()=>{ if(done && CH[cur]===c) start(cur+1); }, 1800);
+  }
+  /* --- mouse --- */
+  list.addEventListener("mousedown", e=>{
+    if(e.button!==0) return;
+    const lb=list.getBoundingClientRect(); if(e.clientX-lb.left-list.clientLeft >= list.clientWidth || e.clientY-lb.top-list.clientTop >= list.clientHeight) return;   // clic sulla barra di scorrimento
+    mouse++; list.focus({preventScroll:true}); const row=e.target.closest(".row");
+    if(row){ e.preventDefault(); const i=+row.dataset.i, n=order[i];
+      if(e.shiftKey){ const r=range(anchor,i); if(isCtrl(e)) r.forEach(x=>sel.add(x)); else sel=new Set(r); focus=i; used.add("shiftclick"); }
+      else if(isCtrl(e)){ sel.has(n)?sel.delete(n):sel.add(n); anchor=focus=i; used.add("ctrlclick"); }
+      else { sel=new Set([n]); anchor=focus=i; used.add("click"); }
+      render(); return; }
+    // spazio vuoto: deseleziona e inizia il rettangolo
+    const base = isCtrl(e) ? new Set(sel) : new Set(); if(!isCtrl(e)) sel=new Set();
+    const box=list.getBoundingClientRect(); const y0=e.clientY-box.top+list.scrollTop, x0=e.clientX-box.left;
+    lasso={y0,x0,base,moved:false,el:document.createElement("div")}; lasso.el.className="lasso"; list.appendChild(lasso.el); render(); list.appendChild(lasso.el);
+  });
+  window.addEventListener("mousemove", e=>{ if(!lasso) return; const box=list.getBoundingClientRect(); const y1=e.clientY-box.top+list.scrollTop, x1=e.clientX-box.left;
+    if(Math.abs(y1-lasso.y0)+Math.abs(x1-lasso.x0)>6) lasso.moved=true;
+    const top=Math.min(y1,lasso.y0), h=Math.abs(y1-lasso.y0); Object.assign(lasso.el.style,{top:top+"px",left:Math.min(x1,lasso.x0)+"px",width:Math.abs(x1-lasso.x0)+"px",height:h+"px"});
+    const s=new Set(lasso.base); list.querySelectorAll(".row").forEach(r=>{ const rt=r.offsetTop, rb=rt+r.offsetHeight; if(rt<top+h && rb>top) s.add(order[+r.dataset.i]); });
+    sel=s; list.querySelectorAll(".row").forEach(r=>r.classList.toggle("sel", sel.has(order[+r.dataset.i])));
+  });
+  window.addEventListener("mouseup", ()=>{ if(!lasso) return; if(lasso.moved) used.add("lasso"); lasso.el.remove(); lasso=null; render(); });
+  function sortClick(h){ const s=h.dataset.sort; if(sortBy===s) sortDir=-sortDir; else { sortBy=s; sortDir=1; }
+    if(s==="type") used.add("sorttype"); const keep=new Set(sel); const fn=order[focus]; sortNow(); sel=keep; focus=Math.max(0,order.indexOf(fn)); anchor=focus; render(); }
+  document.querySelectorAll("#f .ex-head div[data-sort]").forEach(h=>{ h.addEventListener("click", ()=>sortClick(h)); keyActivate(h, ()=>sortClick(h)); });
+  /* --- tastiera --- */
+  list.addEventListener("keydown", e=>{
+    const k=e.key, last=order.length-1;
+    if(k==="Enter"){ e.preventDefault(); check(); return; }
+    if((k==="a"||k==="A") && isCtrl(e)){ e.preventDefault(); sel=new Set(order); used.add("ctrla"); render(); return; }
+    if(k==="Delete" || (k==="Backspace" && e.metaKey)){ e.preventDefault();
+      if(!CH[cur].del){ const fb=$("#f-fb"); fb.className="fb mid"; fb.textContent="In questa sfida non si elimina niente: il tasto Canc serve solo nella sfida 8."; return; }
+      if(sel.size){ sel.forEach(n=>deleted.add(n)); used.add("del"); sel=new Set(); sortNow(); focus=Math.min(focus,order.length-1); anchor=focus; render(); } return; }
+    if(k===" " ){ e.preventDefault(); const n=order[focus]; if(isCtrl(e)){ sel.has(n)?sel.delete(n):sel.add(n); anchor=focus; used.add("ctrlspace"); } else if(!sel.has(n)){ sel.add(n); anchor=focus; } render(); return; }
+    let nf=null; if(k==="ArrowDown") nf=Math.min(last,focus+1); else if(k==="ArrowUp") nf=Math.max(0,focus-1); else if(k==="Home") nf=0; else if(k==="End") nf=last; else return;
+    e.preventDefault();
+    if(e.shiftKey){ focus=nf; const r=range(anchor,focus); if(isCtrl(e)) r.forEach(x=>sel.add(x)); else sel=new Set(r); used.add("shiftarrows"); }
+    else if(isCtrl(e)){ focus=nf; used.add("ctrlarrows"); }
+    else { focus=nf; anchor=nf; sel=new Set([order[nf]]); used.add("arrows"); }
+    render(true);
+  });
+  $("#f-check").onclick=check; $("#f-redo").onclick=()=>start(cur);
+  $("#f-hint").onclick=()=>{ hinted=true; store.set("fh"+cur,true); $("#f-hinttext").textContent="💡 "+CH[cur].hint; if(CH[cur].kb) list.focus({preventScroll:true}); };
+  ["#f-check","#f-hint"].forEach(id=>$(id).addEventListener("mousedown", e=>{ if(document.activeElement===list) e.preventDefault(); }));
+  return {start, get cur(){return cur;}, CH, get state(){ return {sel:[...sel], used:[...used], mouse, order:[...order], deleted:[...deleted]}; }, check};
+})();
+
+/* =====================================================================
+   2 · TESTO
+   ===================================================================== */
+const T = (()=>{
+  const ta=$("#txt"); ta.value=TEXT; let cur=0, used=new Set(), mouse=0, hinted=false, done=false;
+  const norm = s => s.replace(/\s+/g," ").trim().replace(/^[.,;:!?«»"']+|[.,;:!?«»"']+$/g,"");
+  const para = n => TEXT.split("\n")[n];
+  const at = w => TEXT.indexOf(w);
+  const CH = [
+   {t:"Tutto", d:"Seleziona <b>tutto il testo</b>.", target:TEXT, need:["ctrla"], hint:"Clic nel testo, poi Ctrl+A."},
+   {t:"Una parola", d:"Seleziona la parola <b>gratuito</b> con un <b>doppio clic</b>.", target:"gratuito", need:["dbl"], hint:"Due clic veloci sulla parola."},
+   {t:"Un paragrafo", d:"Seleziona tutto il paragrafo che inizia con <b>Orari del noleggio</b> con un <b>triplo clic</b>.", target:para(1), need:["triple"], hint:"Tre clic veloci sul paragrafo."},
+   {t:"Da… a… con il mouse", d:"Seleziona la frase da <b>Per prenotare</b> fino a <b>via Roma 23</b> (compresi): clic prima di «Per», poi <b>Shift+clic</b> dopo «23».", target:"Per prenotare scrivi a info@officina23.example oppure passa in negozio, in via Roma 23", need:["tshiftclick"], hint:"Clic subito prima di «Per», poi tieni Shift e clicca subito dopo «23»."},
+   {t:"Parole con la tastiera", kb:true, d:"Il cursore è già davanti a <b>controllo</b>. Senza mouse seleziona le tre parole <b>controllo freni gratuito</b>.", target:"controllo freni gratuito", need:["word"], caret:()=>at("controllo"), hint:"Ctrl+Shift+freccia destra tre volte (su Mac: Option+Shift+freccia)."},
+   {t:"Fino a fine riga", kb:true, d:"Il cursore è all'inizio del paragrafo <b>Orari…</b>. Senza mouse selezionalo fino alla fine della riga.", target:para(1), need:["shiftend"], caret:()=>at("Orari"), hint:"Shift+Fine (su Mac: Cmd+Shift+freccia destra)."},
+   {t:"Carattere per carattere", kb:true, d:"Il cursore è davanti all'indirizzo email. Senza mouse seleziona <b>solo</b> <b>info@officina23.example</b>: né un carattere in più né uno in meno.", target:"info@officina23.example", exact:true, need:["tshiftarrow"], caret:()=>at("info@"), hint:"Shift+freccia destra un carattere alla volta (puoi correggere con Shift+freccia sinistra)."},
+   {t:"Fino alla fine del testo", kb:true, d:"Il cursore è davanti a <b>Per prenotare</b>. Senza mouse seleziona tutto fino alla fine del testo.", target:para(2), need:["docend"], caret:()=>at("Per prenotare"), hint:"Ctrl+Shift+Fine (su Mac: Cmd+Shift+freccia giù)."},
+  ];
+  function paintList(){ $("#t-list").innerHTML = CH.map((c,i)=>{ const r=store.get("t"+i); return `<li class="${i===cur?"cur":""}" data-i="${i}" tabindex="0" role="button">${i+1}. ${c.t}${c.kb?" ⌨️":""}<span class="st">${r?stars(r.stars):""}</span></li>`; }).join("");
+    document.querySelectorAll("#t-list li").forEach(li=>{ li.onclick=()=>start(+li.dataset.i); keyActivate(li, ()=>start(+li.dataset.i)); }); }
+  function showSel(){ const s=ta.value.substring(ta.selectionStart, ta.selectionEnd); $("#t-n").textContent=s.length; $("#t-sel").textContent = s ? "«"+s+"»" : "(niente)"; }
+  function start(i){ cur=i; done=false; used=new Set(); mouse=0; hinted=!!store.get("th"+i); const c=CH[i];
+    $("#t-title").innerHTML=`Sfida ${i+1} · ${c.t}${c.kb?'<span class="kbonly">SOLO TASTIERA</span>':""}`; $("#t-text").innerHTML=c.d;
+    $("#t-fb").textContent=""; $("#t-fb").className="fb"; $("#t-hinttext").textContent = hinted ? "💡 "+c.hint : ""; $("#t-next").classList.add("hidden"); $("#t-clicks").textContent="0";
+    ta.focus(); const p=c.caret?c.caret():0; ta.setSelectionRange(p,p); showSel(); paintList(); }
+  function check(){
+    const c=CH[cur], s=ta.value.substring(ta.selectionStart, ta.selectionEnd), fb=$("#t-fb");
+    const ok = (c.exact ? s===c.target : norm(s)===norm(c.target)) && s.trim().length>0;
+    if(!ok){ fb.className="fb ko"; fb.textContent = s ? "Non ancora: hai selezionato «"+(s.length>60?s.slice(0,60)+"…":s)+"»." : "Non hai selezionato niente."; if(c.kb) ta.focus(); return; }
+    const techOk = c.need.every(t=>used.has(t)) && !(c.kb && mouse>0);
+    const st = techOk ? (hinted?2:3) : 1;
+    const prev=store.get("t"+cur); if(!prev || st>prev.stars) saveResult("t"+cur,{stars:st,hint:hinted,mouse});
+    if(techOk){ fb.className="fb ok"; fb.textContent=`✔ Perfetto: ${stars(st)} ${hinted?"(con suggerimento)":""}`; }
+    else { fb.className="fb mid"; fb.textContent=`✔ Selezione giusta, ma ${c.kb&&mouse>0?"hai usato il mouse ("+mouse+" clic)":"con un'altra tecnica"}: ${stars(1)}. Per 3 stelle usa: ${c.need.map(t=>TECH[t]).join(" + ")}. Premi «Ricomincia la sfida».`; }
+    done=true; paintList();
+    const last = cur>=CH.length-1, nb=$("#t-next");
+    if(last){ nb.textContent="Vai al Riepilogo →"; nb.onclick=()=>go("r"); if(techOk) fb.textContent += " Hai finito le sfide sul testo: apri il Riepilogo e copia il codice."; } else { nb.textContent="Avanti →"; nb.onclick=()=>start(cur+1); }
+    nb.classList.remove("hidden"); if(c.kb) ta.focus();
+    if(techOk && !last) setTimeout(()=>{ if(done && CH[cur]===c) start(cur+1); }, 1800);
+  }
+  ta.addEventListener("beforeinput", e=>e.preventDefault());
+  ["cut","paste","drop"].forEach(ev=>ta.addEventListener(ev, e=>e.preventDefault()));
+  ta.addEventListener("mousedown", e=>{ mouse++; $("#t-clicks").textContent=mouse; if(e.detail===2) used.add("dbl"); if(e.detail>=3) used.add("triple"); if(e.shiftKey) used.add("tshiftclick"); });
+  ta.addEventListener("keydown", e=>{
+    const k=e.key, arrow=/^Arrow/.test(k);
+    if(k==="Enter"){ e.preventDefault(); check(); return; }
+    if((k==="a"||k==="A") && isCtrl(e)) used.add("ctrla");
+    if(e.shiftKey && (k==="End"||k==="Home") && !e.ctrlKey) used.add("shiftend");
+    if(e.shiftKey && (k==="End"||k==="Home") && e.ctrlKey) used.add("docend");
+    if(e.shiftKey && arrow){
+      if(e.ctrlKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("word");
+      else if(e.altKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("word");            // Mac: Option+Shift
+      else if(e.metaKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("shiftend");       // Mac: Cmd+Shift
+      else if(e.metaKey && (k==="ArrowDown"||k==="ArrowUp")) used.add("docend");
+      else if(!e.ctrlKey && !e.altKey && !e.metaKey){ used.add(k==="ArrowLeft"||k==="ArrowRight"?"tshiftarrow":"tshiftupdown"); }
+    }
+  });
+  ["select","keyup","mouseup"].forEach(ev=>ta.addEventListener(ev, showSel)); document.addEventListener("selectionchange", ()=>{ if(document.activeElement===ta) showSel(); });
+  $("#t-check").onclick=check; $("#t-redo").onclick=()=>start(cur);
+  $("#t-hint").onclick=()=>{ hinted=true; store.set("th"+cur,true); $("#t-hinttext").textContent="💡 "+CH[cur].hint; ta.focus(); };
+  ["#t-check","#t-hint"].forEach(id=>$(id).addEventListener("mousedown", e=>{ if(document.activeElement===ta) e.preventDefault(); }));
+  return {start, get cur(){return cur;}, CH, check, get used(){return [...used];}};
+})();
+
+/* =====================================================================
+   RIEPILOGO + CODICE
+   ===================================================================== */
+function sig(s){ let h=5381; const t="O23*"+s+"*SEL"; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+function summary(){
+  const core=F.CH.map((c,i)=>({c,i})).filter(x=>!x.c.bonus), bonus=F.CH.map((c,i)=>({c,i})).filter(x=>x.c.bonus);
+  const fs=core.reduce((s,x)=>s+((store.get("f"+x.i)||{}).stars||0),0), fn=core.filter(x=>store.get("f"+x.i)).length;
+  const ts=T.CH.reduce((s,c,i)=>s+((store.get("t"+i)||{}).stars||0),0), tn=T.CH.filter((c,i)=>store.get("t"+i)).length;
+  const bs=bonus.reduce((s,x)=>s+((store.get("f"+x.i)||{}).stars||0),0);
+  const hints=[...F.CH.map((c,i)=>store.get("f"+i)),...T.CH.map((c,i)=>store.get("t"+i))].filter(r=>r&&r.hint).length;
+  $("#r-f").textContent=`${fs}/${core.length*3}`; $("#r-t").textContent=`${ts}/${T.CH.length*3}`; $("#r-n").textContent=`${fn+tn}/${core.length+T.CH.length}`;
+  const row=(pre,c,i)=>{ const r=store.get(pre+i); return `<tr><td>${pre==="f"?"File":"Testo"} ${i+1}</td><td>${c.t}${c.bonus?" (bonus)":""}</td><td>${r?stars(r.stars):"—"}</td><td>${r&&r.hint?"sì":""}</td></tr>`; };
+  $("#r-body").innerHTML = `<table><tr><th>Sfida</th><th>Titolo</th><th>Stelle</th><th>Suggerimento</th></tr>${F.CH.map((c,i)=>row("f",c,i)).join("")}${T.CH.map((c,i)=>row("t",c,i)).join("")}</table>`;
+  const n=curName()||"(nome non inserito)", ow=store.get("owner")||"";
+  const body=`O23-SEL | ${n} | FILE ${fs}/${core.length*3} stelle (${fn}/${core.length} sfide) | TESTO ${ts}/${T.CH.length*3} stelle (${tn}/${T.CH.length} sfide) | BONUS ${bs}/6 | suggerimenti ${hints}${ow && ow!==curName() ? " | nome iniziale: "+ow : ""}`;
+  $("#r-code").value = body+" | #"+sig(body);
+}
+$("#r-vbtn").addEventListener("click", ()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(); const k=raw.lastIndexOf(" | #");
+  if(k<0){ $("#r-vres").textContent="✘ Codice incompleto"; return; } const ok = sig(raw.slice(0,k))===raw.slice(k+4).trim();
+  $("#r-vres").textContent = ok ? "✔ Codice valido: i numeri non sono stati modificati" : "✘ Codice NON valido: il testo è stato modificato"; $("#r-vres").style.color = ok ? "#1e7d3a" : "#b3261e"; });
+</script>
+</body>
+</html>

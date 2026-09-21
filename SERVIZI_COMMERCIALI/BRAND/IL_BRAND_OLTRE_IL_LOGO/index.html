@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B7%3C/text%3E%3C/svg%3E">
+<title>Il brand oltre il logo · Guida per il docente</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--teal-d)}
+.hero{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:34px 24px 28px}
+.hero .in{max-width:1180px;margin:0 auto} .hero h1{margin:4px 0 6px;font-size:clamp(26px,4vw,40px);line-height:1.15} .hero p{margin:0;max-width:760px;opacity:.95}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px} .pills span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:14px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:28px;padding:24px}
+nav.side{position:sticky;top:16px;align-self:start;display:flex;flex-direction:column;gap:2px} nav.side a{text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:8px;font-size:15px}
+nav.side a:hover{background:var(--teal-l)} nav.side a.on{background:var(--teal);color:#fff}
+.prog{margin-top:12px;font-size:13px;color:var(--muted);padding:0 12px} .bar{height:6px;background:#e5e9ec;border-radius:4px;overflow:hidden;margin-top:4px} .bar div{height:100%;background:var(--orange);width:0}
+section{margin-bottom:44px;scroll-margin-top:12px} h2{font-size:28px;margin:2px 0 12px;color:var(--teal-d)} h3{margin:0;font-size:20px} h4{margin:0 0 8px;font-size:16px}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.doc{display:flex;flex-direction:column;gap:4px;text-decoration:none;background:#fff;border:1px solid var(--line);border-left:5px solid var(--orange);border-radius:10px;padding:12px 14px;color:var(--ink)}
+.doc:hover{border-color:var(--orange)} .doc span{font-size:13px;color:var(--muted)}
+.task{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.taskhead{display:flex;gap:14px;align-items:center}
+.num-badge{flex:none;width:46px;height:46px;border-radius:12px;background:var(--teal);color:#fff;font-weight:800;font-size:18px;display:grid;place-items:center}
+.done{margin-left:auto;font-size:14px;color:var(--muted);white-space:nowrap} .when{color:var(--muted);margin:10px 0 4px;font-size:15px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;margin-top:16px}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--teal-l);color:var(--teal-d);font-weight:800;display:grid;place-items:center;font-size:14px}
+.sb{min-width:0}
+.copyrow{display:grid;grid-template-columns:110px 1fr auto;gap:8px;align-items:start;margin:8px 0}
+.copyrow .lbl{font-size:13px;color:var(--muted);padding-top:8px}
+.copybox{background:#f2f5f6;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;white-space:pre-wrap;font-family:inherit;margin:0}
+.cp,.all{border:1px solid var(--line);background:#fff;color:var(--teal-d);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.cp:hover,.all:hover{background:var(--teal-l)} .all{margin-top:10px}
+.tw{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14px;margin-top:6px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:13px;font-weight:700}
+td.num{white-space:nowrap} td.note{color:var(--muted);font-size:13px}
+.b{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap}
+.b.copy{background:var(--orange-l);color:#8a3d05} .b.view{background:var(--teal-l);color:var(--teal-d)} .b.link{background:#ece4f7;color:#5a3390}
+.tiny{font-size:12px;color:var(--muted)} .small{font-size:14px;color:var(--muted)}
+table.mini td{padding:5px 8px;font-size:14px} table.mini td.num{color:var(--orange);font-weight:700;width:76px}
+ul.checks{list-style:none;padding:0;margin:0} ul.checks li{margin:6px 0} ul.checks label{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:10px 0} summary{cursor:pointer;font-weight:700}
+details.sol{border-left:5px solid #7a4bb5} details.bes{border-left:5px solid var(--teal);margin-top:16px}
+.try{display:inline-block;margin:10px 8px 0 0;background:var(--orange);color:#fff;text-decoration:none;border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600}
+.warn{background:#fff7e6;border:1px solid #f0c36d;border-radius:12px;padding:14px 18px} ol.big li{margin:8px 0}
+.ph{background:#fff1cf;border:1px dashed #c58b1d;border-radius:6px;padding:1px 7px;font-weight:700;color:#7a5200}
+.guida h3{margin:22px 0 6px;color:var(--teal-d)} .guida .fase{border-left:3px solid var(--teal-l);padding-left:14px;margin:14px 0}
+.guida .fase .t{font-size:13px;font-weight:700;color:var(--orange)}
+.say{background:var(--teal-l);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:15px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:30px}
+main{min-width:0} a.dl,td a,.doc b{overflow-wrap:anywhere} .copybox{min-width:0;overflow-wrap:anywhere}
+@media(max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);padding:16px} nav.side{position:static;flex-direction:row;flex-wrap:wrap;min-width:0} nav.side a{padding:6px 10px;font-size:14px}
+.grid2,.grid3,.docs{grid-template-columns:minmax(0,1fr)} .copyrow{grid-template-columns:minmax(0,1fr)} .done{display:none} .prog{width:100%}
+table{font-size:13.5px} th:nth-child(4),td.note{display:none} .task,.card{padding:14px}}
+@media print{nav.side,.cp,.all,.try,.done{display:none} .wrap{display:block} details{border:0} details>*{display:block}}
+</style></head><body>
+<p class="hub-back" style="margin:0;padding:8px 16px;background:#0B6E75;font:600 13px/1.4 system-ui,'Atkinson Hyperlegible',sans-serif"><a href="../../../index.html" style="color:#fff;text-decoration:none">&#8592; Hub principale</a></p>
+
+<header class="hero"><div class="in"><div class="kicker" style="color:#ffd9bf">Guida per il docente</div>
+<h1>Il brand oltre il logo</h1>
+<p>Due lezioni da due ore sull&#x27;identità di marca. Gli studenti scoprono che cosa resta di un&#x27;azienda quando togli il logo, si allenano su colori e caratteri in due palestre interattive e analizzano l&#x27;identità visiva di cinque aziende vere in un&#x27;unica scheda, che cresce dalla prima alla seconda lezione.</p>
+<div class="pills"><span>2 lezioni da 2 ore</span><span>Servizi commerciali · classe terza</span><span>2 palestre interattive con codice</span><span>Versione BES per la scheda</span></div></div></header>
+
+<div class="wrap"><nav class="side" id="side">
+<a href="#panoramica">Panoramica</a><a href="#attivita">Descrizione attività</a><a href="#guida">Guida per il docente</a><a href="#classroom">Configura Classroom</a><a href="#l1">Lezione 1</a><a href="#l2">Lezione 2</a><a href="#valutazione">Valutazione</a><a href="#bes">BES / DSA</a><a href="#archivio">Tutti i file</a>
+<div class="prog">Preparazione: <span id="pc">0</span> fatto<div class="bar"><div id="pb"></div></div></div></nav>
+<main>
+
+<section id="panoramica"><div class="kicker">Panoramica</div><h2>Due lezioni, una sola idea</h2>
+<p style="max-width:75ch">Il logo è la firma, il brand è la reputazione. La prima lezione parte da immagini senza logo che gli studenti riconoscono lo stesso, arriva ai colori e apre la scheda di analisi; la seconda aggiunge i caratteri e i valori di marca e completa la stessa scheda. Le palestre interattive stanno in mezzo e restituiscono un codice riepilogativo che finisce nella scheda, insieme al resto.</p>
+<div class="grid3" style="margin-top:14px">
+<div class="card"><h4>🎯 L&#x27;obiettivo</h4><p>Distinguere brand, logo e identità visiva; leggere i colori di un marchio per ruolo e sensazione; riconoscere le famiglie di caratteri e collegare un valore dichiarato a una prova visiva.</p></div>
+<div class="card"><h4>🏢 Il materiale di lavoro</h4><p>Aziende vere scelte dagli studenti, almeno tre settori diversi. Barilla si compila insieme in classe come modello, Apple serve da esempio sui valori.</p></div>
+<div class="card"><h4>📤 Che cosa si consegna</h4><p>Una sola scheda di analisi, consegnata due volte: alla fine della Lezione 1 con logo, colori, elementi grafici e foto; alla fine della Lezione 2 completata con font, valori e coerenza. Dentro la scheda, i due codici delle palestre.</p></div></div>
+
+<div class="tw" style="margin-top:16px"><table><thead><tr><th>Lezione</th><th>Durata</th><th>Che cosa si fa</th><th>Che cosa si consegna</th></tr></thead>
+<tbody>
+<tr><td><b>1</b> · Il brand non è il logo</td><td class="num">120 min</td><td>Gancio senza loghi, brand vs logo, mini-lezione sui colori, palestra dei colori, elementi grafici e stile fotografico, apertura della scheda su 5 aziende</td><td>Scheda con la parte Lezione 1 + codice <span class="tiny" style="font-weight:700">BRD-COL</span></td></tr>
+<tr><td><b>2</b> · Caratteri e valori</td><td class="num">120 min</td><td>Famiglie di caratteri e che cosa comunicano, valori di marca con l&#x27;esempio Apple, integrazione della scheda, palestra dei font</td><td>Scheda completa + codice <span class="tiny" style="font-weight:700">BRD-FON</span></td></tr>
+</tbody></table></div>
+
+<div class="card" style="margin-top:16px"><h4>Ti serve</h4><ul>
+<li>Un laboratorio con un PC per studente o per coppia, browser aggiornato, proiettore o LIM con audio.</li>
+<li>Account Google della scuola per gli studenti, con Classroom e Drive attivi.</li>
+<li>Circa 45 minuti la prima volta per preparare Classroom (sezione «Configura Classroom») e provare le due palestre su un PC del laboratorio.</li>
+<li>Il tuo archivio con immagini e video senza logo per il gancio, e il PDF della guida all&#x27;analisi con gli esempi Apple e Barilla.</li>
+</ul></div>
+</section>
+
+<section id="attivita"><div class="kicker">Descrizione attività</div><h2>Che cosa fanno gli studenti</h2>
+<div class="grid2">
+<div class="card"><h4>Al termine sapranno</h4><ul>
+<li>distinguere brand, logo e identità visiva, e spiegare perché non coincidono;</li>
+<li>distinguere colore primario, secondario e neutro in una palette e associarli a una sensazione, tenendo conto del settore;</li>
+<li>descrivere gli elementi grafici ricorrenti e lo stile fotografico di un marchio;</li>
+<li>riconoscere serif, sans-serif, script e display e dire che cosa comunicano;</li>
+<li>collegare un valore dichiarato alla sua prova visiva e accorgersi quando la prova manca;</li>
+<li>compilare una scheda di analisi con parole proprie, citando le fonti.</li>
+</ul></div>
+<div class="card"><h4>Come si lavora</h4><ul>
+<li><b>Tu parli poco e a pezzi brevi:</b> 15 minuti sul brand, 8 sui colori, 20 sui font e 20 sui valori. Tutto il resto è lavoro loro.</li>
+<li><b>Le palestre</b> si fanno da soli o in coppia, sul PC. Alla fine ognuno copia il proprio codice riepilogativo.</li>
+<li><b>La scheda</b> è un Documento Google, una copia per studente, e resta la stessa nelle due lezioni.</li>
+<li><b>Il modello</b> su Barilla lo compilate insieme alla lavagna, riga per riga, prima che partano.</li>
+<li><b>Chi non finisce</b> completa a casa entro la scadenza: in classe si arriva realisticamente a 3-4 aziende su 5.</li>
+</ul></div></div>
+
+<div class="card"><h4>Le due palestre in breve</h4>
+<div class="tw"><table><thead><tr><th>Palestra</th><th>Quando</th><th>Sezioni</th><th>Codice</th></tr></thead><tbody>
+<tr><td><b>Palestra dei colori</b><div class="tiny">circa 25 minuti, 12 domande + bonus</div></td><td>Lezione 1, minuti 38-63</td><td>A. Palette misteriosa · B. Primario, secondario o neutro · C. Che sensazione? · <span class="tiny">bonus facoltativo sul codice HEX, fuori punteggio</span></td><td class="tiny"><b>BRD-COL</b></td></tr>
+<tr><td><b>Palestra dei font</b><div class="tiny">circa 35 minuti, 16 domande</div></td><td>Lezione 2, minuti 80-115</td><td>A. Serif o sans-serif · B. Che cosa comunica · C. Abbina il font al brand · D. Valori e prove</td><td class="tiny"><b>BRD-FON</b></td></tr>
+</tbody></table></div>
+<p class="small" style="margin-top:10px">Ogni risposta ha un feedback breve che spiega il perché, così la palestra insegna mentre valuta. Si possono rifare quante volte si vuole: il codice riporta anche il numero di ripetizioni. Le pagine funzionano anche offline, scaricando il file e aprendolo con doppio clic.</p>
+<a class="try" href="01_LEZIONE_1/MATERIALI/palestra_colori.html" target="_blank" rel="noopener">▶ Prova la palestra dei colori</a>
+<a class="try" href="02_LEZIONE_2/MATERIALI/palestra_font.html" target="_blank" rel="noopener">▶ Prova la palestra dei font</a>
+</div>
+
+<div class="docs">
+<a class="doc" href="00_GUIDA_DOCENTE/SCALETTA_RAPIDA_da_stampare.docx" download><b>⬇ Scaletta rapida</b><span>una pagina per lezione, da tenere sulla cattedra</span></a>
+<a class="doc" href="00_GUIDA_DOCENTE/MODELLO_barilla_compilato.docx" download><b>⬇ Modello Barilla compilato</b><span>la riga che costruite insieme, già scritta per te</span></a>
+<a class="doc" href="00_GUIDA_DOCENTE/GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf" download><b>⬇ Guida all&#x27;analisi</b><span>il PDF con gli esempi Apple e Barilla</span></a>
+</div>
+</section>
+
+<section id="guida" class="guida"><div class="kicker">Come si conduce</div><h2>Guida per il docente</h2>
+
+<div class="card" style="margin-bottom:18px"><h4>Tre regole che tengono in piedi l&#x27;attività</h4><ul>
+<li><b>Non anticipare l&#x27;argomento.</b> Il gancio funziona solo se gli studenti non sanno ancora di che cosa si parla. La parola «brand» arriva dopo che l&#x27;hanno riconosciuto senza logo.</li>
+<li><b>Chiedi sempre «come lo sai?».</b> Il punto dell&#x27;attività non è indovinare il marchio, è saper dire quale elemento visivo lo ha tradito.</li>
+<li><b>Niente copia-incolla, fonti sempre citate.</b> Il materiale raccolto è per uso didattico e non si ripubblica: dillo la prima volta e ripetilo alla consegna.</li>
+</ul></div>
+
+<h3>Lezione 1 · Il brand non è il logo</h3>
+
+<div class="fase"><p class="t">0-15 · Gancio: immagini e video senza logo</p>
+<p>Non introdurre nulla. Di&#x27; soltanto: «Vi mostro alcune immagini, ditemi che cosa riconoscete». Proietta 6-8 elementi del tuo archivio, i video per 30-40 secondi, in difficoltà crescente: dal più ovvio al più sottile. Dopo ogni elemento due domande, sempre le stesse: «Che azienda è?» e «Come lo sapete?».</p>
+<p>Negli ultimi 3 minuti raccogli alla lavagna le parole che sono uscite: colore, forma, suono, ricordo, emozione. Poi chiudi.</p>
+<div class="say">«Nessuna di queste immagini aveva un logo. Quello che avete riconosciuto è il brand.»</div></div>
+
+<div class="fase"><p class="t">15-30 · Brand e logo (8-9 slide, una idea per slide)</p>
+<ol style="margin:6px 0 0;padding-left:20px">
+<li><b>Che cos&#x27;è un brand:</b> l&#x27;idea che le persone hanno di un&#x27;azienda, dei suoi prodotti e dei suoi valori.</li>
+<li><b>Logo e brand:</b> il logo è la firma, il brand è la reputazione.</li>
+<li><b>Gli elementi:</b> nome, logo, colori, caratteri, packaging, slogan, tono di voce, suoni, valori.</li>
+<li><b>Identità visiva e coerenza:</b> quello che l&#x27;azienda mostra, riconoscibile su sito, social, prodotto e pubblicità.</li>
+<li><b>Il valore economico:</b> differenziarsi, fidelizzare, giustificare un prezzo più alto. Usa esempi vicini a loro, sneaker e smartphone.</li>
+<li><b>Ricollega il gancio:</b> ecco perché riconoscevate le aziende senza logo.</li>
+<li><b>Anticipa il lavoro:</b> mostra il PDF della guida e annuncia che oggi apriranno la loro scheda su cinque aziende.</li>
+</ol>
+<p class="small" style="margin-top:8px">Tieni 2-3 minuti di scambio con la classe. Una domanda che funziona: «Conoscete un marchio con un logo semplicissimo e un&#x27;identità fortissima?».</p></div>
+
+<div class="fase"><p class="t">30-38 · Mini-lezione sui colori (8 minuti, due slide)</p>
+<p><b>Ruoli.</b> Primario: il colore più presente, quello che identifica il brand. Secondario o d&#x27;accento: dettagli, pulsanti, evidenze. Neutro: bianco, nero, grigi. Cita la regola orientativa 60-30-10 come proporzione tipica, non come legge.</p>
+<p><b>Sensazioni.</b> Rosso energia, passione, appetito; blu fiducia e affidabilità; giallo ottimismo; verde natura e salute; nero lusso e potere; bianco semplicità e pulizia; arancione dinamismo; viola creatività ed esclusività. Poi la riga che conta davvero: <b>il significato dipende dal contesto</b>. Il rosso di una bibita non dice quello che dice il rosso di un&#x27;auto sportiva.</p>
+<p><b>HEX.</b> Non è obbligatorio. Se vuoi, una riga soltanto: esiste un codice di sei caratteri che identifica un colore preciso, <span class="tiny" style="font-weight:700">#FFFFFF</span> è il bianco; in scheda si può indicare come extra, preso dal sito ufficiale del brand o da Brandfetch, senza installare estensioni. Chi è curioso trova il bonus facoltativo in fondo alla palestra.</p></div>
+
+<div class="fase"><p class="t">38-63 · Palestra dei colori (25 minuti)</p>
+<p>2 minuti per aprire il link e leggere le istruzioni, 18 di attività, 3 per copiare il codice nella scheda. Si lavora da soli o in coppia, come preferisci: se in coppia, uno decide e l&#x27;altro deve poter spiegare la scelta, poi ci si scambia.</p>
+<p>Al minuto 60 fermali comunque: «Chi non ha finito prema lo stesso il riepilogo e copi il codice». Il codice registra anche le domande non fatte, quindi resta utile.</p>
+<p class="small">Mentre lavorano, gira e guarda la sezione B: è quella dove si vede se hanno capito la differenza tra «colore che mi piace di più» e «colore che il brand usa di più».</p></div>
+
+<div class="fase"><p class="t">63-73 · Elementi grafici e stile fotografico (10 minuti)</p>
+<p>Usa l&#x27;esempio Apple del PDF. <b>Elementi grafici e pattern:</b> forme, linee, icone, motivi che ritornano, uso degli spazi vuoti. <b>Stile fotografico:</b> luminoso o scuro, prodotto o persone, realistico o costruito, che atmosfera crea.</p>
+<p>Mini-esercizio di 4 minuti: proietta due immagini di brand, una di Barilla, e chiedi alla classe tre aggettivi, uno per la luce, uno per i soggetti, uno per l&#x27;atmosfera. Scrivili alla lavagna: sono esattamente il tipo di frase che dovranno scrivere in scheda.</p></div>
+
+<div class="fase"><p class="t">73-83 · Consegna della scheda e modello Barilla (10 minuti)</p>
+<p>Apri la scheda proiettata e compilate insieme la prima azienda, <b>Barilla</b>, già presente nel PDF. Tu guidi, loro dettano. Poi spiega le regole del lavoro:</p>
+<ul><li>cinque aziende conosciute, con identità forte, di almeno tre settori diversi;</li>
+<li>descrizioni con parole proprie, il copia-incolla non vale;</li>
+<li>il link della fonte va sempre scritto;</li>
+<li>circa 7 minuti per azienda, quello che resta si finisce a casa;</li>
+<li>la parte «Lezione 2» della scheda resta vuota fino alla prossima volta.</li></ul></div>
+
+<div class="fase"><p class="t">83-120 · Compilazione (37 minuti)</p>
+<p>Circola tra i banchi con tre domande guida, sempre quelle: «Quale colore vedi più spesso?», «Che cosa ripete il brand in tutte le immagini?», «Se togli il logo, che cosa resta?».</p>
+<p><b>Chi è in difficoltà</b> lavora su tre aziende scegliendo dalla lista già pronta nella versione con checklist. <b>Chi va veloce</b> aggiunge il confronto tra due concorrenti diretti, per esempio Nike e Adidas: stessa categoria, identità diverse.</p>
+<p class="small">La lezione finisce con la compilazione, senza chiusura: la scadenza su Classroom fa il resto.</p></div>
+
+<h3>Lezione 2 · Caratteri e valori</h3>
+
+<div class="fase"><p class="t">0-20 · I caratteri</p>
+<p>Una slide per famiglia, con un esempio visivo grande.</p>
+<ul>
+<li><b>Serif</b>, con le grazie: tradizione, autorevolezza, eleganza. Quotidiani, gioiellerie, orologerie, lusso storico.</li>
+<li><b>Sans-serif</b>, senza grazie: modernità, pulizia, semplicità, tecnologia. Brand tech, sportivi, grande distribuzione.</li>
+<li><b>Script</b>, il corsivo: calore, personalità, artigianalità. L&#x27;esempio classico è il corsivo di Coca-Cola.</li>
+<li><b>Slab serif e display:</b> forza, carattere, divertimento. Titoli e loghi molto riconoscibili.</li>
+</ul>
+<p>Tre punti da non saltare. <b>Il contesto conta</b>, come per i colori. <b>Il trend</b>: molti marchi di moda e lusso sono passati al sans-serif; chiedi perché, e guidali verso schermi piccoli, immagine più moderna, e il rischio di assomigliarsi tutti. <b>L&#x27;elenco di font separati da virgole</b> che compare nell&#x27;esempio Apple del PDF non è un errore: è l&#x27;elenco di riserva del sito, il primo è il carattere desiderato e gli altri servono se non è disponibile. Se non lo spieghi, copieranno l&#x27;elenco intero.</p>
+<p class="small">Se vuoi mostrare come si trova un font senza installare niente: clic destro sul testo, «Ispeziona», proprietà <code>font-family</code>. Due minuti, come opzione. In alternativa chiedi solo di <i>descrivere lo stile</i>: serif o sans-serif, formale o amichevole.</p></div>
+
+<div class="fase"><p class="t">20-40 · I valori, con Apple</p>
+<p>Definizione: i valori sono ciò in cui l&#x27;azienda vuole farsi credere. Innovazione, tradizione, divertimento, sostenibilità, lusso, affidabilità, convivialità.</p>
+<p><b>La catena delle prove:</b> valore → dove si vede → perché è coerente. Un valore senza un «dove si vede» è una parola vuota, ed è questo il criterio con cui correggerai la scheda.</p>
+<p>Analizza insieme la sezione valori di Apple nel PDF: ogni valore ha un riscontro preciso nel logo, nei colori o nelle foto. Poi applica subito lo schema a Barilla con la classe: «Che valori trasmette? Dove lo vedete?». Raccogli due o tre risposte e fermati lì.</p></div>
+
+<div class="fase"><p class="t">40-80 · Font e valori sulle proprie aziende (40 minuti)</p>
+<p>Cinque minuti di modello su Barilla, poi lavoro autonomo. Ogni studente aggiunge a ciascuna azienda:</p>
+<ul><li><b>Font:</b> nome se lo trova, famiglia, sensazione che trasmette;</li>
+<li><b>Valori:</b> due valori con la frase guida «L&#x27;azienda comunica ___ attraverso ___ (colore, font, foto, slogan, prodotto), perché ___»;</li>
+<li><b>Coerenza:</b> una riga finale, sì / in parte / no, con il motivo.</li></ul>
+<p>In 35 minuti si completano due o tre aziende, il resto a casa. Chi finisce prima cerca <b>un caso di incoerenza</b>: un marchio che dichiara un valore e comunica il contrario. È l&#x27;esercizio più formativo di tutta l&#x27;attività: tienilo pronto.</p></div>
+
+<div class="fase"><p class="t">80-115 · Palestra dei font (35 minuti)</p>
+<p>Stesse regole della prima palestra. La sezione D chiede di riconoscere valore e prova visiva su brand descritti a parole, e comprende un caso di incoerenza: se la classe è arrivata stanca, dedicale un minuto di introduzione ricordando la catena valore → dove si vede → perché.</p>
+<p>Al minuto 112 fermali e fai copiare il codice.</p></div>
+
+<div class="fase"><p class="t">115-120 · Consegna</p>
+<p>Il codice <b>BRD-FON</b> va incollato nella prima pagina della scheda, sotto quello dei colori, e la scheda va consegnata di nuovo, completa. Ricorda che le aziende mancanti si finiscono a casa entro la scadenza.</p></div>
+</section>
+
+<section id="classroom"><div class="kicker">Una volta sola</div><h2>Configura Classroom</h2>
+<div class="warn" style="margin-bottom:14px"><b>Link della Classroom.</b> In questa pagina il link del corso è un segnaposto: apri <code>index.html</code> con un editor di testo, cerca <span class="ph">INSERIRE-LINK-CLASSROOM</span> e sostituiscilo con l&#x27;indirizzo del tuo corso.</div>
+<ol class="big">
+<li><label><input type="checkbox" data-k="p1"> Nel corso crea l&#x27;argomento <b>Il brand oltre il logo</b> (Lavori del corso › + Crea › Argomento).</label></li>
+<li><label><input type="checkbox" data-k="p2"> Scarica la scheda di analisi, caricala in Drive e convertila: doppio clic › <b>Apri con › Documenti Google</b> › <b>File › Salva come Documento Google</b>. Sposta poi il .docx originale in una cartella <b>ORIGINALI</b>. Fai lo stesso con la versione con checklist.</label></li>
+<li><label><input type="checkbox" data-k="p3"> Apri una volta la scheda convertita e controlla che le tabelle delle cinque aziende si vedano bene e che le celle siano vuote.</label></li>
+<li><label><input type="checkbox" data-k="p4"> Fai la prova tecnica su un PC del laboratorio: apri le due palestre dal link, arriva al riepilogo e copia un codice. Prova anche l&#x27;apertura del file scaricato con doppio clic, come riserva se la rete non va.</label></li>
+<li><label><input type="checkbox" data-k="p5"> Prepara il tuo archivio del gancio (immagini e video senza logo) e il PDF della guida all&#x27;analisi. L&#x27;archivio del gancio <b>non</b> va allegato al compito: serve solo a te, proiettato.</label></li>
+<li><label><input type="checkbox" data-k="p6"> Crea i due compiti seguendo le lezioni qui sotto.</label></li>
+</ol>
+<div class="card" style="margin-top:14px"><h4>Una scheda sola, consegnata due volte</h4>
+<p>La scheda è la stessa nelle due lezioni: la assegni con il Compito 01 come <b>copia per ogni studente</b>, e nella seconda lezione gli studenti riaprono e completano quel documento.</p>
+<p class="small"><b>Importante:</b> dopo la scadenza del Compito 01 premi <b>RESTITUISCI</b> a tutti. Finché il compito è consegnato il documento è di sola lettura e alla Lezione 2 gli studenti non possono scriverci. Nel Compito 02 chiedi di riallegare lo stesso documento (Aggiungi o crea › Google Drive).</p></div>
+<div class="card" style="margin-top:14px"><h4>I codici delle palestre</h4>
+<p>Non serve nessun modulo esterno: ogni palestra mostra alla fine una riga di riepilogo che lo studente copia e incolla nella <b>prima pagina della scheda</b>, negli spazi già predisposti. La riga contiene nome, punteggio sezione per sezione e una firma finale di cinque caratteri.</p>
+<pre class="copybox" style="margin-top:8px">BRD-COL | Nome Cognome | PALETTE 4/4 | RUOLI 3/4 | SENSAZIONI 4/4 | TOT 11/12 | ripetizioni 1 | #4K7ZQ</pre>
+<p class="small" style="margin-top:8px">La firma <b>#</b> è un deterrente: dimostra che la riga non è stata ritoccata a mano, non chi l&#x27;ha prodotta. Se un codice ti sembra strano, la palestra si rifà in dieci minuti.</p></div>
+</section>
+
+<section id="l1" class="lesson"><div class="kicker">Lezione 1 · 2 ore</div><h2>Il brand non è il logo</h2>
+<div class="grid2">
+<div class="card"><h4>In questa lezione facciamo</h4><ul>
+<li>Gancio: immagini e video senza logo, riconosciuti lo stesso.</li>
+<li>Brand, logo e identità visiva; perché il brand vale soldi.</li>
+<li>Colori: ruolo (primario, secondario, neutro), proporzioni, sensazioni legate al settore.</li>
+<li>Palestra dei colori con codice riepilogativo.</li>
+<li>Elementi grafici ricorrenti e stile fotografico.</li>
+<li>Apertura della scheda: Barilla insieme, poi le altre quattro aziende.</li>
+</ul>
+<a class="try" href="01_LEZIONE_1/MATERIALI/palestra_colori.html" target="_blank" rel="noopener">▶ Prova: Palestra dei colori</a></div>
+<div class="card"><h4>Prima della lezione</h4><ul class="checks">
+<li><label><input type="checkbox" data-k="l1p0"> Archivio del gancio pronto e provato col proiettore, audio compreso.</label></li>
+<li><label><input type="checkbox" data-k="l1p1"> Scheda convertita in Documento Google e aperta una volta.</label></li>
+<li><label><input type="checkbox" data-k="l1p2"> Palestra dei colori aperta una volta da un PC del laboratorio.</label></li>
+<li><label><input type="checkbox" data-k="l1p3"> Compito 01 creato o programmato.</label></li></ul>
+<h4 style="margin-top:12px">Scaletta (minuti)</h4><table class="mini">
+<tr><td class="num">0-15</td><td>Gancio: immagini e video senza logo</td></tr>
+<tr><td class="num">15-30</td><td>Brand e logo, con le slide</td></tr>
+<tr><td class="num">30-38</td><td>Mini-lezione sui colori</td></tr>
+<tr><td class="num">38-63</td><td>Palestra dei colori; al minuto 60 tutti copiano il codice</td></tr>
+<tr><td class="num">63-73</td><td>Elementi grafici e stile fotografico</td></tr>
+<tr><td class="num">73-83</td><td>Consegna della scheda e modello Barilla</td></tr>
+<tr><td class="num">83-120</td><td>Compilazione della scheda</td></tr></table></div></div>
+
+<article class="task" id="c01">
+<div class="taskhead"><span class="num-badge">01</span><div><div class="kicker">Compito 01 · Lezione 1 (circa 60 minuti di lavoro in classe)</div><h3>L&#x27;identità visiva di cinque aziende</h3></div>
+<label class="done"><input type="checkbox" data-k="c01"> creato in Classroom</label></div>
+<p class="when">Crealo prima della lezione e rendilo visibile al minuto 38, quando parte la palestra. Scadenza: qualche giorno dopo, per dare tempo di finire a casa.</p>
+
+<div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito in Classroom</h4>
+<p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>Il brand oltre il logo</b></p>
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">Il brand oltre il logo · 01 · L&#x27;identità visiva di cinque aziende</div><button class="cp" data-target="t01">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Lezione 1. Oggi abbiamo riconosciuto delle aziende senza vedere nessun logo. Adesso tocca a te: scegli cinque marchi e scopri di che cosa è fatta la loro identità visiva.
+
+1. Apri la tua scheda di analisi (è una tua copia) e leggi la prima pagina: regole e criteri di scelta.
+2. Palestra dei colori (25 minuti): https://digital-makers-ag.github.io/attivita-informatica-scuola/SERVIZI_COMMERCIALI/BRAND/IL_BRAND_OLTRE_IL_LOGO/01_LEZIONE_1/MATERIALI/palestra_colori.html
+   Se il link non si apre, scarica il file palestra_colori.html allegato e aprilo con doppio clic.
+3. Alla fine premi «Riepilogo e codice», copia la riga che inizia con BRD-COL e incollala nella prima pagina della scheda. Fallo anche se non hai finito tutte le domande.
+4. Scegli cinque aziende conosciute, di almeno tre settori diversi. La prima, Barilla, l&#x27;abbiamo compilata insieme.
+5. Per ogni azienda compila: logo e varianti, colori (primario, secondario, neutro) con ruolo e sensazione, elementi grafici ricorrenti, stile fotografico.
+6. Scrivi con parole tue: il copia-incolla non vale. Incolla sempre il link da cui hai preso il materiale.
+7. Lascia vuota la parte «Lezione 2»: font e valori li aggiungiamo la prossima volta.
+8. Quello che non finisci in classe lo completi a casa entro la scadenza.
+9. Premi CONSEGNA.</pre><button class="cp" data-target="d01">Copia</button></div></div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
+<p class="small">In Classroom: <b>Aggiungi › Link</b>, uno alla volta.</p>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos&#x27;è</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k01a" style="font-size:12.5px">https://digital-makers-ag.github.io/attivita-informatica-scuola/SERVIZI_COMMERCIALI/BRAND/IL_BRAND_OLTRE_IL_LOGO/01_LEZIONE_1/MATERIALI/palestra_colori.html</div><button class="cp" data-target="k01a" style="margin-top:6px">Copia</button></td><td>Palestra dei colori</td><td><span class="b link">Link</span></td><td class="note">è già citato nelle istruzioni: il link separato serve a chi legge di fretta</td></tr>
+<tr><td><div class="copybox" id="k01b" style="font-size:12.5px">https://brandfetch.com</div><button class="cp" data-target="k01b" style="margin-top:6px">Copia</button></td><td>Dove trovare colori e caratteri ufficiali di un marchio</td><td><span class="b link">Link</span></td><td class="note">alternativa al sito ufficiale, senza installare estensioni</td></tr>
+</tbody></table></div></div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
+<p class="small">In Classroom: <b>Aggiungi › Carica</b>, poi scegli per ogni file l&#x27;opzione indicata.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/STANDARD/L1_scheda_analisi_brand.docx" download data-c="01">⬇ L1_scheda_analisi_brand.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">la scheda delle due lezioni: la parte «Lezione 2» resta vuota</td></tr>
+<tr><td><a class="dl" href="00_GUIDA_DOCENTE/GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf" download data-c="01">⬇ GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">guida all&#x27;analisi con gli esempi Apple e Barilla</td></tr>
+<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/palestra_colori.html" download data-c="01">⬇ palestra_colori.html</a><div class="tiny"><a href="01_LEZIONE_1/MATERIALI/palestra_colori.html" target="_blank" rel="noopener">▶ prova online</a></div></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline del link: funziona con doppio clic</td></tr>
+</tbody></table></div>
+<button class="all" data-c="01">⬇ Scarica tutti i file di questo compito</button></div></div>
+
+<details class="bes"><summary>♿ Versione BES / DSA</summary>
+<p><b>Stessa competenza, meno barriere.</b> Crea un secondo compito con lo stesso titolo e assegnalo solo agli studenti interessati, cambiando un file: invece della scheda standard allega quella con checklist.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/BES/L1_scheda_analisi_brand_CHECKLIST.docx" download data-c="01b">⬇ L1_scheda_analisi_brand_CHECKLIST.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">tre aziende invece di cinque, lista già pronta, prima riga svolta, caselle da spuntare al posto delle frasi libere</td></tr>
+</tbody></table></div>
+<p class="tiny">Non allegare mai allo stesso studente la scheda standard e quella con checklist.</p></details>
+
+<div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano gli studenti</h4>
+<p>La scheda di analisi con la parte «Lezione 1» compilata per le aziende che hanno fatto, e nella prima pagina il codice <b>BRD-COL</b>.</p>
+<p class="small"><b>Come controlli:</b> apri la prima pagina, guarda il codice (punteggio per sezione e ripetizioni) e poi due aziende a campione. Tre segnali di lavoro fatto bene: il colore primario indicato è davvero il più presente e non il preferito; la sensazione è motivata col settore; il link della fonte c&#x27;è. Il confronto con il <a href="00_GUIDA_DOCENTE/MODELLO_barilla_compilato.docx" download>modello Barilla compilato</a> ti dà il livello atteso.</p></div></div>
+</article>
+</section>
+
+<section id="l2" class="lesson"><div class="kicker">Lezione 2 · 2 ore</div><h2>Caratteri e valori</h2>
+<div class="grid2">
+<div class="card"><h4>In questa lezione facciamo</h4><ul>
+<li>Serif, sans-serif, script e display: come si riconoscono e che cosa comunicano.</li>
+<li>Il passaggio al sans-serif nella moda e nel lusso: perché, e che cosa si perde.</li>
+<li>Valori di marca e catena delle prove, con l&#x27;esempio Apple e poi Barilla.</li>
+<li>Integrazione della scheda: font, due valori motivati, giudizio di coerenza.</li>
+<li>Palestra dei font con codice riepilogativo.</li>
+</ul>
+<a class="try" href="02_LEZIONE_2/MATERIALI/palestra_font.html" target="_blank" rel="noopener">▶ Prova: Palestra dei font</a></div>
+<div class="card"><h4>Prima della lezione</h4><ul class="checks">
+<li><label><input type="checkbox" data-k="l2p0"> <b>Compito 01 restituito a tutti</b>, così le schede tornano modificabili.</label></li>
+<li><label><input type="checkbox" data-k="l2p1"> Slide sui caratteri pronte, con un esempio grande per famiglia.</label></li>
+<li><label><input type="checkbox" data-k="l2p2"> Pagina dei valori di Apple del PDF aperta e pronta da proiettare.</label></li>
+<li><label><input type="checkbox" data-k="l2p3"> Compito 02 creato o programmato.</label></li></ul>
+<h4 style="margin-top:12px">Scaletta (minuti)</h4><table class="mini">
+<tr><td class="num">0-20</td><td>I caratteri: famiglie, sensazioni, il trend verso il sans-serif</td></tr>
+<tr><td class="num">20-40</td><td>I valori con Apple, poi Barilla insieme</td></tr>
+<tr><td class="num">40-80</td><td>Font e valori sulle proprie aziende</td></tr>
+<tr><td class="num">80-115</td><td>Palestra dei font; al minuto 112 tutti copiano il codice</td></tr>
+<tr><td class="num">115-120</td><td>Consegna della scheda completa</td></tr></table></div></div>
+
+<article class="task" id="c02">
+<div class="taskhead"><span class="num-badge">02</span><div><div class="kicker">Compito 02 · Lezione 2 (circa 75 minuti di lavoro in classe)</div><h3>Caratteri, valori e coerenza</h3></div>
+<label class="done"><input type="checkbox" data-k="c02"> creato in Classroom</label></div>
+<p class="when">Dopo aver restituito il Compito 01. Scadenza: qualche giorno dopo la lezione.</p>
+
+<div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito in Classroom</h4>
+<p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>Il brand oltre il logo</b></p>
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t02">Il brand oltre il logo · 02 · Caratteri, valori e coerenza</div><button class="cp" data-target="t02">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d02">Lezione 2. Stessa scheda della volta scorsa: oggi aggiungiamo i caratteri e i valori. Te l&#x27;ho restituita, quindi puoi di nuovo scriverci.
+
+1. Riapri la tua scheda di analisi e vai alla parte «Lezione 2» di ogni azienda.
+2. FONT: scrivi il nome se lo trovi, la famiglia (serif, sans-serif, script, display) e la sensazione che trasmette.
+   Se il sito mostra più font separati da virgole, quello giusto è il PRIMO: gli altri sono le riserve.
+3. VALORI: due valori per azienda, con la frase guida «L&#x27;azienda comunica ___ attraverso ___ (colore, font, foto, slogan, prodotto), perché ___».
+4. COERENZA: una riga finale. Il design è coerente con i valori dichiarati? sì / in parte / no, e perché.
+5. Palestra dei font (35 minuti): https://digital-makers-ag.github.io/attivita-informatica-scuola/SERVIZI_COMMERCIALI/BRAND/IL_BRAND_OLTRE_IL_LOGO/02_LEZIONE_2/MATERIALI/palestra_font.html
+   Se il link non si apre, scarica il file palestra_font.html allegato e aprilo con doppio clic.
+6. Alla fine copia la riga che inizia con BRD-FON e incollala nella prima pagina della scheda, sotto il codice dei colori.
+7. Hai finito in anticipo? Cerca un caso di INCOERENZA: un marchio che dichiara un valore e ne comunica un altro. Scrivilo in fondo alla scheda.
+8. Riallega la scheda (Aggiungi o crea &gt; Google Drive) e premi CONSEGNA.</pre><button class="cp" data-target="d02">Copia</button></div></div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
+<p class="small">In Classroom: <b>Aggiungi › Link</b>, uno alla volta.</p>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos&#x27;è</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k02a" style="font-size:12.5px">https://digital-makers-ag.github.io/attivita-informatica-scuola/SERVIZI_COMMERCIALI/BRAND/IL_BRAND_OLTRE_IL_LOGO/02_LEZIONE_2/MATERIALI/palestra_font.html</div><button class="cp" data-target="k02a" style="margin-top:6px">Copia</button></td><td>Palestra dei font</td><td><span class="b link">Link</span></td><td class="note">il cuore della seconda parte della lezione</td></tr>
+<tr><td><div class="copybox" id="k02b" style="font-size:12.5px">https://fonts.google.com</div><button class="cp" data-target="k02b" style="margin-top:6px">Copia</button></td><td>Per vedere dal vivo le quattro famiglie di caratteri</td><td><span class="b link">Link</span></td><td class="note">il filtro per categoria mostra serif, sans-serif, display e handwriting</td></tr>
+<tr><td><div class="copybox" id="k02c" style="font-size:12.5px">https://brandfetch.com</div><button class="cp" data-target="k02c" style="margin-top:6px">Copia</button></td><td>Dove trovare i caratteri usati da un marchio</td><td><span class="b link">Link</span></td><td class="note">stesso link della prima lezione, qui serve per i font</td></tr>
+</tbody></table></div></div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
+<p class="small">La scheda non va riallegata: gli studenti riaprono quella del Compito 01.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="02_LEZIONE_2/MATERIALI/palestra_font.html" download data-c="02">⬇ palestra_font.html</a><div class="tiny"><a href="02_LEZIONE_2/MATERIALI/palestra_font.html" target="_blank" rel="noopener">▶ prova online</a></div></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline: i caratteri sono dentro al file, funziona senza rete</td></tr>
+<tr><td><a class="dl" href="00_GUIDA_DOCENTE/GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf" download data-c="02">⬇ GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">serve la pagina dei valori di Apple</td></tr>
+</tbody></table></div>
+<button class="all" data-c="02">⬇ Scarica tutti i file di questo compito</button></div></div>
+
+<details class="bes"><summary>♿ Versione BES / DSA</summary>
+<p>La scheda con checklist contiene già la parte «Lezione 2» in forma facilitata: tre aziende, due valori scelti da un elenco e la frase guida da completare a buchi. Non serve un file nuovo: assegna il Compito 02 anche al gruppo con la versione facilitata, che riaprirà il proprio documento.</p>
+<p class="small">Nella palestra dei font la sezione D è la più impegnativa: per chi fa fatica, concordate di fermarsi alla sezione C e copiare comunque il codice. Il codice registra le sezioni non fatte, quindi resta leggibile.</p></details>
+
+<div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano gli studenti</h4>
+<p>La scheda completa, con font, valori e coerenza per le aziende analizzate, e nella prima pagina i due codici <b>BRD-COL</b> e <b>BRD-FON</b>.</p>
+<p class="small"><b>Come controlli:</b> il criterio è la catena delle prove. Un valore accettabile ha sempre un «dove si vede» concreto: «tradizione, attraverso il blu e il carattere con le grazie del logo». Un valore scritto da solo, senza prova, vale zero anche se è giusto. La riga sulla coerenza mostra la capacità critica: «in parte, perché…» spesso vale più di un «sì» secco.</p></div></div>
+</article>
+</section>
+
+<section id="valutazione"><div class="kicker">Valutazione</div><h2>Che cosa si guarda</h2>
+<div class="grid2">
+<div class="card"><h4>Il principio</h4><p>Si valuta quello che producono, non quello che ricordano. I codici delle palestre sono formativi e servono a te per capire dove la classe è incerta; la scheda è il prodotto vero, e si giudica sulla specificità delle descrizioni.</p>
+<p class="small">Una descrizione generica («colori belli, moderni») e una specifica («blu scuro dominante su quasi tutta la confezione, giallo solo sul nome del prodotto») distinguono da sole chi ha guardato da chi ha tirato a indovinare.</p></div>
+<div class="card"><h4>Quattro consegne, quattro criteri</h4>
+<div class="tw"><table><thead><tr><th>Consegna</th><th>Criterio principale</th></tr></thead><tbody>
+<tr><td>Codice palestra dei colori</td><td>completamento e punteggio, in chiave formativa</td></tr>
+<tr><td>Scheda, parte Lezione 1</td><td>completezza, ruoli dei colori distinti correttamente, descrizioni specifiche, fonti citate</td></tr>
+<tr><td>Codice palestra dei font</td><td>completamento e punteggio</td></tr>
+<tr><td>Scheda, parte Lezione 2</td><td>catena valore → prova → coerenza, capacità critica</td></tr>
+</tbody></table></div></div></div>
+<div class="card" style="margin-top:16px"><h4>Tre livelli, per non mettere un voto a ogni riga</h4>
+<div class="tw"><table><thead><tr><th>Livello</th><th>Si riconosce così</th></tr></thead><tbody>
+<tr><td><b>Autonomo</b></td><td>Ruoli dei colori corretti su almeno 4 aziende su 5; ogni sensazione motivata col settore; font con famiglia giusta; ogni valore ha una prova visiva concreta; fonti sempre citate.</td></tr>
+<tr><td><b>Con supporto</b></td><td>Analisi corrette ma descritte in modo generico, oppure complete su 3 aziende; valori giusti con prove deboli o ripetute; qualche fonte mancante.</td></tr>
+<tr><td><b>Non ancora</b></td><td>Colore primario confuso con il preferito; descrizioni copiate; valori dichiarati senza nessun riscontro visivo; meno di tre aziende.</td></tr>
+</tbody></table></div></div>
+</section>
+
+<section id="bes"><div class="kicker">Inclusione</div><h2>BES / DSA</h2>
+<div class="card"><p><b>Stessa competenza, meno barriere.</b> La scheda ha una versione con checklist: tre aziende invece di cinque, una lista di marchi già pronta fra cui scegliere, la prima riga svolta come esempio, caselle da spuntare al posto delle frasi libere dove la frase libera non serve a dimostrare niente. L&#x27;obiettivo non si abbassa: si chiede di riconoscere ruolo, sensazione, famiglia e prova visiva, esattamente come agli altri.</p>
+<p>In Classroom crea un secondo compito con lo stesso titolo e assegnalo solo agli studenti interessati, così nessuno viene segnalato davanti alla classe.</p>
+<p class="small">Le palestre sono già accessibili: nessuna risposta dipende dal solo colore (ogni campione ha nome e descrizione scritta), i contrasti rispettano il rapporto 4.5:1, si naviga da tastiera e ogni feedback è testuale. Si possono rifare senza limite, e la ripetizione è dichiarata nel codice: rifarle non è barare, è studiare.</p></div>
+</section>
+
+<section id="archivio"><div class="kicker">Archivio</div><h2>Tutti i file</h2>
+<p class="small">Struttura della cartella, così ritrovi ogni cosa anche fra sei mesi.</p>
+<div class="tw"><table><thead><tr><th>Cartella</th><th>File</th><th>Peso</th><th>A che cosa serve</th></tr></thead><tbody>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/SCALETTA_RAPIDA_da_stampare.docx" download>SCALETTA_RAPIDA_da_stampare.docx</a></td><td class="num" data-w>—</td><td class="note">una pagina per lezione, da tenere sulla cattedra</td></tr>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/MODELLO_barilla_compilato.docx" download>MODELLO_barilla_compilato.docx</a></td><td class="num" data-w>—</td><td class="note">la riga Barilla già scritta, per le due lezioni</td></tr>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf" download>GUIDA_ANALISI_IDENTITA_DI_MARCA.pdf</a></td><td class="num" data-w>—</td><td class="note">guida all&#x27;analisi con gli esempi Apple e Barilla</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/STANDARD</td><td><a href="01_LEZIONE_1/STANDARD/L1_scheda_analisi_brand.docx" download>L1_scheda_analisi_brand.docx</a></td><td class="num" data-w>—</td><td class="note">la scheda delle due lezioni, 5 aziende</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/BES</td><td><a href="01_LEZIONE_1/BES/L1_scheda_analisi_brand_CHECKLIST.docx" download>L1_scheda_analisi_brand_CHECKLIST.docx</a></td><td class="num" data-w>—</td><td class="note">versione facilitata, 3 aziende</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/palestra_colori.html" download>palestra_colori.html</a></td><td class="num" data-w>—</td><td class="note">palestra dei colori, funziona anche offline</td></tr>
+<tr><td class="tiny">02_LEZIONE_2/MATERIALI</td><td><a href="02_LEZIONE_2/MATERIALI/palestra_font.html" download>palestra_font.html</a></td><td class="num" data-w>—</td><td class="note">palestra dei font, caratteri inclusi nel file</td></tr>
+</tbody></table></div>
+<p class="small" style="margin-top:12px">L&#x27;archivio del gancio (immagini e video senza logo) non è in questa cartella: è tuo e resta sul tuo computer, perché contiene materiale di terzi usato in classe a scopo didattico.</p>
+</section>
+
+</main></div>
+<footer>Il brand oltre il logo · Servizi commerciali · <a href="[INSERIRE-LINK-CLASSROOM]" target="_blank" rel="noopener">Classroom del corso</a> · <a href="../../../index.html">Hub delle attività</a></footer>
+
+<script>
+(function(){
+  "use strict";
+  var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  var PFX="brand-oltre-il-logo:";
+
+  // caselle di preparazione, salvate nel browser
+  var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
+  Array.prototype.forEach.call(boxes,function(b){
+    if(store.get(PFX+b.dataset.k)==="1") b.checked=true;
+    b.addEventListener('change',function(){ store.set(PFX+b.dataset.k,b.checked?"1":"0"); progress(); });
+  });
+  function progress(){
+    var n=0; Array.prototype.forEach.call(boxes,function(b){ if(b.checked) n++; });
+    var pc=document.getElementById('pc'), pb=document.getElementById('pb');
+    if(pc) pc.textContent=n+" / "+boxes.length;
+    if(pb) pb.style.width=(boxes.length? Math.round(n/boxes.length*100):0)+"%";
+  }
+  progress();
+
+  // pulsanti Copia
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.cp'); if(!b) return;
+    var el=document.getElementById(b.dataset.target); if(!el) return;
+    var t=el.innerText;
+    var done=function(){ var old=b.textContent; b.textContent="Copiato"; setTimeout(function(){ b.textContent=old; },1400); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,fallback); } else { fallback(); }
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(err){ b.textContent="Copia a mano"; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  // scarica tutti i file di un compito
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.all'); if(!b) return;
+    var links=document.querySelectorAll('a.dl[data-c="'+b.dataset.c+'"]');
+    Array.prototype.forEach.call(links,function(a,i){
+      setTimeout(function(){
+        var t=document.createElement('a'); t.href=a.getAttribute('href'); t.download='';
+        document.body.appendChild(t); t.click(); document.body.removeChild(t);
+      }, i*400);
+    });
+  });
+
+  // voce di menu attiva
+  var secs=document.querySelectorAll('main section[id]'), nav=document.querySelectorAll('nav.side a[href^="#"]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        Array.prototype.forEach.call(nav,function(a){ a.classList.toggle('on', a.getAttribute('href')==='#'+en.target.id); });
+      });
+    },{rootMargin:"-20% 0px -70% 0px"});
+    Array.prototype.forEach.call(secs,function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body></html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%BB%3C/text%3E%3C/svg%3E">
+<title>Differenza tra hardware e software · Guida per il docente</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--teal-d)}
+.hero{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:34px 24px 28px}
+.hero .in{max-width:1180px;margin:0 auto} .hero h1{margin:4px 0 6px;font-size:clamp(26px,4vw,40px);line-height:1.15} .hero p{margin:0;max-width:760px;opacity:.95}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px} .pills span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:14px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:220px 1fr;gap:28px;padding:24px}
+nav.side{position:sticky;top:16px;align-self:start;display:flex;flex-direction:column;gap:2px} nav.side a{text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:8px;font-size:15px}
+nav.side a:hover{background:var(--teal-l)} nav.side a.on{background:var(--teal);color:#fff}
+.prog{margin-top:12px;font-size:13px;color:var(--muted);padding:0 12px} .bar{height:6px;background:#e5e9ec;border-radius:4px;overflow:hidden;margin-top:4px} .bar div{height:100%;background:var(--orange);width:0}
+section{margin-bottom:44px;scroll-margin-top:12px} h2{font-size:28px;margin:2px 0 12px;color:var(--teal-d)} h3{margin:0;font-size:20px} h4{margin:0 0 8px;font-size:16px}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.docs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.doc{display:flex;flex-direction:column;gap:4px;text-decoration:none;background:#fff;border:1px solid var(--line);border-left:5px solid var(--orange);border-radius:10px;padding:12px 14px;color:var(--ink)}
+.doc:hover{border-color:var(--orange)} .doc span{font-size:13px;color:var(--muted)}
+.task{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.taskhead{display:flex;gap:14px;align-items:center}
+.num-badge{flex:none;width:46px;height:46px;border-radius:12px;background:var(--teal);color:#fff;font-weight:800;font-size:18px;display:grid;place-items:center}
+.done{margin-left:auto;font-size:14px;color:var(--muted);white-space:nowrap} .when{color:var(--muted);margin:10px 0 4px;font-size:15px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;margin-top:16px}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--teal-l);color:var(--teal-d);font-weight:800;display:grid;place-items:center;font-size:14px}
+.sb{min-width:0}
+.copyrow{display:grid;grid-template-columns:110px 1fr auto;gap:8px;align-items:start;margin:8px 0}
+.copyrow .lbl{font-size:13px;color:var(--muted);padding-top:8px}
+.copybox{background:#f2f5f6;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;white-space:pre-wrap;font-family:inherit;margin:0}
+.cp,.all{border:1px solid var(--line);background:#fff;color:var(--teal-d);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.cp:hover,.all:hover{background:var(--teal-l)} .all{margin-top:10px}
+.tw{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14px;margin-top:6px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:13px;font-weight:700}
+td.num{white-space:nowrap} td.note{color:var(--muted);font-size:13px}
+.b{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap}
+.b.copy{background:var(--orange-l);color:#8a3d05} .b.view{background:var(--teal-l);color:var(--teal-d)} .b.link{background:#ece4f7;color:#5a3390}
+.tiny{font-size:12px;color:var(--muted)} .small{font-size:14px;color:var(--muted)}
+table.mini td{padding:5px 8px;font-size:14px} table.mini td.num{color:var(--orange);font-weight:700;width:76px}
+ul.checks{list-style:none;padding:0;margin:0} ul.checks li{margin:6px 0} ul.checks label{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:10px 0} summary{cursor:pointer;font-weight:700}
+details.sol{border-left:5px solid #7a4bb5} details.bes{border-left:5px solid var(--teal);margin-top:16px}
+.try{display:inline-block;margin:10px 8px 0 0;background:var(--orange);color:#fff;text-decoration:none;border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600}
+.warn{background:#fff7e6;border:1px solid #f0c36d;border-radius:12px;padding:14px 18px} ol.big li{margin:8px 0}
+.ph{background:#fff1cf;border:1px dashed #c58b1d;border-radius:6px;padding:1px 7px;font-weight:700;color:#7a5200}
+.guida h3{margin:22px 0 6px;color:var(--teal-d)} .guida .fase{border-left:3px solid var(--teal-l);padding-left:14px;margin:14px 0}
+.guida .fase .t{font-size:13px;font-weight:700;color:var(--orange)}
+.say{background:var(--teal-l);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:15px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:30px}
+main{min-width:0} a.dl,td a,.doc b{overflow-wrap:anywhere} .copybox{min-width:0;overflow-wrap:anywhere}
+@media(max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);padding:16px} nav.side{position:static;flex-direction:row;flex-wrap:wrap;min-width:0} nav.side a{padding:6px 10px;font-size:14px}
+.grid2,.grid3,.docs{grid-template-columns:minmax(0,1fr)} .copyrow{grid-template-columns:minmax(0,1fr)} .done{display:none} .prog{width:100%}
+table{font-size:13.5px} th:nth-child(4),td.note{display:none} .task,.card{padding:14px}}
+@media print{nav.side,.cp,.all,.try,.done{display:none} .wrap{display:block} details{border:0} details>*{display:block}}
+</style></head><body>
+<p class="hub-back" style="margin:0;padding:8px 16px;background:#0B6E75;font:600 13px/1.4 system-ui,'Atkinson Hyperlegible',sans-serif"><a href="../../../index.html" style="color:#fff;text-decoration:none">&#8592; Hub principale</a></p>
+
+<header class="hero"><div class="in"><div class="kicker" style="color:#ffd9bf">Guida per il docente</div>
+<h1>Differenza tra hardware e software</h1>
+<p>Due lezioni da due ore per il biennio. Nella prima si apre il computer e si guarda che cosa c&#x27;è dentro: componenti, percorso del dato e architettura di Von Neumann. Nella seconda entra in scena il software che comanda tutto, il sistema operativo, e gli studenti mettono in ordine i propri file fra il PC e Google Drive.</p>
+<div class="pills"><span>2 lezioni da 2 ore</span><span>Biennio · primo anno</span><span>Google Workspace for Education</span><span>Versione BES per le schede</span></div></div></header>
+
+<div class="wrap"><nav class="side" id="side">
+<a href="#panoramica">Panoramica</a><a href="#attivita">Descrizione attività</a><a href="#guida">Guida per il docente</a><a href="#classroom">Configura Classroom</a><a href="#l1">Lezione 1</a><a href="#l2">Lezione 2</a><a href="#valutazione">Valutazione</a><a href="#bes">BES / DSA</a><a href="#archivio">Tutti i file</a>
+<div class="prog">Preparazione: <span id="pc">0</span> fatto<div class="bar"><div id="pb"></div></div></div></nav>
+<main>
+
+<section id="panoramica"><div class="kicker">Panoramica</div><h2>Dal ferro al file</h2>
+<div class="warn" style="margin-bottom:16px"><b>Attività di prova.</b> Questa pagina serve a collaudare il modello e la voce nel catalogo: le schede, la palestra e il PDF elencati più avanti non sono ancora stati prodotti, quindi i link di download non portano a nessun file.</div>
+<p style="max-width:75ch">Hardware è quello che si tocca, software quello che dice all&#x27;hardware che cosa fare: la distinzione sembra ovvia finché non si chiede dove stia il sistema operativo mentre il computer è spento. Le due lezioni partono da un computer vero, seguono il percorso di un dato dall&#x27;input all&#x27;output e finiscono con gli studenti che riordinano i loro file e li consegnano compressi.</p>
+<div class="grid3" style="margin-top:14px">
+<div class="card"><h4>🎯 L&#x27;obiettivo</h4><p>Riconoscere i componenti di un computer e la loro funzione, descrivere l&#x27;architettura di Von Neumann con parole proprie e usare il sistema operativo per organizzare file e cartelle senza andare a tentativi.</p></div>
+<div class="card"><h4>🔩 Il materiale di lavoro</h4><p>Un PC del laboratorio da guardare dentro (o le foto dei componenti, se non puoi aprirlo), il computer su cui lavorano e la loro cartella del primo anno in Google Drive.</p></div>
+<div class="card"><h4>📤 Che cosa si consegna</h4><p>L&#x27;identikit del computer compilato con il codice della palestra dei componenti; poi la cartella di Drive riordinata e un archivio ZIP con i tre file richiesti.</p></div></div>
+
+<div class="tw" style="margin-top:16px"><table><thead><tr><th>Lezione</th><th>Durata</th><th>Che cosa si fa</th><th>Che cosa si consegna</th></tr></thead>
+<tbody>
+<tr><td><b>1</b> · Che cosa c&#x27;è dentro</td><td class="num">120 min</td><td>Hardware e software, CPU, RAM e memoria di massa, periferiche di input e output, architettura di Von Neumann, palestra dei componenti</td><td>Identikit del computer + codice <span class="tiny" style="font-weight:700">HWS-CMP</span></td></tr>
+<tr><td><b>2</b> · Chi comanda la macchina</td><td class="num">120 min</td><td>Avvio del sistema operativo, interfaccia grafica e finestre, file e cartelle, struttura in Google Drive, copia sposta rinomina elimina, ZIP</td><td>Cartella di Drive riordinata + archivio ZIP</td></tr>
+</tbody></table></div>
+
+<div class="card" style="margin-top:16px"><h4>Ti serve</h4><ul>
+<li>Un laboratorio con un PC per studente o per coppia, browser aggiornato, proiettore.</li>
+<li>Un computer fisso che puoi aprire davanti alla classe, oppure i componenti sciolti (una RAM, un disco, una ventola) da far passare di banco in banco.</li>
+<li>Account Google della scuola per gli studenti, con Classroom e Drive attivi.</li>
+<li>Circa 30 minuti la prima volta per preparare Classroom e provare la palestra su un PC del laboratorio.</li>
+</ul></div>
+</section>
+
+<section id="attivita"><div class="kicker">Descrizione attività</div><h2>Che cosa fanno gli studenti</h2>
+<div class="grid2">
+<div class="card"><h4>Al termine sapranno</h4><ul>
+<li>distinguere hardware e software e dire dove si trova un programma quando il computer è spento;</li>
+<li>indicare la funzione di CPU, RAM e memoria di massa e la differenza fra memoria volatile e permanente;</li>
+<li>classificare una periferica come input, output o entrambe;</li>
+<li>descrivere l&#x27;architettura di Von Neumann seguendo il percorso di un dato;</li>
+<li>creare cartelle e sottocartelle in Google Drive e spiegare il criterio che hanno scelto;</li>
+<li>copiare, spostare, rinominare ed eliminare file senza perderli, e comprimere una cartella in ZIP.</li>
+</ul></div>
+<div class="card"><h4>Come si lavora</h4><ul>
+<li><b>Tu parli poco e a pezzi brevi:</b> mai più di 15 minuti di fila, poi si prova.</li>
+<li><b>Si tocca:</b> i componenti passano di mano, e ogni definizione arriva dopo che l&#x27;oggetto è stato visto.</li>
+<li><b>La palestra</b> si fa da soli o in coppia e restituisce un codice riepilogativo da incollare nella scheda.</li>
+<li><b>La seconda lezione è quasi tutta pratica:</b> si lavora sui file veri degli studenti, non su file finti.</li>
+<li><b>Le parole contano:</b> «salvare», «spostare» e «copiare» sono tre cose diverse, e dopo questa attività devono saperlo dire.</li>
+</ul></div></div>
+
+<div class="card"><h4>La palestra in breve</h4>
+<div class="tw"><table><thead><tr><th>Palestra</th><th>Quando</th><th>Sezioni</th><th>Codice</th></tr></thead><tbody>
+<tr><td><b>Palestra dei componenti</b><div class="tiny">circa 20 minuti, 14 domande</div></td><td>Lezione 1, minuti 85-105</td><td>A. Che componente è · B. Input, output o tutti e due · C. Il percorso del dato (Von Neumann) · D. Hardware o software</td><td class="tiny"><b>HWS-CMP</b></td></tr>
+</tbody></table></div>
+<p class="small" style="margin-top:10px">Ogni risposta ha un feedback breve che spiega il perché. Si può rifare quante volte si vuole: il codice riporta anche il numero di ripetizioni. La pagina funziona anche offline, scaricando il file e aprendolo con doppio clic.</p>
+<a class="try" href="01_LEZIONE_1/MATERIALI/palestra_componenti.html" target="_blank" rel="noopener">▶ Prova: Palestra dei componenti</a>
+</div>
+
+<div class="docs">
+<a class="doc" href="00_GUIDA_DOCENTE/SCALETTA_RAPIDA_da_stampare.docx" download><b>⬇ Scaletta rapida</b><span>una pagina per lezione, da tenere sulla cattedra</span></a>
+<a class="doc" href="00_GUIDA_DOCENTE/POSTER_von_neumann.pdf" download><b>⬇ Poster Von Neumann</b><span>lo schema da proiettare e appendere</span></a>
+<a class="doc" href="00_GUIDA_DOCENTE/SOLUZIONI_DOCENTE.docx" download><b>⬇ Soluzioni</b><span>identikit compilato e criteri di correzione</span></a>
+</div>
+</section>
+
+<section id="guida" class="guida"><div class="kicker">Come si conduce</div><h2>Guida per il docente</h2>
+
+<div class="card" style="margin-bottom:18px"><h4>Tre regole che tengono in piedi l&#x27;attività</h4><ul>
+<li><b>Prima l&#x27;oggetto, poi la parola.</b> La RAM si capisce dopo averla tenuta in mano, non prima. Se non puoi aprire un PC, proietta le foto a schermo intero e fai indovinare la funzione.</li>
+<li><b>Chiedi sempre «dove sta adesso?».</b> È la domanda che smonta la confusione fra RAM e disco: dove sta il documento mentre lo scrivi, dove sta dopo che hai salvato, dove sta se togli la corrente.</li>
+<li><b>Non salvare tu i loro file.</b> Nella seconda lezione la tentazione è sistemare il PC al posto loro. Fermati e detta l&#x27;operazione a voce: imparano solo se la mano è la loro.</li>
+</ul></div>
+
+<h3>Lezione 1 · Che cosa c&#x27;è dentro</h3>
+
+<div class="fase"><p class="t">0-10 · Gancio: che cosa succede quando premi accendi</p>
+<p>Spegni un PC davanti a loro e riaccendilo. Mentre parte, una domanda sola: «Il computer adesso è acceso, ma sta già funzionando? Chi gli sta dicendo che cosa fare?». Raccogli tre o quattro risposte senza correggerle e scrivile alla lavagna: ci tornerai alla fine.</p>
+<div class="say">«Dentro questa scatola c&#x27;è qualcosa che si tocca e qualcosa che non si tocca. Oggi guardiamo la parte che si tocca.»</div></div>
+
+<div class="fase"><p class="t">10-25 · Hardware e software</p>
+<p>Definizione in una riga ciascuna: hardware è la parte fisica, software è l&#x27;insieme delle istruzioni. Poi la domanda che vale la lezione: «Quando il computer è spento, il sistema operativo dove si trova?». La risposta, sul disco, introduce già la memoria di massa.</p>
+<p class="small">Esercizio lampo da 5 minuti: elenca alla lavagna dieci voci miste (mouse, Word, altoparlanti, Windows, ventola, browser, stampante, gioco, disco, driver) e falle classificare a voce alzando una mano per hardware e due per software. I casi discutibili, come il firmware, lasciali aperti: servono alla domanda finale.</p></div>
+
+<div class="fase"><p class="t">25-50 · CPU, RAM, memoria di massa</p>
+<p>Un componente alla volta, in mano se puoi. <b>CPU:</b> esegue le istruzioni, una dopo l&#x27;altra, molto in fretta; il cervello è una metafora comoda ma imprecisa, dillo. <b>RAM:</b> il piano di lavoro, veloce e volatile, si svuota quando togli corrente. <b>Memoria di massa:</b> l&#x27;archivio, lento ma permanente; differenza fra disco meccanico e SSD in due righe.</p>
+<p>L&#x27;immagine che funziona sempre: la scrivania. Il cassetto è il disco, il piano è la RAM, tu sei la CPU. Se sgombri il piano di colpo, quello che non era nel cassetto è perso: è esattamente il documento non salvato.</p></div>
+
+<div class="fase"><p class="t">50-65 · Periferiche di input e output</p>
+<p>Input, output e i casi doppi: touchscreen, cuffie con microfono, stampante multifunzione, chiavetta. Falli girare per il laboratorio a contare quante periferiche vedono e a classificarle: quattro minuti in piedi, e la lezione riprende meglio.</p></div>
+
+<div class="fase"><p class="t">65-85 · L&#x27;architettura di Von Neumann</p>
+<p>Proietta il poster e percorri lo schema seguendo un dato concreto, non le frecce in astratto: premo un tasto (input) → il carattere arriva in memoria → la CPU lo elabora → il risultato compare sullo schermo (output) → salvo, e va nella memoria di massa.</p>
+<p>Il punto da fissare: <b>programmi e dati stanno nella stessa memoria</b>. È l&#x27;idea che rende il computer una macchina generica invece che un elettrodomestico che fa una cosa sola.</p>
+<p class="small">Se avanza tempo, fai ripercorrere lo schema a due studenti alla lavagna con un esempio loro, per esempio un messaggio inviato.</p></div>
+
+<div class="fase"><p class="t">85-105 · Palestra dei componenti (20 minuti)</p>
+<p>2 minuti per aprire il link, 15 di attività, 3 per copiare il codice nella scheda. Al minuto 102 fermali comunque: chi non ha finito preme lo stesso il riepilogo, il codice registra anche le domande non fatte.</p></div>
+
+<div class="fase"><p class="t">105-120 · Identikit del computer e consegna</p>
+<p>Gli studenti compilano l&#x27;identikit del PC su cui stanno lavorando: processore, RAM, memoria di massa, periferiche collegate, sistema operativo. I dati si leggono dalle Impostazioni del sistema, e mostrare dove si trovano è già mezza lezione della volta successiva.</p>
+<p>Chiudi tornando alla lavagna del gancio: quali risposte iniziali erano giuste, e quale parola mancava.</p></div>
+
+<h3>Lezione 2 · Chi comanda la macchina</h3>
+
+<div class="fase"><p class="t">0-15 · Che cosa fa il sistema operativo</p>
+<p>Riprendi la domanda dell&#x27;avvio, ora rispondibile: all&#x27;accensione il sistema operativo viene caricato dal disco nella RAM e da lì gestisce tutto. Tre compiti da fissare: parla con l&#x27;hardware, fa girare i programmi, tiene in ordine i file. Nomina i tre più diffusi e chiudi lì, senza storia dell&#x27;informatica.</p></div>
+
+<div class="fase"><p class="t">15-30 · Interfaccia grafica e finestre</p>
+<p>Dimostrazione proiettata, poi la fanno subito: ridurre a icona e ingrandire, affiancare due finestre a metà schermo, passare da una all&#x27;altra con Alt+Tab, chiudere davvero un programma invece di nasconderlo. Due minuti su che cosa significa che un programma è «in esecuzione»: sta occupando RAM, e si collega alla lezione scorsa.</p></div>
+
+<div class="fase"><p class="t">30-50 · File, cartelle, percorsi</p>
+<p>Un file ha un nome e un&#x27;estensione, e l&#x27;estensione dice a chi lo apre di che tipo è. Le cartelle formano un albero, e il percorso è la strada dalla radice al file. Fai aprire una cartella qualsiasi e leggere il percorso ad alta voce: è l&#x27;esercizio che toglie il «non lo trovo più».</p>
+<p class="small">Regola dei nomi da dare adesso e pretendere per tutto l&#x27;anno: niente spazi doppi, niente caratteri strani, data all&#x27;inizio se il file è uno di una serie.</p></div>
+
+<div class="fase"><p class="t">50-75 · Cartelle e sottocartelle in Google Drive</p>
+<p>Ognuno costruisce la struttura della propria cartella del primo anno: una cartella per materia, e dentro le sottocartelle che servono. Il criterio lo scelgono loro, ma devono saperlo dire: «per materia» o «per periodo», non «a caso».</p>
+<p>Mostra la differenza fra il Drive e il disco del PC: due posti diversi, e un file caricato non è più lo stesso file di quello sul computer. È la confusione più frequente del biennio.</p></div>
+
+<div class="fase"><p class="t">75-100 · Copia, sposta, rinomina, elimina</p>
+<p>Quattro operazioni, una alla volta, prima proiettate e poi eseguite. <b>Copia</b> lascia l&#x27;originale, <b>sposta</b> no: falli guardare la cartella di partenza dopo ogni operazione, perché è lì che si vede la differenza. <b>Rinomina</b> senza toccare l&#x27;estensione. <b>Elimina</b> finisce nel cestino, che non è il nulla: mostragli come si recupera un file, e una volta all&#x27;anno qualcuno ti ringrazierà.</p></div>
+
+<div class="fase"><p class="t">100-115 · Comprimere e decomprimere</p>
+<p>A che cosa serve uno ZIP: molti file diventano uno solo, che pesa meno e si allega volentieri. Dimostrazione: comprimi una cartella, guarda i due pesi, decomprimi in una cartella nuova. Poi lo fanno loro con i tre file richiesti.</p>
+<p class="small">Il controllo che devono imparare a fare da soli: dopo aver estratto, aprire un file dell&#x27;archivio. Se si apre, l&#x27;archivio è buono.</p></div>
+
+<div class="fase"><p class="t">115-120 · Consegna</p>
+<p>Allegano l&#x27;archivio ZIP e il link alla cartella di Drive. Verifica al volo due consegne davanti alla classe: si vede subito chi ha allegato la cartella invece dell&#x27;archivio.</p></div>
+</section>
+
+<section id="classroom"><div class="kicker">Una volta sola</div><h2>Configura Classroom</h2>
+<div class="warn" style="margin-bottom:14px"><b>Link della Classroom.</b> In questa pagina il link del corso è un segnaposto: apri <code>index.html</code> con un editor di testo, cerca <span class="ph">INSERIRE-LINK-CLASSROOM</span> e sostituiscilo con l&#x27;indirizzo del tuo corso.</div>
+<ol class="big">
+<li><label><input type="checkbox" data-k="p1"> Nel corso crea l&#x27;argomento <b>M0 · Architettura e sistema operativo</b> (Lavori del corso › + Crea › Argomento).</label></li>
+<li><label><input type="checkbox" data-k="p2"> Scarica le due schede, caricale in Drive e convertile: doppio clic › <b>Apri con › Documenti Google</b> › <b>File › Salva come Documento Google</b>. Sposta poi i .docx originali in una cartella <b>ORIGINALI</b>.</label></li>
+<li><label><input type="checkbox" data-k="p3"> Prepara i tre file di prova da comprimere (li trovi in <code>02_LEZIONE_2/MATERIALI</code>) e caricali come allegato in sola visualizzazione.</label></li>
+<li><label><input type="checkbox" data-k="p4"> Prova tecnica sul PC del laboratorio: apri la palestra, arriva al riepilogo, copia un codice; crea una cartella in Drive; comprimi ed estrai un archivio con l&#x27;account di uno studente.</label></li>
+<li><label><input type="checkbox" data-k="p5"> Controlla di poter aprire un PC davanti alla classe; in alternativa prepara le foto dei componenti da proiettare.</label></li>
+<li><label><input type="checkbox" data-k="p6"> Crea i due compiti seguendo le lezioni qui sotto.</label></li>
+</ol>
+<div class="card" style="margin-top:14px"><h4>Il codice della palestra</h4>
+<p>Non serve nessun modulo esterno: la palestra mostra alla fine una riga di riepilogo che lo studente copia e incolla nella prima pagina dell&#x27;identikit, nello spazio già predisposto.</p>
+<pre class="copybox" style="margin-top:8px">HWS-CMP | Nome Cognome | COMPONENTI 4/4 | INPUT-OUTPUT 3/4 | PERCORSO 3/3 | HW-SW 3/3 | TOT 13/14 | ripetizioni 1 | #8QR2M</pre>
+<p class="small" style="margin-top:8px">La firma <b>#</b> è un deterrente: dimostra che la riga non è stata ritoccata a mano, non chi l&#x27;ha prodotta.</p></div>
+</section>
+
+<section id="l1" class="lesson"><div class="kicker">Lezione 1 · 2 ore</div><h2>Che cosa c&#x27;è dentro</h2>
+<div class="grid2">
+<div class="card"><h4>In questa lezione facciamo</h4><ul>
+<li>Hardware e software: che cosa si tocca e che cosa no.</li>
+<li>CPU, RAM e memoria di massa, con la metafora della scrivania.</li>
+<li>Periferiche di input e output, comprese quelle doppie.</li>
+<li>Architettura di Von Neumann seguendo il percorso di un dato.</li>
+<li>Palestra dei componenti con codice riepilogativo.</li>
+<li>Identikit del computer del laboratorio.</li>
+</ul>
+<a class="try" href="01_LEZIONE_1/MATERIALI/palestra_componenti.html" target="_blank" rel="noopener">▶ Prova: Palestra dei componenti</a></div>
+<div class="card"><h4>Prima della lezione</h4><ul class="checks">
+<li><label><input type="checkbox" data-k="l1p0"> PC da aprire pronto sulla cattedra, oppure foto dei componenti.</label></li>
+<li><label><input type="checkbox" data-k="l1p1"> Identikit convertito in Documento Google e aperto una volta.</label></li>
+<li><label><input type="checkbox" data-k="l1p2"> Palestra aperta una volta da un PC del laboratorio.</label></li>
+<li><label><input type="checkbox" data-k="l1p3"> Compito 01 creato o programmato.</label></li></ul>
+<h4 style="margin-top:12px">Scaletta (minuti)</h4><table class="mini">
+<tr><td class="num">0-10</td><td>Gancio: che cosa succede quando premi accendi</td></tr>
+<tr><td class="num">10-25</td><td>Hardware e software, con l&#x27;esercizio lampo</td></tr>
+<tr><td class="num">25-50</td><td>CPU, RAM, memoria di massa</td></tr>
+<tr><td class="num">50-65</td><td>Periferiche di input e output</td></tr>
+<tr><td class="num">65-85</td><td>Architettura di Von Neumann</td></tr>
+<tr><td class="num">85-105</td><td>Palestra dei componenti; al minuto 102 tutti copiano il codice</td></tr>
+<tr><td class="num">105-120</td><td>Identikit del computer e consegna</td></tr></table></div></div>
+
+<article class="task" id="c01">
+<div class="taskhead"><span class="num-badge">01</span><div><div class="kicker">Compito 01 · Lezione 1 (circa 35 minuti di lavoro in classe)</div><h3>L&#x27;identikit del computer</h3></div>
+<label class="done"><input type="checkbox" data-k="c01"> creato in Classroom</label></div>
+<p class="when">Crealo prima della lezione e rendilo visibile al minuto 85, quando parte la palestra. Scadenza: fine lezione o sera stessa.</p>
+
+<div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito in Classroom</h4>
+<p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>M0 · Architettura e sistema operativo</b></p>
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">Hardware e software · 01 · L&#x27;identikit del computer</div><button class="cp" data-target="t01">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Lezione 1. Abbiamo guardato dentro un computer. Adesso scrivi la carta d&#x27;identità di quello che hai davanti.
+
+1. Palestra dei componenti (20 minuti): https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_E_SISTEMA_OPERATIVO/DIFFERENZA_HARDWARE_SOFTWARE/01_LEZIONE_1/MATERIALI/palestra_componenti.html
+   Se il link non si apre, scarica il file palestra_componenti.html allegato e aprilo con doppio clic.
+2. Alla fine premi «Riepilogo e codice», copia la riga che inizia con HWS-CMP e incollala nella prima pagina dell&#x27;identikit. Fallo anche se non hai finito tutte le domande.
+3. Apri l&#x27;identikit (è una tua copia) e compilalo con i dati del PC su cui stai lavorando: processore, quantità di RAM, memoria di massa, sistema operativo.
+4. I dati si leggono dalle impostazioni del sistema: l&#x27;abbiamo visto insieme.
+5. Elenca le periferiche collegate e per ognuna scrivi se è di input, di output o tutte e due.
+6. Ultima riga: con parole tue, dove si trova il sistema operativo quando il computer è spento?
+7. Premi CONSEGNA.</pre><button class="cp" data-target="d01">Copia</button></div></div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
+<p class="small">In Classroom: <b>Aggiungi › Link</b>, uno alla volta.</p>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos&#x27;è</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k01a" style="font-size:12.5px">https://digital-makers-ag.github.io/attivita-informatica-scuola/BIENNIO/M0_ARCHITETTURA_E_SISTEMA_OPERATIVO/DIFFERENZA_HARDWARE_SOFTWARE/01_LEZIONE_1/MATERIALI/palestra_componenti.html</div><button class="cp" data-target="k01a" style="margin-top:6px">Copia</button></td><td>Palestra dei componenti</td><td><span class="b link">Link</span></td><td class="note">è già citato nelle istruzioni: il link separato serve a chi legge di fretta</td></tr>
+</tbody></table></div></div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
+<p class="small">In Classroom: <b>Aggiungi › Carica</b>, poi scegli per ogni file l&#x27;opzione indicata.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/STANDARD/L1_identikit_computer.docx" download data-c="01">⬇ L1_identikit_computer.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">la scheda da compilare, con lo spazio per il codice</td></tr>
+<tr><td><a class="dl" href="00_GUIDA_DOCENTE/POSTER_von_neumann.pdf" download data-c="01">⬇ POSTER_von_neumann.pdf</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">lo schema, da tenere aperto durante la compilazione</td></tr>
+<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/palestra_componenti.html" download data-c="01">⬇ palestra_componenti.html</a><div class="tiny"><a href="01_LEZIONE_1/MATERIALI/palestra_componenti.html" target="_blank" rel="noopener">▶ prova online</a></div></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline del link: funziona con doppio clic</td></tr>
+</tbody></table></div>
+<button class="all" data-c="01">⬇ Scarica tutti i file di questo compito</button></div></div>
+
+<details class="bes"><summary>♿ Versione BES / DSA</summary>
+<p><b>Stessa competenza, meno barriere.</b> Crea un secondo compito con lo stesso titolo e assegnalo solo agli studenti interessati, cambiando un file: al posto dell&#x27;identikit standard allega quello con checklist.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/BES/L1_identikit_computer_CHECKLIST.docx" download data-c="01b">⬇ L1_identikit_computer_CHECKLIST.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">dove trovare ogni dato indicato passo per passo, caselle da spuntare per input e output, prima riga svolta</td></tr>
+</tbody></table></div>
+<p class="tiny">Non allegare mai allo stesso studente la scheda standard e quella con checklist.</p></details>
+
+<div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano gli studenti</h4>
+<p>L&#x27;identikit compilato, con il codice <b>HWS-CMP</b> nella prima pagina.</p>
+<p class="small"><b>Come controlli:</b> guarda il codice e poi due righe. La domanda finale sul sistema operativo spento è quella che distingue chi ha capito: «sul disco» va bene, «nella RAM» no, «nel computer» è da rivedere insieme.</p></div></div>
+</article>
+</section>
+
+<section id="l2" class="lesson"><div class="kicker">Lezione 2 · 2 ore</div><h2>Chi comanda la macchina</h2>
+<div class="grid2">
+<div class="card"><h4>In questa lezione facciamo</h4><ul>
+<li>Avvio del computer e compiti del sistema operativo.</li>
+<li>Interfaccia grafica: finestre affiancate, Alt+Tab, chiudere davvero un programma.</li>
+<li>File, estensioni, percorsi e regola dei nomi.</li>
+<li>Cartelle e sottocartelle in Google Drive, con un criterio dichiarato.</li>
+<li>Copia, sposta, rinomina, elimina, e il cestino che salva la vita.</li>
+<li>Compressione e decompressione in ZIP.</li>
+</ul></div>
+<div class="card"><h4>Prima della lezione</h4><ul class="checks">
+<li><label><input type="checkbox" data-k="l2p0"> I tre file di prova caricati e allegati al compito.</label></li>
+<li><label><input type="checkbox" data-k="l2p1"> Provato con un account studente: creare una cartella in Drive, comprimere ed estrarre.</label></li>
+<li><label><input type="checkbox" data-k="l2p2"> Scheda delle operazioni convertita in Documento Google.</label></li>
+<li><label><input type="checkbox" data-k="l2p3"> Compito 02 creato o programmato.</label></li></ul>
+<h4 style="margin-top:12px">Scaletta (minuti)</h4><table class="mini">
+<tr><td class="num">0-15</td><td>Che cosa fa il sistema operativo</td></tr>
+<tr><td class="num">15-30</td><td>Interfaccia grafica e gestione delle finestre</td></tr>
+<tr><td class="num">30-50</td><td>File, cartelle, percorsi, regola dei nomi</td></tr>
+<tr><td class="num">50-75</td><td>Cartelle e sottocartelle in Google Drive</td></tr>
+<tr><td class="num">75-100</td><td>Copia, sposta, rinomina, elimina</td></tr>
+<tr><td class="num">100-115</td><td>Comprimere e decomprimere in ZIP</td></tr>
+<tr><td class="num">115-120</td><td>Consegna</td></tr></table></div></div>
+
+<article class="task" id="c02">
+<div class="taskhead"><span class="num-badge">02</span><div><div class="kicker">Compito 02 · Lezione 2 (circa 65 minuti di lavoro in classe)</div><h3>Metti in ordine i tuoi file</h3></div>
+<label class="done"><input type="checkbox" data-k="c02"> creato in Classroom</label></div>
+<p class="when">Rendilo visibile al minuto 50, quando si apre Drive. Scadenza: fine lezione.</p>
+
+<div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito in Classroom</h4>
+<p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>M0 · Architettura e sistema operativo</b></p>
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t02">Hardware e software · 02 · Metti in ordine i tuoi file</div><button class="cp" data-target="t02">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d02">Lezione 2. Il sistema operativo tiene in ordine i file al posto tuo, ma il criterio lo decidi tu. Oggi lo decidi davvero.
+
+1. In Google Drive crea la cartella PRIMO_ANNO_cognome e dentro una sottocartella per ogni materia.
+2. Scarica i tre file allegati sul computer, nella cartella Documenti.
+3. Rinominali seguendo la regola dei nomi: niente spazi doppi, niente caratteri strani, data all&#x27;inizio.
+4. COPIA il primo file in una sottocartella e SPOSTA il secondo in un&#x27;altra. Dopo ogni operazione guarda la cartella di partenza: che differenza vedi?
+5. Elimina il terzo file, poi recuperalo dal cestino.
+6. Comprimi la cartella in un archivio ZIP che si chiama primo_anno_cognome.zip.
+7. Controllo prima di consegnare: estrai l&#x27;archivio in una cartella nuova e apri un file. Si apre? Allora l&#x27;archivio è buono.
+8. Allega il file ZIP (Aggiungi o crea &gt; File) e il link della cartella di Drive.
+9. Nella scheda delle operazioni scrivi, con parole tue, la differenza fra copiare e spostare.
+10. Premi CONSEGNA.</pre><button class="cp" data-target="d02">Copia</button></div></div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
+<p class="small">In Classroom: <b>Aggiungi › Link</b>, uno alla volta.</p>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos&#x27;è</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k02a" style="font-size:12.5px">https://drive.google.com</div><button class="cp" data-target="k02a" style="margin-top:6px">Copia</button></td><td>Google Drive</td><td><span class="b link">Link</span></td><td class="note">entrano con l&#x27;account della scuola, non con quello personale</td></tr>
+<tr><td><div class="copybox" id="k02b" style="font-size:12.5px">https://support.google.com/drive/answer/2375091</div><button class="cp" data-target="k02b" style="margin-top:6px">Copia</button></td><td>Come si crea una cartella in Drive, dalla guida ufficiale</td><td><span class="b link">Link</span></td><td class="note">da tenere per chi resta indietro</td></tr>
+</tbody></table></div></div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
+<p class="small">In Classroom: <b>Aggiungi › Carica</b>, poi scegli per ogni file l&#x27;opzione indicata.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="02_LEZIONE_2/STANDARD/L2_scheda_operazioni_file.docx" download data-c="02">⬇ L2_scheda_operazioni_file.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">scheda di lavoro con le quattro operazioni</td></tr>
+<tr><td><a class="dl" href="02_LEZIONE_2/MATERIALI/file_di_prova.zip" download data-c="02">⬇ file_di_prova.zip</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">i tre file da rinominare, copiare e spostare</td></tr>
+</tbody></table></div>
+<button class="all" data-c="02">⬇ Scarica tutti i file di questo compito</button></div></div>
+
+<details class="bes"><summary>♿ Versione BES / DSA</summary>
+<p>La scheda con checklist elenca ogni operazione come una riga da spuntare, con lo screenshot del menu accanto. La struttura di Drive è già disegnata: va solo ricreata, senza doverla inventare.</p>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="02_LEZIONE_2/STANDARD/L2_scheda_operazioni_file_CHECKLIST.docx" download data-c="02b">⬇ L2_scheda_operazioni_file_CHECKLIST.docx</a><div class="tiny">prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">una riga per operazione, struttura di Drive già data</td></tr>
+</tbody></table></div></details>
+
+<div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano gli studenti</h4>
+<p>L&#x27;archivio <code>primo_anno_cognome.zip</code>, il link alla cartella di Drive e la scheda delle operazioni.</p>
+<p class="small"><b>Come controlli:</b> scarica due archivi a campione ed estraili. Gli errori tipici sono tre: hanno allegato la cartella invece dell&#x27;archivio, hanno rinominato togliendo l&#x27;estensione, oppure hanno copiato quando serviva spostare. Tutti e tre si vedono in trenta secondi.</p></div></div>
+</article>
+</section>
+
+<section id="valutazione"><div class="kicker">Valutazione</div><h2>Che cosa si guarda</h2>
+<div class="grid2">
+<div class="card"><h4>Il principio</h4><p>Si valuta quello che producono. Il codice della palestra è formativo e serve a te per capire dove la classe è incerta; le consegne vere sono l&#x27;identikit e l&#x27;archivio, e si guardano per correttezza operativa, non per quantità di parole.</p>
+<p class="small">Nel biennio conta soprattutto che sappiano <b>dire</b> quello che hanno fatto: «ho spostato, quindi nella cartella di prima non c&#x27;è più» vale più di un archivio perfetto costruito a caso.</p></div>
+<div class="card"><h4>Tre livelli</h4>
+<div class="tw"><table><thead><tr><th>Livello</th><th>Si riconosce così</th></tr></thead><tbody>
+<tr><td><b>Autonomo</b></td><td>Identikit completo e corretto; periferiche classificate senza errori; struttura di Drive con un criterio dichiarato; archivio ZIP valido al primo tentativo; differenza fra copia e sposta spiegata con parole proprie.</td></tr>
+<tr><td><b>Con supporto</b></td><td>Dati dell&#x27;identikit trovati con aiuto; una o due periferiche sbagliate; struttura di Drive creata ma senza criterio; archivio costruito al secondo tentativo.</td></tr>
+<tr><td><b>Non ancora</b></td><td>RAM e memoria di massa confuse; cartella allegata al posto dell&#x27;archivio; file persi durante lo spostamento; nessuna spiegazione delle operazioni.</td></tr>
+</tbody></table></div></div></div>
+</section>
+
+<section id="bes"><div class="kicker">Inclusione</div><h2>BES / DSA</h2>
+<div class="card"><p><b>Stessa competenza, meno barriere.</b> Le due schede hanno una versione con checklist: frasi brevi, un&#x27;azione per riga, lo screenshot del menu accanto all&#x27;operazione, la prima riga già svolta. Nella seconda lezione la struttura di cartelle è già disegnata, così lo sforzo si concentra sull&#x27;operazione e non sull&#x27;invenzione del criterio.</p>
+<p>In Classroom crea un secondo compito con lo stesso titolo e assegnalo solo agli studenti interessati, così nessuno viene segnalato davanti alla classe.</p>
+<p class="small">La palestra è accessibile: nessuna risposta dipende dal solo colore, i contrasti rispettano il rapporto 4.5:1, si naviga da tastiera e ogni feedback è testuale. Si può rifare senza limite, e la ripetizione è dichiarata nel codice.</p></div>
+</section>
+
+<section id="archivio"><div class="kicker">Archivio</div><h2>Tutti i file</h2>
+<p class="small">Struttura della cartella, così ritrovi ogni cosa anche fra sei mesi.</p>
+<div class="tw"><table><thead><tr><th>Cartella</th><th>File</th><th>Peso</th><th>A che cosa serve</th></tr></thead><tbody>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/SCALETTA_RAPIDA_da_stampare.docx" download>SCALETTA_RAPIDA_da_stampare.docx</a></td><td class="num" data-w>—</td><td class="note">una pagina per lezione, da tenere sulla cattedra</td></tr>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/POSTER_von_neumann.pdf" download>POSTER_von_neumann.pdf</a></td><td class="num" data-w>—</td><td class="note">schema da proiettare e appendere</td></tr>
+<tr><td class="tiny">00_GUIDA_DOCENTE</td><td><a href="00_GUIDA_DOCENTE/SOLUZIONI_DOCENTE.docx" download>SOLUZIONI_DOCENTE.docx</a></td><td class="num" data-w>—</td><td class="note">identikit compilato e criteri di correzione</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/STANDARD</td><td><a href="01_LEZIONE_1/STANDARD/L1_identikit_computer.docx" download>L1_identikit_computer.docx</a></td><td class="num" data-w>—</td><td class="note">scheda della prima lezione</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/BES</td><td><a href="01_LEZIONE_1/BES/L1_identikit_computer_CHECKLIST.docx" download>L1_identikit_computer_CHECKLIST.docx</a></td><td class="num" data-w>—</td><td class="note">versione facilitata</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/palestra_componenti.html" download>palestra_componenti.html</a></td><td class="num" data-w>—</td><td class="note">palestra dei componenti, funziona anche offline</td></tr>
+<tr><td class="tiny">02_LEZIONE_2/STANDARD</td><td><a href="02_LEZIONE_2/STANDARD/L2_scheda_operazioni_file.docx" download>L2_scheda_operazioni_file.docx</a></td><td class="num" data-w>—</td><td class="note">scheda della seconda lezione</td></tr>
+<tr><td class="tiny">02_LEZIONE_2/STANDARD</td><td><a href="02_LEZIONE_2/STANDARD/L2_scheda_operazioni_file_CHECKLIST.docx" download>L2_scheda_operazioni_file_CHECKLIST.docx</a></td><td class="num" data-w>—</td><td class="note">versione facilitata</td></tr>
+<tr><td class="tiny">02_LEZIONE_2/MATERIALI</td><td><a href="02_LEZIONE_2/MATERIALI/file_di_prova.zip" download>file_di_prova.zip</a></td><td class="num" data-w>—</td><td class="note">i tre file su cui si esercitano</td></tr>
+</tbody></table></div>
+</section>
+
+</main></div>
+<footer>Differenza tra hardware e software · Biennio · <a href="[INSERIRE-LINK-CLASSROOM]" target="_blank" rel="noopener">Classroom del corso</a> · <a href="../../../index.html">Hub delle attività</a></footer>
+
+<script>
+(function(){
+  "use strict";
+  var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+  var PFX="hardware-software:";
+
+  var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
+  Array.prototype.forEach.call(boxes,function(b){
+    if(store.get(PFX+b.dataset.k)==="1") b.checked=true;
+    b.addEventListener('change',function(){ store.set(PFX+b.dataset.k,b.checked?"1":"0"); progress(); });
+  });
+  function progress(){
+    var n=0; Array.prototype.forEach.call(boxes,function(b){ if(b.checked) n++; });
+    var pc=document.getElementById('pc'), pb=document.getElementById('pb');
+    if(pc) pc.textContent=n+" / "+boxes.length;
+    if(pb) pb.style.width=(boxes.length? Math.round(n/boxes.length*100):0)+"%";
+  }
+  progress();
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.cp'); if(!b) return;
+    var el=document.getElementById(b.dataset.target); if(!el) return;
+    var t=el.innerText;
+    var done=function(){ var old=b.textContent; b.textContent="Copiato"; setTimeout(function(){ b.textContent=old; },1400); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(done,fallback); } else { fallback(); }
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(err){ b.textContent="Copia a mano"; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.all'); if(!b) return;
+    var links=document.querySelectorAll('a.dl[data-c="'+b.dataset.c+'"]');
+    Array.prototype.forEach.call(links,function(a,i){
+      setTimeout(function(){
+        var t=document.createElement('a'); t.href=a.getAttribute('href'); t.download='';
+        document.body.appendChild(t); t.click(); document.body.removeChild(t);
+      }, i*400);
+    });
+  });
+
+  var secs=document.querySelectorAll('main section[id]'), nav=document.querySelectorAll('nav.side a[href^="#"]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        Array.prototype.forEach.call(nav,function(a){ a.classList.toggle('on', a.getAttribute('href')==='#'+en.target.id); });
+      });
+    },{rootMargin:"-20% 0px -70% 0px"});
+    Array.prototype.forEach.call(secs,function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body></html>

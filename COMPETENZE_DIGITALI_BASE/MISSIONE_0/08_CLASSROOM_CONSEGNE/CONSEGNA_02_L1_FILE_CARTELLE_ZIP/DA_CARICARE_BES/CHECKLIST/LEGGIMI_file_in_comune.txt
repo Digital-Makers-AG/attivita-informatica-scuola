@@ -1,4 +1,0 @@
-﻿Per non duplicare i file, questi file del compito CHECKLIST si trovano SOLO nella cartella DA_CARICARE (sono identici):
-
-- chiavetta_marta.zip
-- regola_dei_nomi_officina23.pdf

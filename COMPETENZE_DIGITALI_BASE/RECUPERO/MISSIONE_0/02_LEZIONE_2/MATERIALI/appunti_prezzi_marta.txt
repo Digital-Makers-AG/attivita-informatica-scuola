@@ -1,0 +1,24 @@
+﻿APPUNTI DI MARTA PER LA SCHEDA NOLEGGIO (settembre 2026)
+
+PREZZI MANCANTI NELLA TABELLA "TARIFFE"
+- City bike, weekend: 20 €
+- E-bike, mezza giornata: 18 €
+- E-bike, weekend: 50 €
+- Bici bimbo, giornata intera: 8 €
+- Lucchetto, weekend: 4 €
+
+RIGA DA AGGIUNGERE ALLA TABELLA
+- Seggiolino bimbo: mezza giornata 3 €, giornata intera 4 €, weekend 7 €
+
+LINK
+- In fondo alla scheda c'è scritto www.mit.gov.it ma non si può cliccare: fallo diventare un link vero.
+- Aggiungi anche il link al sito ufficiale della Settimana europea della mobilità:
+  https://mobilityweek.eu
+  Mettilo dove ti sembra più logico.
+
+IMMAGINI
+- Al posto della scritta gialla [QUI VA LA FOTO…] metti la foto foto_noleggio_ebike.jpg.
+  Non deve essere deformata!
+- Il logo in alto è venuto schiacciato: il file giusto è logo_officina23.png.
+
+Grazie! Marta

@@ -1,0 +1,3 @@
+﻿Per non duplicare i file, questi file del compito CHECKLIST si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- posta_officina23.html

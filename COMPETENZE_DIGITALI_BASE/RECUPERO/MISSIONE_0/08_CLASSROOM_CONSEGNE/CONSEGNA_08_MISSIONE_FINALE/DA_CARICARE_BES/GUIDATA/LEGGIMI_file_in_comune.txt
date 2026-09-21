@@ -1,0 +1,5 @@
+﻿Per non duplicare i file, questi file del compito GUIDATA si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- materiali_comune.zip
+- posta_missione_finale.html
+- video_presentazione_officina.mp4

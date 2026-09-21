@@ -1,0 +1,9 @@
+﻿Per non duplicare i file, questi file del compito CHECKLIST si trovano SOLO nella cartella DA_CARICARE (sono identici):
+
+- logo.png
+- scheda.pdf
+- foto1.jpg
+- foto2.jpg
+- video.mp4
+- archivio_foto_festa_2025.zip
+- casi_non_riesco_ad_aprire.pdf
