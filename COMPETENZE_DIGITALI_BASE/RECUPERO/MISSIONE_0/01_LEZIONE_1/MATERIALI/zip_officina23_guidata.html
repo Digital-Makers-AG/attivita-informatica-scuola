@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Officina 23 · Comprimi ed estrai</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--sel:#cce8ff;--selb:#99d1ff;--fs:16px;--rowh:28px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px;--rowh:34px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.menu-path{display:inline-block;background:#fff;border:1px solid #b9c2c9;border-radius:6px;padding:0 7px;font-size:.92em;white-space:nowrap}
+code{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.95em}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.hintb{background:#fff;color:#9a4a12;border:2px solid var(--orange);padding:8px 14px}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px}
+/* schermate */
+.screen{max-width:720px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:150px}.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{color:var(--muted)}
+.starrow{font-size:14px;margin:2px 0}.starrow .s{color:var(--orange);letter-spacing:1px;display:inline-block;width:52px}
+textarea.copy{width:100%;height:78px;font-family:"Courier New",monospace;font-size:14px}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,390px) 1fr;gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:1fr}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em}
+.theory p{margin:0 0 10px}
+.keybox{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1.02em}
+.keybox .alt{font-size:13px;color:var(--muted);width:100%}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#9a4a12;font-weight:bold;margin-bottom:2px}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(380px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+/* esplora file */
+.explorer{position:relative;border:1px solid #b9c2c9;border-radius:8px;background:#fff;overflow:hidden;user-select:none}
+.ex-bar{background:#f3f3f3;border-bottom:1px solid #ddd;padding:6px 10px;font-size:14px;color:#333;display:flex;align-items:center;gap:10px;min-height:42px}
+.upbtn{background:#fff;border:1px solid #c9c9c9;border-radius:5px;width:30px;height:28px;cursor:pointer;font-size:15px}
+.upbtn:disabled{opacity:.4;cursor:default}
+.crumbs{flex:1;background:#fff;border:1px solid #d0d0d0;border-radius:5px;padding:4px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumbs button{background:none;border:0;padding:0 2px;cursor:pointer;font-size:14px;color:#222;font-family:inherit}
+.crumbs button:hover{text-decoration:underline}
+.crumbs .zipc{color:#9a4a12;font-weight:bold}
+.xbtn{background:#fff7ef;border:1px solid var(--orange);color:#9a4a12;border-radius:5px;padding:4px 10px;cursor:pointer;font-size:13px;font-weight:bold}
+.ex-body{display:grid;grid-template-columns:150px 1fr}
+.ex-side{border-right:1px solid #e3e3e3;background:#fafafa;padding:8px 0}
+.ex-side button{display:block;width:100%;text-align:left;background:none;border:0;padding:6px 12px;font-size:14px;cursor:pointer;font-family:inherit;color:#222}
+.ex-side button:hover{background:#eaf4fd}.ex-side button.on{background:#dcecf9;font-weight:bold}
+.ex-head,.row{display:grid;grid-template-columns:2.4em 1fr 185px 95px;align-items:center}
+.ex-head{background:#fafafa;border-bottom:1px solid #e3e3e3;font-size:13px;color:#555}
+.ex-head div{padding:6px 8px}
+.ex-list{position:relative;height:430px;overflow:auto;outline:none}
+.ex-list:focus{box-shadow:inset 0 0 0 2px #7fb7ff}
+.row{height:var(--rowh);font-size:.9em;border:1px solid transparent;cursor:default}
+.row:hover{background:#eaf4fd}
+.row.hl{background:#fff1e4;box-shadow:inset 5px 0 0 var(--orange)}
+.row.sel{background:var(--sel);border-color:var(--selb)}
+.row div{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .sz{text-align:right}
+.row input.ren{width:100%;font-size:inherit;font-family:inherit;padding:1px 4px;border:1px solid #0078d7;outline:none}
+.empty{padding:30px;text-align:center;color:#888;font-size:14px}
+.ex-status{border-top:1px solid #e3e3e3;background:#fafafa;font-size:13px;padding:5px 12px;color:#333;display:flex;gap:18px;min-height:28px}
+.toast{margin-left:auto;color:#9a4a12;font-weight:bold}
+.zipnote{background:#fff7ef;border-bottom:1px solid #f1d2b8;color:#9a4a12;font-size:13px;padding:5px 12px}
+.ctx{position:fixed;z-index:60;background:#fff;border:1px solid #bbb;border-radius:8px;box-shadow:0 8px 22px rgba(0,0,0,.22);padding:5px;min-width:220px}
+.ctx button{display:block;width:100%;text-align:left;background:none;border:0;padding:7px 12px;font-size:14px;cursor:pointer;border-radius:5px;font-family:inherit;color:#222}
+.ctx button:hover:not(:disabled),.ctx button:focus-visible{background:#eaf4fd;outline:none}
+.ctx button:disabled{color:#aaa;cursor:default}
+.ctx hr{border:0;border-top:1px solid #e5e5e5;margin:4px 0}
+.dlg{position:absolute;inset:0;background:rgba(0,0,0,.25);display:flex;align-items:flex-start;justify-content:center;padding-top:50px;z-index:10}
+.dlg-box{background:#fff;border:1px solid #999;border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.3);width:min(520px,94%);font-size:14px}
+.dlg-title{background:#f3f3f3;border-bottom:1px solid #ddd;padding:8px 12px;border-radius:8px 8px 0 0}
+.dlg-in{padding:14px 18px}
+.dlg-in h4{margin:0 0 12px;color:#1a4f8b;font-size:17px;font-weight:normal}
+.dlg-in input[type=text]{flex:1;font-size:14px;padding:5px 7px;border:1px solid #999;border-radius:3px;font-family:inherit;min-width:0}
+.prow{display:flex;gap:8px;margin:4px 0 10px}
+.wbtn{background:#fdfdfd;border:1px solid #adadad;border-radius:4px;padding:5px 16px;cursor:pointer;font-size:14px;font-family:inherit}
+.wbtn.pri{background:#0067c0;color:#fff;border-color:#0067c0}
+.pick{border:1px solid #ccc;border-radius:4px;max-height:150px;overflow:auto;margin-bottom:10px}
+.pick button{display:block;width:100%;text-align:left;background:none;border:0;padding:4px 8px;cursor:pointer;font-size:13px;font-family:inherit}
+.pick button:hover{background:#eaf4fd}
+.derr{color:var(--ko);min-height:18px;margin:6px 0}
+.dlg-act{display:flex;justify-content:flex-end;gap:8px;padding:10px 18px;background:#f3f3f3;border-top:1px solid #ddd;border-radius:0 0 8px 8px}
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:520px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗜️ Officina 23 · Comprimi ed estrai</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già fare"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" aria-live="polite">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="quiz hidden" id="l-quiz"></div>
+      <div class="fb hidden" id="l-fb"></div>
+      <div class="hinttext hidden" id="l-hinttext"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="b-check">✔ Controlla</button>
+        <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+        <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+      </div>
+    </aside>
+
+    <div class="stage">
+      <div class="explorer" id="win">
+        <div class="ex-bar">
+          <button type="button" class="upbtn" id="w-up" title="Su di un livello" aria-label="Su di un livello">↑</button>
+          <div class="crumbs" id="w-crumbs"></div>
+          <button type="button" class="xbtn hidden" id="w-extract">🗜️ Estrai tutto</button>
+        </div>
+        <div class="ex-body">
+          <nav class="ex-side" id="w-side" aria-label="Cartelle"></nav>
+          <div>
+            <div class="zipnote hidden" id="w-zipnote">🗜️ Stai guardando <b>dentro uno ZIP</b>: i file sono ancora compressi.</div>
+            <div class="ex-head"><div></div><div>Nome</div><div>Tipo</div><div style="text-align:right">Dimensione</div></div>
+            <div class="ex-list" id="ex-list" tabindex="0" role="listbox" aria-multiselectable="true" aria-label="Contenuto della cartella"></div>
+          </div>
+        </div>
+        <div class="ex-status"><span id="ex-count"></span><span id="ex-sel"></span><span class="toast" id="w-toast"></span></div>
+        <div class="dlg hidden" id="w-dlg"></div>
+      </div>
+      <p class="small">Questa finestra imita <b>Esplora file di Windows 11</b>. Il <b>tasto destro</b> del mouse apre il menu. <span id="mac-note"></span></p>
+    </div>
+  </div>
+</main>
+<div class="ctx hidden" id="ctx" role="menu"></div>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">Tempo finito? Prendi il codice</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, file giusti evidenziati nei passi guidati, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="z1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="z8">comprimere</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi guidati saltati risultano nel codice (PERCORSO x/11).</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const IS_MAC = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+const CT = IS_MAC ? "Cmd" : "Ctrl";
+const K = (...keys) => keys.map(k => `<span class="kbd">${k}</span>`).join("+");
+const MP = (...items) => items.map(i => `<span class="menu-path">${i}</span>`).join(" › ");
+const mem = {};
+const store = { get(k){ try{ const v=localStorage.getItem("o23zipg_"+k); return v?JSON.parse(v):(mem[k]??null); }catch(e){ return mem[k]??null; } },
+                set(k,v){ mem[k]=v; try{ localStorage.setItem("o23zipg_"+k, JSON.stringify(v)); }catch(e){} },
+                clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith("o23zipg_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; } };
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const multiKey = e => IS_MAC ? e.metaKey : e.ctrlKey;
+const stars = n => "★".repeat(n)+"☆".repeat(3-n);
+const extOf = n => ((n.match(/\.([^.]+)$/)||[])[1]||"").toLowerCase();
+const baseOf = n => n.replace(/\.[^.]+$/,"");
+const eq = (a,b) => a.toLowerCase()===b.toLowerCase();
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+
+const ZI = `<svg class="zi" viewBox="0 0 20 16" width="1.15em" height="0.95em" aria-hidden="true" style="vertical-align:-2px"><path d="M1 3a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z" fill="#F2C94C" stroke="#C9A227" stroke-width=".8"/><rect x="9" y="4" width="2.4" height="11" fill="#6b5a1e"/><path d="M9 5.5h2.4M9 7.5h2.4M9 9.5h2.4M9 11.5h2.4" stroke="#F2C94C" stroke-width=".7"/><rect x="8.6" y="12" width="3.2" height="2.6" rx=".6" fill="#8a8a8a"/></svg>`;
+/* =====================================================================
+   FILE SYSTEM SIMULATO
+   ===================================================================== */
+const F = (name,size) => ({name, type:"file", size});
+const D = (name,children=[]) => ({name, type:"folder", children});
+const Z = (name,children=[]) => ({name, type:"zip", children});
+const clone = n => JSON.parse(JSON.stringify(n));
+const PLACES = ["Download","Documenti","Desktop"];
+const PREFIX = "C:\\Utenti\\studente\\";
+const RATIO = {txt:.12, csv:.15, svg:.35, docx:.92, pdf:.88, jpg:.985, jpeg:.985, png:.995, mp4:.993, mp3:.98, zip:1};
+function packed(n){ // peso dentro uno ZIP
+  if(n.type==="file") return Math.round(n.size*(RATIO[extOf(n.name)]??.6))+110;
+  if(n.type==="zip") return zipSize(n)+110;
+  return n.children.reduce((s,c)=>s+packed(c),0)+110;
+}
+const zipSize = z => z.children.reduce((s,c)=>s+packed(c),0)+22;
+const rawSize = n => n.type==="file" ? n.size : n.type==="zip" ? zipSize(n) : n.children.reduce((s,c)=>s+rawSize(c),0);
+const KIND = {txt:"Documento di testo", jpg:"File JPG", jpeg:"File JPEG", png:"File PNG", pdf:"Documento PDF", mp4:"File MP4", mp3:"File MP3", docx:"Documento di Microsoft Word", svg:"Documento SVG"};
+const ICON = {txt:"📝", jpg:"🖼️", jpeg:"🖼️", png:"🖼️", pdf:"📕", mp4:"🎬", mp3:"🎵", docx:"📘", svg:"🖼️"};
+const kindOf = n => n.type==="folder" ? "Cartella di file" : n.type==="zip" ? "Cartella compressa (ZIP)" : (KIND[extOf(n.name)]||"File "+extOf(n.name).toUpperCase());
+const iconOf = n => n.type==="folder" ? "📁" : n.type==="zip" ? ZI : (ICON[extOf(n.name)]||"📄");
+const colSize = n => n.type==="folder" ? "" : (rawSize(n)===0?0:Math.ceil(rawSize(n)/1024)).toLocaleString("it-IT")+" KB";
+function fmtSize(b){ if(b<1024) return b+" byte"; if(b<1048576) return Math.ceil(b/1024).toLocaleString("it-IT")+" KB"; return (Math.round(b/1048576*10)/10).toLocaleString("it-IT")+" MB"; }
+const MB = b => (Math.round(b/1048576*10)/10).toLocaleString("it-IT")+" MB";
+
+/* contenuti presi dai materiali veri della missione */
+const CHIAVETTA = () => [F("listino prezzi 2026.txt",1030), F("registro_vendite_2025.txt",2550012), F("logo nuovo DEFINITIVO.png",175814),
+  F("IMG_20260912_183322.jpg",3587289), F("IMG_20260912_183340.jpg",2984660), F("scan0001.pdf",184655), F("video festa.mp4",4889437),
+  Z("foto festa 2025.zip",[F("festa_2025_01.jpg",2862418),F("festa_2025_02.jpg",2882433),F("festa_2025_03.jpg",2859774)]),
+  D("roba vecchia",[F("volantino 2024.pdf",41590), F("preventivo tipografia 2026.pdf",113425)])];
+const FESTA = () => [2862418,2882433,2859774,2902168,2886794,2870835,2857911,2887196,2923910].map((s,i)=>F(`festa_2025_0${i+1}.jpg`,s));
+const ARCHIVIO = () => D("officina23_archivio",[D("01_documenti",[F("listino_prezzi_2026.txt",1030), F("volantino_2024.pdf",41590)]), D("02_foto",[F("logo_v2.png",175814), F("festa_2025_01.jpg",2862418)]), D("03_amministrazione",[F("registro_vendite_2025.txt",2550012)])]);
+const TIPO = () => [F("volantino_2026.pdf",1216069), F("preventivo_tipografia.pdf",113425), F("prezzi_stampa.txt",2480), Z("loghi.zip",[F("logo.png",236131), F("logo_bianco_nero.png",91230)])];
+const ALLEGATI = () => [F("volantino.pdf",1216069), F("foto1.jpg",4852568), F("foto2.jpg",6581807), F("logo.png",236131), F("video.mp4",79209021)];
+function world({download=[], documenti=[], desktop=[]}={}){ return {name:"", type:"root", children:[D("Download",download), D("Documenti",documenti), D("Desktop",desktop)]}; }
+const BASE_DL = () => [Z("chiavetta_marta.zip",CHIAVETTA()), Z("archivio_foto_festa_2025.zip",FESTA()), F("modulo_iscrizione.pdf",231044)];
+const EXTRACTED_DL = () => [Z("chiavetta_marta.zip",CHIAVETTA()), D("chiavetta_marta",CHIAVETTA()), F("modulo_iscrizione.pdf",231044)];
+
+/* =====================================================================
+   ESPLORA FILE
+   ===================================================================== */
+const W = (()=>{
+  const list=$("#ex-list"), ctx=$("#ctx"), dlg=$("#w-dlg");
+  let ctxName=null, root, cwd=[], sel=new Set(), anchor=0, order=[], used=new Set(), renaming=null, hl=new Set(), toastT=null;
+  const node = path => { let n=root; for(const p of path){ n=(n.children||[]).find(c=>c.name===p); if(!n) return null; } return n; };
+  const here = () => node(cwd);
+  const zipIndex = (path=cwd) => path.findIndex((_,i)=>node(path.slice(0,i+1)).type==="zip");
+  const inZip = (path=cwd) => zipIndex(path)>=0;
+  const sorted = n => n.children.slice().sort((a,b)=> ((a.type==="folder"?0:1)-(b.type==="folder"?0:1)) || a.name.toLowerCase().localeCompare(b.name.toLowerCase(),"it",{numeric:true}));
+  const pathStr = p => PREFIX + p.join("\\");
+  function toast(msg){ $("#w-toast").textContent=msg; clearTimeout(toastT); toastT=setTimeout(()=>$("#w-toast").textContent="", 4500); }
+
+  function render(){
+    const h=here(); order=sorted(h).map(c=>c.name);
+    $("#w-up").disabled = cwd.length<=1;
+    $("#w-crumbs").innerHTML = "Questo PC › " + cwd.map((p,i)=>`<button type="button" data-i="${i}" class="${node(cwd.slice(0,i+1)).type==="zip"?"zipc":""}">${esc(p)}</button>`).join(" › ");
+    $("#w-crumbs").querySelectorAll("button").forEach(b=>b.onclick=()=>nav(cwd.slice(0,+b.dataset.i+1)));
+    $("#w-side").innerHTML = PLACES.map(p=>`<button type="button" data-p="${p}" class="${cwd[0]===p?"on":""}">${{Download:"⬇️",Documenti:"📄",Desktop:"🖥️"}[p]} ${p}</button>`).join("");
+    $("#w-side").querySelectorAll("button").forEach(b=>b.onclick=()=>nav([b.dataset.p]));
+    $("#w-extract").classList.toggle("hidden", !inZip());
+    $("#w-zipnote").classList.toggle("hidden", !inZip());
+    list.innerHTML = order.length ? order.map((name,i)=>{ const c=h.children.find(x=>x.name===name);
+        return `<div class="row${sel.has(name)?" sel":""}${hl.has(name)?" hl":""}" data-i="${i}" role="option" aria-selected="${sel.has(name)}"><div>${iconOf(c)}</div><div class="nm">${esc(name)}</div><div>${kindOf(c)}</div><div class="sz">${colSize(c)}</div></div>`; }).join("")
+      : `<div class="empty">Questa cartella è vuota.</div>`;
+    $("#ex-count").textContent = order.length+" element"+(order.length===1?"o":"i");
+    const selN=[...sel].map(n=>h.children.find(c=>c.name===n)).filter(Boolean), tot=selN.filter(c=>c.type!=="folder").reduce((s,c)=>s+rawSize(c),0);
+    $("#ex-sel").textContent = sel.size ? `${sel.size} selezionat${sel.size===1?"o":"i"}${tot?" · "+fmtSize(tot):""}` : "";
+    if(renaming){ const i=order.indexOf(renaming); const cell=list.querySelector(`.row[data-i="${i}"] .nm`); if(cell) mountRename(cell); }
+  }
+  function nav(path){ if(!node(path)) return; cwd=path; sel=new Set(); anchor=0; renaming=null; closeCtx(); used.add("nav"); render(); list.scrollTop=0; }
+  function open(name){ const c=here().children.find(x=>x.name===name); if(!c) return;
+    if(c.type!=="file"){ used.add(c.type==="zip"?"openzip":"openfolder"); nav(cwd.concat(name)); return; }
+    toast(inZip() ? `⚠️ Windows ha aperto una copia temporanea di «${name}»: le modifiche andrebbero perse.` : `Si aprirebbe «${name}» con il suo programma.`); }
+
+  /* selezione */
+  list.addEventListener("mousedown", e=>{
+    if(e.button!==0 || renaming) return;
+    if(IS_MAC && e.ctrlKey) return;               // su Mac Ctrl+clic = tasto destro
+    list.focus({preventScroll:true}); closeCtx();
+    const row=e.target.closest(".row");
+    if(!row){ sel=new Set(); render(); return; }
+    e.preventDefault(); const i=+row.dataset.i, n=order[i];
+    if(e.shiftKey){ const [a,b]=anchor<i?[anchor,i]:[i,anchor]; sel=new Set(order.slice(a,b+1)); used.add("shiftclick"); }
+    else if(multiKey(e)){ sel.has(n)?sel.delete(n):sel.add(n); anchor=i; used.add("ctrlclick"); }
+    else { sel=new Set([n]); anchor=i; }
+    render();
+    // doppio clic riconosciuto qui: la lista viene ridisegnata a ogni clic e l'evento dblclick andrebbe perso
+    if(e.detail===2 && !e.shiftKey && !multiKey(e)) open(n);
+  });
+  list.addEventListener("keydown", e=>{
+    if(renaming) return;
+    if(e.key==="Enter"){ e.preventDefault(); App.check(); return; }
+    if(e.key==="F2" && sel.size===1){ e.preventDefault(); startRename([...sel][0]); return; }
+    if((e.key==="a"||e.key==="A") && (e.ctrlKey||e.metaKey)){ e.preventDefault(); sel=new Set(order); render(); return; }
+    if(e.key==="ContextMenu"){ e.preventDefault(); const r=list.getBoundingClientRect(); showCtx(r.left+40, r.top+40); }
+  });
+  $("#w-up").onclick=()=>{ if(cwd.length>1) nav(cwd.slice(0,-1)); };
+  $("#w-extract").onclick=()=>{ const zi=zipIndex(); openExtract(cwd.slice(0,zi+1)); };
+
+  /* menu del tasto destro */
+  list.addEventListener("contextmenu", e=>{
+    e.preventDefault(); if(renaming) return;
+    const row=e.target.closest(".row");
+    ctxName = row ? order[+row.dataset.i] : null;
+    if(row){ const n=ctxName; if(!sel.has(n)){ sel=new Set([n]); anchor=+row.dataset.i; } }
+    else sel=new Set();
+    render(); showCtx(e.clientX, e.clientY);
+  });
+  function showCtx(x,y){
+    const h=here(), items=[...sel].map(n=>h.children.find(c=>c.name===n)), z=inZip(), one=items.length===1?items[0]:null;
+    let html="";
+    const it=(label,act,dis)=>`<button type="button" role="menuitem" data-a="${act||""}"${dis?" disabled":""}>${label}</button>`;
+    if(!items.length){ html = z ? it(ZI+" Estrai tutto…","xall") : it("Visualizza","",1)+it("Ordina per","",1)+it("Nuovo","",1); }
+    else if(z){ html = it("Apri","open",!one)+it(ZI+" Estrai tutto…","xall")+"<hr>"+it("Comprimi in file ZIP","",1)+it("Rinomina","",1); }
+    else { html = it("Apri","open",!one) + (one&&one.type==="zip" ? it(ZI+" Estrai tutto…","xone") : "") + "<hr>" + it(ZI+" Comprimi in file ZIP","zip") + it("Rinomina","ren",!one); }
+    ctx.innerHTML=html; ctx.classList.remove("hidden");
+    const w=ctx.offsetWidth, hh=ctx.offsetHeight; ctx.style.left=Math.min(x, innerWidth-w-8)+"px"; ctx.style.top=Math.min(y, innerHeight-hh-8)+"px";
+    ctx.querySelectorAll("button[data-a]").forEach(b=>b.onclick=()=>{ const a=b.dataset.a; closeCtx();
+      if(a==="open") open(one.name);
+      else if(a==="xone"){ used.add("ctxextract"); openExtract(cwd.concat(one.name)); }
+      else if(a==="xall"){ used.add("ctxextract"); openExtract(cwd.slice(0,zipIndex()+1)); }
+      else if(a==="zip") compress(items.map(c=>c.name), ctxName||items[0].name);
+      else if(a==="ren") startRename(one.name); });
+    const f=ctx.querySelector("button:not(:disabled)"); if(f) f.focus({preventScroll:true});
+  }
+  function closeCtx(){ ctx.classList.add("hidden"); }
+  document.addEventListener("mousedown", e=>{ if(!e.target.closest("#ctx")) closeCtx(); });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ closeCtx(); if(!dlg.classList.contains("hidden")) closeDlg(); } });
+  window.addEventListener("scroll", closeCtx, true);
+
+  /* finestra Estrai */
+  function closeDlg(){ dlg.classList.add("hidden"); dlg.innerHTML=""; list.focus({preventScroll:true}); }
+  function folders(){ const out=[]; (function walk(n,p,d){ (n.children||[]).forEach(c=>{ if(c.type==="folder"){ const q=p.concat(c.name); out.push(q); if(d<2) walk(c,q,d+1); } }); })(root,[],0); return out; }
+  function openExtract(zipPath){
+    const z=node(zipPath), parent=zipPath.slice(0,-1);
+    dlg.innerHTML = `<div class="dlg-box" role="dialog" aria-label="Estrai cartelle compresse">
+      <div class="dlg-title">🗜️ Estrai cartelle compresse (ZIP)</div>
+      <div class="dlg-in"><h4>Seleziona una destinazione ed estrai i file</h4>
+        <label for="d-path">I file verranno estratti in questa cartella:</label>
+        <div class="prow"><input type="text" id="d-path" spellcheck="false" value="${esc(pathStr(parent.concat(baseOf(z.name))))}"><button type="button" class="wbtn" id="d-browse">Sfoglia…</button></div>
+        <div class="pick hidden" id="d-pick"></div>
+        <label><input type="checkbox" id="d-show" checked> Mostra i file estratti al termine</label>
+        <div class="derr" id="d-err"></div></div>
+      <div class="dlg-act"><button type="button" class="wbtn pri" id="d-ok">Estrai</button><button type="button" class="wbtn" id="d-cancel">Annulla</button></div></div>`;
+    dlg.classList.remove("hidden");
+    $("#d-browse").onclick=()=>{ const pk=$("#d-pick"); pk.innerHTML = folders().map(p=>`<button type="button" data-p="${esc(p.join("\\"))}">${"&nbsp;&nbsp;&nbsp;".repeat(p.length-1)}📁 ${esc(p[p.length-1])}</button>`).join(""); pk.classList.toggle("hidden");
+      pk.querySelectorAll("button").forEach(b=>b.onclick=()=>{ $("#d-path").value = PREFIX+b.dataset.p; pk.classList.add("hidden"); used.add("browse"); }); };
+    $("#d-cancel").onclick=closeDlg;
+    $("#d-ok").onclick=()=>{ const r=extract(z, $("#d-path").value); if(r.err){ $("#d-err").textContent=r.err; return; } const show=$("#d-show").checked; closeDlg(); used.add("extract");
+      toast(`✔ Estrazione completata: ${z.children.length} element${z.children.length===1?"o":"i"}.`); if(show) nav(r.path); else render(); };
+    $("#d-path").addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); $("#d-ok").click(); } });
+    $("#d-ok").focus();
+  }
+  function extract(z, dest){
+    let s=dest.trim().replace(/\//g,"\\"); const pre=PREFIX.toLowerCase();
+    if(s.toLowerCase().startsWith(pre)) s=s.slice(PREFIX.length); else if(/^[a-z]:\\/i.test(s)) return {err:"Qui puoi estrarre solo nelle cartelle di «studente»: il percorso deve iniziare con "+PREFIX};
+    const segs=s.split("\\").filter(Boolean); if(!segs.length) return {err:"Scrivi il percorso della cartella in cui estrarre."};
+    let cur=root, path=[];
+    for(let i=0;i<segs.length;i++){
+      const nx=cur.children.find(c=>eq(c.name,segs[i]) && c.type==="folder");
+      if(nx){ cur=nx; path.push(nx.name); continue; }
+      if(i===segs.length-1 && i>0){ if(/[<>:"|?*]/.test(segs[i])) return {err:"Il nome della cartella contiene caratteri non validi."};
+        if(cur.children.some(c=>eq(c.name,segs[i]))) return {err:"Esiste già un file con questo nome."};
+        const nf=D(segs[i],[]); cur.children.push(nf); cur=nf; path.push(nf.name); break; }
+      return {err:`Percorso non trovato: la cartella «${segs[i]}» non esiste.`};
+    }
+    let replaced=0; z.children.forEach(c=>{ const k=cur.children.findIndex(x=>eq(x.name,c.name)); if(k>=0){ cur.children.splice(k,1); replaced++; } cur.children.push(clone(c)); });
+    if(replaced) setTimeout(()=>toast(`Sostituiti ${replaced} elementi che avevano lo stesso nome.`),50);
+    return {path};
+  }
+
+  /* comprimi e rinomina */
+  function compress(names, clicked){
+    const h=here(); const items=names.map(n=>clone(h.children.find(c=>c.name===n)));
+    let base=(items.find(c=>c.name===clicked)||items[0]); base = base.type==="file"||base.type==="zip" ? baseOf(base.name) : base.name;
+    let name=base+".zip", k=2; while(h.children.some(c=>eq(c.name,name))) name=`${base} (${k++}).zip`;
+    h.children.push(Z(name, items)); used.add("compress"); sel=new Set([name]); toast(`✔ Creato «${name}»: ${fmtSize(zipSize(h.children.at(-1)))}.`); startRename(name);
+  }
+  function startRename(name){ if(inZip()) return; renaming=name; render(); }
+  function mountRename(cell){
+    const orig=renaming; cell.innerHTML=`<input class="ren" value="${esc(orig)}" spellcheck="false" aria-label="Nuovo nome">`;
+    const inp=cell.querySelector("input"); inp.focus(); const dot=orig.lastIndexOf("."); const c=here().children.find(x=>x.name===orig);
+    inp.setSelectionRange(0, c && c.type!=="folder" && dot>0 ? dot : orig.length);
+    let done=false;
+    const commit=()=>{ if(done) return; let v=inp.value.trim(); const ext=c.type!=="folder"?extOf(orig):"";
+      if(!v || v===orig){ done=true; renaming=null; render(); list.focus({preventScroll:true}); return; }
+      if(/[\\/:*?"<>|]/.test(v)){ App.say("mid", 'Un nome di file non può contenere questi caratteri: \\ / : * ? " < > |'); inp.focus(); return; }
+      if(ext && extOf(v)!==ext){ const b = /\.[^.]+$/.test(v) ? baseOf(v) : v; v=b+"."+ext;
+        App.say("mid", `Attenzione: l'estensione <b>.${ext}</b> non va cambiata, altrimenti il file potrebbe non aprirsi più. L'ho rimessa: «${esc(v)}».`); }
+      if(here().children.some(x=>x!==c && eq(x.name,v))){ App.say("mid", `Esiste già un elemento chiamato «${esc(v)}». Scegli un altro nome.`); inp.focus(); return; }
+      done=true; c.name=v; used.add("rename"); sel=new Set([v]); renaming=null; render(); list.focus({preventScroll:true}); };
+    inp.addEventListener("keydown", e=>{ e.stopPropagation(); if(e.key==="Enter"){ e.preventDefault(); commit(); } if(e.key==="Escape"){ e.preventDefault(); done=true; renaming=null; render(); list.focus({preventScroll:true}); } });
+    inp.addEventListener("blur", ()=>setTimeout(commit,0));
+    inp.addEventListener("mousedown", e=>e.stopPropagation());
+  }
+
+  function setup(c){ root=c.fs(); cwd=c.cwd||["Download"]; sel=new Set(); anchor=0; used=new Set(); renaming=null; hl=new Set(c.hl||[]); closeCtx(); dlg.classList.add("hidden"); $("#w-toast").textContent=""; render(); list.scrollTop=0; }
+  function commitPending(){ const inp=list.querySelector("input.ren"); if(inp) inp.blur(); }
+  return { setup, commitPending, node, el:list, pathStr, busy:()=>!dlg.classList.contains("hidden"),
+    state:()=>({root, cwd:[...cwd], used:new Set(used), node, inZip}) };
+})();
+
+/* =====================================================================
+   AIUTANTI PER I CONTROLLI
+   ===================================================================== */
+const pathsEq = (a,b) => a.length===b.length && a.every((x,i)=>x===b[i]);
+function foldersWith(st, file){ const out=[]; (function walk(n,p){ (n.children||[]).forEach(c=>{ if(c.type==="folder"){ const q=p.concat(c.name); if(c.children.some(x=>x.name===file)) out.push(q); walk(c,q); } }); })(st.root,[]); return out; }
+const where = p => "«"+p.join(" › ")+"»";
+function extractDiag(st, file, wantParent, label){
+  const found=foldersWith(st, file);
+  if(found.some(p=>pathsEq(p.slice(0,-1), wantParent))) return null;
+  if(found.some(p=>pathsEq(p, wantParent))) return `I file sono finiti <b>sparsi</b> direttamente in ${where(wantParent)}. Il percorso deve finire con il nome di una cartella nuova, per esempio <code>…\\${esc(wantParent.at(-1))}\\${esc(label)}</code>.`;
+  if(found.length) return `Hai estratto in ${where(found[0].slice(0,-1))}, ma qui serviva ${where(wantParent)}. Controlla il percorso nella finestra Estrai.`;
+  if(st.used.has("extract")) return `Hai estratto uno ZIP, ma <b>non quello giusto</b>: rileggi il compito e guarda bene nomi ed estensioni.`;
+  return `Non hai ancora estratto niente: tasto destro sullo ZIP › <b>Estrai tutto…</b>`;
+}
+const zipsIn = (st, path) => (st.node(path)?.children||[]).filter(c=>c.type==="zip");
+const names = z => z.children.map(c=>c.name).sort();
+const sameSet = (a,b) => a.length===b.length && a.slice().sort().every((x,i)=>x===b.slice().sort()[i]);
+const normName = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"");
+const cognome = () => { const n=(store.get("nome")||"").trim().split(/\s+/); return normName(n.length>1?n[n.length-1]:"cognome")||"cognome"; };
+function ruleDiag(name, prefix){
+  if(/[A-Z]/.test(name)) return `«${esc(name)}» ha delle <b>maiuscole</b>: la regola dei nomi vuole tutto minuscolo.`;
+  if(/\s/.test(name)) return `«${esc(name)}» contiene <b>spazi</b>: usa il trattino basso _ al loro posto.`;
+  if(/[^\x00-\x7F]/.test(name)) return `«${esc(name)}» contiene <b>accenti</b> o simboli: scrivi senza.`;
+  if(!name.startsWith(prefix)) return `Il nome deve iniziare con <b>${prefix}</b>. Ora è «${esc(name)}».`;
+  const suf=name.slice(prefix.length).replace(/\.zip$/,"");
+  if(suf==="cognome") return `Al posto della parola «cognome» scrivi <b>il tuo cognome</b>.`;
+  if(!/^[a-z0-9]+(_[a-z0-9]+)*$/.test(suf)) return `Dopo <b>${prefix}</b> scrivi il tuo cognome, tutto minuscolo e senza spazi.`;
+  return null;
+}
+const renameTip = `tasto destro › <b>Rinomina</b>, oppure seleziona e premi ${K("F2")}`;
+
+/* =====================================================================
+   I PASSI
+   ===================================================================== */
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ /* ---------- RICONOSCERE ---------- */
+ {id:"z1", phase:"g", title:"Una valigia di file",
+  theory:`<p>Uno <b>ZIP</b> è come una <b>valigia</b>: tanti file chiusi dentro un file solo, più facile da spedire.</p><p>Lo riconosci dall'estensione <b>.zip</b>, dall'icona della <b>cartella con la cerniera</b> ${ZI} e dal tipo <b>Cartella compressa (ZIP)</b>.</p>`,
+  task:`Nella cartella Download ci sono 5 file. Seleziona <b>l'unico ZIP</b>.`,
+  setup:{fs:()=>world({download:[F("modulo_iscrizione.pdf",231044), F("volantino_open_day.docx",36870), Z("materiale_marta.zip",CHIAVETTA()), F("logo_officina23.png",175814), F("foto_negozio.jpg",2984660)]}), cwd:["Download"], hl:["materiale_marta.zip"]},
+  verify:()=>{ const s=[...document.querySelectorAll("#ex-list .row.sel .nm")].map(e=>e.textContent);
+    if(s.length===1 && s[0]==="materiale_marta.zip") return {ok:true};
+    if(!s.length) return {ok:false, msg:"Non hai selezionato niente: fai un clic sul file."};
+    if(s.length>1) return {ok:false, msg:"Serve un file solo."};
+    return {ok:false, msg:`«${esc(s[0])}» finisce con <b>.${extOf(s[0])}</b>: non è uno ZIP. Cerca la cartella con la cerniera ${ZI}.`}; },
+  hint:"Leggi la colonna Tipo: cerca «Cartella compressa (ZIP)».",
+  success:"Nome che finisce con <b>.zip</b>, cartella con la cerniera ${ZI}, «Cartella compressa»: sono tre indizi dello stesso fatto.",
+  learn:{k:()=>"<code>.zip</code> "+ZI, d:"una valigia con tanti file dentro"}},
+
+ {id:"z2", phase:"g", title:"Guardare dentro",
+  theory:`<p>Con un <b>doppio clic</b> lo ZIP si apre come una cartella: vedi cosa c'è nella valigia.</p><p>Ma la valigia è ancora <b>chiusa</b>: i file sono ancora compressi, dentro lo ZIP.</p>`,
+  keys:()=>`${K("doppio clic")} sullo ZIP = guardo dentro`,
+  task:`Apri <b>chiavetta_marta.zip</b> con un doppio clic e guarda cosa contiene.`,
+  setup:{fs:()=>world({download:BASE_DL()}), cwd:["Download"], hl:["chiavetta_marta.zip"]},
+  verify:st=> pathsEq(st.cwd,["Download","chiavetta_marta.zip"]) ? {ok:true} : {ok:false, msg: st.inZip() ? "Sei dentro un altro ZIP: torna in Download (↑) e apri chiavetta_marta.zip." : "Sei ancora fuori: fai doppio clic su <b>chiavetta_marta.zip</b>."},
+  hint:"Due clic veloci sulla riga «chiavetta_marta.zip».",
+  success:"Guarda in alto: il percorso finisce con <b>chiavetta_marta.zip</b> ed è comparso il pulsante <b>Estrai tutto</b>. Sei dentro la valigia."},
+
+ {id:"z3", phase:"g", title:"La trappola",
+  theory:`<p>Se apri un file che sta <b>dentro lo ZIP</b>, Windows ne apre una <b>copia temporanea</b>.</p><p>Puoi leggerlo, ma se lo modifichi e salvi, le modifiche <b>si perdono</b>. Per lavorare sui file, prima si estraggono.</p>`,
+  task:`Marta ti chiede di correggere un prezzo nel file <b>listino prezzi 2026.txt</b>, che sta nello ZIP. Che cosa fai per prima cosa?`,
+  setup:{fs:()=>world({download:BASE_DL()}), cwd:["Download","chiavetta_marta.zip"]},
+  quiz:[{t:"Apro il listino dallo ZIP con un doppio clic e lo correggo.", fb:"È la trappola: correggeresti una copia temporanea e il lavoro andrebbe perso."},
+        {t:"Estraggo lo ZIP, poi apro e correggo il listino estratto.", ok:true},
+        {t:"Rinomino lo ZIP, così si può modificare.", fb:"Cambiare nome allo ZIP non cambia niente: i file restano chiusi dentro."}],
+  hint:"Prima si apre la valigia, poi si usano i vestiti.",
+  success:"Regola d'oro: <b>prima estrai, poi lavora</b>. Prova pure: un doppio clic su un file qui dentro ti mostra l'avviso.",
+  learn:{k:()=>"prima estrai, poi lavora", d:"i file dentro lo ZIP sono copie temporanee"}},
+
+ /* ---------- ESTRARRE ---------- */
+ {id:"z4", phase:"g", title:"Estrai tutto",
+  theory:`<p><b>Estrarre</b> = aprire la valigia: Windows copia i file dello ZIP in una <b>cartella normale</b>.</p><p>Tasto destro sullo ZIP, poi <b>Estrai tutto…</b>. Si apre una finestra che propone dove metterli: per ora lascia com'è e premi <b>Estrai</b>.</p>`,
+  keys:()=>`${K("tasto destro")} › ${MP("Estrai tutto…")} › ${MP("Estrai")}`,
+  task:`Estrai <b>chiavetta_marta.zip</b> qui, nella cartella Download.`,
+  setup:{fs:()=>world({download:BASE_DL()}), cwd:["Download"], hl:["chiavetta_marta.zip"]},
+  verify:st=>{ const d=extractDiag(st,"listino prezzi 2026.txt",["Download"],"chiavetta_marta"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Tasto destro su «chiavetta_marta.zip» › Estrai tutto… › nella finestra premi Estrai.",
+  success:"Windows ha aperto la cartella estratta. In Download adesso ci sono <b>due cose con lo stesso nome</b>: lo ZIP (la valigia) e la cartella (i file tirati fuori).",
+  learn:{k:()=>`${K("tasto destro")} › ${MP("Estrai tutto…")}`, d:"apre la valigia in una cartella"}},
+
+ {id:"z5", phase:"g", title:"Scegli dove",
+  theory:`<p>Nella finestra Estrai c'è il <b>percorso</b>: l'indirizzo della cartella dove finiranno i file.</p><p><code>C:\\Utenti\\studente\\<b>Download</b>\\archivio_foto_festa_2025</code></p><p>Per estrarre altrove, cambia la parte in grassetto. L'ultima parte è il nome della cartella nuova: lasciala.</p>`,
+  keys:()=>`nel percorso scrivi <b>Documenti</b> al posto di <b>Download</b>`,
+  task:`Estrai <b>archivio_foto_festa_2025.zip</b> nella cartella <b>Documenti</b>.`,
+  setup:{fs:()=>world({download:BASE_DL()}), cwd:["Download"], hl:["archivio_foto_festa_2025.zip"]},
+  verify:st=>{ const d=extractDiag(st,"festa_2025_01.jpg",["Documenti"],"archivio_foto_festa_2025"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Tasto destro sullo ZIP › Estrai tutto… Nel riquadro del percorso cancella «Download» e scrivi «Documenti». Poi Estrai.",
+  success:"Le foto sono in <b>Documenti › archivio_foto_festa_2025</b>. Il percorso ti dice sempre <b>dove</b> finiscono i file: leggilo prima di premere Estrai.",
+  learn:{k:()=>"il percorso", d:"decide dove finiscono i file estratti"}},
+
+ {id:"z6", phase:"g", title:"ZIP o cartella?",
+  theory:`<p>Dopo l'estrazione hai due oggetti con lo stesso nome:</p><p>${ZI} <b>chiavetta_marta.zip</b>: la valigia, «Cartella compressa (ZIP)».<br>📁 <b>chiavetta_marta</b>: la cartella vera, «Cartella di file».</p><p>Si lavora nella cartella 📁.</p>`,
+  task:`Apri la <b>cartella estratta</b> chiavetta_marta, non lo ZIP.`,
+  setup:{fs:()=>world({download:EXTRACTED_DL()}), cwd:["Download"], hl:["chiavetta_marta"]},
+  verify:st=> pathsEq(st.cwd,["Download","chiavetta_marta"]) ? {ok:true} : {ok:false, reset:true, msg: st.inZip() ? "Sei dentro lo <b>ZIP</b>: il percorso in alto finisce con <b>.zip</b> e c'è la striscia arancione. Torna su (↑) e apri la cartella 📁." : "Fai doppio clic sulla cartella 📁 <b>chiavetta_marta</b>."},
+  hint:"La cartella giusta ha l'icona 📁 ed è in cima all'elenco (Windows mette le cartelle prima dei file).",
+  success:"Niente striscia arancione, niente .zip nel percorso: sei in una cartella vera e qui puoi modificare i file."},
+
+ {id:"z7", phase:"g", title:"Uno ZIP nello ZIP",
+  theory:`<p>Dentro una cartella può esserci <b>un altro ZIP</b>: è una valigia dentro la valigia.</p><p>Si estrae nello stesso modo. Il percorso proposto è già quello giusto: accanto allo ZIP.</p>`,
+  task:`Estrai <b>foto festa 2025.zip</b> qui, dentro la cartella chiavetta_marta.`,
+  setup:{fs:()=>world({download:EXTRACTED_DL()}), cwd:["Download","chiavetta_marta"], hl:["foto festa 2025.zip"]},
+  verify:st=>{ const d=extractDiag(st,"festa_2025_01.jpg",["Download","chiavetta_marta"],"foto festa 2025"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Tasto destro su «foto festa 2025.zip» › Estrai tutto… › Estrai.",
+  success:"Se dopo aver estratto trovi ancora un file .zip, ripeti: si estrae finché non vedi i file veri."},
+
+ /* ---------- COMPRIMERE ---------- */
+ {id:"z8", phase:"g", title:"Fare la valigia",
+  theory:`<p><b>Comprimere</b> è il contrario di estrarre: metti i file nella valigia. Lo ZIP pesa <b>meno</b> e si spedisce come un file solo.</p><p>Tasto destro sul file, poi <b>Comprimi in file ZIP</b>. Lo ZIP nuovo compare con il nome evidenziato: premi ${K("Invio")} per tenerlo.</p>`,
+  keys:()=>`${K("tasto destro")} › ${MP("Comprimi in file ZIP")}<span class="alt">Su Windows 10 si chiama: Invia a › Cartella compressa.</span>`,
+  task:`Comprimi <b>registro_vendite_2025.txt</b> (circa 2,4 MB). Poi guarda quanto pesa lo ZIP.`,
+  setup:{fs:()=>world({download:EXTRACTED_DL()}), cwd:["Download","chiavetta_marta"], hl:["registro_vendite_2025.txt"]},
+  verify:st=>{ const zs=zipsIn(st,["Download","chiavetta_marta"]).filter(z=>z.name!=="foto festa 2025.zip");
+    if(zs.some(z=>sameSet(names(z),["registro_vendite_2025.txt"]))) return {ok:true};
+    if(zs.length) return {ok:false, reset:true, msg:`Nello ZIP «${esc(zs[0].name)}» c'è: ${names(zs[0]).map(esc).join(", ")}. Serviva solo il registro delle vendite.`};
+    return {ok:false, msg:"Non vedo ancora nessuno ZIP nuovo: tasto destro sul registro › Comprimi in file ZIP."}; },
+  hint:"Tasto destro su «registro_vendite_2025.txt» › Comprimi in file ZIP › Invio.",
+  success:()=>{ const z=Z("x",[F("r.txt",2550012)]); return `Da <b>2.491 KB</b> a circa <b>${Math.ceil(zipSize(z)/1024).toLocaleString("it-IT")} KB</b>: un file di testo nello ZIP diventa quasi dieci volte più leggero!`; },
+  learn:{k:()=>`${K("tasto destro")} › ${MP("Comprimi in file ZIP")}`, d:"fa la valigia"}},
+
+ {id:"z9", phase:"g", title:"Più file, una valigia",
+  theory:`<p>Per mettere <b>più file</b> in un solo ZIP: prima li selezioni (${K(CT,"clic")}, lo sai già), poi tasto destro su uno di loro › <b>Comprimi in file ZIP</b>.</p><p>Windows dà allo ZIP il nome del file su cui hai cliccato: <b>scrivi subito il nome giusto</b>, mentre è evidenziato.</p>`,
+  keys:()=>`seleziona › ${K("tasto destro")} › ${MP("Comprimi in file ZIP")} › scrivi il nome › ${K("Invio")}`,
+  task:`Metti le due foto <b>IMG_…jpg</b> in un solo ZIP chiamato <b>foto_negozio.zip</b>.`,
+  setup:{fs:()=>world({download:EXTRACTED_DL()}), cwd:["Download","chiavetta_marta"], hl:["IMG_20260912_183322.jpg","IMG_20260912_183340.jpg"]},
+  verify:st=>{ const tgt=["IMG_20260912_183322.jpg","IMG_20260912_183340.jpg"], zs=zipsIn(st,["Download","chiavetta_marta"]).filter(z=>z.name!=="foto festa 2025.zip");
+    const good=zs.find(z=>sameSet(names(z),tgt));
+    if(good && good.name==="foto_negozio.zip") return {ok:true};
+    if(good) return {ok:false, msg:`Il contenuto è giusto, ma lo ZIP si chiama «${esc(good.name)}». Rinominalo <b>foto_negozio.zip</b>: ${renameTip}.`};
+    if(zs.filter(z=>z.children.length===1 && tgt.includes(z.children[0].name)).length>=2) return {ok:false, reset:true, msg:"Hai fatto <b>due ZIP separati</b>. Seleziona prima <b>tutte e due</b> le foto, poi comprimi una volta sola."};
+    if(zs.length) return {ok:false, reset:true, msg:`Nello ZIP «${esc(zs[0].name)}» c'è: ${names(zs[0]).map(esc).join(", ")}. Servono solo le due foto IMG.`};
+    return {ok:false, msg:"Non vedo ancora nessuno ZIP nuovo."}; },
+  hint:`Clic sulla prima foto IMG, ${CT}+clic sulla seconda. Tasto destro su una delle due › Comprimi in file ZIP. Scrivi foto_negozio e premi Invio.`,
+  success:"Non serve scrivere <b>.zip</b>: Windows lo tiene da solo. E se lo cancelli per sbaglio, ti avvisa."},
+
+ {id:"z10", phase:"g", title:"Cosa si alleggerisce?",
+  theory:`<p>Lo ZIP rende molto più leggeri i <b>testi</b> e i documenti semplici.</p><p><b>Foto, video e musica</b> sono già compressi dal telefono o dalla fotocamera: nello ZIP pesano <b>quasi uguale</b>.</p>`,
+  task:`Hai due file da circa 2,5 MB: <b>registro_vendite_2025.txt</b> (testo) e <b>festa_2025_01.jpg</b> (foto). Quale diventa molto più leggero nello ZIP?`,
+  setup:{fs:()=>world({download:EXTRACTED_DL()}), cwd:["Download","chiavetta_marta"]},
+  quiz:[{t:"Il file di testo.", ok:true},
+        {t:"La foto.", fb:"La foto è già compressa (è un .jpg): nello ZIP resta quasi uguale. Prova: comprimila e guarda la colonna Dimensione."},
+        {t:"Tutti e due allo stesso modo.", fb:"No: i testi si comprimono molto, le foto quasi niente. Puoi provarlo tu nella finestra."}],
+  hint:"Pensa al passo di prima: il registro è passato da 2.491 KB a circa 300 KB.",
+  success:"Per questo un video da 78 MB zippato pesa ancora circa 78 MB: lo ZIP <b>non basta</b> per spedire file pesanti. Serve un link (per esempio Google Drive).",
+  learn:{k:()=>"testo ↓↓ · foto e video ≈", d:"cosa si alleggerisce nello ZIP"}},
+
+ {id:"z11", phase:"g", title:"Una cartella da consegnare",
+  theory:`<p>Classroom e l'email <b>non accettano cartelle</b>. Per consegnare una cartella intera: <b>comprimila</b>.</p><p>Il nome dello ZIP segue la regola dei nomi: tutto minuscolo, niente spazi (usa _), niente accenti.</p>`,
+  task:()=>`Comprimi la cartella <b>officina23_archivio</b> e chiama lo ZIP <b>officina23_archivio_${esc(cognome())}.zip</b> (con il tuo cognome).`,
+  setup:{fs:()=>world({documenti:[ARCHIVIO(), F("appunti_lezione.txt",1840)]}), cwd:["Documenti"], hl:["officina23_archivio"]},
+  verify:st=>{ const zs=zipsIn(st,["Documenti"]).filter(z=>z.children.some(c=>c.name==="officina23_archivio" && c.type==="folder"));
+    if(!zs.length) return {ok:false, msg:"Non vedo ancora uno ZIP con dentro la cartella officina23_archivio: tasto destro sulla cartella › Comprimi in file ZIP."};
+    const d=ruleDiag(zs[0].name,"officina23_archivio_"); return d ? {ok:false, msg:d+` Per correggere: ${renameTip}.`} : {ok:true}; },
+  hint:()=>`Tasto destro sulla cartella 📁 officina23_archivio › Comprimi in file ZIP. Mentre il nome è evidenziato, scrivi officina23_archivio_${cognome()} e premi Invio.`,
+  success:"Questo è esattamente il file che consegnerai in Classroom con <b>Aggiungi › File</b>.",
+  learn:{k:()=>"comprimi la cartella", d:"per consegnarla tutta in un file"}},
+
+ {id:"x0", screen:"final"},
+
+ /* ---------- SFIDA FINALE ---------- */
+ {id:"x1", phase:"x", group:"E", title:"Il pacco della tipografia",
+  task:`La tipografia ha mandato <b>consegna_tipografia.zip</b>, già scaricato in Download. Estrailo nella cartella <b>Documenti</b>.`,
+  setup:{fs:()=>world({download:[Z("consegna_tipografia.zip",TIPO()), F("modulo_iscrizione.pdf",231044)], documenti:[F("appunti_lezione.txt",1840)]}), cwd:["Download"]},
+  verify:st=>{ const d=extractDiag(st,"volantino_2026.pdf",["Documenti"],"consegna_tipografia"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Tasto destro sullo ZIP › Estrai tutto… › nel percorso scrivi Documenti al posto di Download › Estrai."},
+ {id:"x2", phase:"x", group:"E", title:"La valigia nella valigia",
+  task:`In <b>Documenti › consegna_tipografia</b> c'è <b>loghi.zip</b>. Estrailo lì dentro, accanto allo ZIP.`,
+  setup:{fs:()=>world({documenti:[D("consegna_tipografia",TIPO()), F("appunti_lezione.txt",1840)]}), cwd:["Documenti"]},
+  verify:st=>{ const d=extractDiag(st,"logo.png",["Documenti","consegna_tipografia"],"loghi"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Doppio clic sulla cartella consegna_tipografia, poi tasto destro su loghi.zip › Estrai tutto… › Estrai."},
+ {id:"x3", phase:"x", group:"E", title:"Quale apro?",
+  task:`In Download ci sono tanti file con nomi simili. Estrai sul <b>Desktop</b> lo ZIP con le <b>foto dell'Open Day</b>.`,
+  setup:{fs:()=>world({download:[F("foto_open_day.pdf",412330), Z("foto_open_day.zip",FESTA().slice(0,5).map((f,i)=>F(`open_day_0${i+1}.jpg`,f.size))), Z("loghi_sponsor.zip",[F("sponsor_1.png",120400),F("sponsor_2.png",98311)]), Z("documenti_comune.zip",[F("autorizzazione.pdf",180220)]), F("foto_open_day.docx",36870)]}), cwd:["Download"]},
+  verify:st=>{ const d=extractDiag(st,"open_day_01.jpg",["Desktop"],"foto_open_day"); return d?{ok:false,msg:d,reset:true}:{ok:true}; },
+  hint:"Lo ZIP giusto è foto_open_day.zip (non il .pdf né il .docx). Nel percorso scrivi Desktop al posto di Download."},
+ {id:"x4", phase:"x", group:"C", title:"Due PDF, una valigia",
+  task:`In <b>Documenti › consegna_tipografia</b> metti <b>i due PDF</b> in un solo ZIP chiamato <b>pdf_tipografia.zip</b>.`,
+  setup:{fs:()=>world({documenti:[D("consegna_tipografia",TIPO().filter(c=>c.type==="file"))]}), cwd:["Documenti","consegna_tipografia"]},
+  verify:st=>{ const tgt=["volantino_2026.pdf","preventivo_tipografia.pdf"], zs=zipsIn(st,["Documenti","consegna_tipografia"]); const good=zs.find(z=>sameSet(names(z),tgt));
+    if(good && good.name==="pdf_tipografia.zip") return {ok:true};
+    if(good) return {ok:false, msg:`Il contenuto è giusto, ma lo ZIP si chiama «${esc(good.name)}».`};
+    if(zs.length) return {ok:false, reset:true, msg:`Nello ZIP «${esc(zs[0].name)}» c'è: ${names(zs[0]).map(esc).join(", ")}. Servono solo i due PDF.`};
+    return {ok:false, msg:"Non vedo ancora nessuno ZIP."}; },
+  hint:`Seleziona i due .pdf (${CT}+clic), tasto destro › Comprimi in file ZIP, scrivi pdf_tipografia e Invio.`},
+ {id:"x5", phase:"x", group:"C", title:"La consegna",
+  task:()=>`Devi consegnare in Classroom la cartella <b>open_day_2026</b>. Prepara lo ZIP con il nome secondo la regola: <b>officina23_openday_${esc(cognome())}.zip</b>.`,
+  setup:{fs:()=>world({documenti:[D("open_day_2026",[F("programma.docx",36870), F("volantino_2026.pdf",1216069), D("foto",FESTA().slice(0,3))]), F("appunti_lezione.txt",1840)]}), cwd:["Documenti"]},
+  verify:st=>{ const zs=zipsIn(st,["Documenti"]).filter(z=>z.children.some(c=>c.name==="open_day_2026"));
+    if(!zs.length){ const loose=zipsIn(st,["Documenti"])[0]; return {ok:false, reset:!!loose, msg: loose ? `Nello ZIP «${esc(loose.name)}» manca la cartella open_day_2026: comprimi la cartella, non i file sparsi.` : "Non vedo ancora uno ZIP con la cartella open_day_2026."}; }
+    const d=ruleDiag(zs[0].name,"officina23_openday_"); return d?{ok:false,msg:d}:{ok:true}; },
+  hint:()=>`Tasto destro sulla cartella open_day_2026 › Comprimi in file ZIP › scrivi officina23_openday_${cognome()} › Invio.`},
+ {id:"x6", phase:"x", group:"C", title:"Allegato o link?",
+  task:`Devi mandare alla tipografia, <b>per email</b>, tutti i file della cartella <b>allegati</b>. L'email accetta al massimo <b>20 MB</b>. Guarda i pesi nella finestra (puoi anche provare a comprimere) e decidi.`,
+  setup:{fs:()=>world({documenti:[D("allegati",ALLEGATI())]}), cwd:["Documenti","allegati"]},
+  quiz:[{t:"Faccio uno ZIP con tutti e 5 i file e lo allego.", fb:"Il video pesa quasi 80 MB e nello ZIP resta quasi uguale: lo ZIP supererebbe di molto i 20 MB."},
+        {t:"Metto volantino, foto e logo in uno ZIP (circa 12 MB) e lo allego; per il video mando un link Drive.", ok:true},
+        {t:"Comprimo il video due volte, così diventa abbastanza leggero.", fb:"Comprimere di nuovo uno ZIP non lo alleggerisce: il video resta intorno agli 80 MB."}],
+  hint:"Seleziona tutti i file tranne il video: la barra in basso ti dice quanto pesano insieme."},
+
+ {id:"end", screen:"end"},
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), FIN = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(store.get("pos")||0, STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const val = v => typeof v==="function" ? v() : (v||"");
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html, reset){
+    const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML = html + (reset?` <button type="button" class="linkbtn" id="fb-reset">↺ rimetti tutto com'era</button>`:"");
+    if(reset) $("#fb-reset").onclick=()=>{ setupEnv(STEPS[pos]); $("#l-fb").classList.add("hidden"); };
+  }
+  function setupEnv(step){ const s=step.setup; W.setup({fs:s.fs, cwd:s.cwd, hl: BES && step.phase==="g" ? (s.hl||[]) : []}); }
+  function counter(step){ const grp=STEPS.filter(s=>s.phase===step.phase), k=grp.indexOf(step)+1;
+    return step.phase==="g" ? `Passo ${k} di ${grp.length}` : `Sfida finale · compito ${k} di ${grp.length}`; }
+  function render(){
+    const step=STEPS[pos];
+    $("#pbar").style.width = Math.round(pos/(STEPS.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.title;
+    $("#l-theory").innerHTML = step.theory||""; $("#l-theory").classList.toggle("hidden", !step.theory);
+    const keys = step.keys ? step.keys() : ""; $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.quiz ? "Domanda" : step.phase==="g" ? "Il tuo compito" : "Obiettivo";
+    $("#l-task").innerHTML = val(step.task);
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    ["#b-next","#b-hint"].forEach(b=>$(b).classList.add("hidden"));
+    $("#b-check").classList.toggle("hidden", !!step.quiz);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    if(step.quiz){ q.innerHTML = step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}">${String.fromCharCode(65+i)}. ${o.t}</button>`).join("");
+      q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b)); }
+    setupEnv(step);
+  }
+  function showHintBtn(){ if(S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function finalStars(){ return S.hint ? (S.err>=4?1:2) : S.err<=1 ? 3 : S.err<=3 ? 2 : 1; }
+  function success(step){
+    S.done=true;
+    if(step.phase==="g"){ store.set("r_"+step.id, {ok:1, err:S.err, hint:S.hint}); say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); }
+    else { const s = step.quiz ? (S.err===0?3:S.err===1?2:1) : finalStars(), prev=res(step.id);
+      if(!prev || s>prev.stars) store.set("r_"+step.id, {stars:s, hint:S.hint, err:S.err});
+      say("ok", `✔ Obiettivo raggiunto: <b style="color:var(--orange);letter-spacing:1px">${stars(s)}</b>${S.hint?" (con aiuto)":S.err?` (${S.err} tentativ${S.err===1?"o":"i"} sbagliat${S.err===1?"o":"i"})`:""}`); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →"; nb.focus();
+  }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen || step.quiz) return;
+    if(S.done){ next(); return; }
+    if(W.busy()){ say("mid","La finestra <b>Estrai</b> è ancora aperta: premi Estrai oppure Annulla."); return; }
+    W.commitPending();
+    setTimeout(()=>{ const v=step.verify(W.state());
+      if(!v.ok){ S.err++; say("ko","Non ancora. "+v.msg, v.reset); showHintBtn(); return; }
+      success(step); }, 20);
+  }
+  function answer(i, btn){
+    const step=STEPS[pos]; if(S.done) return; const o=step.quiz[i];
+    if(o.ok){ btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    btn.classList.add("wrong"); S.err++; say("ko","Non è così. "+o.fb); showHintBtn();
+  }
+  function hint(){ S.hint=true; const h=$("#l-hinttext"); h.innerHTML="💡 "+val(STEPS[pos].hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+
+  /* tasca */
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && res(s.id));
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length); b.textContent = `🎒 Tasca (${learned.length})`;
+    $("#pocket").innerHTML = `<h3>Cosa so già fare</h3><ul>${learned.map(s=>`<li>${s.learn.k()} — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket")) $("#pocket").classList.add("hidden"); });
+
+  /* codice risultato: stesso formato e firma degli altri strumenti (O23-… | … | #XXXXX, firma con etichetta ZIP) */
+  function sig(s){ let h=5381; const t="O23*"+s+"*ZIP"; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+  function tally(g){ const r=FIN.filter(s=>s.group===g).map(s=>res(s.id)); return {s:r.reduce((a,x)=>a+((x||{}).stars||0),0), n:r.filter(Boolean).length, tot:r.length, h:r.filter(x=>x&&x.hint).length}; }
+  function code(){
+    const e=tally("E"), c=tally("C"), gp=GUIDED.filter(s=>res(s.id)).length, gh=GUIDED.filter(s=>(res(s.id)||{}).hint).length;
+    const body=`O23-ZIP | ${curName()||"(nome non inserito)"} | ESTRAI ${e.s}/${e.tot*3} stelle (${e.n}/${e.tot} sfide) | COMPRIMI ${c.s}/${c.tot*3} stelle (${c.n}/${c.tot} sfide) | suggerimenti ${e.h+c.h} | PERCORSO ${gp}/${GUIDED.length} passi guidati, aiuti ${gh}${BES?" | modalità facilitata":""}`;
+    return body+" | #"+sig(body);
+  }
+  function codeBlock(){
+    const e=tally("E"), c=tally("C");
+    const rows = FIN.map((s,i)=>{ const r=res(s.id); return `<div class="starrow"><span class="s">${r?stars(r.stars):"—"}</span>${i+1}. ${s.title}</div>`; }).join("");
+    return `<div class="stats"><div class="stat"><small>Estrarre</small><b>${e.s}/${e.tot*3}</b></div><div class="stat"><small>Comprimere</small><b>${c.s}/${c.tot*3}</b></div></div>
+      <details><summary class="small">Dettaglio dei compiti</summary><div style="margin-top:6px">${rows}</div></details>
+      <h3>Il tuo codice risultato</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} nella tua scheda di lavoro.</p>
+      <textarea class="copy" readonly>${esc(code())}</textarea>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>🗜️ Comprimi ed estrai</h2>
+        <p>File e cartelle viaggiano spesso dentro uno <b>ZIP</b>: nelle email, in Classroom, sui siti. Oggi impari ad <b>aprirli</b> (estrarre) e a <b>prepararli</b> (comprimere).</p>
+        <p>Un passo alla volta: a sinistra leggi cosa fare, a destra lo fai nella finestra, poi premi <b>Controlla</b>. Alla fine c'è una sfida.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="scrivi qui"></p>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button> <span class="small" id="w-err"></span></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(); if(v.length<3){ $("#w-err").textContent="Scrivi il tuo nome e cognome."; $("#w-name").focus(); return; } store.set("nome", v); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    final(el){
+      el.innerHTML = `<h2>🏁 Sfida finale</h2>
+        <p>La tipografia ha mandato il materiale per l'Open Day e Marta conta su di te.</p>
+        <p><b>6 compiti</b>: 3 per estrarre, 3 per comprimere. Ogni compito dice solo <b>che cosa</b> ottenere: <b>come</b> lo sai tu.</p>
+        <p>★★★ al primo colpo (un errore è concesso), ★★ con più tentativi o con l'aiuto.</p>
+        <p class="small">Se non ricordi qualcosa, apri la 🎒 Tasca in alto a destra.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      el.innerHTML = `<h2>🎉 Palestra completata</h2>${codeBlock()}
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:56px"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres"></b></p></details>`;
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #");
+        if(k<0){ $("#r-vres").textContent="✘ Codice incompleto"; return; } const ok=sig(raw.slice(0,k))===raw.slice(k+4).trim();
+        $("#r-vres").textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; $("#r-vres").style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance($("#l-theory").innerText+". "+$("#l-task").innerText); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>m.classList.add("hidden"); };
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; store.clear(); location.reload(); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+  if(IS_MAC) $("#mac-note").textContent = "Su Mac: clic con due dita, oppure Ctrl+clic.";
+
+  return {render, check, say:(k,h)=>say(k,h,false)};
+})();
+App.render();
+</script>
+</body>
+</html>

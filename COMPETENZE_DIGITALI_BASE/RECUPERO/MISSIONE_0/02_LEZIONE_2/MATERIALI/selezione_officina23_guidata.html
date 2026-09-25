@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Officina 23 · Selezione guidata</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--sel:#cce8ff;--selb:#99d1ff;--fs:16px;--rowh:26px;--txtfs:19px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px;--rowh:32px;--txtfs:22px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+code{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.95em}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.hintb{background:#fff;color:#9a4a12;border:2px solid var(--orange);padding:8px 14px}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px}
+/* schermate */
+.screen{max-width:720px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.chip{background:var(--teal-l);border-radius:14px;padding:4px 11px;font-size:.92em}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:150px}.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{color:var(--muted)}
+.starrow{font-size:14px;margin:2px 0}.starrow .s{color:var(--orange);letter-spacing:1px;display:inline-block;width:52px}
+textarea.copy{width:100%;height:78px;font-family:"Courier New",monospace;font-size:14px}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,390px) 1fr;gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:1fr}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em}
+.theory p{margin:0 0 10px}
+.keybox{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1.05em}
+.keybox .alt{font-size:13px;color:var(--muted);width:100%}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#9a4a12;font-weight:bold;margin-bottom:2px}
+.badge{display:inline-block;background:#1F3A4D;color:#fff;border-radius:10px;padding:1px 9px;font-size:11px;letter-spacing:.04em}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(360px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+/* esplora file */
+.explorer{border:1px solid #b9c2c9;border-radius:8px;background:#fff;overflow:hidden;user-select:none}
+.ex-bar{background:#f3f3f3;border-bottom:1px solid #ddd;padding:6px 10px;font-size:14px;color:#333;display:flex;align-items:center;gap:12px}
+.vmenu{position:relative}
+.vbtn{background:#fff;border:1px solid #c9c9c9;border-radius:5px;padding:3px 9px;cursor:pointer;font-size:13px}
+.vbtn:focus-visible{outline:3px solid var(--orange)}
+.vdrop{position:absolute;top:28px;left:0;z-index:5;background:#fff;border:1px solid #bbb;border-radius:6px;box-shadow:0 6px 16px rgba(0,0,0,.18);padding:6px;width:230px}
+.vdrop .mi{display:block;padding:6px 8px;border-radius:4px;color:#888;font-size:13px}
+.vdrop label.mi{color:#222;cursor:pointer}.vdrop label.mi:hover{background:#eaf4fd}
+.ex-head,.row{display:grid;grid-template-columns:2.4em 1fr 190px 90px;align-items:center}
+.ex-head{background:#fafafa;border-bottom:1px solid #e3e3e3;font-size:13px;color:#555}
+.ex-head div{padding:6px 8px;cursor:pointer}.ex-head div:hover{background:#eef6ff}
+.ex-head div:focus-visible{outline:3px solid var(--orange);outline-offset:-3px}
+.ex-list{position:relative;height:470px;overflow:auto;outline:none}
+.ex-list:focus{box-shadow:inset 0 0 0 2px #7fb7ff}
+.row{height:var(--rowh);font-size:.9em;border:1px solid transparent;cursor:default}
+.row:hover{background:#eaf4fd}
+.row.hl{background:#fff1e4;box-shadow:inset 5px 0 0 var(--orange)}
+.row.sel{background:var(--sel);border-color:var(--selb)}
+.row.foc{outline:2px solid #1F3A4D;outline-offset:-3px}
+.ex-list:not(:focus) .row.foc{outline:1px dotted #555}
+.row div{padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.row .sz{text-align:right}
+.spacer{height:110px}
+.lasso{position:absolute;background:rgba(0,120,215,.18);border:1px solid rgba(0,120,215,.8);pointer-events:none}
+.ex-status{border-top:1px solid #e3e3e3;background:#fafafa;font-size:13px;padding:5px 12px;color:#333;display:flex;gap:18px}
+.ex-status .bin{margin-left:auto}
+/* testo */
+textarea.txt{width:100%;height:280px;font-family:Georgia,serif;font-size:var(--txtfs);line-height:1.6;padding:14px;border:2px solid var(--line);border-radius:10px;resize:vertical;background:#fffefb;color:var(--ink)}
+textarea.txt:focus{border-color:var(--teal);outline:none}
+.selview{background:#f3f3f3;border-radius:8px;padding:8px 10px;font-family:"Courier New",monospace;font-size:14px;min-height:36px;margin-top:6px;white-space:pre-wrap;word-break:break-all}
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:520px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto}
+</style>
+</head>
+<body>
+<header>
+  <h1>🖱️ Officina 23 · Palestra della selezione</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già fare"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" aria-live="polite">
+      <div class="step-lbl"><span id="l-lbl"></span><span id="l-kb" class="badge hidden">SOLO TASTIERA</span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="fb hidden" id="l-fb"></div>
+      <div class="hinttext hidden" id="l-hinttext"></div>
+      <div class="actions">
+        <button type="button" class="btn" id="b-check">✔ Controlla <span style="font-size:12px;opacity:.8">(Invio)</span></button>
+        <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+        <button type="button" class="btn alt hidden" id="b-retry">↺ Riprova per ★★★</button>
+        <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+      </div>
+    </aside>
+
+    <div class="stage">
+      <div id="env-f" class="hidden">
+        <div class="explorer">
+          <div class="ex-bar">
+            <span class="vmenu"><button type="button" class="vbtn" id="vbtn" aria-haspopup="true" aria-expanded="false">Visualizza ▾</button>
+              <div class="vdrop hidden" id="vdrop"><span class="mi">Icone grandi</span><span class="mi">Dettagli</span><label class="mi"><input type="checkbox" id="extchk"> Estensioni nomi file</label><span class="mi">Elementi nascosti</span></div></span>
+            <span>📁 Questo PC › Documenti › <b>chiavetta_marta</b></span>
+          </div>
+          <div class="ex-head"><div></div><div data-sort="name" tabindex="0" role="button">Nome</div><div data-sort="type" tabindex="0" role="button">Tipo</div><div data-sort="size" tabindex="0" role="button" style="text-align:right">Dimensione</div></div>
+          <div class="ex-list" id="ex-list" tabindex="0" role="listbox" aria-multiselectable="true" aria-label="Elenco dei file"></div>
+          <div class="ex-status"><span id="ex-count"></span><span id="ex-sel"></span><span class="bin" id="ex-bin"></span></div>
+        </div>
+        <p class="small">Questa finestra imita <b>Esplora file di Windows</b>. Qui <span class="kbd">Invio</span> = Controlla (in Windows aprirebbe il file).</p>
+      </div>
+      <div id="env-t" class="hidden">
+        <textarea class="txt" id="txt" spellcheck="false" aria-label="Testo su cui selezionare"></textarea>
+        <div class="small">Hai selezionato (<span id="t-n">0</span> caratteri):</div>
+        <div class="selview" id="t-sel"></div>
+        <p class="small">Il testo non si può modificare: qui si allena solo la selezione.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">Tempo finito? Prendi il codice</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, file evidenziati nei passi guidati, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="f1">file (inizio)</button> ·
+        <button type="button" class="linkbtn" data-jump="fx0">sfida file</button> ·
+        <button type="button" class="linkbtn" data-jump="t0">testo (inizio)</button> ·
+        <button type="button" class="linkbtn" data-jump="tx0">sfida testo</button><br>
+        <span class="small">I passi guidati saltati risultano nel codice (PERCORSO x/21).</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden"></div>
+
+<script>
+/* =====================================================================
+   DATI (uguali alla palestra originale)
+   ===================================================================== */
+const FILES = [{"name": "Documento senza titolo (1).docx", "size": 36870, "type": "Documento di Microsoft Word", "icon": "📘"}, {"name": "Documento senza titolo.docx", "size": 36891, "type": "Documento di Microsoft Word", "icon": "📘"}, {"name": "IMG_20260912_183322.jpg", "size": 3587289, "type": "File JPG", "icon": "🖼️"}, {"name": "IMG_20260912_183340.jpg", "size": 2984660, "type": "File JPG", "icon": "🖼️"}, {"name": "WhatsApp Image 2026-09-14 at 10.12.05.jpeg", "size": 181461, "type": "File JPEG", "icon": "🖼️"}, {"name": "foto festa 2025.zip", "size": 2486298, "type": "Cartella compressa (ZIP)", "icon": "🗜️"}, {"name": "icona bici.svg", "size": 3182, "type": "Documento SVG", "icon": "🖼️"}, {"name": "listino prezzi 2026 - Copia.txt", "size": 1030, "type": "Documento di testo", "icon": "📝"}, {"name": "listino prezzi 2026.txt", "size": 1030, "type": "Documento di testo", "icon": "📝"}, {"name": "logo nuovo DEFINITIVO.png", "size": 175814, "type": "File PNG", "icon": "🖼️"}, {"name": "logo vecchio.jpg", "size": 40052, "type": "File JPG", "icon": "🖼️"}, {"name": "messaggio vocale Luca.mp3", "size": 122087, "type": "File MP3", "icon": "🎵"}, {"name": "nota.txt", "size": 0, "type": "Documento di testo", "icon": "📝"}, {"name": "registro_vendite_2025.txt", "size": 2550012, "type": "Documento di testo", "icon": "📝"}, {"name": "scan0001.pdf", "size": 184655, "type": "Documento PDF", "icon": "📕"}, {"name": "scan0002.pdf", "size": 169151, "type": "Documento PDF", "icon": "📕"}, {"name": "video festa.mp4", "size": 4889437, "type": "File MP4", "icon": "🎬"}, {"name": "~$cumento senza titolo.docx", "size": 160, "type": "Documento di Microsoft Word", "icon": "📘"}];
+const TEXT = "Officina 23 organizza l'Open Day sabato 17 ottobre dalle 9:30 alle 18:30. Durante la giornata offriamo il controllo freni gratuito, lo sconto del 10% sui caschi e la prova delle nuove e-bike.\nOrari del noleggio: da lunedì a sabato, 9:00-12:30 e 15:00-19:30.\nPer prenotare scrivi a info@officina23.example oppure passa in negozio, in via Roma 23. Ti aspettiamo!";
+
+const $ = s => document.querySelector(s);
+const IS_MAC = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+const CT = IS_MAC ? "Cmd" : "Ctrl";
+const K = (...keys) => keys.map(k => `<span class="kbd">${k}</span>`).join("+");
+const mem = {};
+const store = { get(k){ try{ const v=localStorage.getItem("o23selg_"+k); return v?JSON.parse(v):(mem[k]??null); }catch(e){ return mem[k]??null; } },
+                set(k,v){ mem[k]=v; try{ localStorage.setItem("o23selg_"+k, JSON.stringify(v)); }catch(e){} },
+                clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith("o23selg_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; } };
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const isCtrl = e => e.ctrlKey || e.metaKey;
+function keyActivate(el, fn){ el.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); fn(); } }); }
+const stars = n => "★".repeat(n)+"☆".repeat(3-n);
+const cmpName = (a,b) => a.toLowerCase().localeCompare(b.toLowerCase(),"it",{numeric:true});
+const nameOrder = () => FILES.map(f=>f.name).sort(cmpName);
+const byExt = x => FILES.filter(f=>f.name.toLowerCase().endsWith("."+x)).map(f=>f.name);
+const extOf = n => ((n.match(/\.([^.]+)$/)||[])[1]||"").toLowerCase();
+const EXT_DESC = {txt:"un documento di testo", jpg:"una foto", jpeg:"una foto", png:"un'immagine", pdf:"un documento PDF", mp3:"un file audio", mp4:"un video", docx:"un documento Word", zip:"una cartella compressa", svg:"un disegno"};
+const TILDE = FILES.find(f=>f.name.startsWith("~$")).name;
+const para = n => TEXT.split("\n")[n];
+const at = w => TEXT.indexOf(w);
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+
+const TECH = {click:"clic", ctrlclick:CT+"+clic", shiftclick:"clic + Shift+clic", ctrla:CT+"+A", lasso:"rettangolo col mouse", sorttype:"ordinamento per Tipo",
+  arrows:"frecce", shiftarrows:"Shift+frecce", ctrlarrows:CT+"+frecce", ctrlspace:CT+"+Spazio", del:IS_MAC?"Cmd+Backspace":"tasto Canc",
+  dbl:"doppio clic", triple:"triplo clic", tshiftclick:"clic + Shift+clic", tshiftarrow:"Shift+freccia", word:IS_MAC?"Option+Shift+freccia":"Ctrl+Shift+freccia",
+  shiftend:IS_MAC?"Cmd+Shift+→":"Shift+Fine", docend:IS_MAC?"Cmd+Shift+↓":"Ctrl+Shift+Fine"};
+
+/* =====================================================================
+   AMBIENTE 1 · ESPLORA FILE SIMULATO
+   ===================================================================== */
+const E = (()=>{
+  const list = $("#ex-list");
+  let order=[], sel=new Set(), anchor=0, focus=0, sortBy="name", sortDir=1, deleted=new Set(), used=new Set(), mouse=0, lasso=null, ext=true, cfg={}, hl=new Set();
+  const byName = n => FILES.find(f=>f.name===n);
+  const visible = () => FILES.filter(f=>!deleted.has(f.name));
+  const cmpF = (a,b) => cmpName(a.name,b.name);
+  function sortNow(){ const v=visible();
+    v.sort((a,b)=> sortBy==="name" ? cmpF(a,b)*sortDir : sortBy==="type" ? (a.type.localeCompare(b.type,"it")||cmpF(a,b))*sortDir : ((a.size-b.size)||cmpF(a,b))*sortDir);
+    order=v.map(f=>f.name); }
+  const dn = n => ext ? n : n.replace(/\.[^.]+$/,"");
+  function range(a,b){ const [i,j]=a<b?[a,b]:[b,a]; return order.slice(i,j+1); }
+  function fmtSize(b){ if(b<1024) return b+" byte"; if(b<1048576) return Math.ceil(b/1024).toLocaleString("it-IT")+" KB"; return (Math.floor(b/1048576*100)/100).toLocaleString("it-IT")+" MB"; }
+  function colSize(b){ return (b===0?0:Math.ceil(b/1024)).toLocaleString("it-IT")+" KB"; }
+  function render(scroll){
+    const keep=list.scrollTop;
+    list.innerHTML = order.map((n,i)=>{ const f=byName(n); return `<div class="row${sel.has(n)?" sel":""}${i===focus?" foc":""}${hl.has(n)?" hl":""}" id="exr-${i}" role="option" aria-selected="${sel.has(n)}" data-i="${i}"><div>${f.icon}</div><div>${esc(dn(n))}</div><div>${esc(f.type)}</div><div class="sz">${colSize(f.size)}</div></div>`; }).join("") + '<div class="spacer"></div>';
+    const tot=[...sel].reduce((s,n)=>s+byName(n).size,0);
+    $("#ex-count").textContent = order.length+" elementi";
+    $("#ex-sel").textContent = sel.size ? `${sel.size} element${sel.size===1?"o":"i"} selezionat${sel.size===1?"o":"i"} · ${fmtSize(tot)}` : "";
+    $("#ex-bin").textContent = deleted.size ? `🗑️ Cestino: ${deleted.size} element${deleted.size===1?"o":"i"}` : "🗑️ Cestino vuoto";
+    document.querySelectorAll(".ex-head div[data-sort]").forEach(h=>{ const s=h.dataset.sort; h.textContent = {name:"Nome",type:"Tipo",size:"Dimensione"}[s] + (s===sortBy?(sortDir>0?" ▲":" ▼"):""); });
+    $("#extchk").checked = ext;
+    list.scrollTop=keep; list.setAttribute("aria-activedescendant","exr-"+focus);
+    const r=list.querySelector(`.row[data-i="${focus}"]`); if(scroll && r){ const top=r.offsetTop, bot=top+r.offsetHeight; if(top<list.scrollTop) list.scrollTop=top; else if(bot>list.scrollTop+list.clientHeight) list.scrollTop=bot-list.clientHeight; }
+  }
+  function focusList(){ setTimeout(()=>list.focus({preventScroll:true}),30); }
+  function setup(c){ cfg=c; deleted=new Set(); sortBy=c.sort||"name"; sortDir=1; ext = c.ext!==false; sortNow();
+    sel=new Set(c.presel||[]); focus=0; anchor=0; used=new Set(); mouse=0; hl=new Set(c.hl||[]); closeMenu();
+    render(); list.scrollTop=0; if(c.kb) focusList(); }
+  /* mouse */
+  list.addEventListener("mousedown", e=>{
+    if(e.button!==0) return;
+    const lb=list.getBoundingClientRect(); if(e.clientX-lb.left-list.clientLeft >= list.clientWidth || e.clientY-lb.top-list.clientTop >= list.clientHeight) return;
+    mouse++; list.focus({preventScroll:true}); const row=e.target.closest(".row");
+    if(row){ e.preventDefault(); const i=+row.dataset.i, n=order[i];
+      if(e.shiftKey){ const r=range(anchor,i); if(isCtrl(e)) r.forEach(x=>sel.add(x)); else sel=new Set(r); focus=i; used.add("shiftclick"); }
+      else if(isCtrl(e)){ sel.has(n)?sel.delete(n):sel.add(n); anchor=focus=i; used.add("ctrlclick"); }
+      else { sel=new Set([n]); anchor=focus=i; used.add("click"); }
+      render(); return; }
+    const base = isCtrl(e) ? new Set(sel) : new Set(); if(!isCtrl(e)) sel=new Set();
+    const box=list.getBoundingClientRect(); const y0=e.clientY-box.top+list.scrollTop, x0=e.clientX-box.left;
+    lasso={y0,x0,base,moved:false,el:document.createElement("div")}; lasso.el.className="lasso"; render(); list.appendChild(lasso.el);
+  });
+  window.addEventListener("mousemove", e=>{ if(!lasso) return; const box=list.getBoundingClientRect(); const y1=e.clientY-box.top+list.scrollTop, x1=e.clientX-box.left;
+    if(Math.abs(y1-lasso.y0)+Math.abs(x1-lasso.x0)>6) lasso.moved=true;
+    const top=Math.min(y1,lasso.y0), h=Math.abs(y1-lasso.y0); Object.assign(lasso.el.style,{top:top+"px",left:Math.min(x1,lasso.x0)+"px",width:Math.abs(x1-lasso.x0)+"px",height:h+"px"});
+    const s=new Set(lasso.base); list.querySelectorAll(".row").forEach(r=>{ const rt=r.offsetTop, rb=rt+r.offsetHeight; if(rt<top+h && rb>top) s.add(order[+r.dataset.i]); });
+    sel=s; list.querySelectorAll(".row").forEach(r=>r.classList.toggle("sel", sel.has(order[+r.dataset.i])));
+  });
+  window.addEventListener("mouseup", ()=>{ if(!lasso) return; if(lasso.moved) used.add("lasso"); lasso.el.remove(); lasso=null; render(); });
+  function sortClick(h){ const s=h.dataset.sort; if(sortBy===s) sortDir=-sortDir; else { sortBy=s; sortDir=1; }
+    if(s==="type") used.add("sorttype"); const keep=new Set(sel), fn=order[focus]; sortNow(); sel=keep; focus=Math.max(0,order.indexOf(fn)); anchor=focus; render(); }
+  document.querySelectorAll(".ex-head div[data-sort]").forEach(h=>{ h.addEventListener("click", ()=>sortClick(h)); keyActivate(h, ()=>sortClick(h)); });
+  /* menu Visualizza */
+  function closeMenu(){ $("#vdrop").classList.add("hidden"); $("#vbtn").setAttribute("aria-expanded","false"); }
+  $("#vbtn").addEventListener("click", e=>{ e.stopPropagation(); const open=$("#vdrop").classList.toggle("hidden"); $("#vbtn").setAttribute("aria-expanded", String(!open)); });
+  $("#extchk").addEventListener("change", e=>{ ext=e.target.checked; used.add("exttoggle"); closeMenu(); render(); });
+  document.addEventListener("click", e=>{ if(!e.target.closest(".vmenu")) closeMenu(); });
+  /* tastiera */
+  list.addEventListener("keydown", e=>{
+    const k=e.key, last=order.length-1;
+    if(k==="Enter"){ e.preventDefault(); App.check(); return; }
+    if((k==="a"||k==="A") && isCtrl(e)){ e.preventDefault(); sel=new Set(order); used.add("ctrla"); render(); return; }
+    if(k==="Delete" || (k==="Backspace" && e.metaKey)){ e.preventDefault();
+      if(!cfg.del){ App.say("mid", "In questo passo non si elimina niente: il file è rimasto dov'era."); return; }
+      if(sel.size){ sel.forEach(n=>deleted.add(n)); used.add("del"); sel=new Set(); sortNow(); focus=Math.min(focus,order.length-1); anchor=focus; render(); } return; }
+    if(k===" "){ e.preventDefault(); const n=order[focus]; if(isCtrl(e)){ sel.has(n)?sel.delete(n):sel.add(n); anchor=focus; used.add("ctrlspace"); } else if(!sel.has(n)){ sel.add(n); anchor=focus; } render(); return; }
+    let nf=null; if(k==="ArrowDown") nf=Math.min(last,focus+1); else if(k==="ArrowUp") nf=Math.max(0,focus-1); else if(k==="Home") nf=0; else if(k==="End") nf=last; else return;
+    e.preventDefault();
+    if(e.shiftKey){ focus=nf; const r=range(anchor,focus); if(isCtrl(e)) r.forEach(x=>sel.add(x)); else sel=new Set(r); used.add("shiftarrows"); }
+    else if(isCtrl(e)){ focus=nf; used.add("ctrlarrows"); }
+    else { focus=nf; anchor=nf; sel=new Set([order[nf]]); used.add("arrows"); }
+    render(true);
+  });
+  return { setup, dn, focusList, el:list,
+    state:()=>({sel:new Set(sel), used:new Set(used), mouse, sortBy, ext, deleted:new Set(deleted)}) };
+})();
+
+/* =====================================================================
+   AMBIENTE 2 · TESTO
+   ===================================================================== */
+const X = (()=>{
+  const ta=$("#txt"); ta.value=TEXT; let used=new Set(), mouse=0;
+  function showSel(){ const s=ta.value.substring(ta.selectionStart, ta.selectionEnd); $("#t-n").textContent=s.length; $("#t-sel").textContent = s ? "«"+s+"»" : "(niente)"; }
+  function setup(c){ used=new Set(); mouse=0; const p=c.caret?c.caret():0; ta.scrollTop=0; ta.focus(); ta.setSelectionRange(p,p); showSel(); }
+  ta.addEventListener("beforeinput", e=>e.preventDefault());
+  ["cut","paste","drop"].forEach(ev=>ta.addEventListener(ev, e=>e.preventDefault()));
+  ta.addEventListener("mousedown", e=>{ mouse++; if(e.detail===2) used.add("dbl"); if(e.detail>=3) used.add("triple"); if(e.shiftKey) used.add("tshiftclick"); });
+  ta.addEventListener("keydown", e=>{
+    const k=e.key, arrow=/^Arrow/.test(k);
+    if(k==="Enter"){ e.preventDefault(); App.check(); return; }
+    if((k==="a"||k==="A") && isCtrl(e)) used.add("ctrla");
+    if(e.shiftKey && (k==="End"||k==="Home") && !e.ctrlKey) used.add("shiftend");
+    if(e.shiftKey && (k==="End"||k==="Home") && e.ctrlKey) used.add("docend");
+    if(e.shiftKey && arrow){
+      if(e.ctrlKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("word");
+      else if(e.altKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("word");
+      else if(e.metaKey && (k==="ArrowLeft"||k==="ArrowRight")) used.add("shiftend");
+      else if(e.metaKey && (k==="ArrowDown"||k==="ArrowUp")) used.add("docend");
+      else if(!e.ctrlKey && !e.altKey && !e.metaKey) used.add(k==="ArrowLeft"||k==="ArrowRight"?"tshiftarrow":"tshiftupdown");
+    }
+  });
+  ["select","keyup","mouseup"].forEach(ev=>ta.addEventListener(ev, showSel));
+  document.addEventListener("selectionchange", ()=>{ if(document.activeElement===ta) showSel(); });
+  return { setup, el:ta, state:()=>({s:ta.value.substring(ta.selectionStart, ta.selectionEnd), start:ta.selectionStart, used:new Set(used), mouse}) };
+})();
+
+/* =====================================================================
+   I PASSI
+   phase "g" = guidato (teoria + tecnica obbligatoria, niente stelle)
+   phase "x" = sfida finale (solo l'obiettivo, stelle come nella palestra originale)
+   ===================================================================== */
+const N = {listino:"listino prezzi 2026.txt", copia:"listino prezzi 2026 - Copia.txt", nota:"nota.txt", mp3:"messaggio vocale Luca.mp3",
+  video:"video festa.mp4", scan1:"scan0001.pdf", logoN:"logo nuovo DEFINITIVO.png", jpeg:"WhatsApp Image 2026-09-14 at 10.12.05.jpeg"};
+const slice = (from, to) => { const o=nameOrder(); return o.slice(o.indexOf(from), o.indexOf(to)+1); };
+const below = (from, n) => { const o=nameOrder(), i=o.indexOf(from); return o.slice(i, i+n); };
+const jpegDiag = (st, miss, extra) => extra.includes(N.jpeg) ? `«${E.dn(N.jpeg)}» finisce con <b>.jpeg</b>, non .jpg: è sempre una foto, ma l'estensione è diversa. Toglila con ${CT}+clic.` : null;
+
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ /* ---------------- PARTE 1 · FILE (guidata) ---------------- */
+ {id:"f1", part:"f", phase:"g", title:"Selezionare = scegliere",
+  theory:`<p>Prima di copiare, spostare o eliminare un file devi dire al computer <b>su quale file</b> vuoi agire.</p><p>Questo si chiama <b>selezionare</b>. Il file selezionato diventa <b>azzurro</b>.</p>`,
+  keys:()=>`${K("clic")} <span>sul nome del file</span>`,
+  task:`Seleziona il file <b>listino prezzi 2026</b> (quello senza «Copia»).`, setup:{ext:false},
+  target:()=>[N.listino], need:[["click"]],
+  diag:(st)=> st.sel.size===1 && st.sel.has(N.copia) ? "Hai scelto la copia. Cerca quello <b>senza</b> «- Copia»." : null,
+  hint:"Fai un solo clic sulla riga «listino prezzi 2026».",
+  success:"Guarda in basso nella finestra: c'è scritto <b>1 elemento selezionato</b>. Quella riga ti dice sempre quanti file hai scelto.",
+  learn:{k:()=>K("clic"), d:"sceglie un file"}},
+
+ {id:"f2", part:"f", phase:"g", title:"Il nome nascosto",
+  theory:`<p>Guarda i file <b>Documento senza titolo</b>: il nome sembra incompleto.</p><p>Ogni file ha una parte finale del nome, l'<b>estensione</b>. Windows spesso la <b>nasconde</b>. Facciamola comparire.</p>`,
+  keys:()=>`<b>Visualizza</b> › <b>Estensioni nomi file</b><span class="alt">Sul PC vero (Windows 11): Esplora file › Visualizza › Mostra › Estensioni nomi file.</span>`,
+  task:`Apri il menu <b>Visualizza</b> in alto nella finestra e spunta <b>Estensioni nomi file</b>.`, setup:{ext:false},
+  verify:(st)=> st.ext ? {ok:true} : {ok:false, msg:"Le estensioni sono ancora nascoste: clicca <b>Visualizza ▾</b> in alto a sinistra nella finestra."},
+  hint:"Clic su «Visualizza ▾», poi clic sulla casella «Estensioni nomi file».",
+  success:"Ora ogni nome finisce con un punto e qualche lettera: <b>.docx</b>, <b>.jpg</b>, <b>.txt</b>…",
+  learn:{k:()=>"Visualizza › Estensioni nomi file", d:"mostra le estensioni"}},
+
+ {id:"f3", part:"f", phase:"g", title:"nome<b style='color:var(--orange)'>.estensione</b>", noHl:true,
+  theory:`<p>Il punto divide il nome in due: <code>listino prezzi 2026<b>.txt</b></code></p><p>Dopo il punto c'è l'<b>estensione</b>: dice <b>che tipo</b> di file è e quale programma lo apre.</p>`,
+  keys:()=>`<span class="chip">.txt testo</span><span class="chip">.jpg foto</span><span class="chip">.pdf documento</span><span class="chip">.mp3 audio</span>`,
+  task:`Seleziona il <b>file audio</b>. Guarda le estensioni: è quello che finisce con <b>.mp3</b>.`,
+  target:()=>[N.mp3], need:[],
+  diag:(st)=>{ if(st.sel.size!==1) return st.sel.size ? "Serve un file solo: fai un clic normale, senza tenere premuto niente." : null;
+    const n=[...st.sel][0], x=extOf(n); return `Hai scelto «${esc(n)}»: finisce con <b>.${x}</b>, quindi è ${EXT_DESC[x]||"un altro tipo di file"}. Cerca <b>.mp3</b>.`; },
+  hint:"Leggi la fine dei nomi: cerca quello che termina con .mp3 (è il messaggio vocale di Luca).",
+  success:"Anche la colonna <b>Tipo</b> lo conferma: «File MP3».",
+  learn:{k:()=>"<code>.estensione</code>", d:"dice il tipo di file"}},
+
+ {id:"f4", part:"f", phase:"g", title:`${CT}+clic: aggiungi`,
+  theory:`<p>Un clic normale sceglie <b>un solo</b> file e toglie gli altri.</p><p>Se tieni premuto ${K(CT)} mentre clicchi, il file si <b>aggiunge</b> a quelli già scelti.</p>`,
+  keys:()=>`${K(CT,"clic")} <span>= aggiungi un file</span>`,
+  task:`Seleziona <b>insieme</b> i due file <b>listino prezzi 2026.txt</b> e <b>nota.txt</b>.`,
+  target:()=>[N.listino, N.nota], need:[["ctrlclick"]],
+  diag:(st, miss, extra)=>{ if(st.sel.size===1 && (st.sel.has(N.listino)||st.sel.has(N.nota))) return `Ne hai solo uno: il clic senza ${CT} ha tolto l'altro. Clic sul primo, poi tieni premuto ${CT} e clicca il secondo.`;
+    if(extra.length && st.used.has("shiftclick")) return `Hai preso anche i file che stanno in mezzo: quello è <b>Shift</b>. Qui serve ${CT}.`; return null; },
+  hint:`Clic su «listino prezzi 2026.txt». Poi tieni premuto ${CT} e, senza lasciarlo, clic su «nota.txt».`,
+  success:"Barra in basso: <b>2 elementi selezionati</b>.",
+  learn:{k:()=>K(CT,"clic"), d:"aggiunge un file (o lo toglie)"}},
+
+ {id:"f5", part:"f", phase:"g", title:`${CT}+clic: togli`,
+  theory:`<p>${K(CT,"clic")} su un file <b>già selezionato</b> lo <b>toglie</b>, senza toccare gli altri.</p>`,
+  keys:()=>`${K(CT,"clic")} <span>su un file azzurro = toglilo</span>`,
+  task:`Sono già selezionati 3 file. Togli solo <b>listino prezzi 2026 - Copia.txt</b>: gli altri due devono restare azzurri.`,
+  setup:{presel:[N.listino, N.copia, N.nota]},
+  target:()=>[N.listino, N.nota], need:[["ctrlclick"]],
+  diag:(st)=> st.sel.size<=1 ? `È rimasto ${st.sel.size?"un file solo":"niente"}: hai cliccato senza ${CT}. Rimetti a posto e riprova tenendo premuto ${CT}.` : null,
+  hint:`Tieni premuto ${CT} e fai clic sulla riga «listino prezzi 2026 - Copia.txt».`,
+  success:`Ricorda: ${CT}+clic è un interruttore. Su un file bianco lo accende, su un file azzurro lo spegne.`},
+
+ {id:"f6", part:"f", phase:"g", title:"Da solo: le foto .jpg", noHl:true,
+  theory:`<p>Adesso provi <b>da solo</b>, con quello che sai: leggi le estensioni e usa ${K(CT,"clic")}.</p>`,
+  task:`Seleziona tutti i file con estensione <b>.jpg</b>. Sono 3.`,
+  target:()=>byExt("jpg"), need:[["ctrlclick"]],
+  diag:(st, miss, extra)=> jpegDiag(st, miss, extra) || (extra.some(n=>extOf(n)==="png") ? `.png è un'immagine, ma non è .jpg: toglila con ${CT}+clic.` : null),
+  hint:`Clic sulla prima foto .jpg, poi ${CT}+clic sulle altre due. Attenzione: .jpeg e .png non valgono.`,
+  success:"Hai letto le estensioni con attenzione: <b>.jpg</b>, <b>.jpeg</b> e <b>.png</b> sono tutte immagini, ma sono estensioni diverse."},
+
+ {id:"f7", part:"f", phase:"g", title:"Shift+clic: da… a…",
+  theory:`<p>Quando i file sono <b>uno sotto l'altro</b> non serve cliccarli tutti.</p><p>Clic sul <b>primo</b>, poi ${K("Shift","clic")} sull'<b>ultimo</b>: Windows prende anche tutti quelli in mezzo.</p>`,
+  keys:()=>`${K("clic")} sul primo, poi ${K("Shift","clic")} sull'ultimo`,
+  task:`Seleziona in un colpo i file da <b>scan0001.pdf</b> a <b>video festa.mp4</b>.`,
+  target:()=>slice(N.scan1, N.video), need:[["shiftclick"]],
+  hint:"Clic su «scan0001.pdf». Poi tieni premuto Shift e fai clic su «video festa.mp4».",
+  success:"Un clic e uno Shift+clic, qualunque sia il numero di file in mezzo.",
+  learn:{k:()=>K("Shift","clic"), d:"prende tutti i file da… a…"}},
+
+ {id:"f8", part:"f", phase:"g", title:"Metti in fila per tipo",
+  theory:`<p>I file dello stesso tipo spesso sono <b>sparsi</b> nell'elenco.</p><p>Clicca sull'intestazione <b>Tipo</b>, in cima alla colonna: Windows mette in fila i file dello stesso tipo.</p>`,
+  keys:()=>`${K("clic")} sull'intestazione <b>Tipo</b>`,
+  task:`Ordina la cartella per <b>Tipo</b>.`,
+  verify:(st)=> st.sortBy==="type" ? {ok:true} : {ok:false, msg:"La cartella è ancora ordinata per <b>Nome</b>. Clicca la parola <b>Tipo</b> nella riga grigia sopra l'elenco."},
+  hint:"Clic sulla parola «Tipo» nella riga grigia in alto, tra «Nome» e «Dimensione».",
+  success:"Guarda: le tre foto .jpg (File JPG) adesso sono una sotto l'altra.",
+  learn:{k:()=>"clic su <b>Tipo</b>", d:"mette in fila i file dello stesso tipo"}},
+
+ {id:"f9", part:"f", phase:"g", title:"Ordina e prendi",
+  theory:`<p>Prima, per le 3 foto .jpg, ti servivano 3 clic con ${CT}.</p><p>Ora sono in fila: basta un clic e uno ${K("Shift","clic")}.</p>`,
+  task:`Seleziona le 3 foto <b>.jpg</b> con clic sulla prima e Shift+clic sull'ultima.`, setup:{sort:"type"},
+  target:()=>byExt("jpg"), need:[["shiftclick"]], diag:jpegDiag,
+  hint:"Le righe «File JPG» sono vicine: clic sulla prima, Shift+clic sulla terza.",
+  success:"Ordinare e poi usare Shift+clic è il trucco dei professionisti."},
+
+ {id:"f10", part:"f", phase:"g", title:`${CT}+A: tutti`,
+  theory:`<p>Per selezionare <b>tutti</b> i file della cartella: clic su un file qualsiasi, poi ${K(CT,"A")}.</p><p>A come <i>All</i>, «tutto» in inglese.</p>`,
+  keys:()=>`${K(CT,"A")} <span>= seleziona tutto</span>`,
+  task:`Seleziona <b>tutti</b> i file della cartella.`,
+  target:()=>FILES.map(f=>f.name), need:[["ctrla"]],
+  hint:`Clic su un file qualsiasi, poi tieni premuto ${CT} e premi A.`,
+  success:`Barra in basso: <b>${FILES.length} elementi selezionati</b>.`,
+  learn:{k:()=>K(CT,"A"), d:"seleziona tutto"}},
+
+ {id:"f11", part:"f", phase:"g", title:"Tutti tranne uno",
+  theory:`<p>Le tecniche si possono <b>combinare</b>.</p><p>Prima ${K(CT,"A")} per prendere tutto, poi ${K(CT,"clic")} per <b>togliere</b> quello che non vuoi.</p>`,
+  task:`Seleziona tutti i file <b>tranne</b> <b>video festa.mp4</b>.`,
+  target:()=>FILES.map(f=>f.name).filter(n=>n!==N.video), need:[["ctrla","ctrlclick"]],
+  diag:(st)=> st.sel.size===1 ? `È rimasto un solo file: il clic senza ${CT} ha tolto tutti gli altri.` : null,
+  hint:`${CT}+A, poi ${CT}+clic su «video festa.mp4».`,
+  success:"Due gesti invece di diciassette clic."},
+
+ {id:"f12", part:"f", phase:"g", kb:true, title:"Senza mouse: le frecce",
+  theory:`<p>Si può selezionare anche <b>senza mouse</b>. Le frecce ${K("↑")} ${K("↓")} spostano il riquadro scuro da un file all'altro.</p><p>Se tieni premuto ${K("Shift")}, ogni freccia <b>allunga</b> la selezione.</p>`,
+  keys:()=>`${K("↓")} sposta · ${K("Shift","↓")} allunga`,
+  task:`Non toccare il mouse. Scendi con ${K("↓")} fino a <b>logo nuovo DEFINITIVO.png</b>, poi premi ${K("Shift","↓")} una volta per prendere anche il file sotto.`,
+  target:()=>below(N.logoN, 2), need:[["shiftarrows"]],
+  hint:"Premi ↓ finché il riquadro scuro è su «logo nuovo DEFINITIVO.png». Poi tieni Shift e premi ↓ una volta. Infine Invio.",
+  success:"Le frecce funzionano anche nei menu, nei moduli e nelle email.",
+  learn:{k:()=>K("Shift","↓"), d:"allunga la selezione senza mouse"}},
+
+ {id:"f13", part:"f", phase:"g", del:true, title:"Nel Cestino",
+  theory:`<p>Il file <b>nota.txt</b> pesa <b>0 KB</b>: è vuoto, non serve.</p><p>Per eliminare un file: <b>prima lo selezioni</b>, poi premi ${IS_MAC?K("Cmd","Backspace"):K("Canc")}. Il file va nel <b>Cestino</b>: se sbagli, lo puoi recuperare.</p>`,
+  keys:()=>`selezione + ${IS_MAC?K("Cmd","Backspace"):K("Canc")}<span class="alt">Su alcune tastiere il tasto si chiama <b>Del</b> o <b>Delete</b>.</span>`,
+  task:`Metti nel Cestino il file vuoto <b>nota.txt</b>.`,
+  delTarget:()=>[N.nota], need:[["del"]],
+  hint:`Clic su «nota.txt», poi premi ${IS_MAC?"Cmd+Backspace":"Canc"}.`,
+  success:"Selezionare, poi agire: è la regola di tutto quello che hai fatto oggi.",
+  learn:{k:()=>IS_MAC?K("Cmd","Backspace"):K("Canc"), d:"sposta nel Cestino"}},
+
+ {id:"fx0", screen:"finalF"},
+
+ /* ---------------- SFIDA FINALE · FILE (8 compiti come l'originale) ---------------- */
+ {id:"fx1", part:"f", phase:"x", title:"Il listino giusto",
+  task:`Marta vuole mandare il listino al fornitore. Seleziona <b>solo</b> il listino originale, non la copia.`,
+  target:()=>[N.listino], need:[["click"]], hint:"Un clic sul nome «listino prezzi 2026.txt»."},
+ {id:"fx2", part:"f", phase:"x", title:"Le foto",
+  task:`Seleziona <b>tutti i file .jpg</b>. Non sono tutti vicini.`,
+  target:()=>byExt("jpg"), need:[["ctrlclick"],["sorttype","shiftclick"]], diag:jpegDiag,
+  hint:`Clic sul primo .jpg, poi ${CT}+clic sugli altri. Oppure: ordina per Tipo e usa Shift+clic.`},
+ {id:"fx3", part:"f", phase:"x", title:"Un blocco di file",
+  task:()=>{ const o=nameOrder(); return `Seleziona in un colpo tutti i file da <b>${esc(N.copia)}</b> a <b>nota.txt</b> (compresi).`; },
+  target:()=>slice(N.copia, N.nota), need:[["shiftclick"]], hint:"Clic sul primo, poi Shift+clic sull'ultimo."},
+ {id:"fx4", part:"f", phase:"x", title:"Tutto",
+  task:`Seleziona <b>tutti</b> i file della cartella.`,
+  target:()=>FILES.map(f=>f.name), need:[["ctrla"]], hint:`Clic su un file, poi ${CT}+A.`},
+ {id:"fx5", part:"f", phase:"x", title:"Quasi tutto",
+  task:`Seleziona tutti i file <b>tranne</b> i due che si chiamano <b>Documento senza titolo…</b>`,
+  target:()=>FILES.map(f=>f.name).filter(n=>!n.startsWith("Documento senza titolo")), need:[["ctrla","ctrlclick"]],
+  hint:`${CT}+A, poi ${CT}+clic sui due file da togliere. Attenzione: «~$cumento…» è un altro file e deve restare.`},
+ {id:"fx6", part:"f", phase:"x", title:"I file di testo",
+  task:`Seleziona <b>tutti i documenti di testo (.txt)</b>. Sono sparsi: fallo con il minor numero di clic.`,
+  target:()=>byExt("txt"), need:[["sorttype","shiftclick"]],
+  hint:"Clic sull'intestazione Tipo, poi clic sul primo .txt e Shift+clic sull'ultimo."},
+ {id:"fx7", part:"f", phase:"x", kb:true, title:"Senza mouse",
+  task:`Senza mouse: raggiungi <b>scan0001.pdf</b> e seleziona anche <b>i due file sotto</b>.`,
+  target:()=>below(N.scan1, 3), need:[["shiftarrows"]], hint:"Freccia giù fino a scan0001.pdf, poi Shift+freccia giù due volte."},
+ {id:"fx8", part:"f", phase:"x", del:true, title:"Pulizia",
+  task:`Metti nel Cestino i 3 file inutili: <b>nota.txt</b>, <b>listino prezzi 2026 - Copia.txt</b> e il file che inizia con <b>~$</b>. Tutti insieme, con un solo ${IS_MAC?"Cmd+Backspace":"Canc"}.`,
+  delTarget:()=>[N.nota, N.copia, TILDE], need:[["ctrlclick","del"]],
+  hint:`Clic sul primo, ${CT}+clic sugli altri due, poi ${IS_MAC?"Cmd+Backspace":"Canc"}.`},
+
+ {id:"t0", screen:"introT"},
+
+ /* ---------------- PARTE 2 · TESTO (guidata) ---------------- */
+ {id:"t1", part:"t", phase:"g", title:"Doppio clic: una parola",
+  theory:`<p>Nei documenti, nelle email e nei moduli non selezioni file ma <b>parole</b>.</p><p>Il modo più veloce per una parola: <b>doppio clic</b> sopra, cioè due clic veloci.</p>`,
+  keys:()=>`${K("clic")}${K("clic")} <span>veloci = una parola</span>`,
+  task:`Seleziona la parola <b>caschi</b>.`, target:()=>"caschi", need:[["dbl"]],
+  hint:"Punta il mouse sulla parola «caschi» (prima riga) e fai due clic molto veloci, senza muovere il mouse.",
+  success:"La parola diventa azzurra: ora potresti copiarla, cancellarla o metterla in grassetto.",
+  learn:{k:()=>"doppio clic", d:"seleziona una parola"}},
+
+ {id:"t2", part:"t", phase:"g", title:"Triplo clic: un paragrafo",
+  theory:`<p>Un <b>paragrafo</b> è un blocco di testo che finisce andando a capo.</p><p>Tre clic veloci lo selezionano tutto.</p>`,
+  keys:()=>`${K("clic")}${K("clic")}${K("clic")} <span>veloci = un paragrafo</span>`,
+  task:`Seleziona tutto il paragrafo che inizia con <b>Per prenotare</b>.`, target:()=>para(2), need:[["triple"]],
+  hint:"Tre clic veloci su una parola qualsiasi dell'ultimo paragrafo.",
+  learn:{k:()=>"triplo clic", d:"seleziona un paragrafo"}},
+
+ {id:"t3", part:"t", phase:"g", title:"Da… a… nel testo",
+  theory:`<p>Per un pezzo di testo preciso: clic <b>subito prima</b> della prima parola, poi ${K("Shift","clic")} <b>subito dopo</b> l'ultima.</p><p>È la stessa idea dello Shift+clic sui file.</p>`,
+  keys:()=>`${K("clic")} all'inizio, poi ${K("Shift","clic")} alla fine`,
+  task:`Seleziona <b>dalle 9:30 alle 18:30</b>.`, target:()=>"dalle 9:30 alle 18:30", need:[["tshiftclick"]],
+  hint:"Clic subito prima della «d» di «dalle». Poi tieni Shift e clic subito dopo «18:30», prima del punto.",
+  learn:{k:()=>K("Shift","clic"), d:"nel testo: da un punto a un altro"}},
+
+ {id:"t4", part:"t", phase:"g", title:`${CT}+A anche qui`,
+  theory:`<p>Una buona notizia: ${K(CT,"A")} funziona anche nel testo.</p><p>Prima fai clic dentro il testo, poi premi ${K(CT,"A")}.</p>`,
+  task:`Seleziona <b>tutto</b> il testo.`, target:()=>TEXT, need:[["ctrla"]],
+  hint:`Clic dentro il riquadro del testo, poi ${CT}+A.`,
+  success:`La stessa scorciatoia vale per file, testo, email e pagine web.`},
+
+ {id:"t5", part:"t", phase:"g", kb:true, title:"Un carattere alla volta",
+  theory:`<p>Con la tastiera: ${K("Shift","→")} seleziona <b>un carattere</b> alla volta.</p><p>Se vai troppo avanti, ${K("Shift","←")} torna indietro di uno.</p>`,
+  keys:()=>`${K("Shift","→")} avanti · ${K("Shift","←")} indietro`,
+  task:`Il cursore lampeggia davanti a «Roma». Senza mouse seleziona esattamente <b>Roma</b>: 4 lettere.`,
+  caret:()=>at("Roma"), target:()=>"Roma", exact:true, need:[["tshiftarrow"]],
+  hint:"Tieni premuto Shift e premi → quattro volte. Poi Invio.",
+  learn:{k:()=>K("Shift","→"), d:"un carattere alla volta"}},
+
+ {id:"t6", part:"t", phase:"g", kb:true, title:"Una parola alla volta",
+  theory:IS_MAC ? `<p>Un carattere alla volta è lento. Con ${K("Option","Shift","→")} salti di una <b>parola intera</b>.</p>`
+               : `<p>Un carattere alla volta è lento. Aggiungi ${K("Ctrl")}: ${K("Ctrl","Shift","→")} salta di una <b>parola intera</b>.</p>`,
+  keys:()=> IS_MAC ? `${K("Option","Shift","→")} = una parola` : `${K("Ctrl","Shift","→")} = una parola`,
+  task:`Il cursore è davanti a «Open». Senza mouse seleziona le tre parole <b>Open Day sabato</b>.`,
+  caret:()=>at("Open Day"), target:()=>"Open Day sabato", need:[["word"]],
+  hint:IS_MAC ? "Tieni premuti Option e Shift, poi premi → tre volte." : "Tieni premuti Ctrl e Shift, poi premi → tre volte.",
+  learn:{k:()=> IS_MAC?K("Option","Shift","→"):K("Ctrl","Shift","→"), d:"una parola alla volta"}},
+
+ {id:"t7", part:"t", phase:"g", kb:true, title:"Fino a fine riga",
+  theory: IS_MAC ? `<p>${K("Cmd","Shift","→")} seleziona tutto fino alla <b>fine della riga</b>, con un gesto solo.</p>`
+                 : `<p>Il tasto ${K("Fine")} porta il cursore a fine riga. Con ${K("Shift","Fine")} selezioni tutto fino alla <b>fine della riga</b>.</p><p class="small">${K("Fine")} è sopra le frecce; su alcune tastiere si chiama <b>End</b>.</p>`,
+  keys:()=> IS_MAC ? `${K("Cmd","Shift","→")} = fino a fine riga` : `${K("Shift","Fine")} = fino a fine riga`,
+  task:`Il cursore è davanti a «da lunedì». Senza mouse seleziona fino alla fine della riga.`,
+  caret:()=>at("da lunedì"), target:()=>"da lunedì a sabato, 9:00-12:30 e 15:00-19:30.", lenientEnd:true, need:[["shiftend"]],
+  hint:IS_MAC ? "Tieni Cmd e Shift, poi premi → una volta." : "Tieni Shift e premi il tasto Fine (End) una volta.",
+  learn:{k:()=> IS_MAC?K("Cmd","Shift","→"):K("Shift","Fine"), d:"fino a fine riga"}},
+
+ {id:"t8", part:"t", phase:"g", kb:true, title:"Fino alla fine del testo",
+  theory: IS_MAC ? `<p>E se il testo continua per molte righe? ${K("Cmd","Shift","↓")} seleziona tutto fino alla <b>fine del documento</b>.</p>`
+                 : `<p>E se il testo continua per molte righe? Aggiungi ${K("Ctrl")}: ${K("Ctrl","Shift","Fine")} seleziona tutto fino alla <b>fine del documento</b>.</p>`,
+  keys:()=> IS_MAC ? `${K("Cmd","Shift","↓")} = fino alla fine` : `${K("Ctrl","Shift","Fine")} = fino alla fine`,
+  task:`Il cursore è davanti a «oppure passa». Senza mouse seleziona tutto fino alla fine del testo.`,
+  caret:()=>at("oppure passa"), target:()=>TEXT.slice(at("oppure passa")), need:[["docend"]],
+  hint:IS_MAC ? "Tieni Cmd e Shift, poi premi ↓ una volta." : "Tieni Ctrl e Shift, poi premi Fine una volta.",
+  learn:{k:()=> IS_MAC?K("Cmd","Shift","↓"):K("Ctrl","Shift","Fine"), d:"fino alla fine del testo"}},
+
+ {id:"tx0", screen:"finalT"},
+
+ /* ---------------- SFIDA FINALE · TESTO (8 compiti come l'originale) ---------------- */
+ {id:"tx1", part:"t", phase:"x", title:"Tutto il volantino",
+  task:`Marta vuole copiare il testo del volantino. Seleziona <b>tutto il testo</b>.`, target:()=>TEXT, need:[["ctrla"]], hint:`Clic nel testo, poi ${CT}+A.`},
+ {id:"tx2", part:"t", phase:"x", title:"Una parola",
+  task:`Seleziona solo la parola <b>gratuito</b>.`, target:()=>"gratuito", need:[["dbl"]], hint:"Due clic veloci sulla parola."},
+ {id:"tx3", part:"t", phase:"x", title:"Gli orari",
+  task:`Seleziona tutto il paragrafo che inizia con <b>Orari del noleggio</b>.`, target:()=>para(1), need:[["triple"]], hint:"Tre clic veloci sul paragrafo."},
+ {id:"tx4", part:"t", phase:"x", title:"Come prenotare",
+  task:`Seleziona la frase da <b>Per prenotare</b> fino a <b>via Roma 23</b> (compresi).`,
+  target:()=>"Per prenotare scrivi a info@officina23.example oppure passa in negozio, in via Roma 23", need:[["tshiftclick"],["word"]],
+  hint:"Clic subito prima di «Per», poi tieni Shift e clicca subito dopo «23»."},
+ {id:"tx5", part:"t", phase:"x", kb:true, title:"Parole senza mouse",
+  task:`Il cursore è davanti a «controllo». Senza mouse seleziona le tre parole <b>controllo freni gratuito</b>.`,
+  caret:()=>at("controllo"), target:()=>"controllo freni gratuito", need:[["word"]],
+  hint:IS_MAC ? "Option+Shift+freccia destra tre volte." : "Ctrl+Shift+freccia destra tre volte."},
+ {id:"tx6", part:"t", phase:"x", kb:true, title:"Una riga senza mouse",
+  task:`Il cursore è all'inizio del paragrafo «Orari…». Senza mouse selezionalo fino alla fine della riga.`,
+  caret:()=>at("Orari"), target:()=>para(1), lenientEnd:true, need:[["shiftend"]],
+  hint:IS_MAC ? "Cmd+Shift+freccia destra." : "Shift+Fine."},
+ {id:"tx7", part:"t", phase:"x", kb:true, title:"L'email, al carattere",
+  task:`Il cursore è davanti all'indirizzo email. Senza mouse seleziona <b>solo</b> <b>info@officina23.example</b>: né un carattere in più né uno in meno.`,
+  caret:()=>at("info@"), target:()=>"info@officina23.example", exact:true, need:[["tshiftarrow"],["word"]],
+  hint:"Shift+freccia destra un carattere alla volta (puoi correggere con Shift+freccia sinistra)."},
+ {id:"tx8", part:"t", phase:"x", kb:true, title:"Fino in fondo",
+  task:`Il cursore è davanti a «Per prenotare». Senza mouse seleziona tutto fino alla fine del testo.`,
+  caret:()=>at("Per prenotare"), target:()=>para(2), need:[["docend"]],
+  hint:IS_MAC ? "Cmd+Shift+freccia giù." : "Ctrl+Shift+Fine."},
+
+ {id:"end", screen:"end"},
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g");
+const FX = STEPS.filter(s=>s.phase==="x" && s.part==="f"), TX = STEPS.filter(s=>s.phase==="x" && s.part==="t");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CONTROLLI
+   ===================================================================== */
+const names = a => a.map(n=>"«"+esc(E.dn(n))+"»").join(", ");
+function fileVerify(step, st){
+  if(step.verify) return step.verify(st);
+  if(step.delTarget){ const t=new Set(step.delTarget());
+    if(st.deleted.size===t.size && [...t].every(n=>st.deleted.has(n))) return {ok:true};
+    if(!st.deleted.size) return {ok:false, msg:`Il Cestino è ancora vuoto: seleziona e poi premi ${IS_MAC?"Cmd+Backspace":"Canc"}.`};
+    const wrong=[...st.deleted].filter(n=>!t.has(n)), miss=[...t].filter(n=>!st.deleted.has(n));
+    return {ok:false, reset:true, msg:(wrong.length?`Nel Cestino è finito anche ${names(wrong)}, che serviva. `:"")+(miss.length?`Manca ancora ${names(miss)}. `:"")};
+  }
+  const t=new Set(step.target()), miss=[...t].filter(n=>!st.sel.has(n)), extra=[...st.sel].filter(n=>!t.has(n));
+  if(!miss.length && !extra.length) return {ok:true};
+  const d = step.diag && step.diag(st, miss, extra); if(d) return {ok:false, msg:d, reset:true};
+  if(!st.sel.size) return {ok:false, msg:"Non hai selezionato niente."};
+  return {ok:false, reset:true, msg:(miss.length?`Mancano: ${names(miss)}. `:"")+(extra.length?`Da togliere: ${names(extra)}.`:"")};
+}
+const norm = s => s.replace(/\s+/g," ").trim().replace(/^[.,;:!?«»"']+|[.,;:!?«»"']+$/g,"");
+function textVerify(step, st){
+  const s=st.s, tgt=step.target();
+  let ok = s.trim().length>0 && (step.exact ? s===tgt : norm(s)===norm(tgt));
+  // Shift+Fine si ferma a fine riga visibile: se la riga va a capo nella finestra, va bene lo stesso
+  if(!ok && step.lenientEnd && st.used.has("shiftend") && s.trim() && tgt.startsWith(s.trim()) && st.start===step.caret()) ok=true;
+  if(ok) return {ok:true};
+  if(!s) return {ok:false, msg:"Non hai selezionato niente."+(step.kb?" Rimetti a posto e usa solo i tasti.":""), reset:!!step.kb};
+  const shown = s.length>60 ? s.slice(0,60)+"…" : s;
+  let m=`Hai selezionato «${esc(shown)}».`;
+  if(step.exact && tgt.startsWith(s)) m+=` Mancano ${tgt.length-s.length} caratteri: continua con Shift+→.`;
+  else if(step.exact && s.startsWith(tgt)) m+=` Hai ${s.length-tgt.length} caratter${s.length-tgt.length===1?"e":"i"} in più: torna indietro con Shift+←.`;
+  else if(norm(tgt).includes(norm(s))) m+=" È solo una parte: ne manca un pezzo.";
+  else if(norm(s).includes(norm(tgt))) m+=" Hai preso troppo testo.";
+  return {ok:false, msg:m, reset:true};
+}
+const techOk = (step, st) => (!(step.need||[]).length || step.need.some(a=>a.every(t=>st.used.has(t)))) && !(step.kb && st.mouse>0);
+const needLabel = step => (step.need||[]).map(a=>a.map(t=>TECH[t]).join(" + ")).join(" oppure ");
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(store.get("pos")||0, STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+
+  function say(kind, html, reset){
+    const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML = html + (reset?` <button type="button" class="linkbtn" id="fb-reset">↺ rimetti tutto com'era</button>`:"");
+    if(reset) $("#fb-reset").onclick=()=>{ setupEnv(STEPS[pos]); $("#l-fb").classList.add("hidden"); };
+  }
+  function refocus(step){ if(step.part==="f" && step.kb) E.focusList(); if(step.part==="t") X.el.focus(); }
+  function setupEnv(step){
+    if(step.part==="f"){ const hl = BES && step.phase==="g" && !step.noHl ? (step.target?step.target():step.delTarget?step.delTarget():[]) : [];
+      E.setup(Object.assign({}, step.setup||{}, {kb:!!step.kb, del:!!step.del, hl})); }
+    else X.setup({caret:step.caret});
+  }
+  function counter(step){
+    const grp = STEPS.filter(s=>s.part===step.part && s.phase===step.phase), k=grp.indexOf(step)+1;
+    const part = step.part==="f" ? "File" : "Testo";
+    return step.phase==="g" ? `${part} · passo ${k} di ${grp.length}` : `Sfida finale · ${part} · compito ${k} di ${grp.length}`;
+  }
+  function render(){
+    const step=STEPS[pos];
+    $("#pbar").style.width = Math.round(pos/(STEPS.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    $("#env-f").classList.toggle("hidden", step.part!=="f"); $("#env-t").classList.toggle("hidden", step.part!=="t");
+    S = {err:0, hint:false, done:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-kb").classList.toggle("hidden", !step.kb);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.title;
+    $("#l-theory").innerHTML = step.theory||"";
+    $("#l-theory").classList.toggle("hidden", !step.theory);
+    const keys = step.keys ? step.keys() : ""; $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.phase==="g" ? "Il tuo compito" : "Obiettivo";
+    $("#l-task").innerHTML = typeof step.task==="function" ? step.task() : step.task;
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    ["#b-next","#b-retry","#b-hint"].forEach(b=>$(b).classList.add("hidden")); $("#b-check").classList.remove("hidden");
+    setupEnv(step);
+  }
+  function showHintBtn(){ if(S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen) return;
+    if(S.done){ next(); return; }
+    const st = step.part==="f" ? E.state() : X.state();
+    const v = step.part==="f" ? fileVerify(step, st) : textVerify(step, st);
+    if(!v.ok){ S.err++; say("ko", "Non ancora. "+v.msg, v.reset); showHintBtn(); refocus(step); return; }
+    const t = techOk(step, st);
+    if(step.phase==="g"){
+      if(!t){ S.err++;
+        say("mid", step.kb && st.mouse>0 ? `Risultato giusto, ma hai usato il mouse (${st.mouse} clic). Qui si lavora solo con la tastiera.`
+                                           : `Risultato giusto! Però in questo passo si allena <b>${needLabel(step)}</b>. Rifallo così.`, true);
+        showHintBtn(); refocus(step); return; }
+      store.set("r_"+step.id, {ok:1, err:S.err, hint:S.hint});
+      S.done=true; say("ok", "✔ Giusto! "+(step.success||"")); paintPocket();
+    } else {
+      const s = t ? (S.hint?2:3) : 1, prev=res(step.id);
+      if(!prev || s>prev.stars) store.set("r_"+step.id, {stars:s, hint:S.hint, mouse:st.mouse});
+      S.done=true;
+      if(t) say("ok", `✔ Obiettivo raggiunto: <b style="color:var(--orange);letter-spacing:1px">${stars(s)}</b>${S.hint?" (con aiuto)":""}`);
+      else { say("mid", `✔ Obiettivo raggiunto: <b style="letter-spacing:1px">${stars(1)}</b>. ${step.kb&&st.mouse>0?`Hai usato il mouse (${st.mouse} clic). `:""}La tecnica più veloce era: <b>${needLabel(step)}</b>.`);
+             $("#b-retry").classList.remove("hidden"); }
+    }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden");
+    nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →";
+    if(!step.kb) nb.focus(); else refocus(step);
+  }
+  function hint(){ S.hint=true; const h=$("#l-hinttext"); h.innerHTML="💡 "+STEPS[pos].hint; h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); refocus(STEPS[pos]); }
+  function retry(){ S.done=false; setupEnv(STEPS[pos]); $("#l-fb").classList.add("hidden"); $("#b-retry").classList.add("hidden"); $("#b-next").classList.add("hidden"); $("#b-check").classList.remove("hidden"); }
+
+  /* tasca */
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && res(s.id));
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length); b.textContent = `🎒 Tasca (${learned.length})`;
+    $("#pocket").innerHTML = `<h3>Cosa so già fare</h3><ul>${learned.map(s=>`<li>${s.learn.k()} — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket")) $("#pocket").classList.add("hidden"); });
+
+  /* codice risultato (compatibile con verifica_codici.html: stesso formato O23-SEL e stessa firma) */
+  function sig(s){ let h=5381; const t="O23*"+s+"*SEL"; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+  function tally(group){ const r=group.map(s=>res(s.id)); return {s:r.reduce((a,x)=>a+((x||{}).stars||0),0), n:r.filter(Boolean).length, h:r.filter(x=>x&&x.hint).length}; }
+  function code(){
+    const f=tally(FX), t=tally(TX), gp=GUIDED.filter(s=>res(s.id)).length, gh=GUIDED.filter(s=>(res(s.id)||{}).hint).length;
+    const body=`O23-SEL | ${curName()||"(nome non inserito)"} | FILE ${f.s}/${FX.length*3} stelle (${f.n}/${FX.length} sfide) | TESTO ${t.s}/${TX.length*3} stelle (${t.n}/${TX.length} sfide) | suggerimenti ${f.h+t.h} | PERCORSO ${gp}/${GUIDED.length} passi guidati, aiuti ${gh}${BES?" | modalità facilitata":""}`;
+    return body+" | #"+sig(body);
+  }
+  function codeBlock(){
+    const rows = g => g.map((s,i)=>{ const r=res(s.id); return `<div class="starrow"><span class="s">${r?stars(r.stars):"—"}</span>${i+1}. ${s.title}</div>`; }).join("");
+    const f=tally(FX), t=tally(TX);
+    return `<div class="stats"><div class="stat"><small>Stelle file</small><b>${f.s}/${FX.length*3}</b></div><div class="stat"><small>Stelle testo</small><b>${t.s}/${TX.length*3}</b></div></div>
+      <details><summary class="small">Dettaglio dei compiti</summary><div style="display:flex;gap:30px;flex-wrap:wrap;margin-top:6px"><div><b>File</b>${rows(FX)}</div><div><b>Testo</b>${rows(TX)}</div></div></details>
+      <h3>Il tuo codice risultato</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} nella tua scheda di lavoro. Sono le stesse mosse che hai appena imparato!</p>
+      <textarea class="copy" readonly>${esc(code())}</textarea>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+
+  /* schermate */
+  const SCREENS = {
+    welcome(el){
+      const n=curName();
+      el.innerHTML = `<h2>🖱️ Palestra della selezione</h2>
+        <p>Prima di copiare, spostare o eliminare qualcosa, devi dire al computer <b>su che cosa</b> agire. Si chiama <b>selezionare</b>.</p>
+        <p>Imparerai <b>un passo alla volta</b>: a sinistra leggi cosa fare, a destra lo fai, poi premi <b>Controlla</b>. Alla fine c'è una sfida.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(n)}" placeholder="scrivi qui"></p>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button> <span class="small" id="w-err"></span></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(); if(v.length<3){ $("#w-err").textContent="Scrivi il tuo nome e cognome."; $("#w-name").focus(); return; } store.set("nome", v); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    finalF(el){
+      el.innerHTML = `<h2>🏁 Sfida finale · File</h2>
+        <p>Hai imparato tutto quello che serve. Ora Marta ti chiede di mettere in ordine la sua chiavetta.</p>
+        <p><b>8 compiti.</b> Ogni compito dice solo <b>che cosa</b> ottenere: <b>come</b> farlo lo scegli tu.</p>
+        <p>★★★ se usi la tecnica più veloce, ★★ se ti serve l'aiuto, ★ se arrivi al risultato in un altro modo.</p>
+        <p class="small">Se non ricordi un tasto, apri la 🎒 Tasca in alto a destra.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    introT(el){
+      const f=tally(FX);
+      el.innerHTML = `<h2>✏️ Parte 2 · Il testo</h2>
+        <p>Sfida sui file finita: <b>${f.s}/${FX.length*3} stelle</b>.</p>
+        <p>Ora le stesse idee valgono per le <b>parole</b>: nei documenti, nelle email, nei moduli. Anche qui, un passo alla volta.</p>
+        <p><button type="button" class="btn" id="s-go">Continua →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    finalT(el){
+      el.innerHTML = `<h2>🏁 Sfida finale · Testo</h2>
+        <p>Marta deve preparare il volantino dell'Open Day e ti chiede aiuto.</p>
+        <p><b>8 compiti</b>, con le stesse regole di prima: ti dico solo <b>che cosa</b> ottenere.</p>
+        <p class="small">Nei compiti con il bollino <span class="badge">SOLO TASTIERA</span> non toccare il mouse.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      el.innerHTML = `<h2>🎉 Palestra completata</h2>${codeBlock()}
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:56px"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres"></b></p></details>`;
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #");
+        if(k<0){ $("#r-vres").textContent="✘ Codice incompleto"; return; } const ok=sig(raw.slice(0,k))===raw.slice(k+4).trim();
+        $("#r-vres").textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; $("#r-vres").style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  /* pulsanti */
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-retry").onclick=retry;
+  ["#b-check","#b-hint","#b-retry","#l-speak"].forEach(id=>$(id).addEventListener("mousedown", e=>{ if(document.activeElement===E.el || document.activeElement===X.el) e.preventDefault(); }));
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance($("#l-theory").innerText+". "+$("#l-task").innerText); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>m.classList.add("hidden"); };
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; store.clear(); location.reload(); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render, check, say:(k,h)=>say(k,h,false)};
+})();
+App.render();
+</script>
+</body>
+</html>
