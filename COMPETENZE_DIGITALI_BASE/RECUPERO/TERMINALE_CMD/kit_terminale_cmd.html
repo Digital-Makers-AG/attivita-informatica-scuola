@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kit del terminale</title>
+<style>
+:root{--teal:#0B6E75;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#d5dade;--bg:#f7f5f0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.45}
+.page{max-width:900px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:28px 34px}
+h1{margin:0 0 4px;color:var(--teal);font-size:26px}
+h2{color:var(--teal);font-size:18px;margin:22px 0 8px;border-bottom:2px solid var(--teal-l);padding-bottom:4px}
+.sub{color:var(--muted);margin:0 0 14px}
+code,.c{font-family:Consolas,"Cascadia Mono","Courier New",monospace;background:#1e1e1e;color:#f0f0f0;border-radius:4px;padding:1px 6px;font-size:.95em;white-space:nowrap}
+.q{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.q div{background:var(--orange-l);border-left:5px solid var(--orange);border-radius:8px;padding:10px 14px;font-size:17px}
+.q b{display:block;font-size:13px;color:#9a4a12;text-transform:uppercase;letter-spacing:.05em}
+.two{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;align-items:start}
+pre.tree{background:#0c0c0c;color:#e6e6e6;border-radius:8px;padding:12px 14px;font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:14px;line-height:1.4;margin:0;white-space:pre}
+pre.tree .h{color:#ffb074;font-weight:bold}
+pre.tree .n{color:#7fd1d6}
+.prompt{font-family:Consolas,"Cascadia Mono",monospace;background:#0c0c0c;color:#eee;border-radius:6px;padding:8px 12px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
+.voc dt{font-weight:bold;color:var(--teal);margin-top:6px}.voc dd{margin:0 0 4px 0}
+table{border-collapse:collapse;width:100%;margin:6px 0}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--teal-l)}
+td:first-child{width:38%}
+tr.more td{background:#fafafa}
+.box{background:var(--teal-l);border-radius:8px;padding:10px 14px;margin:8px 0}
+.warn{background:#fff4cc;border-left:5px solid #c59a00;border-radius:8px;padding:10px 14px;margin:8px 0}
+ul{margin:4px 0 4px 18px;padding:0}li{margin:3px 0}
+.small{font-size:13px;color:var(--muted)}
+.printbtn{float:right;background:var(--teal);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px}
+@media(max-width:700px){.two,.q{grid-template-columns:1fr}.page{padding:18px}}
+@media print{
+  @page{size:A4;margin:10mm 12mm}
+  body{background:#fff;font-size:11px}
+  li{margin:1px 0}
+  .voc dt{margin-top:3px}
+  h2{margin:12px 0 6px;font-size:15px}
+  th,td{padding:3px 7px}
+  pre.tree{font-size:12px;padding:8px 12px}
+  .prompt{font-size:12px;padding:5px 10px}
+  .q div{padding:6px 12px;font-size:15px}
+  .box,.warn{padding:6px 12px}
+  .page{border:0;margin:0;padding:0;max-width:none}
+  .printbtn{display:none}
+  pre.tree,.prompt,code,.c{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .q div,.box,.warn,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  h2{break-after:avoid}
+  .nobreak{break-inside:avoid}
+  .pb{break-before:page}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <button class="printbtn" onclick="window.print()">🖨️ Stampa</button>
+  <h1>⌨️ Il mio kit del terminale</h1>
+  <p class="sub">Prompt dei comandi di Windows (CMD) · per aprirlo: tasto <b>Windows</b>, scrivi <b>cmd</b>, <b>Invio</b>.</p>
+
+  <div class="q">
+    <div><b>Domanda 1</b>Dove sono? → <code>cd</code></div>
+    <div><b>Domanda 2</b>Cosa c'è qui? → <code>dir</code></div>
+  </div>
+
+  <h2>Le cartelle sono un albero</h2>
+  <div class="two">
+<pre class="tree"><span class="h">C:\</span>                     ← <span class="n">radice (root)</span>
+└── Users
+    └── studente
+        └── Desktop
+            └── CLI-LAB
+                ├── scuola        ← <span class="n">padre di informatica</span>
+                │   ├── informatica  ← <span class="h">📍 SEI QUI</span>
+                │   └── grafica      ← <span class="n">sorella</span>
+                └── personale</pre>
+    <dl class="voc">
+      <dt>Radice</dt><dd>La cima dell'albero: <code>C:\</code>. Si raggiunge con <code>cd \</code></dd>
+      <dt>Cartella padre</dt><dd>Quella che contiene. Si sale con <code>cd ..</code></dd>
+      <dt>Cartella figlia</dt><dd>Quella contenuta. Si scende con <code>cd nome</code></dd>
+      <dt>Cartella corrente</dt><dd>Dove sei adesso: ogni comando lavora <b>qui</b>.</dd>
+    </dl>
+  </div>
+
+  <p style="margin:12px 0 2px"><b>Il prompt ti dice sempre dove sei:</b></p>
+  <div class="prompt">C:\Users\studente\Desktop\CLI-LAB\scuola\informatica&gt;<span style="opacity:.6">_</span></div>
+  <p class="small">Si legge da sinistra a destra: dalla radice fino alla cartella in cui sei (l'ultima prima di <b>&gt;</b>).</p>
+
+  <h2>I comandi di base</h2>
+  <table class="nobreak">
+    <tr><th>Voglio…</th><th>Comando</th><th>Esempio</th></tr>
+    <tr><td>sapere dove sono</td><td><code>cd</code></td><td><code>cd</code></td></tr>
+    <tr><td>vedere cosa c'è qui</td><td><code>dir</code></td><td><code>dir</code> · le righe con &lt;DIR&gt; sono cartelle</td></tr>
+    <tr><td>entrare in una cartella</td><td><code>cd nome</code></td><td><code>cd scuola</code> · <code>cd scuola\informatica</code></td></tr>
+    <tr><td>tornare alla cartella padre</td><td><code>cd ..</code></td><td><code>cd ..</code> · due livelli: <code>cd ..\..</code></td></tr>
+    <tr><td>andare alla radice</td><td><code>cd \</code></td><td><code>cd \</code></td></tr>
+    <tr><td>creare una cartella</td><td><code>mkdir nome</code></td><td><code>mkdir scuola</code></td></tr>
+    <tr><td>vedere l'albero</td><td><code>tree</code></td><td><code>tree</code> · con i file: <code>tree /F</code></td></tr>
+    <tr><td>creare un file di testo</td><td><code>echo testo &gt; file</code></td><td><code>echo Ciao &gt; saluto.txt</code> · <code>&gt;&gt;</code> aggiunge in fondo</td></tr>
+    <tr><td>leggere un file di testo</td><td><code>type file</code></td><td><code>type saluto.txt</code></td></tr>
+  </table>
+
+  <h2 class="pb">Se vai veloce</h2>
+  <table class="nobreak">
+    <tr><th>Voglio…</th><th>Comando</th><th>Esempio</th></tr>
+    <tr class="more"><td>rinominare</td><td><code>ren vecchio nuovo</code></td><td><code>ren prova.txt diario.txt</code></td></tr>
+    <tr class="more"><td>copiare <span class="small">(come Ctrl+C / Ctrl+V)</span></td><td><code>copy file dove</code></td><td><code>copy diario.txt ..\scuola</code></td></tr>
+    <tr class="more"><td>spostare <span class="small">(come Ctrl+X / Ctrl+V)</span></td><td><code>move file dove</code></td><td><code>move logo.png sito\immagini</code></td></tr>
+    <tr class="more"><td>eliminare un file ⚠️</td><td><code>del file</code></td><td><code>del vecchio.txt</code></td></tr>
+    <tr class="more"><td>eliminare una cartella <b>vuota</b></td><td><code>rmdir nome</code></td><td><code>rmdir temp</code></td></tr>
+    <tr class="more"><td>pulire lo schermo</td><td><code>cls</code></td><td><code>cls</code></td></tr>
+    <tr class="more"><td>chiedere aiuto su un comando</td><td><code>comando /?</code></td><td><code>mkdir /?</code> · <code>help</code></td></tr>
+  </table>
+
+  <h2>Percorso assoluto e percorso relativo</h2>
+  <div class="two nobreak">
+<pre class="tree"><span class="h">C:\</span>
+└── Users
+    └── studente
+        └── Desktop
+            └── sito          ← <span class="h">📍 sono qui</span>
+                ├── index.html
+                ├── css
+                │   └── stile.css
+                └── immagini
+                    └── logo.png</pre>
+    <div>
+      <p style="margin-top:0"><b>Assoluto</b>: l'indirizzo completo, parte dalla radice. Funziona da qualunque posto.</p>
+      <div class="prompt">C:\Users\studente\Desktop\sito\immagini\logo.png</div>
+      <p><b>Relativo</b>: la strada da <b>dove sono</b>. Più corto, ma dipende dalla posizione.</p>
+      <div class="prompt">immagini\logo.png</div>
+      <p class="small">Da <code>css</code> invece sarebbe <code>..\immagini\logo.png</code>: prima salgo in sito, poi scendo in immagini.</p>
+    </div>
+  </div>
+  <div class="box"><b>Lo ritroverai nei siti web.</b> In HTML si scrive lo stesso percorso relativo, con la barra girata: <code>&lt;img src="immagini/logo.png"&gt;</code></div>
+
+  <h2>Regole del laboratorio</h2>
+  <ul>
+    <li>Oggi si lavora <b>solo dentro <code>Desktop\CLI-LAB</code></b>.</li>
+    <li>Prima di agire guarda il prompt: <b>dove sono?</b> Il comando lavora lì.</li>
+    <li>Prima di <code>del</code> fai <code>dir</code>. Dal terminale <b>i file non vanno nel Cestino</b>.</li>
+    <li><code>rmdir</code> solo su cartelle vuote. <code>rmdir /S</code> cancella tutto quello che c'è dentro: oggi no.</li>
+  </ul>
+
+  <h2>Errori frequenti</h2>
+  <table class="nobreak">
+    <tr><th>Il terminale risponde…</th><th>Vuol dire…</th></tr>
+    <tr><td>Impossibile trovare il percorso specificato.</td><td>Quella cartella <b>qui</b> non c'è: nome sbagliato o sei nel posto sbagliato. Controlla con <code>dir</code>.</td></tr>
+    <tr><td>'xyz' non è riconosciuto come comando interno o esterno…</td><td>Hai scritto male il comando (es. <code>mkdri</code>).</td></tr>
+    <tr><td>Esiste già una sottodirectory o un file…</td><td>La cartella c'è già.</td></tr>
+    <tr><td>La directory non è vuota.</td><td><code>rmdir</code> elimina solo cartelle vuote.</td></tr>
+    <tr><td>Accesso negato.</td><td>Quella zona del disco è protetta. Torna in CLI-LAB.</td></tr>
+  </table>
+  <div class="warn">
+    <b>Trucchi utili</b>
+    <ul>
+      <li><b>Tab</b> completa i nomi: scrivi <code>cd sc</code> e premi Tab.</li>
+      <li><b>Freccia su</b> ripesca l'ultimo comando.</li>
+      <li>La barra rovesciata <b>\</b>: tasto a sinistra dell'<b>1</b> (sotto Esc).</li>
+      <li>Nomi con spazi tra virgolette: <code>mkdir "compiti estate"</code>. Meglio ancora: <code>compiti_estate</code>.</li>
+      <li>In Esplora file vedi «Documenti», ma nel terminale la cartella si chiama <b>Documents</b> (e «Download» è <b>Downloads</b>).</li>
+    </ul>
+    <p style="margin:6px 0 0"><b>L'errore del terminale è un'informazione, non una punizione.</b> Leggilo: ti dice cosa non va.</p>
+  </div>
+</div>
+</body>
+</html>

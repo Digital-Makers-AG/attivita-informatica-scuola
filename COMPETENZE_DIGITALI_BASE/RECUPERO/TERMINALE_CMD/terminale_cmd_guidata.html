@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palestra del terminale</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px;--tfs:15px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px;--tfs:18px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1320px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+code,.cmd{font-family:Consolas,"Cascadia Mono","Courier New",monospace;background:#1e1e1e;color:#f0f0f0;border-radius:4px;padding:1px 6px;font-size:.93em;white-space:nowrap}
+.path{font-family:Consolas,"Cascadia Mono","Courier New",monospace;background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.93em;word-break:break-all}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.hintb{background:#fff;color:#9a4a12;border:2px solid var(--orange);padding:8px 14px}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px}
+.screen{max-width:720px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:150px}.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{color:var(--muted)}
+.starrow{font-size:14px;margin:2px 0}.starrow .s{color:var(--orange);letter-spacing:1px;display:inline-block;width:52px}
+textarea.copy{width:100%;height:78px;font-family:"Courier New",monospace;font-size:14px}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:18px;align-items:start}
+@media(max-width:980px){.work{grid-template-columns:1fr}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em}
+.theory p{margin:0 0 10px}
+.keybox{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1.02em}
+.keybox .alt{font-size:13px;color:var(--muted);width:100%}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#9a4a12;font-weight:bold;margin-bottom:2px}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(420px,calc(100vw - 32px));max-height:75vh;overflow:auto}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 7px}.pocket ul{padding-left:18px;margin:0}
+/* terminale + mappa */
+.stage{display:grid;grid-template-columns:1fr 270px;gap:14px;align-items:start}
+@media(max-width:1180px){.stage{grid-template-columns:1fr}}
+.term{background:#0c0c0c;color:#cccccc;border-radius:8px;border:1px solid #333;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.term-bar{background:#1f1f1f;color:#ddd;font-size:13px;padding:6px 12px;display:flex;align-items:center;gap:8px}
+.term-bar .x{margin-left:auto;color:#888}
+.term-body{height:470px;overflow:auto;padding:10px 12px;font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:var(--tfs);line-height:1.35;cursor:text}
+.term-body pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:inherit}
+.term-body .err{color:#ff8a80}
+.term-line{display:flex;white-space:pre}
+.term-line input{flex:1;background:transparent;border:0;outline:none;color:#fff;font-family:inherit;font-size:inherit;padding:0;margin:0;caret-color:#fff;min-width:40px}
+.map{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.map h3{margin:0 0 8px;font-size:14px;color:var(--teal);text-transform:uppercase;letter-spacing:.05em}
+.map .crumb{font-size:12px;color:var(--muted);margin-bottom:6px}
+.mnode{padding:2px 0 2px 6px;white-space:nowrap;border-radius:5px}
+.mnode.here{background:var(--orange-l);box-shadow:inset 3px 0 0 var(--orange);font-weight:bold}
+.mnode .tag{font-size:11px;background:var(--orange);color:#fff;border-radius:8px;padding:0 6px;margin-left:6px;font-weight:bold}
+.mnode .ptag{font-size:11px;color:var(--teal);margin-left:6px}
+.mnode.file{color:#555}
+.mkids{margin-left:12px;border-left:1px dashed #b9c2c9;padding-left:6px}
+.map-hidden{color:var(--muted);font-size:13px;background:#f6f6f6;border-radius:8px;padding:10px}
+footer{max-width:1320px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:520px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:70;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto}
+</style>
+</head>
+<body>
+<header>
+  <h1>⌨️ Palestra del terminale</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false">🎒 Kit comandi</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Comandi che conosco"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" aria-live="polite">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="quiz hidden" id="l-quiz"></div>
+      <div class="fb hidden" id="l-fb"></div>
+      <div class="hinttext hidden" id="l-hinttext"></div>
+      <div class="actions">
+        <button type="button" class="btn alt" id="b-check">Controlla</button>
+        <button type="button" class="btn hidden" id="b-next">Avanti → <span style="font-size:12px;opacity:.8">(Invio)</span></button>
+        <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+      </div>
+      <p class="small" id="l-auto">Quando il compito è fatto, te lo dico da solo. «Controlla» ti spiega cosa manca.</p>
+    </aside>
+
+    <div class="stage">
+      <div class="term">
+        <div class="term-bar">▪ Prompt dei comandi <span class="x">— ☐ ✕</span></div>
+        <div class="term-body" id="t-body">
+          <pre id="t-out"></pre>
+          <div class="term-line"><span id="t-prompt"></span><input id="t-in" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Scrivi un comando"></div>
+        </div>
+      </div>
+      <div class="map" id="map"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">Tempo finito? Prendi il codice</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, mappa sempre visibile anche nella sfida, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g8">cd ..</button> ·
+        <button type="button" class="linkbtn" data-jump="g16">i file</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi guidati saltati risultano nel codice (PERCORSO x/22).</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const mem = {};
+const store = { get(k){ try{ const v=localStorage.getItem("o23cli_"+k); return v?JSON.parse(v):(mem[k]??null); }catch(e){ return mem[k]??null; } },
+                set(k,v){ mem[k]=v; try{ localStorage.setItem("o23cli_"+k, JSON.stringify(v)); }catch(e){} },
+                clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith("o23cli_")).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; } };
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const eq = (a,b) => a.toLowerCase()===b.toLowerCase();
+const stars = n => "★".repeat(n)+"☆".repeat(3-n);
+const C = s => `<span class="cmd">${esc(s)}</span>`;
+const K = (...keys) => keys.map(k => `<span class="kbd">${k}</span>`).join("+");
+const PATH = s => `<span class="path">${esc(s)}</span>`;
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+
+/* =====================================================================
+   FILE SYSTEM SIMULATO (C:\)
+   ===================================================================== */
+const T0 = "29/09/2026  08:00";
+const Dd = (name, children=[]) => ({name, dir:true, children, t:T0});
+const Ff = (name, text="") => ({name, dir:false, text, t:T0});
+const HOME = ["Users","studente"], DESK = HOME.concat("Desktop"), LAB = DESK.concat("CLI-LAB");
+const P = (...s) => LAB.concat(s);
+function world(lab, extraDesk=[]){
+  return Dd("C:",[ Dd("Program Files",[Dd("Google",[])]),
+    Dd("Users",[ Dd("studente",[ Dd("Desktop",[...(lab?[Dd("CLI-LAB",lab)]:[]), ...extraDesk]), Dd("Documents",[Ff("relazione.docx","[documento Word]")]), Dd("Downloads",[]), Dd("Music",[]), Dd("Pictures",[]) ]) ]),
+    Dd("Windows",[Dd("System32",[])]) ]);
+}
+const LAB_B = () => [Dd("scuola"), Dd("personale")];
+const LAB_C = (personale=[]) => [Dd("scuola",[Dd("informatica"), Dd("grafica")]), Dd("personale",personale)];
+
+/* =====================================================================
+   TERMINALE (Prompt dei comandi simulato)
+   ===================================================================== */
+const TERM = (()=>{
+  const out=$("#t-out"), inp=$("#t-in"), pr=$("#t-prompt"), body=$("#t-body");
+  const SERIAL="5A3C-1F2B", FREE="98.765.432.100";
+  let root, cwd=[], log=[], hist=[], hi=0, pending=null, tab=null;
+  const node = path => { let n=root; for(const p of path){ n=n.dir && n.children.find(c=>eq(c.name,p)); if(!n) return null; } return n; };
+  const real = path => { const r=[]; let n=root; for(const p of path){ n=n.children.find(c=>eq(c.name,p)); r.push(n.name); } return r; };
+  const pstr = path => "C:\\" + real(path).join("\\");
+  const canWrite = path => path.length>=2 && eq(path[0],"Users") && eq(path[1],"studente");
+  function now(){ const d=new Date(), z=n=>String(n).padStart(2,"0"); return `${z(d.getDate())}/${z(d.getMonth()+1)}/${d.getFullYear()}  ${z(d.getHours())}:${z(d.getMinutes())}`; }
+  function print(s, cls){ const span=document.createElement("span"); if(cls) span.className=cls; span.textContent=s+"\n"; out.appendChild(span);
+    while(out.childNodes.length>600) out.removeChild(out.firstChild); }
+  function promptText(){ return pending ? "" : pstr(cwd)+">"; }
+  function refresh(){ pr.textContent=promptText(); body.scrollTop=body.scrollHeight; }
+
+  function resolve(p, base=cwd){
+    p=p.replace(/\//g,"\\").trim(); let cur;
+    if(/^[a-z]:/i.test(p)){ if(!/^c:/i.test(p)) return null; p=p.slice(2); cur = p.startsWith("\\") ? [] : [...base]; }
+    else cur = p.startsWith("\\") ? [] : [...base];
+    for(const s of p.split("\\")){ if(!s||s===".") continue; if(s===".."){ cur.pop(); continue; }
+      const n=node(cur), c=n&&n.dir&&n.children.find(x=>eq(x.name,s)); if(!c) return null; cur.push(c.name); }
+    return cur;
+  }
+  function split(p){ p=p.replace(/\//g,"\\"); const i=p.lastIndexOf("\\"); if(i<0) return {dir:null, name:p};
+    return {dir: p.slice(0,i+1)==="\\" || /^[a-z]:\\$/i.test(p.slice(0,i+1)) ? p.slice(0,i+1) : p.slice(0,i), name:p.slice(i+1)}; }
+  function parentOf(p){ const s=split(p); const par = s.dir===null ? [...cwd] : resolve(s.dir); return {par, name:s.name}; }
+  function tokens(s){ const t=[]; let cur="", q=false, had=false; for(const ch of s){ if(ch==='"'){ q=!q; had=true; continue; } if(!q && /\s/.test(ch)){ if(cur||had) t.push(cur); cur=""; had=false; continue; } cur+=ch; } if(cur||had) t.push(cur); return t; }
+  const badName = n => /[<>:"|?*]/.test(n);
+  const sortN = a => a.slice().sort((x,y)=>x.name.toLowerCase().localeCompare(y.name.toLowerCase(),"it",{numeric:true}));
+  const size = f => new TextEncoder().encode(f.text).length;
+  const num = n => n.toLocaleString("it-IT");
+
+  const HELP = {
+    cd:"Visualizza il nome della directory corrente o la modifica.\n\nCD [percorso]\nCD ..      Passa alla directory padre.\nCD \\       Passa alla directory principale (radice).",
+    dir:"Visualizza l'elenco dei file e delle sottodirectory di una directory.\n\nDIR [percorso]",
+    mkdir:"Crea una directory.\n\nMKDIR [unità:]percorso\nMD [unità:]percorso\n\nPer un nome con spazi usa le virgolette: MKDIR \"il mio sito\"",
+    tree:"Visualizza graficamente la struttura delle cartelle di un'unità o di un percorso.\n\nTREE [percorso] [/F]\n\n  /F   Visualizza anche i nomi dei file in ogni cartella.",
+    echo:"Visualizza messaggi.\n\nECHO [messaggio]\nECHO messaggio > file    scrive il messaggio nel file (lo sostituisce)\nECHO messaggio >> file   aggiunge il messaggio in fondo al file",
+    type:"Visualizza il contenuto di uno o più file di testo.\n\nTYPE [unità:][percorso]nomefile",
+    ren:"Rinomina uno o più file.\n\nREN [unità:][percorso]nomefile1 nomefile2\n\nNon è possibile specificare una nuova unità o un nuovo percorso per il file di destinazione.",
+    copy:"Copia uno o più file in un'altra posizione.\n\nCOPY origine destinazione",
+    move:"Sposta file e rinomina file e directory.\n\nMOVE origine destinazione",
+    del:"Elimina uno o più file.\n\nDEL nomi\n\nATTENZIONE: i file eliminati con DEL non vanno nel Cestino.",
+    rmdir:"Rimuove (elimina) una directory.\n\nRMDIR [/S] [/Q] percorso\nRD [/S] [/Q] percorso\n\n  /S  Rimuove anche tutti i file e le sottodirectory.\n  /Q  Non chiede conferma con /S.",
+    cls:"Cancella il contenuto dello schermo.\n\nCLS",
+    help:"Fornisce informazioni sui comandi di Windows.\n\nHELP [comando]"
+  };
+  HELP.md=HELP.mkdir; HELP.rd=HELP.rmdir; HELP.rename=HELP.ren; HELP.erase=HELP.del; HELP.chdir=HELP.cd;
+
+  function tree(n, prefix, files){
+    const L=[], dirs=sortN(n.children.filter(c=>c.dir)), fl=sortN(n.children.filter(c=>!c.dir));
+    if(files && fl.length){ const pad=dirs.length?"│   ":"    "; fl.forEach(f=>L.push(prefix+pad+f.name)); L.push(prefix+pad); }
+    dirs.forEach((d,i)=>{ const last=i===dirs.length-1; L.push(prefix+(last?"└───":"├───")+d.name); L.push(...tree(d, prefix+(last?"    ":"│   "), files)); });
+    return L;
+  }
+  function run(raw){
+    const line=raw.trim(); const m=line.match(/^([a-zA-Z]+)(.*)$/s);
+    if(!line) return {ok:true, name:""};
+    if(!m){ print(`'${line.split(/\s/)[0]}' non è riconosciuto come comando interno o esterno,\nun programma eseguibile o un file batch.`, "err"); return {ok:false, name:"?"}; }
+    const name=m[1].toLowerCase(), rest=m[2];
+    const err = s => { print(s,"err"); return {ok:false, name, rest}; };
+    const ok = () => ({ok:true, name, rest});
+    if(rest.trim()==="/?" && HELP[name]){ print(HELP[name]); return ok(); }
+    switch(name){
+      case "cd": case "chdir": {
+        let a=rest.trim().replace(/^\/d\s+/i,"").replace(/"/g,"").trim();
+        if(!a){ print(pstr(cwd)); return ok(); }
+        if(/^[a-z]:$/i.test(a)){ if(!eq(a,"c:")) return err("Impossibile trovare il percorso specificato."); print(pstr(cwd)); return ok(); }
+        const r=resolve(a); if(!r) return err("Impossibile trovare il percorso specificato.");
+        if(!node(r).dir) return err("Nome della directory non valido.");
+        cwd=real(r); return ok(); }
+      case "dir": {
+        const a=tokens(rest).filter(x=>!x.startsWith("/"))[0];
+        const r = a ? resolve(a) : cwd; const n = r && node(r);
+        print(" Il volume nell'unità C non ha etichetta.\n Numero di serie del volume: "+SERIAL+"\n");
+        if(!n){ print(" Directory di "+pstr(a && parentOf(a).par || cwd)+"\n"); return err("File non trovato"); }
+        if(!n.dir){ print(" Directory di "+pstr(r.slice(0,-1))+"\n"); print(`${n.t}${num(size(n)).padStart(18)} ${n.name}`); print(`${"1".padStart(16)} File ${num(size(n)).padStart(14)} byte`); return ok(); }
+        print(" Directory di "+pstr(r)+"\n");
+        const rows=[]; if(r.length) rows.push(`${n.t}    <DIR>          .`, `${n.t}    <DIR>          ..`);
+        const kids=sortN(n.children); let fb=0, nf=0;
+        kids.forEach(c=>{ if(c.dir) rows.push(`${c.t}    <DIR>          ${c.name}`); else { rows.push(`${c.t}${num(size(c)).padStart(18)} ${c.name}`); fb+=size(c); nf++; } });
+        rows.forEach(x=>print(x));
+        print(`${String(nf).padStart(16)} File ${num(fb).padStart(14)} byte`);
+        print(`${String(kids.length-nf+(r.length?2:0)).padStart(16)} Directory  ${FREE} byte disponibili`);
+        return ok(); }
+      case "mkdir": case "md": {
+        const ts=tokens(rest); if(!ts.length) return err("Sintassi del comando errata.");
+        let bad=false;
+        for(const t of ts){
+          const s=split(t); if(badName(s.name) || !s.name){ print("Sintassi del nome del file, della directory o del volume non corretta.","err"); bad=true; continue; }
+          // crea anche le cartelle intermedie, come fa CMD
+          let base = t.replace(/\//g,"\\"), cur;
+          if(/^[a-z]:\\/i.test(base)){ cur=[]; base=base.slice(3); } else if(base.startsWith("\\")){ cur=[]; base=base.slice(1); } else cur=[...cwd];
+          const segs=base.split("\\").filter(x=>x && x!=="."); let created=false, fail=false;
+          for(let i=0;i<segs.length;i++){ const sg=segs[i];
+            if(sg===".."){ cur.pop(); continue; }
+            const n=node(cur), c=n.children.find(x=>eq(x.name,sg));
+            if(c){ if(i===segs.length-1){ print(`Esiste già una sottodirectory o un file ${t}.`,"err"); fail=true; } else if(!c.dir){ print("Impossibile trovare il percorso specificato.","err"); fail=true; break; } cur.push(c.name); continue; }
+            if(!canWrite(cur)){ print("Accesso negato.","err"); fail=true; break; }
+            const nd=Dd(sg,[]); nd.t=now(); n.children.push(nd); cur.push(sg); created=true; }
+          if(fail) bad=true;
+        }
+        return bad ? {ok:false, name, rest} : ok(); }
+      case "tree": {
+        const ts=tokens(rest), files=ts.some(x=>eq(x,"/f")), a=ts.find(x=>!x.startsWith("/"));
+        const r = a ? resolve(a) : cwd; if(!r) return err("Percorso non valido - "+a.toUpperCase());
+        const n=node(r); if(!n.dir) return err("Percorso non valido - "+a.toUpperCase());
+        print("Elenco del percorso delle cartelle\nNumero di serie del volume: "+SERIAL);
+        print(a ? pstr(r).toUpperCase() : (r.length ? "C:." : "C:\\"));
+        const L=tree(n,"",files); if(!n.children.some(c=>c.dir) && !(files && n.children.length)) print("Non esistono sottocartelle\n"); else { L.forEach(x=>print(x)); print(""); }
+        return ok(); }
+      case "echo": {
+        let i=-1, q=false; for(let k=0;k<rest.length;k++){ const ch=rest[k]; if(ch==='"') q=!q; if(ch===">" && !q){ i=k; break; } }
+        if(i<0){ const txt=rest.replace(/^[\s.]/,""); print(txt ? txt : "ECHO attivato."); return ok(); }
+        const app = rest[i+1]===">"; const text=rest.slice(0,i).replace(/^\s/,"").replace(/\s+$/,""); const target=tokens(rest.slice(i+(app?2:1)))[0];
+        if(!target) return err("Sintassi del comando errata.");
+        const {par, name:fn}=parentOf(target); if(!par) return err("Impossibile trovare il percorso specificato.");
+        if(badName(fn)) return err("Sintassi del nome del file, della directory o del volume non corretta.");
+        if(!canWrite(par)) return err("Accesso negato.");
+        const d=node(par), ex=d.children.find(x=>eq(x.name,fn));
+        if(ex && ex.dir) return err("Accesso negato.");
+        const line2=(text||"ECHO attivato.")+"\n";
+        if(ex){ ex.text = app ? ex.text+line2 : line2; ex.t=now(); } else { const f=Ff(fn,line2); f.t=now(); d.children.push(f); }
+        return ok(); }
+      case "type": {
+        const ts=tokens(rest); if(!ts.length) return err("Sintassi del comando errata.");
+        const r=resolve(ts[0]); if(!r) return err("Impossibile trovare il file specificato.");
+        const n=node(r); if(n.dir) return err("Accesso negato.");
+        print(n.text.replace(/\n$/,"")); return ok(); }
+      case "ren": case "rename": {
+        const ts=tokens(rest); if(ts.length!==2) return err("Sintassi del comando errata.");
+        if(/[\\/]/.test(ts[1])) return err("Sintassi del comando errata.");
+        const r=resolve(ts[0]); if(!r) return err("Impossibile trovare il file specificato.");
+        if(!canWrite(r)) return err("Accesso negato.");
+        const d=node(r.slice(0,-1)), n=node(r);
+        if(badName(ts[1])) return err("Sintassi del nome del file, della directory o del volume non corretta.");
+        if(d.children.some(x=>x!==n && eq(x.name,ts[1]))) return err("Esiste già un file con lo stesso nome oppure non è possibile trovare il file.");
+        n.name=ts[1]; return ok(); }
+      case "copy": case "move": {
+        const ts=tokens(rest).filter(x=>!/^\/[a-z-]+$/i.test(x)); if(!ts.length) return err("Sintassi del comando errata.");
+        const r=resolve(ts[0]); if(!r) return err("Impossibile trovare il file specificato.");
+        const src=node(r); if(name==="copy" && src.dir) return err("Impossibile trovare il file specificato.");
+        if(name==="move" && !canWrite(r)) return err("Accesso negato.");
+        let destDir, destName=src.name; const dt=ts[1]||".";
+        const dr=resolve(dt);
+        if(dr && node(dr).dir){ destDir=dr; }
+        else if(dr && !node(dr).dir){ destDir=dr.slice(0,-1); destName=node(dr).name; }
+        else { const {par, name:nn}=parentOf(dt); if(!par) return err("Impossibile trovare il percorso specificato."); destDir=par; destName=nn; }
+        if(!canWrite(destDir)) return err("Accesso negato.");
+        const dd=node(destDir), srcDir=node(r.slice(0,-1));
+        if(dd===srcDir && eq(destName,src.name)){ if(name==="copy"){ print("Impossibile copiare un file su se stesso.","err"); print("        0 file copiati.","err"); return {ok:false,name,rest}; } return ok(); }
+        if(src.dir && r.every((x,i)=>destDir[i]!==undefined && eq(destDir[i],x))) return err("Impossibile spostare una cartella dentro sé stessa.");
+        const ex=dd.children.findIndex(x=>eq(x.name,destName));
+        if(ex>=0){ if(dd.children[ex].dir) return err("Accesso negato."); dd.children.splice(ex,1); }
+        if(name==="copy"){ const c=JSON.parse(JSON.stringify(src)); c.name=destName; dd.children.push(c); print("        1 file copiati."); }
+        else { srcDir.children.splice(srcDir.children.indexOf(src),1); src.name=destName; dd.children.push(src);
+          if(cwd.length>=r.length && r.every((x,i)=>eq(cwd[i],x))) cwd=real(destDir.concat(destName, cwd.slice(r.length)));
+          print(src.dir ? "        1 directory spostate." : "        1 file spostati."); }
+        return ok(); }
+      case "del": case "erase": {
+        const ts=tokens(rest).filter(x=>!/^\/[a-z]$/i.test(x)); if(!ts.length) return err("Sintassi del comando errata.");
+        let bad=false;
+        for(const t of ts){
+          if(t.includes("*")){ const {par, name:pat}=parentOf(t); const re=new RegExp("^"+pat.replace(/[.+^${}()|[\]\\]/g,"\\$&").replace(/\*/g,".*").replace(/\?/g,".")+"$","i");
+            const d=par&&node(par); const hit=d?d.children.filter(x=>!x.dir && re.test(x.name)):[];
+            if(!hit.length){ print("Impossibile trovare "+(par?pstr(par)+"\\":"")+pat,"err"); bad=true; continue; }
+            if(!canWrite(par)){ print("Accesso negato.","err"); bad=true; continue; }
+            if(pat==="*"||pat==="*.*"){ ask(`${pstr(par)}\\*, procedere (S/N)? `, ()=>{ d.children=d.children.filter(x=>x.dir); }); continue; }
+            d.children=d.children.filter(x=>!hit.includes(x)); continue; }
+          const r=resolve(t); if(!r){ const {par}=parentOf(t); print("Impossibile trovare "+(par?pstr(par)+"\\"+split(t).name:t),"err"); bad=true; continue; }
+          if(!canWrite(r)){ print("Accesso negato.","err"); bad=true; continue; }
+          const n=node(r);
+          if(n.dir){ ask(`${pstr(r)}\\*, procedere (S/N)? `, ()=>{ n.children=n.children.filter(x=>x.dir); }); continue; }
+          const d=node(r.slice(0,-1)); d.children.splice(d.children.indexOf(n),1);
+        }
+        return bad ? {ok:false,name,rest} : ok(); }
+      case "rmdir": case "rd": {
+        const ts=tokens(rest), S=ts.some(x=>eq(x,"/s")), Q=ts.some(x=>eq(x,"/q")), a=ts.filter(x=>!x.startsWith("/"));
+        if(!a.length) return err("Sintassi del comando errata.");
+        let bad=false;
+        for(const t of a){
+          const r=resolve(t); if(!r){ print("Impossibile trovare il file specificato.","err"); bad=true; continue; }
+          const n=node(r); if(!n.dir){ print("Nome della directory non valido.","err"); bad=true; continue; }
+          if(!canWrite(r) || r.length<=2){ print("Accesso negato.","err"); bad=true; continue; }
+          if(cwd.length>=r.length && r.every((x,i)=>eq(cwd[i],x))){ print("Impossibile accedere al file. Il file è utilizzato da un altro processo.","err"); bad=true; continue; }
+          const d=node(r.slice(0,-1)), rm=()=>d.children.splice(d.children.indexOf(n),1);
+          if(n.children.length && !S){ print("La directory non è vuota.","err"); bad=true; continue; }
+          if(S && !Q){ ask(`${t}, procedere (S/N)? `, rm); continue; }
+          rm();
+        }
+        return bad ? {ok:false,name,rest} : ok(); }
+      case "cls": out.textContent=""; return ok();
+      case "help": print("Per ulteriori informazioni su uno specifico comando, digitare HELP nome comando\n(elenco ridotto della palestra)\n\nCD       Visualizza il nome della directory corrente o la modifica.\nCLS      Cancella lo schermo.\nCOPY     Copia uno o più file in un'altra posizione.\nDEL      Elimina uno o più file.\nDIR      Visualizza l'elenco dei file e delle sottodirectory di una directory.\nECHO     Visualizza messaggi (e con > li scrive in un file).\nHELP     Fornisce informazioni sui comandi di Windows.\nMKDIR    Crea una directory.\nMOVE     Sposta uno o più file da una directory a un'altra.\nREN      Rinomina uno o più file.\nRMDIR    Rimuove una directory.\nTREE     Visualizza graficamente la struttura delle directory.\nTYPE     Visualizza il contenuto di un file di testo.\n"); return ok();
+      case "exit": print("(Nella palestra il terminale resta aperto. Sul PC vero EXIT chiude la finestra.)"); return ok();
+      default: return err(`'${m[1]}' non è riconosciuto come comando interno o esterno,\nun programma eseguibile o un file batch.`);
+    }
+  }
+  function ask(msg, yes){ pending={msg, yes}; print(msg.replace(/\s$/,""), ""); out.lastChild.textContent=msg; }
+  function submit(){
+    const v=inp.value; inp.value=""; tab=null;
+    if(pending){ const p=pending; pending=null; out.lastChild.textContent = p.msg+v+"\n"; if(/^s/i.test(v.trim())) p.yes(); print(""); refresh(); App.onCommand({ok:true,name:"confirm",rest:v}); return; }
+    if(!v.trim() && App.isDone()){ App.next(); return; }
+    print(promptText()+v);
+    if(v.trim()){ hist.push(v); } hi=hist.length;
+    const before=[...cwd]; const r=run(v); const e=Object.assign({raw:v, before, after:[...cwd]}, r);
+    if(v.trim()) log.push(e);
+    if(!pending && v.trim()) print("");
+    refresh(); App.onCommand(e);
+  }
+  function complete(){
+    const v=inp.value; let i=v.length, q=false, start=0; for(let k=0;k<v.length;k++){ if(v[k]==='"') q=!q; if(v[k]===" " && !q) start=k+1; }
+    if(!tab || tab.base!==v){ const tokRaw=v.slice(start).replace(/"/g,""); const s=split(tokRaw);
+      const dir = s.dir===null ? cwd : resolve(s.dir); const d=dir&&node(dir);
+      const list = d ? sortN(d.children).filter(c=>c.name.toLowerCase().startsWith(s.name.toLowerCase())).map(c=>c.name) : [];
+      tab={head:v.slice(0,start), pre:s.dir===null?"":s.dir.replace(/\\?$/,"\\"), list, k:-1}; }
+    if(!tab.list.length) return;
+    tab.k=(tab.k+1)%tab.list.length; let full=tab.pre+tab.list[tab.k]; if(/\s/.test(full)) full=`"${full}"`;
+    inp.value=tab.head+full; tab.base=inp.value;
+  }
+  inp.addEventListener("keydown", e=>{
+    if(e.key==="Enter"){ e.preventDefault(); submit(); }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); if(hi>0){ hi--; inp.value=hist[hi]; } }
+    else if(e.key==="ArrowDown"){ e.preventDefault(); if(hi<hist.length-1){ hi++; inp.value=hist[hi]; } else { hi=hist.length; inp.value=""; } }
+    else if(e.key==="Tab"){ e.preventDefault(); complete(); }
+    else if(e.key==="Escape"){ e.preventDefault(); inp.value=""; tab=null; }
+    else if(e.key.length===1 || e.key==="Backspace") tab=null;
+  });
+  body.addEventListener("mouseup", ()=>{ if(!getSelection().toString()) inp.focus({preventScroll:true}); });
+
+  function setup(c){ root=c.fs(); cwd=real(c.cwd); log=[]; pending=null; tab=null; out.textContent="";
+    print("Microsoft Windows [Versione 10.0.22631.4317]\n(c) Microsoft Corporation. Tutti i diritti riservati.\n"); refresh(); setTimeout(()=>inp.focus({preventScroll:true}),30); }
+  return { setup, focus:()=>inp.focus({preventScroll:true}), el:inp,
+    state:()=>({root, cwd:[...cwd], log:log.slice(), node, pstr}) };
+})();
+
+/* =====================================================================
+   MAPPA (l'albero delle cartelle con "sei qui")
+   ===================================================================== */
+function drawMap(show){
+  const m=$("#map");
+  if(!show){ m.innerHTML=`<h3>🗺️ Mappa</h3><div class="map-hidden">Nella sfida la mappa è nascosta.<br>Per vedere dove sei usa ${C("cd")}, per vedere cosa c'è ${C("dir")}, per l'albero ${C("tree")}.</div>`; return; }
+  const st=TERM.state(); const cw=st.cwd.map(x=>x.toLowerCase());
+  const isPre = (a,b) => a.length<=b.length && a.every((x,i)=>x===b[i]);
+  const labL=LAB.map(x=>x.toLowerCase()), hasLab=!!st.node(LAB);
+  function visible(path){ const p=path.map(x=>x.toLowerCase());
+    return isPre(p,cw) || (hasLab && (isPre(p,labL) || isPre(labL,p))) || (p.length===cw.length+1 && isPre(cw,p)) || p.length<=1; }
+  function draw(n, path){
+    const p=path.map(x=>x.toLowerCase()), here=p.length===cw.length && isPre(p,cw), parent=p.length===cw.length-1 && isPre(p,cw) && cw.length>0;
+    const label = path.length ? n.name : "C:\\";
+    let h=`<div class="mnode${here?" here":""}${n.dir?"":" file"}">${n.dir?"📁":"📄"} ${esc(label)}${here?'<span class="tag">📍 SEI QUI</span>':""}${parent?'<span class="ptag">↑ padre (cd ..)</span>':""}</div>`;
+    if(n.dir){ const kids=n.children.slice().sort((a,b)=>(b.dir-a.dir)||a.name.localeCompare(b.name,"it")).filter(c=>visible(path.concat(c.name)));
+      if(kids.length) h+=`<div class="mkids">${kids.map(c=>draw(c, path.concat(c.name))).join("")}</div>`; }
+    return h;
+  }
+  m.innerHTML=`<h3>🗺️ Mappa delle cartelle</h3><div class="crumb">Il percorso del prompt, disegnato come albero.</div>${draw(st.root, [])}`;
+}
+
+/* =====================================================================
+   AIUTANTI PER I CONTROLLI
+   ===================================================================== */
+const isDir = (st,p) => { const n=st.node(p); return !!(n && n.dir); };
+const isFile = (st,p) => { const n=st.node(p); return !!(n && !n.dir); };
+const text = (st,p) => (st.node(p)||{}).text||"";
+const at = (st,p) => st.cwd.length===p.length && st.cwd.every((x,i)=>eq(x,p[i]));
+const ran = (st, fn) => st.log.some(fn);
+const isName = (e, ...n) => n.includes(e.name);
+function findAll(st, name){ const out=[]; (function walk(n,p){ (n.children||[]).forEach(c=>{ const q=p.concat(c.name); if(eq(c.name,name)) out.push(q); if(c.dir) walk(c,q); }); })(st.node(HOME),HOME); return out; }
+const where = (st,p) => PATH(st.pstr(p));
+function misplaced(st, name, want){ const f=findAll(st,name).filter(p=>!(p.length===want.length && p.every((x,i)=>eq(x,want[i])))); return f.length ? `Hai creato «${esc(name)}» in ${where(st,f[0].slice(0,-1))}. Ogni comando lavora <b>nella cartella in cui sei</b>: guarda il prompt prima di premere Invio.` : null; }
+const lastFail = st => { const e=[...st.log].reverse().find(x=>!x.ok); return e; };
+const failMsg = st => { const e=lastFail(st); return e ? ` L'ultimo errore era su ${C(e.raw.trim())}: leggi bene cosa ti ha risposto il terminale.` : ""; };
+
+/* =====================================================================
+   I PASSI
+   ===================================================================== */
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ /* ---------- PARTE 1 · DOVE SONO, COME MI MUOVO ---------- */
+ {id:"g1", part:1, title:"Dove sono?",
+  theory:`<p>Finora abbiamo detto al computer cosa fare <b>cliccando</b>. Oggi glielo diciamo <b>scrivendo</b>.</p><p>La scritta prima del cursore si chiama <b>prompt</b>. Non è decorativa: è l'<b>indirizzo</b> della cartella in cui ti trovi.</p>`,
+  keys:()=>`${C("cd")} + ${K("Invio")} = <b>dove sono?</b>`,
+  task:`Scrivi ${C("cd")} e premi ${K("Invio")}: il computer ti risponde dove sei.`,
+  setup:{fs:()=>world(null), cwd:HOME},
+  verify:st=> ran(st,e=>isName(e,"cd","chdir") && !e.rest.trim() && e.ok) ? {ok:true} : {ok:false, msg:`Scrivi solo ${C("cd")}, senza altro, e premi Invio.`+failMsg(st)},
+  hint:"Clicca nel riquadro nero, scrivi le due lettere cd e premi Invio.",
+  success:`Ti ha risposto ${PATH("C:\\Users\\studente")}. Guarda la mappa a destra: 📍 è lo stesso posto.`,
+  learn:{k:"cd", d:"dove sono?"}},
+
+ {id:"g2", part:1, title:"Cosa c'è qui?",
+  theory:`<p>Seconda domanda da fare sempre: <b>cosa c'è in questa cartella?</b></p><p>${C("dir")} elenca il contenuto. Le righe con ${C("<DIR>")} sono <b>cartelle</b>, le altre sono file.</p>`,
+  keys:()=>`${C("dir")} = <b>cosa c'è qui?</b>`,
+  task:`Scrivi ${C("dir")} e premi Invio.`,
+  setup:{fs:()=>world(null), cwd:HOME},
+  verify:st=> ran(st,e=>e.name==="dir" && e.ok) ? {ok:true} : {ok:false, msg:`Scrivi ${C("dir")} e premi Invio.`+failMsg(st)},
+  hint:"Scrivi dir e premi Invio.",
+  success:`Vedi Desktop, Documents, Downloads… Attenzione: in Esplora file vedi «Documenti», ma il nome vero della cartella è <b>Documents</b>. Il terminale usa i nomi veri.`,
+  learn:{k:"dir", d:"cosa c'è qui?"}},
+
+ {id:"g3", part:1, title:"Entrare in una cartella",
+  theory:`<p>${C("cd")} seguito dal nome di una cartella ti fa <b>entrare</b> lì dentro. È come il doppio clic su una cartella.</p><p>Maiuscole e minuscole non contano, gli errori di battitura sì.</p>`,
+  keys:()=>`${C("cd nomecartella")} = entra`,
+  task:`Entra nella cartella ${C("Desktop")}.`,
+  setup:{fs:()=>world(null), cwd:HOME},
+  verify:st=> at(st,DESK) ? {ok:true} : {ok:false, msg:`Sei in ${where(st,st.cwd)}. Scrivi ${C("cd Desktop")}.`+failMsg(st)},
+  hint:"Scrivi cd Desktop e premi Invio.",
+  success:`Il prompt ora finisce con <b>\\Desktop&gt;</b> e 📍 nella mappa si è spostato.`,
+  learn:{k:"cd nome", d:"entra in una cartella"}},
+
+ {id:"g4", part:1, title:"Creare una cartella",
+  theory:`<p>${C("mkdir")} vuol dire <i>make directory</i>: <b>crea una cartella</b>.</p><p>La cartella viene creata <b>nella cartella in cui sei</b>. Non esistono «cartelle del terminale»: è la stessa che vedresti in Esplora file.</p>`,
+  keys:()=>`${C("mkdir nome")} = crea una cartella`,
+  task:`Crea sul Desktop la cartella ${C("CLI-LAB")}: oggi faremo tutti gli esperimenti lì dentro.`,
+  setup:{fs:()=>world(null), cwd:DESK},
+  verify:st=> isDir(st,LAB) ? {ok:true} : {ok:false, reset:!!misplaced(st,"CLI-LAB",LAB), msg: misplaced(st,"CLI-LAB",LAB) || `Scrivi ${C("mkdir CLI-LAB")} (con il trattino).`+failMsg(st)},
+  hint:"Scrivi mkdir CLI-LAB e premi Invio. Poi, se vuoi, controlla con dir.",
+  success:`Sul PC vero, se guardi il Desktop, la cartella <b>CLI-LAB</b> c'è davvero.`,
+  learn:{k:"mkdir nome", d:"crea una cartella"}},
+
+ {id:"g5", part:1, title:"Da solo: entra",
+  theory:`<p>Adesso prova da solo, con quello che sai.</p>`,
+  task:`Entra nella cartella che hai appena creato.`,
+  setup:{fs:()=>world([]), cwd:DESK},
+  verify:st=> at(st,LAB) ? {ok:true} : {ok:false, msg:`Sei in ${where(st,st.cwd)}. Per entrare in una cartella si usa ${C("cd")} seguito dal nome.`+failMsg(st)},
+  hint:"cd CLI-LAB",
+  success:`Da qui in poi lavori solo dentro ${PATH("CLI-LAB")}: è il tuo laboratorio.`},
+
+ {id:"g6", part:1, title:"Due cartelle figlie",
+  theory:`<p>Una cartella dentro un'altra si chiama <b>figlia</b>. La cartella che la contiene è la <b>padre</b>.</p><p>Le cartelle formano un <b>albero</b>: guarda come cresce la mappa.</p>`,
+  task:`Dentro ${C("CLI-LAB")} crea due cartelle: ${C("scuola")} e ${C("personale")}.`,
+  setup:{fs:()=>world([]), cwd:LAB},
+  verify:st=>{ const a=isDir(st,P("scuola")), b=isDir(st,P("personale")); if(a&&b) return {ok:true};
+    const mp=misplaced(st,"scuola",P("scuola")) || misplaced(st,"personale",P("personale"));
+    return {ok:false, reset:!!mp, msg: mp || `Manca ${[!a&&C("scuola"),!b&&C("personale")].filter(Boolean).join(" e ")}.`+failMsg(st)}; },
+  hint:"mkdir scuola, Invio. Poi mkdir personale, Invio.",
+  success:`${C("scuola")} e ${C("personale")} sono figlie di ${C("CLI-LAB")}. ${C("CLI-LAB")} è la loro cartella padre.`,
+  learn:{k:"padre / figlia", d:"la cartella che contiene / quella contenuta"}},
+
+ {id:"g7", part:1, title:"Un livello più giù",
+  theory:`<p>Per creare cartelle dentro ${C("scuola")} devi prima <b>entrare</b> in ${C("scuola")}.</p><p>Il terminale lavora sempre <b>dove sei</b>: il prompt te lo dice.</p>`,
+  task:`Dentro ${C("scuola")} crea le cartelle ${C("informatica")} e ${C("grafica")}.`,
+  setup:{fs:()=>world(LAB_B()), cwd:LAB},
+  verify:st=>{ const a=isDir(st,P("scuola","informatica")), b=isDir(st,P("scuola","grafica")); if(a&&b) return {ok:true};
+    const wrong=misplaced(st,"informatica",P("scuola","informatica"))||misplaced(st,"grafica",P("scuola","grafica"));
+    return {ok:false, reset:!!wrong, msg: wrong ? wrong+` Prima entra in scuola con ${C("cd scuola")}.` : `Manca ${[!a&&C("informatica"),!b&&C("grafica")].filter(Boolean).join(" e ")} dentro scuola.`+failMsg(st)}; },
+  hint:"cd scuola, poi mkdir informatica e mkdir grafica.",
+  success:`Il prompt finisce con <b>\\scuola&gt;</b>: sei dentro scuola, e lì sono nate le due cartelle.`},
+
+ {id:"g8", part:1, title:"Tornare al padre",
+  theory:`<p>Due puntini ${C("..")} vogliono dire: <b>la cartella padre</b>, quella di sopra.</p><p>${C("cd ..")} ti fa salire di un livello nell'albero.</p>`,
+  keys:()=>`${C("cd ..")} = torna alla cartella padre`,
+  task:`Sei dentro ${C("scuola")}. Torna in ${C("CLI-LAB")} con ${C("cd ..")}.`,
+  setup:{fs:()=>world(LAB_C()), cwd:P("scuola")},
+  verify:st=> at(st,LAB) && ran(st,e=>isName(e,"cd","chdir") && /^\s*\.\.\s*$/.test(e.rest) && e.ok) ? {ok:true}
+    : at(st,LAB) ? {ok:false, msg:`Ci sei, ma in questo passo si allena ${C("cd ..")}. Rientra in scuola e riprova.`} : {ok:false, msg:`Sei in ${where(st,st.cwd)}.`+failMsg(st)},
+  hint:"Scrivi cd .. (cd, spazio, due punti) e Invio.",
+  success:`Nella mappa, la cartella padre è sempre quella segnata con <b>↑ padre</b>.`,
+  learn:{k:"cd ..", d:"torna alla cartella padre"}},
+
+ {id:"g9", part:1, title:"Disegna l'albero",
+  theory:`<p>${C("tree")} chiede al computer di <b>disegnare l'albero</b> delle cartelle, partendo da dove sei.</p><p>Confronta il disegno con la mappa: è la stessa struttura.</p>`,
+  keys:()=>`${C("tree")} = disegna l'albero · ${C("tree /F")} = anche i file`,
+  task:`Scrivi ${C("tree")} e guarda il disegno.`,
+  setup:{fs:()=>world(LAB_C()), cwd:LAB},
+  verify:st=> ran(st,e=>e.name==="tree" && e.ok) ? {ok:true} : {ok:false, msg:`Scrivi ${C("tree")} e Invio.`+failMsg(st)},
+  hint:"tree e Invio.",
+  success:`Hai costruito tutto questo senza toccare il mouse. ${C("C:.")} in cima vuol dire «la cartella in cui sono».`,
+  learn:{k:"tree  ·  tree /F", d:"disegna l'albero (con /F anche i file)"}},
+
+ {id:"g10", part:1, title:"Due livelli in un colpo",
+  theory:`<p>Puoi scendere di più livelli con un solo comando, separando le cartelle con la <b>barra rovesciata</b> ${C("\\")}.</p><p>${C("cd scuola\\informatica")} = entra in scuola, e da lì in informatica.</p>`,
+  keys:()=>`${C("cd a\\b")} · la ${C("\\")} si scrive con ${K("\\")} (tasto sotto Esc) oppure ${K("AltGr","ì")}`,
+  task:`Da ${C("CLI-LAB")} entra in ${C("informatica")} con <b>un solo comando</b>.`,
+  setup:{fs:()=>world(LAB_C()), cwd:LAB},
+  verify:st=>{ const one=ran(st,e=>isName(e,"cd","chdir") && e.ok && /\\/.test(e.rest) && at({cwd:e.after},P("scuola","informatica")));
+    if(at(st,P("scuola","informatica")) && one) return {ok:true};
+    if(at(st,P("scuola","informatica"))) return {ok:false, msg:`Ci sei, ma con due comandi. Torna in CLI-LAB (${C("cd ..")} due volte) e usa ${C("cd scuola\\informatica")}.`};
+    return {ok:false, msg:`Sei in ${where(st,st.cwd)}.`+failMsg(st)}; },
+  hint:"cd scuola\\informatica — la barra rovesciata è il tasto a sinistra dell'1 (sotto Esc).",
+  success:`${PATH("scuola\\informatica")} è un <b>percorso</b>: la strada da seguire nell'albero, partendo da dove sei.`,
+  learn:{k:"cd a\\b", d:"scende di più livelli insieme"}},
+
+ {id:"g11", part:1, title:"L'errore è un'informazione",
+  theory:`<p>Il computer è velocissimo ma non indovina: fa <b>esattamente</b> quello che scrivi.</p><p>Quando sbagli non si rompe niente: ti risponde con un messaggio. <b>Leggerlo</b> è metà del lavoro.</p>`,
+  task:`Sei in ${C("scuola")}. Scrivi apposta ${C("cd informaticaa")} (con due a) e leggi la risposta. Poi entra nella cartella giusta.`,
+  setup:{fs:()=>world(LAB_C()), cwd:P("scuola")},
+  verify:st=>{ const failed=ran(st,e=>isName(e,"cd","chdir") && !e.ok);
+    if(failed && at(st,P("scuola","informatica"))) return {ok:true};
+    if(!failed) return {ok:false, msg:`Prima prova l'errore: scrivi ${C("cd informaticaa")}.`};
+    return {ok:false, msg:`Hai letto il messaggio? Ora correggi: ${C("cd informatica")}.`}; },
+  hint:"cd informaticaa → leggi «Impossibile trovare il percorso specificato». Poi cd informatica.",
+  success:`«Impossibile trovare il percorso specificato» = <i>quella cartella qui non c'è</i>. Controlla il nome con ${C("dir")} o premi ${K("Tab")}: il terminale completa i nomi da solo!`,
+  learn:{k:"Tab", d:"completa il nome di file e cartelle"}},
+
+ {id:"g12", part:1, title:"Due passi indietro",
+  theory:`<p>Anche per salire si possono unire i passi: ${C("cd ..\\..")} = sali al padre, poi al padre del padre.</p>`,
+  keys:()=>`${C("cd ..\\..")} = sali di due livelli`,
+  task:`Sei in ${C("informatica")}. Torna in ${C("CLI-LAB")} con <b>un solo comando</b>.`,
+  setup:{fs:()=>world(LAB_C()), cwd:P("scuola","informatica")},
+  verify:st=>{ const one=ran(st,e=>isName(e,"cd","chdir") && e.ok && /\.\.\s*\\\s*\.\./.test(e.rest));
+    if(at(st,LAB) && one) return {ok:true};
+    if(at(st,LAB)) return {ok:false, msg:`Ci sei, ma con due comandi. Rientra (${C("cd scuola\\informatica")}) e prova ${C("cd ..\\..")}.`};
+    return {ok:false, msg:`Sei in ${where(st,st.cwd)}.`+failMsg(st)}; },
+  hint:"cd ..\\..",
+  success:`informatica → scuola → CLI-LAB: due salti con un comando.`,
+  learn:{k:"cd ..\\..", d:"sale di due livelli"}},
+
+ {id:"g13", part:1, title:"La radice",
+  theory:`<p>In cima a tutto l'albero c'è la <b>radice</b> del disco: ${PATH("C:\\")}. In inglese si dice <b>root</b>.</p><p>${C("cd \\")} ti porta lì, da qualunque punto.</p>`,
+  keys:()=>`${C("cd \\")} = vai alla radice`,
+  task:`Vai alla radice del disco C.`,
+  setup:{fs:()=>world(LAB_C()), cwd:LAB},
+  verify:st=> st.cwd.length===0 ? {ok:true} : {ok:false, msg:`Sei in ${where(st,st.cwd)}. Scrivi ${C("cd \\")}.`+failMsg(st)},
+  hint:"cd \\ (cd, spazio, barra rovesciata).",
+  success:`Il prompt è solo ${PATH("C:\\>")}. Più su di così non si va: prova ${C("cd ..")} e vedrai che resti qui.`,
+  learn:{k:"cd \\", d:"va alla radice C:\\"}},
+
+ {id:"g14", part:1, title:"L'indirizzo completo",
+  theory:`<p>Un <b>percorso assoluto</b> parte dalla radice: è l'indirizzo completo, funziona da qualunque posto.</p><p>${PATH("C:\\Users\\studente\\Desktop\\CLI-LAB")}</p><p>Un <b>percorso relativo</b> (come ${PATH("scuola\\informatica")}) invece parte da dove sei.</p>`,
+  keys:()=>`scrivi l'inizio del nome e premi ${K("Tab")}: il terminale lo completa`,
+  task:`Dalla radice, torna in ${C("CLI-LAB")} con <b>un solo comando</b>, scrivendo il percorso assoluto.`,
+  setup:{fs:()=>world(LAB_C()), cwd:[]},
+  verify:st=>{ const one=ran(st,e=>isName(e,"cd","chdir") && e.ok && e.before.length===0 && at({cwd:e.after},LAB));
+    if(at(st,LAB) && one) return {ok:true};
+    if(at(st,LAB)) return {ok:false, msg:`Ci sei, ma con più comandi. Torna alla radice (${C("cd \\")}) e scrivi tutto il percorso in un comando.`};
+    return {ok:false, msg:`Sei in ${where(st,st.cwd)}.`+failMsg(st)}; },
+  hint:"cd C:\\Users\\studente\\Desktop\\CLI-LAB — usa Tab dopo le prime lettere di ogni cartella.",
+  success:`Assoluto = indirizzo completo (via, civico, città). Relativo = «due porte più avanti», e dipende da dove sei. Nei siti web servirà tantissimo.`,
+  learn:{k:"C:\\Users\\…", d:"percorso assoluto: parte dalla radice"}},
+
+ {id:"g15", part:1, title:"Nomi con gli spazi",
+  theory:`<p>Per il terminale lo <b>spazio separa</b> le parole di un comando. ${C("mkdir compiti estate")} crea <b>due</b> cartelle!</p><p>Le <b>virgolette</b> tengono insieme un nome: ${C('mkdir "compiti estate"')}.</p>`,
+  keys:()=>`${C('"nome con spazi"')} · ancora meglio: ${C("compiti_estate")}`,
+  task:`Sei in ${C("personale")}. Crea <b>una sola</b> cartella chiamata ${C("compiti estate")} (con lo spazio).`,
+  setup:{fs:()=>world(LAB_C()), cwd:P("personale")},
+  verify:st=>{ if(isDir(st,P("personale","compiti estate"))) return {ok:true};
+    if(isDir(st,P("personale","compiti")) && isDir(st,P("personale","estate"))) return {ok:false, reset:true, msg:`Guarda la mappa: sono nate <b>due</b> cartelle, «compiti» ed «estate». Rimetti a posto e usa le virgolette.`};
+    return {ok:false, msg:`Non vedo ancora la cartella «compiti estate» dentro personale.`+failMsg(st)}; },
+  hint:'mkdir "compiti estate" (con le virgolette).',
+  success:`Funziona, ma per i progetti (e per i siti web) è meglio evitare gli spazi: ${C("compiti_estate")} o ${C("compiti-estate")}.`,
+  learn:{k:'"nome con spazi"', d:"le virgolette tengono insieme un nome"}},
+
+ /* ---------- PARTE 2 · I FILE ---------- */
+ {id:"g16", part:2, title:"Scrivere in un file",
+  theory:`<p>${C("echo Ciao")} scrive «Ciao» <b>sullo schermo</b>.</p><p>Con la freccia ${C(">")} gli dici: <b>invece dello schermo, scrivilo in questo file</b>. Il file viene creato.</p>`,
+  keys:()=>`${C("echo testo > file.txt")} · ${C(">")} è il tasto ${K("Shift","&lt;")}`,
+  task:`In ${C("personale")} crea il file ${C("messaggio.txt")} che contiene la frase <b>Il terminale non fa paura</b>.`,
+  setup:{fs:()=>world(LAB_C()), cwd:P("personale")},
+  verify:st=>{ const f=P("personale","messaggio.txt");
+    if(isFile(st,f) && /terminale non fa paura/i.test(text(st,f))) return {ok:true};
+    if(isFile(st,f)) return {ok:false, msg:`Il file c'è, ma contiene «${esc(text(st,f).trim())}». Riscrivilo: ${C(">")} sostituisce il contenuto.`};
+    if(ran(st,e=>e.name==="echo" && !/>/.test(e.rest))) return {ok:false, msg:`La frase è apparsa sullo schermo, ma non è finita in un file: manca ${C("> messaggio.txt")} in fondo.`};
+    return {ok:false, msg:`Non vedo ancora messaggio.txt dentro personale.`+failMsg(st)}; },
+  hint:"echo Il terminale non fa paura > messaggio.txt",
+  success:`Hai creato un file senza aprire il Blocco note. Esplora file e terminale sono <b>due modi diversi</b> di chiedere la stessa cosa al computer.`,
+  learn:{k:"echo testo > file.txt", d:"crea un file con quel testo (>> aggiunge in fondo)"}},
+
+ {id:"g17", part:2, title:"Leggere un file",
+  theory:`<p>${C("type")} mostra sullo schermo il contenuto di un file di testo.</p>`,
+  keys:()=>`${C("type file.txt")} = leggi il file`,
+  task:`Leggi il contenuto di ${C("messaggio.txt")}.`,
+  setup:{fs:()=>world(LAB_C([Ff("messaggio.txt","Il terminale non fa paura\n")])), cwd:P("personale")},
+  verify:st=> ran(st,e=>e.name==="type" && e.ok && /messaggio/i.test(e.rest)) ? {ok:true} : {ok:false, msg:`Scrivi ${C("type messaggio.txt")}.`+failMsg(st)},
+  hint:"type messaggio.txt (prova a scrivere type mes e premere Tab).",
+  learn:{k:"type file.txt", d:"legge un file di testo"}},
+
+ {id:"g18", part:2, title:"Rinominare",
+  theory:`<p>${C("ren")} (<i>rename</i>) cambia il nome: prima il nome vecchio, poi quello nuovo.</p>`,
+  keys:()=>`${C("ren vecchio.txt nuovo.txt")}`,
+  task:`Rinomina ${C("messaggio.txt")} in ${C("diario.txt")}.`,
+  setup:{fs:()=>world(LAB_C([Ff("messaggio.txt","Il terminale non fa paura\n")])), cwd:P("personale")},
+  verify:st=> isFile(st,P("personale","diario.txt")) && !isFile(st,P("personale","messaggio.txt")) ? {ok:true} : {ok:false, msg:`Scrivi ${C("ren messaggio.txt diario.txt")}. Poi controlla con ${C("dir")}.`+failMsg(st)},
+  hint:"ren messaggio.txt diario.txt",
+  success:`Non dimenticare l'estensione ${C(".txt")}: il terminale non la aggiunge da solo.`,
+  learn:{k:"ren vecchio nuovo", d:"rinomina"}},
+
+ {id:"g19", part:2, title:"Copiare in un'altra cartella",
+  theory:`<p>${C("copy")} funziona come ${K("Ctrl","C")} + ${K("Ctrl","V")}: prima cosa copi, poi dove.</p><p>${PATH("..\\scuola")} = sali al padre (CLI-LAB), poi entra in scuola.</p>`,
+  keys:()=>`${C("copy file.txt destinazione")}`,
+  task:`Da ${C("personale")}, copia ${C("diario.txt")} nella cartella ${C("scuola")}.`,
+  setup:{fs:()=>world(LAB_C([Ff("diario.txt","Il terminale non fa paura\n")])), cwd:P("personale")},
+  verify:st=>{ if(isFile(st,P("scuola","diario.txt")) && isFile(st,P("personale","diario.txt"))) return {ok:true};
+    if(isFile(st,P("personale","scuola"))) return {ok:false, reset:true, msg:`Guarda la mappa: in personale è nato un <b>file</b> chiamato «scuola»! Qui dentro la cartella scuola non c'è (è «sorella» di personale), quindi il terminale ha fatto una copia con quel nome. Prima sali con ${C("..")}: ${C("..\\scuola")}.`};
+    return {ok:false, msg:`Non vedo ancora diario.txt dentro scuola.`+failMsg(st)}; },
+  hint:"copy diario.txt ..\\scuola",
+  success:`Ora diario.txt c'è in <b>due</b> posti: in personale e in scuola.`,
+  learn:{k:"copy file dest", d:"copia (come Ctrl+C / Ctrl+V)"}},
+
+ {id:"g20", part:2, title:"Spostare",
+  theory:`<p>${C("move")} funziona come ${K("Ctrl","X")} + ${K("Ctrl","V")}: il file <b>lascia</b> la cartella di partenza.</p>`,
+  keys:()=>`${C("move file.txt destinazione")}`,
+  task:`Da ${C("personale")}, sposta ${C("appunti.txt")} dentro ${C("scuola\\informatica")}.`,
+  setup:{fs:()=>world(LAB_C([Ff("diario.txt","Il terminale non fa paura\n"), Ff("appunti.txt","cd = dove sono\ndir = cosa c'è\n")])), cwd:P("personale")},
+  verify:st=>{ if(isFile(st,P("scuola","informatica","appunti.txt")) && !isFile(st,P("personale","appunti.txt"))) return {ok:true};
+    const f=findAll(st,"appunti.txt"); if(f.length && !isFile(st,P("personale","appunti.txt"))) return {ok:false, reset:true, msg:`appunti.txt è finito in ${where(st,f[0].slice(0,-1))}.`};
+    return {ok:false, msg:`Non vedo ancora appunti.txt dentro informatica.`+failMsg(st)}; },
+  hint:"move appunti.txt ..\\scuola\\informatica",
+  success:`Controlla con ${C("tree /F")}: vedi dove sta ogni file.`,
+  learn:{k:"move file dest", d:"sposta (come Ctrl+X / Ctrl+V)"}},
+
+ {id:"g21", part:2, title:"Eliminare un file",
+  theory:`<p>${C("del")} elimina un file. <b>Attenzione:</b> dal terminale il file <b>non va nel Cestino</b>, sparisce.</p><p>Regola: prima ${C("dir")} per controllare, poi ${C("del")}.</p>`,
+  keys:()=>`${C("dir")} → controlla · ${C("del file.txt")} → elimina`,
+  task:`In ${C("personale")} elimina ${C("vecchio.txt")}. ${C("diario.txt")} deve restare.`,
+  setup:{fs:()=>world(LAB_C([Ff("diario.txt","Il terminale non fa paura\n"), Ff("vecchio.txt","da buttare\n")])), cwd:P("personale")},
+  verify:st=>{ const d=isFile(st,P("personale","diario.txt")), v=isFile(st,P("personale","vecchio.txt"));
+    if(!v && d) return {ok:true};
+    if(!d) return {ok:false, reset:true, msg:`Hai eliminato anche diario.txt! Dal terminale non si recupera dal Cestino: per questo si lavora solo in CLI-LAB.`};
+    return {ok:false, msg:`vecchio.txt è ancora lì.`+failMsg(st)}; },
+  hint:"dir, poi del vecchio.txt, poi di nuovo dir.",
+  learn:{k:"del file", d:"elimina un file (niente Cestino!)"}},
+
+ {id:"g22", part:2, title:"Eliminare una cartella vuota",
+  theory:`<p>${C("rmdir")} (<i>remove directory</i>) elimina una cartella, ma solo se è <b>vuota</b>. Oggi usiamo solo questo.</p><p class="small">Esiste anche ${C("rmdir /S")}, che cancella tutto quello che c'è dentro: da usare con molta attenzione.</p>`,
+  keys:()=>`${C("rmdir cartella")} = elimina una cartella vuota`,
+  task:`In ${C("personale")} elimina la cartella vuota ${C("temp")}.`,
+  setup:{fs:()=>world(LAB_C([Ff("diario.txt","Il terminale non fa paura\n"), Dd("temp",[])])), cwd:P("personale")},
+  verify:st=> !isDir(st,P("personale","temp")) && isFile(st,P("personale","diario.txt")) ? {ok:true} : {ok:false, msg:`La cartella temp c'è ancora.`+failMsg(st)},
+  hint:"rmdir temp",
+  success:`Hai finito il percorso guidato! Nel 🎒 Kit comandi in alto trovi tutto quello che hai imparato.`,
+  learn:{k:"rmdir cartella", d:"elimina una cartella vuota"}},
+
+ {id:"x0", screen:"final"},
+
+ /* ---------- SFIDA FINALE ---------- */
+ {id:"x1", phase:"x", title:"Il tuo primo sito",
+  task:`Sei in ${C("CLI-LAB")}. Costruisci questa struttura:<pre style="margin:6px 0 0;font-family:Consolas,monospace;font-size:.92em">sito
+├── css
+├── immagini
+├── js
+└── index.txt  («Il mio primo sito»)</pre>`,
+  setup:{fs:()=>world([]), cwd:LAB},
+  verify:st=>{ const miss=["css","immagini","js"].filter(d=>!isDir(st,P("sito",d))).map(C); const f=P("sito","index.txt");
+    if(!isDir(st,P("sito"))) return {ok:false, msg:"Manca la cartella sito."+failMsg(st)};
+    if(!isFile(st,f)) miss.push(C("index.txt")); else if(!/primo sito/i.test(text(st,f))) return {ok:false, msg:`index.txt c'è ma contiene «${esc(text(st,f).trim())}».`};
+    if(miss.length) return {ok:false, msg:`Dentro sito manca: ${miss.join(", ")}.`+(misplaced(st,"css",P("sito","css"))||"")};
+    return {ok:true}; },
+  hint:"mkdir sito · cd sito · mkdir css immagini js · echo Il mio primo sito > index.txt · tree /F"},
+ {id:"x2", phase:"x", title:"Il labirinto",
+  task:`Sei finito in fondo a ${PATH("sito\\img\\prodotti")}. Raggiungi la cartella ${C("css")} di ${C("sito")}.`,
+  setup:{fs:()=>world([Dd("sito",[Dd("css"), Dd("js"), Dd("img",[Dd("prodotti")])])]), cwd:P("sito","img","prodotti")},
+  verify:st=> at(st,P("sito","css")) ? {ok:true} : {ok:false, msg:`Sei in ${where(st,st.cwd)}.`+failMsg(st)},
+  hint:"prodotti → img → sito: sono due salti in su. Poi entri in css: cd ..\\..\\css"},
+ {id:"x3", phase:"x", title:"Nel posto giusto",
+  task:`Sei in ${PATH("sito\\immagini")}. Crea la cartella ${C("icone")} dentro ${C("sito")}, <b>non</b> dentro immagini.`,
+  setup:{fs:()=>world([Dd("sito",[Dd("immagini"), Dd("css"), Dd("js")])]), cwd:P("sito","immagini")},
+  verify:st=>{ if(isDir(st,P("sito","immagini","icone"))) return {ok:false, reset:true, msg:"icone è finita dentro immagini: il comando lavora dove sei."};
+    return isDir(st,P("sito","icone")) ? {ok:true} : {ok:false, msg:"Non vedo ancora sito\\icone."+failMsg(st)}; },
+  hint:"mkdir ..\\icone — oppure cd .. e poi mkdir icone."},
+ {id:"x4", phase:"x", title:"Metti in ordine",
+  task:`In ${C("CLI-LAB")} ci sono tre file sparsi. Sposta ciascuno nella cartella giusta di ${C("sito")}: ${C("logo.png")} in immagini, ${C("stile.css")} in css, ${C("script.js")} in js.`,
+  setup:{fs:()=>world([Dd("sito",[Dd("immagini"), Dd("css"), Dd("js"), Ff("index.txt","Il mio primo sito\n")]), Ff("logo.png","‰PNG (immagine)\n"), Ff("stile.css","body { color: teal; }\n"), Ff("script.js","console.log('ciao');\n")]), cwd:LAB},
+  verify:st=>{ const want={"logo.png":"immagini","stile.css":"css","script.js":"js"}; const bad=[];
+    for(const [f,d] of Object.entries(want)) if(!isFile(st,P("sito",d,f))){ const w=findAll(st,f)[0]; bad.push(`${C(f)} ${w?"è in "+where(st,w.slice(0,-1)):"non si trova più"}`); }
+    return bad.length ? {ok:false, msg:bad.join("; ")+"."} : {ok:true}; },
+  hint:"move logo.png sito\\immagini · move stile.css sito\\css · move script.js sito\\js"},
+ {id:"x5", phase:"x", title:"Pulizia",
+  task:`Dentro ${C("sito")} elimina i file ${C("vecchio.txt")} e ${C("copia di prova.txt")} e la cartella vuota ${C("temp")}. ${C("index.txt")} deve restare.`,
+  setup:{fs:()=>world([Dd("sito",[Ff("index.txt","Il mio primo sito\n"), Ff("vecchio.txt","vecchio\n"), Ff("copia di prova.txt","prova\n"), Dd("temp")])]), cwd:P("sito")},
+  verify:st=>{ if(!isFile(st,P("sito","index.txt"))) return {ok:false, reset:true, msg:"Hai eliminato anche index.txt!"};
+    const left=[isFile(st,P("sito","vecchio.txt"))&&C("vecchio.txt"), isFile(st,P("sito","copia di prova.txt"))&&C("copia di prova.txt"), isDir(st,P("sito","temp"))&&C("temp")].filter(Boolean);
+    return left.length ? {ok:false, msg:`Ci sono ancora: ${left.join(", ")}.`+failMsg(st)} : {ok:true}; },
+  hint:'del vecchio.txt · del "copia di prova.txt" (virgolette per lo spazio) · rmdir temp'},
+ {id:"x6", phase:"x", title:"Il percorso di logo.png",
+  task:`Sei in ${PATH("C:\\Users\\studente\\Desktop\\CLI-LAB\\sito")}. Il file ${C("logo.png")} sta nella cartella ${C("immagini")}, figlia di ${C("sito")}. Qual è il suo <b>percorso relativo</b>, partendo da dove sei?`,
+  setup:{fs:()=>world([Dd("sito",[Dd("immagini",[Ff("logo.png","‰PNG\n")]), Dd("css"), Ff("index.txt","Il mio primo sito\n")])]), cwd:P("sito")},
+  quiz:[{t:"immagini\\logo.png", ok:true},
+        {t:"C:\\Users\\studente\\Desktop\\CLI-LAB\\sito\\immagini\\logo.png", fb:"Questo è giusto, ma è il percorso assoluto: parte dalla radice C:\\."},
+        {t:"..\\immagini\\logo.png", fb:"I due puntini ti farebbero uscire da sito, salendo in CLI-LAB: lì immagini non c'è."}],
+  hint:"Relativo = parto da dove sono (sito) e scendo: prima la cartella, poi il file.",
+  success:`Nei siti web scriverai proprio così: ${C('<img src="immagini/logo.png">')}. Stesso percorso, con la barra girata.`},
+
+ {id:"end", screen:"end"},
+];
+const GUIDED = STEPS.filter(s=>s.part), FIN = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(store.get("pos")||0, STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const val = v => typeof v==="function" ? v() : (v||"");
+  const cur = () => STEPS[pos];
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html, reset){
+    const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML = html + (reset?` <button type="button" class="linkbtn" id="fb-reset">↺ rimetti tutto com'era</button>`:"");
+    if(reset) $("#fb-reset").onclick=()=>{ TERM.setup(cur().setup); drawMap(mapOn()); $("#l-fb").classList.add("hidden"); };
+  }
+  const mapOn = () => cur().phase!=="x" || BES;
+  function counter(step){
+    if(step.phase==="x"){ const k=FIN.indexOf(step)+1; return `Sfida finale · compito ${k} di ${FIN.length}`; }
+    const grp=GUIDED.filter(s=>s.part===step.part), k=grp.indexOf(step)+1;
+    return (step.part===1 ? "Muoversi" : "I file")+` · passo ${k} di ${grp.length}`;
+  }
+  function render(){
+    const step=cur();
+    $("#pbar").style.width = Math.round(pos/(STEPS.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.title;
+    $("#l-theory").innerHTML = step.theory||""; $("#l-theory").classList.toggle("hidden", !step.theory);
+    const keys = step.keys ? step.keys() : ""; $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.quiz ? "Domanda" : step.phase==="x" ? "Obiettivo" : "Il tuo compito";
+    $("#l-task").innerHTML = val(step.task);
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    ["#b-next","#b-hint"].forEach(b=>$(b).classList.add("hidden"));
+    $("#b-check").classList.toggle("hidden", !!step.quiz); $("#l-auto").classList.toggle("hidden", !!step.quiz);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    if(step.quiz){ q.innerHTML = step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}">${String.fromCharCode(65+i)}. ${esc(o.t)}</button>`).join("");
+      q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b)); }
+    TERM.setup(step.setup); drawMap(mapOn());
+  }
+  function showHintBtn(){ if(S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function finalStars(){ return S.hint ? (S.err>=4?1:2) : S.err<=1 ? 3 : S.err<=3 ? 2 : 1; }
+  function success(step){
+    S.done=true;
+    if(step.phase!=="x"){ store.set("r_"+step.id, {ok:1, err:S.err, hint:S.hint}); say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); }
+    else { const s = step.quiz ? (S.err===0?3:S.err===1?2:1) : finalStars(), prev=res(step.id);
+      if(!prev || s>prev.stars) store.set("r_"+step.id, {stars:s, hint:S.hint, err:S.err});
+      say("ok", `✔ Obiettivo raggiunto: <b style="color:var(--orange);letter-spacing:1px">${stars(s)}</b>${S.hint?" (con aiuto)":""} ${val(step.success)}`); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#l-auto").classList.add("hidden");
+    $("#b-next").classList.remove("hidden");
+    if(step.quiz) $("#b-next").focus(); else TERM.focus();
+  }
+  function onCommand(){
+    const step=cur(); if(!step || step.screen) return;
+    drawMap(mapOn());
+    if(S.done || step.quiz) return;
+    if(step.verify(TERM.state()).ok) success(step);
+  }
+  function check(){
+    const step=cur(); if(!step || step.screen || step.quiz || S.done) return;
+    const v=step.verify(TERM.state());
+    if(v.ok){ success(step); return; }
+    S.err++; say("ko","Non ancora. "+v.msg, v.reset); showHintBtn(); TERM.focus();
+  }
+  function answer(i, btn){
+    const step=cur(); if(S.done) return; const o=step.quiz[i];
+    if(o.ok){ btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    btn.classList.add("wrong"); S.err++; say("ko","Non è così. "+esc(o.fb)); showHintBtn();
+  }
+  function hint(){ S.hint=true; const h=$("#l-hinttext"); h.innerHTML="💡 "+esc(val(cur().hint)); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); TERM.focus(); }
+
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && res(s.id));
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length); b.textContent = `🎒 Kit comandi (${learned.length})`;
+    $("#pocket").innerHTML = `<h3>I comandi che conosco</h3><ul>${learned.map(s=>`<li>${C(s.learn.k)} — ${s.learn.d}</li>`).join("")}</ul><p class="small" style="margin:8px 0 0">Per l'aiuto su un comando: ${C("mkdir /?")}</p>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket")) $("#pocket").classList.add("hidden"); });
+
+  /* codice risultato: stesso formato e firma degli altri strumenti (etichetta CLI) */
+  function sig(s){ let h=5381; const t="O23*"+s+"*CLI"; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+  function tally(){ const r=FIN.map(s=>res(s.id)); return {s:r.reduce((a,x)=>a+((x||{}).stars||0),0), n:r.filter(Boolean).length, h:r.filter(x=>x&&x.hint).length}; }
+  function code(){
+    const t=tally(), gp=GUIDED.filter(s=>res(s.id)).length, gh=GUIDED.filter(s=>(res(s.id)||{}).hint).length;
+    const body=`O23-CLI | ${curName()||"(nome non inserito)"} | SFIDA ${t.s}/${FIN.length*3} stelle (${t.n}/${FIN.length} sfide) | suggerimenti ${t.h} | PERCORSO ${gp}/${GUIDED.length} passi guidati, aiuti ${gh}${BES?" | modalità facilitata":""}`;
+    return body+" | #"+sig(body);
+  }
+  function codeBlock(){
+    const t=tally(); const rows=FIN.map((s,i)=>{ const r=res(s.id); return `<div class="starrow"><span class="s">${r?stars(r.stars):"—"}</span>${i+1}. ${s.title}</div>`; }).join("");
+    return `<div class="stats"><div class="stat"><small>Stelle nella sfida</small><b>${t.s}/${FIN.length*3}</b></div><div class="stat"><small>Passi guidati</small><b>${GUIDED.filter(s=>res(s.id)).length}/${GUIDED.length}</b></div></div>
+      <details><summary class="small">Dettaglio dei compiti</summary><div style="margin-top:6px">${rows}</div></details>
+      <h3>Il tuo codice risultato</h3>
+      <p>Clic nel riquadro, ${K("Ctrl","A")} e ${K("Ctrl","C")}, poi incollalo con ${K("Ctrl","V")} nella tua scheda.</p>
+      <textarea class="copy" readonly>${esc(code())}</textarea>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>⌨️ Palestra del terminale</h2>
+        <p>Finora hai creato cartelle e file <b>cliccando</b>. Il computer però capisce anche i comandi <b>scritti</b>: oggi impari a dargliene qualcuno, nel <b>Prompt dei comandi</b> di Windows.</p>
+        <p>Una domanda ti accompagna sempre: <b>«Dove sono, dentro il computer?»</b> A destra, oltre al terminale, c'è una mappa che te lo mostra.</p>
+        <p>Qui è tutto simulato: non puoi rompere niente.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="scrivi qui"></p>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button> <span class="small" id="w-err"></span></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(); if(v.length<3){ $("#w-err").textContent="Scrivi il tuo nome e cognome."; $("#w-name").focus(); return; } store.set("nome", v); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    final(el){
+      el.innerHTML = `<h2>🏁 Sfida finale</h2>
+        <p><b>6 compiti</b>. Ti dico solo <b>che cosa</b> ottenere: i comandi li scegli tu.</p>
+        <p>Novità: <b>la mappa è nascosta</b>. Per orientarti usa ${C("cd")}, ${C("dir")} e ${C("tree")}, come sul PC vero.</p>
+        <p>★★★ al primo colpo (un «Controlla» sbagliato è concesso), ★★ con più tentativi o con l'aiuto. Gli errori scritti nel terminale <b>non</b> tolgono stelle: sono informazioni.</p>
+        <p class="small">Se non ricordi un comando, apri il 🎒 Kit comandi in alto a destra.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      el.innerHTML = `<h2>🎉 Palestra completata</h2>${codeBlock()}
+        <p style="margin-top:16px"><b>E adesso?</b> Apri il <b>Prompt dei comandi</b> vero (tasto Windows, scrivi <b>cmd</b>, Invio) e ricostruisci ${PATH("CLI-LAB")} sul Desktop. Poi guardalo anche in Esplora file.</p>
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:56px"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres"></b></p></details>`;
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #");
+        if(k<0){ $("#r-vres").textContent="✘ Codice incompleto"; return; } const ok=sig(raw.slice(0,k))===raw.slice(k+4).trim();
+        $("#r-vres").textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; $("#r-vres").style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint;
+  ["#b-check","#b-hint"].forEach(id=>$(id).addEventListener("mousedown", e=>{ if(document.activeElement===TERM.el) e.preventDefault(); }));
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance($("#l-theory").innerText+". "+$("#l-task").innerText); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>m.classList.add("hidden"); };
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; store.clear(); location.reload(); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render, check, next, onCommand, isDone:()=>!!S.done, say:(k,h)=>say(k,h,false)};
+})();
+App.render();
+</script>
+</body>
+</html>
