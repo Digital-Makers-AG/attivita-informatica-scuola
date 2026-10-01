@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Verifica dei codici · Hardware e software</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%8E%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--warn:#7a5200;--warn-l:#fff1cf}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--teal-d)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.back{margin:0;padding:8px 16px;background:var(--teal);font:600 13px/1.4 system-ui,sans-serif}.back a{color:#fff;text-decoration:none}
+.hero{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:28px 20px 24px}
+.hero .in,.wrap{max-width:1180px;margin:0 auto}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:#ffd9bf}
+.hero h1{margin:4px 0 8px;font-size:clamp(26px,4vw,36px);line-height:1.15}
+.hero p{margin:0;max-width:760px;opacity:.95}
+.privacy{display:inline-block;margin-top:12px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:14px}
+.wrap{padding:22px 20px 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+h2{font-size:21px;margin:0 0 8px;color:var(--teal-d)}
+.small{font-size:14px;color:var(--muted)}.tiny{font-size:12.5px;color:var(--muted)}
+code{background:#eef2f3;border-radius:4px;padding:1px 5px;font-size:.92em}
+textarea#in{width:100%;min-height:150px;resize:vertical;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:13px/1.45 ui-monospace,Consolas,"Courier New",monospace;background:#fbfcfc;color:var(--ink);white-space:pre;overflow:auto}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.btn{border:0;border-radius:8px;padding:9px 16px;font-weight:700;background:var(--teal);color:#fff}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal-d);border:2px solid var(--teal);padding:7px 14px}
+.btn.ghost{background:#fff;color:var(--muted);border:2px solid var(--line);padding:7px 14px}
+.example{margin:10px 0 0;padding:8px 12px;border-radius:8px;background:var(--orange-l);color:var(--orange-d);font-size:14px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;margin:0 0 14px;padding:0;list-style:none}
+.stats li{font-size:15px;color:var(--muted)}.stats b{font-size:22px;color:var(--ink);margin-right:5px}
+.stats .bad b{color:var(--ko)}.stats .warn b{color:var(--warn)}
+.tool{margin:0 0 22px}
+.tool h3{margin:0 0 2px;font-size:19px}
+.tool .sub{margin:0 0 10px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+thead th{background:#f4f6f7;font-size:13px;color:var(--muted);font-weight:700;white-space:nowrap}
+thead th .sl{display:block;font-size:11.5px;letter-spacing:.06em;color:var(--teal-d)}
+tbody tr:last-child td{border-bottom:0}
+td.st,th.st{position:sticky;left:0;background:#fff;z-index:1;min-width:150px;box-shadow:1px 0 0 var(--line)}
+thead th.st{background:#f4f6f7;z-index:2}
+td.st b{display:block}
+td.g,th.g{border-left:1px solid var(--line)}
+tr.badrow td{background:#fff7f6} tr.badrow td.st{background:#fff7f6}
+.pill{display:inline-block;border-radius:6px;padding:1px 8px;font-weight:700;font-size:13px;white-space:nowrap}
+.p-ok{background:var(--ok-l);color:var(--ok)}.p-ko{background:var(--ko-l);color:var(--ko)}.p-warn{background:var(--warn-l);color:var(--warn)}.p-none{background:#eef2f3;color:var(--muted);font-weight:400}
+.flags{list-style:none;margin:6px 0 0;padding:0;font-size:12.5px;color:var(--ink)}
+.flags li{margin:2px 0}
+.num{font-size:17px;font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{display:inline-block;border:1px solid #f0c6a4;background:var(--orange-l);color:var(--orange-d);border-radius:6px;padding:1px 7px;font:600 13px/1.5 ui-monospace,Consolas,monospace;white-space:nowrap;cursor:help}
+.chip.big{border-color:var(--ko);background:var(--ko-l);color:var(--ko)}
+.none{color:var(--ok);font-size:13px;font-weight:600;white-space:nowrap}
+.nd{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 0;font-size:13.5px;color:var(--muted)}
+details.card>summary{cursor:pointer;font-weight:700;color:var(--teal-d);font-size:17px}
+details.card[open]>summary{margin-bottom:8px}
+details.card li{margin:6px 0}
+.empty{padding:16px;color:var(--muted)}
+footer{max-width:1180px;margin:0 auto;padding:10px 20px 36px;font-size:13px;color:var(--muted)}
+@media(max-width:700px){.wrap{padding:16px 12px 8px}.card{padding:14px}td.st,th.st{min-width:120px}}
+@media print{.back,.actions,textarea#in,#paste,details.card{display:none!important}.hero{background:#fff;color:var(--ink);padding:0 0 10px}.kicker{color:var(--muted)}td.st,th.st{position:static}}
+</style>
+</head>
+<body>
+<p class="back"><a href="../index.html">&#8592; Pagina dell'attività</a></p>
+<header class="hero"><div class="in">
+  <div class="kicker">Per il docente · Hardware e software</div>
+  <h1>Verifica dei codici</h1>
+  <p>Incolla i codici delle palestre copiati dalle schede. La pagina controlla che nessuno li abbia modificati e ti mostra, per ogni studente, che cosa ha saltato, quanti aiuti ha chiesto, quante volte ha ricominciato e in quali sezioni ha sbagliato.</p>
+  <span class="privacy">🔒 I codici restano in questo browser: la pagina non invia nulla.</span>
+</div></header>
+
+<main class="wrap">
+<section class="card" id="paste" aria-labelledby="h-in">
+  <h2 id="h-in">1 · Incolla i codici</h2>
+  <p class="small">Apri le schede consegnate una alla volta e copia la riga che inizia con <code>HWS-</code>. Puoi incollare anche tutta la prima pagina della scheda: la pagina trova da sola i codici. Vanno bene codici di palestre diverse, tutti insieme.</p>
+  <textarea id="in" spellcheck="false" aria-label="Codici da verificare"></textarea>
+  <div class="actions">
+    <button type="button" class="btn" id="go">Verifica</button>
+    <button type="button" class="btn ghost" id="clear">Svuota</button>
+    <button type="button" class="btn alt" id="ex-load">Rimetti l'esempio</button>
+    <span class="tiny">Scorciatoia: Ctrl+Invio per verificare.</span>
+  </div>
+  <p class="example" id="ex-note" hidden>Stai guardando un <b>esempio</b> con studenti inventati: uno ha ritoccato il codice, una ha cambiato nome sul PC di un compagno, una ha ricominciato due volte. Premi «Svuota» e incolla i codici della tua classe.</p>
+</section>
+
+<section aria-labelledby="h-out">
+  <h2 id="h-out">2 · Risultati</h2>
+  <ul class="stats" id="stats"></ul>
+  <div id="out"></div>
+  <div class="actions" id="exp" hidden>
+    <button type="button" class="btn alt" id="copy">Copia le tabelle (per Fogli o il registro)</button>
+    <span class="tiny" id="copied" aria-live="polite"></span>
+  </div>
+</section>
+
+<details class="card" style="margin-top:18px">
+  <summary>Come si legge</summary>
+  <ul>
+    <li><b>Firma</b>: ogni codice finisce con un controllo (#…). Se lo studente cambia anche un solo numero, il controllo non torna e la riga diventa rossa: quei dati non sono affidabili.</li>
+    <li><b>Saltati</b>: passi guidati e domande della sfida che lo studente ha saltato con il pulsante «Salta». Valgono zero. Le domande <i>non fatte</i> sono quelle a cui non è arrivato (per esempio perché è finito il tempo).</li>
+    <li><b>Aiuti</b>: quante volte ha aperto il pulsante «Aiuto» nei passi guidati. Nella sfida finale gli aiuti non ci sono.</li>
+    <li><b>Ricominciato</b>: quante volte ha rifatto la sfida da capo. Ricominciare non cancella gli errori: si sommano.</li>
+    <li><b>Sezioni</b>: per ogni sezione della sfida, le domande sbagliate. <span class="chip">A6 (2)</span> vuol dire: domanda 6 della sezione A, sbagliata 2 volte, anche se poi è arrivato alla risposta giusta (o l'ha saltata). In rosso le domande sbagliate 3 volte o più. Passa il mouse su una domanda per leggerla.</li>
+    <li><b>Livello</b> (solo «Il dato in viaggio»): base o approfondito, scritto sotto il nome. La sezione D, «Dentro la CPU», c'è solo nel livello approfondito.</li>
+    <li><b>Stesso PC, nome cambiato</b>: se sullo stesso computer qualcuno ha finito la palestra e poi ha scritto un altro nome, il codice lo dice. Se invece usa «Nuovo studente» e poi riscrive lo stesso nome, errori, aiuti e ripetizioni ripartono da dove erano.</li>
+  </ul>
+  <p class="small">Il controllo è un deterrente: dimostra che il codice non è stato ritoccato, non chi l'ha prodotto. Non impedisce di rifare la palestra su un altro computer o in una finestra in incognito.</p>
+</details>
+</main>
+<footer>Codici prodotti da: <a href="../01_LEZIONE_1/MATERIALI/palestra_componenti.html">Palestra dei componenti</a> · <a href="../01_LEZIONE_1/MATERIALI/palestra_von_neumann.html">Il dato in viaggio</a> · <a href="../02_LEZIONE_2/MATERIALI/palestra_albero.html">Albero dei file</a> · <a href="../02_LEZIONE_2/MATERIALI/palestra_copia_sposta.html">Copia o sposta?</a>.</footer>
+
+<script>
+"use strict";
+const TOOLS = {
+  CMP:{n:"Palestra dei componenti", lez:"Lezione 1"},
+  VON:{n:"Il dato in viaggio", lez:"Lezione 1 · livello base o approfondito"},
+  ALB:{n:"Albero dei file", lez:"Lezione 2"},
+  MOV:{n:"Copia o sposta?", lez:"Lezione 2"}
+};
+const SECN = {
+  "COMPONENTI":"Componenti", "INPUT-OUTPUT":"Input e output", "DATO":"Viaggio del dato", "HW-SW":"Hardware o software",
+  "NAVIGARE":"Navigare", "PERCORSI":"Percorsi", "ORDINARE":"Mettere in ordine",
+  "PREVEDERE":"Prevedere", "OPERARE":"Copiare e spostare", "DRIVE":"Google Drive",
+  "BLOCCHI":"Blocchi e funzioni", "PERCORSO":"Il percorso del dato", "MEMORIA":"RAM e disco", "CPU":"Dentro la CPU"
+};
+const QLAB = {
+  CMP:{A1:"Riconosci la RAM nella foto", A2:"Trova una memoria di massa", A3:"PC lento con tanti programmi: che cosa potenziare", A4:"Trova la scheda video", A5:"Trova la CPU", A6:"Riconosci l'SSD nella foto", A7:"Trova la scheda madre", A8:"A che cosa servono i dissipatori", A9:"Il PC si spegne: trova l'alimentatore", A10:"PC lento ad accendersi: trova l'hard disk",
+       B1:"Microfono: input", B2:"Proiettore: output", B3:"Chiavetta USB: tutti e due", B4:"Cuffie senza microfono: output",
+       C1:"Dove sta una mail non salvata", C2:"Il percorso di una lettera dalla tastiera", C3:"Da dove riapri un file salvato",
+       D1:"Driver della stampante: software", D2:"Scheda video: hardware", D3:"Aggiornamento di Windows: software"},
+  ALB:{A1:"Apri gita_2026 (dentro Immagini)", A2:"Arriva in vecchi_lavori seguendo il percorso", B1:"Il percorso di canzone_coro.mp3", B2:"Scrivi il percorso di IMG_2042.jpg",
+       B3:"Il nuovo percorso dopo uno spostamento", C1:"Crea la cartella attivita_alternativa", C2:"Sposta due file nelle cartelle giuste", C3:"Crea temi e spostaci tema_estate.docx"},
+  MOV:{A1:"Copia sulla chiavetta: dove sta il file dopo?", A2:"Trascinare una cartella sullo stesso disco", A3:"Eliminare un file dalla chiavetta",
+       B1:"Backup della cartella sulla chiavetta", B2:"Spostare due foto in una volta", B3:"Stesso nome: tenere la versione nuova",
+       C1:"Drive: spostare un file in una cartella", C2:"Drive: dopo quanto si svuota il Cestino"},
+  VON:{A1:"Il blocco che si svuota senza corrente", A2:"Le casse: in quale blocco", B1:"Il viaggio di una foto dalla webcam", B2:"Aprire un file salvato",
+       C1:"Va via la corrente prima di salvare", C2:"Dove sta il sistema operativo a PC spento",
+       D1:"La parte della CPU che calcola", D2:"Che cosa viaggia sul bus indirizzi", D3:"L'ordine del ciclo della CPU"}
+};
+const EXAMPLE = "Giulia Neri · 1A · Codice: HWS-CMP | Giulia Neri | PASSI 11/11 | aiuti 0 | COMPONENTI 10/10 | INPUT-OUTPUT 4/4 | DATO 3/3 | HW-SW 3/3 | TOT 20/20 | errori - | ripetizioni 0 | #4ADLG\nHWS-CMP | Mario Rossi | PASSI 10/11 (1 saltato) | aiuti 1 | COMPONENTI 5/10 | INPUT-OUTPUT 3/4 | DATO 3/3 | HW-SW 2/3 (1 saltata) | TOT 13/20 | errori A1(1) A2(1) A5(1) A8(2) A10(1) B4(1) | saltate D2 | ripetizioni 0 | #X9XLL\nHWS-CMP | Mario Rossi | PASSI 10/11 (1 saltato) | aiuti 1 | COMPONENTI 8/10 | INPUT-OUTPUT 4/4 | DATO 3/3 | HW-SW 3/3 | TOT 18/20 | errori A1(2) A2(1) A5(1) A6(1) A8(2) A10(1) B4(1) | ripetizioni 1 | #CBDGY\nHWS-CMP | Aisha Khan | PASSI 11/11 | aiuti 3 | COMPONENTI 9/10 | INPUT-OUTPUT 4/4 | DATO 2/3 | HW-SW 3/3 | TOT 18/20 | errori A6(1) A10(2) C1(3) | ripetizioni 2 | #42G2N\nHWS-CMP | Luca Verdi | PASSI 11/11 | aiuti 2 | COMPONENTI 9/10 | INPUT-OUTPUT 2/4 | DATO 1/3 | HW-SW 3/3 | TOT 15/20 | errori A1(1) A2(2) A4(1) A5(1) A6(1) A8(1) A10(1) B2(1) B3(1) C1(1) C3(2) | ripetizioni 0 | #4XANL\nHWS-CMP | Sara Bianchi | PASSI 11/11 | aiuti 0 | COMPONENTI 9/10 | INPUT-OUTPUT 2/4 (2 non fatte) | DATO 0/3 (3 non fatte) | HW-SW 0/3 (3 non fatte) | TOT 11/20 | errori A3(1) | ripetizioni 0 | nome iniziale: Marco Gialli | #6UEXR\nHWS-CMP | Omar Haddad | PASSI 6/11 (5 saltati) | aiuti 0 | COMPONENTI 7/10 | INPUT-OUTPUT 4/4 | DATO 1/3 | HW-SW 3/3 | TOT 15/20 | errori A2(1) A8(1) A9(1) C1(2) C2(1) | ripetizioni 0 | #69IV5\nHWS-VON | Giulia Neri | LIVELLO approfondito | PASSI 11/11 | aiuti 0 | BLOCCHI 2/2 | PERCORSO 2/2 | MEMORIA 2/2 | CPU 2/3 | TOT 8/9 | errori D3(1) | ripetizioni 0 | #LMCCH\nHWS-VON | Mario Rossi | LIVELLO base | PASSI 7/7 | aiuti 0 | BLOCCHI 1/2 | PERCORSO 1/2 (1 saltata) | MEMORIA 2/2 | TOT 4/6 | errori A1(1) | saltate B2 | ripetizioni 0 | #AI88K\nHWS-VON | Sara Bianchi | LIVELLO base | PASSI 7/7 | aiuti 2 | BLOCCHI 2/2 | PERCORSO 1/2 | MEMORIA 1/2 | TOT 4/6 | errori B1(2) C1(1) | ripetizioni 1 | modalità facilitata | #XVCUI\nHWS-ALB | Giulia Neri | PASSI 10/10 | aiuti 0 | NAVIGARE 2/2 | PERCORSI 3/3 | ORDINARE 3/3 | TOT 8/8 | errori - | ripetizioni 0 | #JUTSB\nHWS-ALB | Mario Rossi | PASSI 10/10 | aiuti 1 | NAVIGARE 1/2 (1 saltata) | PERCORSI 1/3 | ORDINARE 2/3 | TOT 4/8 | errori B1(1) B2(1) C2(1) | saltate A2 | ripetizioni 0 | #EU19D\nHWS-ALB | Aisha Khan | PASSI 9/10 (1 saltato) | aiuti 2 | NAVIGARE 2/2 | PERCORSI 2/3 | ORDINARE 3/3 | TOT 7/8 | errori B2(3) | ripetizioni 1 | #X3E7C\nHWS-MOV | Giulia Neri | PASSI 11/11 | aiuti 0 | PREVEDERE 3/3 | OPERARE 3/3 | DRIVE 2/2 | TOT 8/8 | errori - | ripetizioni 0 | #K62MT\nHWS-MOV | Mario Rossi | PASSI 11/11 | aiuti 0 | PREVEDERE 1/3 (1 saltata) | OPERARE 2/3 | DRIVE 2/2 | TOT 5/8 | errori A1(1) B2(1) | saltate A2 | ripetizioni 0 | #RKVRO\nHWS-MOV | Omar Haddad | PASSI 8/11 (3 non fatti) | aiuti 1 | PREVEDERE 2/3 | OPERARE 1/3 (2 non fatte) | DRIVE 0/2 (2 non fatte) | TOT 3/8 | errori A2(1) B1(2) | ripetizioni 0 | #KR25J";
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function sig(s, tag){ let h=5381; const t="HWS*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+const nameKey = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const RE_CODE = /HWS-(?:CMP|ALB|MOV|VON) \|.*?\| #[0-9A-Z]{5}/g;
+const count = (s, w) => { if(!s) return 0; const m=s.match(new RegExp("(\\d+) "+w)); return m ? +m[1] : 0; };
+const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+
+function parse(raw, order){
+  const c=raw.replace(/\s+/g," ").trim(), k=c.lastIndexOf(" | #"), body=c.slice(0,k), sg=c.slice(k+4);
+  const tool=c.slice(4, c.indexOf(" |")), parts=body.split(" | ");
+  const o={raw:c, order, tool, name:(parts[1]||"").trim(), valid:sig(body,tool)===sg, secs:[], errs:{}, skipped:[], passi:null, hints:0, rip:0, tot:null, level:null, bes:false, initial:null};
+  parts.slice(2).forEach(p=>{ let m;
+    if((m=p.match(/^PASSI (\d+)\/(\d+)(?: \((.*)\))?$/))) o.passi={ok:+m[1], n:+m[2], skip:count(m[3],"saltat"), miss:count(m[3],"non fatt")};
+    else if((m=p.match(/^aiuti (\d+)$/))) o.hints=+m[1];
+    else if((m=p.match(/^TOT (\d+)\/(\d+)$/))) o.tot={ok:+m[1], n:+m[2]};
+    else if((m=p.match(/^errori (.+)$/))){ if(m[1]!=="-") m[1].split(" ").forEach(x=>{ const q=x.match(/^([A-Z])(\d+)\((\d+)\)$/); if(q) o.errs[q[1]+q[2]]=+q[3]; }); }
+    else if((m=p.match(/^saltate (.+)$/))) o.skipped=m[1].split(" ").filter(Boolean);
+    else if((m=p.match(/^ripetizioni (\d+)$/))) o.rip=+m[1];
+    else if((m=p.match(/^LIVELLO (.+)$/))) o.level=m[1];
+    else if(p==="modalità facilitata") o.bes=true;
+    else if((m=p.match(/^nome iniziale: (.+)$/))) o.initial=m[1];
+    else if((m=p.match(/^([A-Z][A-Z-]*[A-Z]) (\d+)\/(\d+)(?: \((.*)\))?$/))) o.secs.push({code:m[1], ok:+m[2], n:+m[3], skip:count(m[4],"saltat"), miss:count(m[4],"non fatt")});
+  });
+  o.secs.forEach((s,i)=>{ s.letter=String.fromCharCode(65+i); });
+  return o;
+}
+
+function collect(text){
+  const flat=text.replace(/ /g," ").replace(/\s+/g," "), codes=(flat.match(RE_CODE)||[]).map((c,i)=>parse(c,i));
+  const by={};
+  codes.forEach(c=>{ const k=c.tool+"|"+nameKey(c.name); (by[k]=by[k]||[]).push(c); });
+  const students=Object.values(by).map(list=>{
+    const valid=list.filter(c=>c.valid), pool=valid.length?valid:list;
+    const best=pool.slice().sort((a,b)=> (b.rip-a.rip) || (b.order-a.order))[0];
+    const flags=[];
+    if(!best.valid) flags.push(["ko","codice modificato a mano: dati non affidabili"]);
+    else if(valid.length<list.length) flags.push(["ko",pl(list.length-valid.length,"altro codice modificato","altri codici modificati")+" a mano"]);
+    if(list.length>1) flags.push(["info",`${list.length} codici incollati: considerato quello con più ripetizioni`]);
+    if(best.initial) flags.push(["warn",`nome cambiato sullo stesso PC (prima «${best.initial}»)`]);
+    return {c:best, flags};
+  });
+  return {codes, students};
+}
+
+function cellSkip(c){
+  const ps=c.passi?c.passi.skip:0, qs=c.skipped.length, nd=c.secs.reduce((a,s)=>a+s.miss,0), pm=c.passi?c.passi.miss:0;
+  const tot=ps+qs, det=[];
+  if(ps) det.push(pl(ps,"passo","passi"));
+  if(qs) det.push(`${pl(qs,"domanda","domande")} (${c.skipped.join(", ")})`);
+  let h=`<span class="num">${tot}</span>`+(det.length?`<span class="nd">${det.join(" · ")}</span>`:"");
+  if(nd) h+=`<span class="nd">+ ${pl(nd,"domanda non fatta","domande non fatte")}</span>`;
+  if(pm && !c.secs.every(s=>s.miss===s.n)) h+=`<span class="nd">+ ${pl(pm,"passo non fatto","passi non fatti")}</span>`;
+  return {h, t:[tot, det.join(" · "), nd?pl(nd,"domanda non fatta","domande non fatte"):""].filter(Boolean).join(" · ")};
+}
+function cellSec(c, s, tool){
+  const ks=Object.keys(c.errs).filter(k=>k.charAt(0)===s.letter).sort((a,b)=>+a.slice(1)-+b.slice(1));
+  const lab=k=>(QLAB[tool]||{})[k]||"";
+  let h, t;
+  if(s.miss===s.n){ h=`<span class="pill p-none">non fatta</span>`; t="non fatta"; }
+  else if(!ks.length){ h=`<span class="none">✓ nessun errore</span>`; t="nessun errore"; }
+  else { h=`<span class="chips">${ks.map(k=>`<span class="chip${c.errs[k]>=3?" big":""}" title="${esc(lab(k))}">${k} (${c.errs[k]})</span>`).join("")}</span>`; t=ks.map(k=>`${k} (${c.errs[k]})`).join(" "); }
+  if(s.miss && s.miss<s.n) h+=`<span class="nd">${pl(s.miss,"non fatta","non fatte")}</span>`;
+  return {h, t};
+}
+
+let LAST=[];
+function run(){
+  const text=$("#in").value, {codes, students}=collect(text);
+  $("#ex-note").hidden = text.trim()!==EXAMPLE.trim();
+  const bad=students.filter(s=>!s.c.valid).length, warn=students.filter(s=>s.flags.some(f=>f[0]==="warn")).length;
+  const people=new Set(students.map(s=>nameKey(s.c.name))).size;
+  $("#stats").innerHTML = `<li><b>${people}</b>studenti</li><li><b>${codes.length}</b>codici letti</li><li class="${bad?"bad":""}"><b>${bad}</b>con firma non valida</li><li class="${warn?"warn":""}"><b>${warn}</b>da guardare</li>`;
+  LAST=[];
+  if(!codes.length){ $("#out").innerHTML=`<div class="tw"><p class="empty">Nessun codice trovato. I codici iniziano con <b>HWS-</b> e finiscono con <b>#</b> seguito da 5 caratteri: copiali tutti interi.</p></div>`; $("#exp").hidden=true; return; }
+  let html="";
+  Object.keys(TOOLS).forEach(tool=>{
+    const rows=students.filter(s=>s.c.tool===tool).sort((a,b)=>a.c.name.localeCompare(b.c.name,"it"));
+    if(!rows.length) return;
+    const secs=[]; rows.forEach(r=>r.c.secs.forEach(x=>{ if(!secs.some(y=>y.code===x.code)) secs.push({code:x.code, letter:x.letter, n:x.n}); }));
+    const head=["Studente","Firma","Saltati","Aiuti","Ricominciato",...secs.map(s=>`${s.letter} · ${SECN[s.code]||s.code}`)];
+    const tsv=[[TOOLS[tool].n],head];
+    let t=`<div class="tool"><h3>${TOOLS[tool].n} <span class="tiny">· codice HWS-${tool} · ${TOOLS[tool].lez}</span></h3><p class="tiny sub">${pl(rows.length,"studente","studenti")}</p><div class="tw"><table>
+      <thead><tr><th class="st">Studente</th><th class="g">Firma</th><th>Saltati</th><th>Aiuti</th><th>Ricominciato</th>${secs.map(s=>`<th class="g"><span class="sl">SEZIONE ${s.letter}</span>${esc(SECN[s.code]||s.code)}</th>`).join("")}</tr></thead><tbody>`;
+    rows.forEach(r=>{ const c=r.c, sk=cellSkip(c), cells=secs.map(s=>{ const own=c.secs.find(x=>x.code===s.code);
+        if(!own && c.level) return {h:`<span class="tiny">— non c'è nel livello ${esc(c.level)}</span>`, t:"non prevista dal livello"};
+        return cellSec(c, own||{letter:s.letter,miss:s.n,n:s.n}, tool); });
+      const extra=[c.level?`livello ${c.level}`:"", c.bes?"modalità facilitata":""].filter(Boolean).join(" · ");
+      const firma = c.valid ? `<span class="pill p-ok">✔ valida</span>` : `<span class="pill p-ko">✘ modificato</span>`;
+      const fl = r.flags.filter(f=>!(f[0]==="ko" && !c.valid && /^codice modificato/.test(f[1])));
+      t+=`<tr class="${c.valid?"":"badrow"}"><td class="st"><b>${esc(c.name)}</b>${extra?`<span class="tiny">${esc(extra)}</span>`:""}</td>
+        <td class="g">${firma}${fl.length?`<ul class="flags">${fl.map(f=>`<li>${f[0]==="warn"?"⚠️ ":f[0]==="ko"?"✘ ":"• "}${esc(f[1])}</li>`).join("")}</ul>`:""}</td>
+        <td>${sk.h}</td><td><span class="num">${c.hints}</span></td><td>${c.rip?`<span class="num">${c.rip}</span> <span class="tiny">${c.rip===1?"volta":"volte"}</span>`:`<span class="tiny">mai</span>`}</td>
+        ${cells.map(x=>`<td class="g">${x.h}</td>`).join("")}</tr>`;
+      tsv.push([c.name, c.valid?"valida":"NON valida (codice modificato)"+(fl.length?"; "+fl.map(f=>f[1]).join("; "):""), sk.t, c.hints, c.rip, ...cells.map(x=>x.t)]); });
+    t+=`</tbody></table></div></div>`; html+=t; LAST.push(tsv);
+  });
+  html+=`<div class="legend"><span><span class="chip">A6 (2)</span> domanda 6 della sezione A, sbagliata 2 volte</span><span><span class="chip big">C1 (3)</span> sbagliata 3 volte o più</span><span><span class="none">✓ nessun errore</span></span><span><span class="pill p-ko">✘ modificato</span> il codice è stato ritoccato</span></div>`;
+  $("#out").innerHTML=html; $("#exp").hidden=false; $("#copied").textContent="";
+}
+function copyText(t){
+  const ok=()=>{ $("#copied").textContent="Copiato ✓ Incolla in un Foglio Google (Ctrl+V)."; };
+  const fb=()=>{ const a=document.createElement("textarea"); a.value=t; document.body.appendChild(a); a.select(); try{ document.execCommand("copy"); ok(); }catch(e){ $("#copied").textContent="Copia non riuscita: seleziona la tabella a mano."; } a.remove(); };
+  if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+}
+$("#go").onclick=run;
+$("#ex-load").onclick=()=>{ $("#in").value=EXAMPLE; run(); };
+$("#clear").onclick=()=>{ $("#in").value=""; run(); $("#in").focus(); };
+$("#in").addEventListener("keydown", e=>{ if(e.key==="Enter" && (e.ctrlKey||e.metaKey)){ e.preventDefault(); run(); } });
+$("#copy").onclick=()=>copyText(LAST.map(tab=>tab.map(r=>r.map(v=>String(v).replace(/[\t\n]/g," ")).join("\t")).join("\n")).join("\n\n"));
+$("#in").value=EXAMPLE; run();
+</script>
+</body>
+</html>

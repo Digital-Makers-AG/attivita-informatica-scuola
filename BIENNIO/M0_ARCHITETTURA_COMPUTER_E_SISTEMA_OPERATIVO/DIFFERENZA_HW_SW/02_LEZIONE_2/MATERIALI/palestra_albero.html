@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Albero dei file · Hardware e software</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%97%82%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.keys{white-space:nowrap}
+.menu-path{display:inline-block;background:#fff;border:1px solid #b9c2c9;border-radius:6px;padding:0 7px;font-size:.92em;white-space:nowrap}
+code,.path{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.92em;font-family:Consolas,"Courier New",monospace;overflow-wrap:anywhere}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{background:#fff;border:1px solid #c9d3d8;border-radius:14px;padding:2px 10px;font-size:.92em}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.hintb{background:#fff;color:var(--orange-d);border:2px solid var(--orange);padding:8px 14px}
+.btn.skipb{background:#fff;color:var(--muted);border:2px solid var(--line);padding:8px 14px;margin-left:auto}
+.btn.skipb:hover{background:#f2f4f5;color:var(--ink)}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px;font-family:inherit}
+/* schermate */
+.screen{max-width:760px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen h3{color:var(--teal-d);margin:18px 0 6px}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px;flex:1}
+.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{display:block;color:var(--muted);font-size:13px}
+.stat.tot{background:var(--orange-l)}.stat.tot b{color:var(--orange-d)}
+details.review{background:#fffaf2;border:1px solid #f0d9bf;border-radius:10px;padding:8px 14px;margin:10px 0}
+details.review summary{cursor:pointer;font-weight:bold;color:var(--orange-d)}
+details.review li{margin:6px 0}
+textarea.copy{width:100%;height:92px;font-family:"Courier New",monospace;font-size:14px;padding:8px;border:2px solid var(--line);border-radius:8px;resize:vertical}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:minmax(0,1fr)}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em;outline:none}
+.theory p{margin:0 0 10px}
+.keybox{display:block;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1em}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-d);font-weight:bold;margin-bottom:2px}
+.dock.docked{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.dock.docked .quiz,.dock.docked .fields{margin-top:0}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink);overflow-wrap:anywhere}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.qopt.right::after{content:" ✔"}
+.qopt:disabled{cursor:default;color:var(--ink)}
+.qopt .path{background:transparent;padding:0;font-size:.95em}
+.fields{display:grid;gap:8px;margin-top:12px}
+.fld label{display:block;font-weight:bold;font-size:.95em;margin-bottom:3px}
+.fld input{font:15px Consolas,"Courier New",monospace;padding:8px 9px;border:2px solid var(--line);border-radius:8px;width:100%}
+.fld input.okf{border-color:var(--ok)}.fld input.kof{border-color:var(--ko)}
+.fmsg{display:block;font-size:13px;margin-top:3px}.fmsg.ok{color:var(--ok)}.fmsg.ko{color:var(--ko)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px;font-family:inherit}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(400px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+.stage{min-width:0}
+.stagecap{margin:8px 2px 0}
+/* ===== Esplora file (Windows 11) ===== */
+.xp{position:relative;border:1px solid #c3cbd1;border-radius:10px;background:#fff;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;color:#1b1b1b;box-shadow:0 6px 18px rgba(0,0,0,.08);user-select:none}
+.xp button{font-family:inherit;color:#1b1b1b}
+.xp-title{display:flex;align-items:flex-end;gap:8px;background:#e9edf0;padding:6px 12px 0;font-size:13px;min-height:34px}
+.xp-title .tab{background:#fff;border-radius:8px 8px 0 0;padding:5px 14px;font-weight:600;max-width:65%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.xp-ctl{margin-left:auto;letter-spacing:10px;color:#555;font-size:12px;align-self:center}
+.xp-nav{display:flex;align-items:center;gap:4px;padding:6px 10px;border-bottom:1px solid #e5e5e5}
+.nb{width:30px;height:30px;border:0;background:transparent;border-radius:6px;font-size:16px;cursor:pointer;flex:none}
+.nb:hover:not(:disabled){background:#eef1f3}.nb:disabled{opacity:.3;cursor:default}
+.nb:focus-visible,.xp-cmd button:focus-visible,.tn button:focus-visible,.cr:focus-visible,.xp-menu button:focus-visible{outline:2px solid #0067c0;outline-offset:1px}
+.xp-addr{flex:1;min-width:0;display:flex;align-items:center;border:1px solid #d3d3d3;border-radius:6px;height:32px;padding:0 4px;background:#f7f7f7;cursor:text;overflow:hidden}
+.xp-addr:hover{background:#fff}
+.crumbs{display:flex;align-items:center;white-space:nowrap;overflow:hidden;justify-content:flex-start;min-width:0;max-width:calc(100% - 48px)}
+.xa-ico{border:0;background:transparent;padding:2px 5px;cursor:text;font-size:14px;flex:none;border-radius:4px}
+.xa-ico:hover{background:#e3e7ea}
+.cr{border:0;background:transparent;padding:3px 6px;border-radius:4px;font-size:13px;cursor:pointer;flex:none}
+.cr:hover{background:#e3e7ea}
+.crumbs .sep{color:#777;font-size:12px;padding:0 1px;flex:none}
+.crumbs.ov{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px);mask-image:linear-gradient(90deg,transparent 0,#000 28px)}
+.xa-in{width:100%;border:0;background:#fff;font:13px Consolas,"Courier New",monospace;outline:none;padding:0 6px;height:28px}
+.xp-cmd{display:flex;align-items:center;gap:2px;padding:4px 8px;border-bottom:1px solid #e5e5e5;flex-wrap:wrap;min-height:40px}
+.xp-cmd button{border:0;background:transparent;border-radius:6px;padding:5px 8px;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.xp-cmd button:hover:not(:disabled){background:#eef1f3}
+.xp-cmd button:disabled{opacity:.38;cursor:default}
+.xp-cmd .vsep{width:1px;height:22px;background:#e0e0e0;margin:0 4px}
+.xp-body{display:grid;grid-template-columns:230px minmax(0,1fr);height:340px}
+.xp-body.notree{grid-template-columns:minmax(0,1fr)}
+.xp-tree{position:relative;border-right:1px solid #ececec;overflow:auto;padding:6px 4px;font-size:13px}
+.tn{display:flex;align-items:center;border-radius:5px;white-space:nowrap;min-height:26px}
+.tn:hover{background:#eef3f7}
+.tn.cur{background:#dbe9f5}
+.tn.hlt{box-shadow:inset 4px 0 0 var(--orange)}
+.tn.drop{background:#cfe3f7;outline:2px solid #0067c0;outline-offset:-2px}
+.tn .tg{width:18px;flex:none;border:0;background:transparent;font-size:10px;color:#555;cursor:pointer;padding:4px 0;text-align:center}
+.tn .tl{border:0;background:transparent;font-size:13px;cursor:pointer;padding:3px 6px 3px 2px;text-align:left;white-space:nowrap}
+.xp-main{display:flex;flex-direction:column;min-width:0;min-height:0}
+.xp-head,.xr{display:grid;grid-template-columns:30px minmax(0,1fr) 200px 86px;align-items:center}
+.xp-head{font-size:12.5px;color:#555;border-bottom:1px solid #ececec;padding:5px 0}
+.xp-head div{padding:0 6px}
+.xp-list{flex:1;overflow:auto;outline:none;position:relative;min-height:0}
+.xp-list:focus-visible{box-shadow:inset 0 0 0 2px #7fb7ff}
+.xr{min-height:30px;font-size:13.5px;border:1px solid transparent;cursor:default;touch-action:pan-y}
+.xr>div{padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.xr>div:first-child{padding:0 0 0 7px;overflow:visible;text-overflow:clip}
+.xr .c3,.xr .c4{color:#555}.xr .c4{text-align:right}
+.xr:hover{background:#eaf4fd}
+.xr.sel{background:#cce8ff;border-color:#99d1ff}
+.xr.foc{outline:1px dotted #555;outline-offset:-2px}
+.xr.cut{opacity:.45}
+.xr.drop{background:#cfe3f7;outline:2px solid #0067c0;outline-offset:-2px}
+.xr.hl{box-shadow:inset 5px 0 0 var(--orange);background:#fff1e4}
+.xr.hl.sel{background:#cce8ff}
+.xr.new{animation:flash 1.6s ease-out}
+@keyframes flash{0%{background:#ffe08a}100%{background:transparent}}
+.xr input.ren{width:100%;font:13.5px "Segoe UI",Arial,sans-serif;border:1px solid #0067c0;padding:2px 4px;outline:none;user-select:text}
+.xp-empty{padding:24px;color:#777;font-size:13px;text-align:center}
+.xp-status{display:flex;gap:14px;font-size:12.5px;color:#444;padding:5px 12px;border-top:1px solid #ececec;background:#fafafa;min-height:28px;flex-wrap:wrap}
+.xp-status .clip{margin-left:auto;color:var(--orange-d)}
+.xp-toast{position:absolute;left:12px;right:12px;bottom:36px;background:#1d2329;color:#fff;border-radius:8px;padding:8px 12px;font-size:13px;opacity:0;transform:translateY(6px);transition:opacity .2s,transform .2s;pointer-events:none}
+.xp-toast.on{opacity:.95;transform:none}
+.xp-menu{position:absolute;z-index:30;background:#fff;border:1px solid #d0d0d0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:4px;min-width:210px}
+.xp-menu button{display:flex;width:100%;gap:8px;align-items:center;border:0;background:transparent;padding:6px 10px;border-radius:5px;font-size:13px;text-align:left;cursor:pointer}
+.xp-menu button:hover:not(:disabled){background:#eef3f7}
+.xp-menu button:disabled{color:#9a9a9a;cursor:default}
+.xp-menu .ck{width:16px;flex:none;text-align:center}
+.xp-menu .arr{margin-left:auto;color:#666}
+.xp-menu hr{border:0;border-top:1px solid #eee;margin:3px 0}
+.dragghost{position:fixed;z-index:80;pointer-events:none;background:#fff;border:1px solid #99d1ff;border-radius:6px;padding:4px 9px;font:13px "Segoe UI",Arial,sans-serif;box-shadow:0 6px 16px rgba(0,0,0,.2);max-width:280px}
+.dragghost .act{display:block;font-size:12px;color:#0067c0;margin-top:2px}
+.dragghost .act.no{color:#b3261e}
+.dlg-wrap{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:90;padding:16px}
+.dlg{background:#fff;border-radius:10px;max-width:460px;width:100%;padding:16px 18px;font-family:"Segoe UI",Arial,sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.3);color:#1b1b1b}
+.dlg h4{margin:0 0 8px;font-size:15px}
+.dlg p{margin:0 0 10px;font-size:13.5px}
+.dlg .opts{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.dlg .opts button{text-align:left;border:1px solid #d6d6d6;background:#fafafa;border-radius:6px;padding:8px 10px;font:inherit;font-size:13.5px;cursor:pointer}
+.dlg .opts button:hover,.dlg .opts button:focus-visible{border-color:#0067c0;background:#eef6fd;outline:none}
+.dlg .row{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.dlg .row button{border:1px solid #c9c9c9;background:#fff;border-radius:6px;padding:6px 18px;font:inherit;cursor:pointer}
+.dlg .row button.pri{background:#0067c0;color:#fff;border-color:#0067c0}
+.dlg .row button:focus-visible{outline:2px solid #0067c0;outline-offset:2px}
+/* piede */
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:560px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+@media(max-width:700px){
+  main{padding:12px 12px 24px}
+  .screen{padding:20px 16px}
+  .lesson{padding:14px 16px}
+  .xp-body{grid-template-columns:minmax(0,1fr);grid-template-rows:150px minmax(0,1fr);height:470px}
+  .xp-tree{border-right:0;border-bottom:1px solid #ececec}
+  .xp-head,.xr{grid-template-columns:28px minmax(0,1fr) 120px}
+  .xp-head .c4,.xr .c4{display:none}
+  .xp-cmd .lab:not(.keep){display:none}
+  .crumbs{justify-content:flex-end}
+  .pocket{right:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🗂️ Albero dei file</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false" aria-controls="pocket">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+  <div id="work" class="work hidden">
+    <aside class="lesson" id="lesson">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title" tabindex="-1"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="dock" id="dock">
+        <div class="quiz hidden" id="l-quiz" role="group" aria-label="Risposte"></div>
+        <div class="fields hidden" id="l-fields"></div>
+        <div class="fb hidden" id="l-fb" role="status" aria-live="polite"></div>
+        <div class="hinttext hidden" id="l-hinttext"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="b-check">✔ Controlla</button>
+          <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+          <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+          <button type="button" class="btn skipb hidden" id="b-skip" title="Un passo saltato non vale punti">Salta il passo ⤼</button>
+        </div>
+      </div>
+    </aside>
+    <div class="stage" id="stage"></div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Riepilogo e codice (anche se non hai finito)</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, file e cartelle giusti evidenziati nei passi guidati, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g4">l'albero</button> ·
+        <button type="button" class="linkbtn" data-jump="g6">i percorsi</button> ·
+        <button type="button" class="linkbtn" data-jump="g8">cartelle nuove</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi che salti con questi link risultano «non fatti» nel codice.</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Riepilogo e codice"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÀ
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const IS_MAC = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+const CT = IS_MAC ? "Cmd" : "Ctrl";
+const K = (...keys) => `<span class="keys">${keys.map(k => `<span class="kbd">${k}</span>`).join("+")}</span>`;
+const MP = (...items) => items.map(i => `<span class="menu-path">${i}</span>`).join(" › ");
+const PFX = "hwsalb_", KEEP = "hist", mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && k!==PFX+KEEP).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(k!==KEEP) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const val = v => typeof v==="function" ? v() : (v||"");
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+const nameKey = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const djb = s => { let h=5381; for(let k=0;k<s.length;k++){ h=((h<<5)+h+s.charCodeAt(k))>>>0; } return h.toString(36); };
+const hashName = n => djb("nome*"+nameKey(n));
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+
+/* =====================================================================
+   FILE SYSTEM SIMULATO
+   ===================================================================== */
+const BS = "\\";
+const lc = s => String(s).toLowerCase();
+const extOf = n => ((String(n).match(/\.([^.]+)$/)||[])[1]||"").toLowerCase();
+const F = (name, size, date) => ({name, type:"file", size, date:date||"2026-09-20"});
+const DIR = (name, children=[]) => ({name, type:"dir", children});
+const clone = o => JSON.parse(JSON.stringify(o));
+const KIND = {docx:"Documento di Microsoft Word", pdf:"Documento PDF", jpg:"File JPG", png:"File PNG", txt:"Documento di testo", mp3:"File MP3", mp4:"File MP4", pptx:"Presentazione di Microsoft PowerPoint", xlsx:"Foglio di lavoro di Microsoft Excel", zip:"Cartella compressa"};
+const ICO = {docx:"📘", pdf:"📕", jpg:"🖼️", png:"🖼️", txt:"📝", mp3:"🎵", mp4:"🎬", pptx:"📙", xlsx:"📗", zip:"🗜️"};
+const EXT_DESC = {docx:"un documento di Word", pdf:"un documento PDF", jpg:"una foto", png:"un'immagine", txt:"un documento di testo", mp3:"un file audio", mp4:"un video", pptx:"una presentazione"};
+const isCont = n => !!n && (n.type==="dir" || n.type==="drive" || n.type==="root");
+const pathEq = (a,b) => a.length===b.length && a.every((x,i)=>lc(x)===lc(b[i]));
+const within = (p, base) => p.length>=base.length && base.every((x,i)=>lc(x)===lc(p[i]));
+const pstr = p => !p.length ? "Questo PC" : p.length===1 ? p[0]+BS : p.join(BS);
+let FS=null, BIN=[], CLIP=null, EXT=false, USED=new Set(), OPS=[];
+function nodeAt(path){ let n=FS; for(const p of path){ if(!isCont(n)) return null; n=n.children.find(c=>lc(c.name)===lc(p)); if(!n) return null; } return n; }
+function resolve(parts){ let n=FS; const out=[]; for(const p of parts){ if(!isCont(n)) return null; const c=n.children.find(x=>lc(x.name)===lc(p)); if(!c) return null; out.push(c.name); n=c; } return {node:n, path:out}; }
+const childOf = (d,name) => d.children.find(c=>lc(c.name)===lc(name));
+const namesAt = path => { const n=nodeAt(path); return n && isCont(n) ? n.children.map(c=>c.name) : []; };
+const has = (path,name) => { const n=nodeAt(path); return !!(n && isCont(n) && childOf(n,name)); };
+
+/* =====================================================================
+   ESPLORA FILE (Windows 11), una o più finestre sullo stesso disco
+   ===================================================================== */
+const XP = (()=>{
+  const all=[]; let D=null, dlgOpen=false;
+  const sorted = n => n.children.slice().sort((a,b)=> ((a.type==="file")-(b.type==="file")) || a.name.localeCompare(b.name,"it",{numeric:true,sensitivity:"base"}));
+  const disp = c => c.type==="drive" ? c.label : c.type==="file" && !EXT ? c.name.replace(/\.[^.]+$/,"") : c.name;
+  const kindOf = c => c.type==="dir" ? "Cartella di file" : c.type==="drive" ? (c.usb?"Unità rimovibile":"Disco locale") : (KIND[extOf(c.name)] || ("File "+extOf(c.name).toUpperCase()));
+  const icoOf = c => c.type==="dir" ? "📁" : c.type==="drive" ? (c.usb?"💾":"💽") : (ICO[extOf(c.name)]||"📄");
+  const kb = b => (b===0?0:Math.ceil(b/1024)).toLocaleString("it-IT")+" KB";
+  const human = b => b<1024 ? b+" byte" : b<1048576 ? Math.ceil(b/1024).toLocaleString("it-IT")+" KB" : (Math.round(b/1048576*10)/10).toLocaleString("it-IT")+" MB";
+  const dname = p => p[0]==="::bin" ? "Cestino" : !p.length ? "Questo PC" : p.length===1 ? ((FS.children.find(d=>lc(d.name)===lc(p[0]))||{}).label||p[0]) : p[p.length-1];
+  const dateIt = d => (d||"").split("-").reverse().join("/");
+  const J = v => esc(JSON.stringify(v));
+  const inBin = X => X.cwd[0]==="::bin";
+
+  function load(fs, o={}){ FS=fs; BIN=[]; CLIP=null; EXT=!!o.ext; USED=new Set(); OPS=[]; all.length=0; closeMenus(); }
+  function mount(host, o){
+    const X={host, o, cwd:o.cwd.slice(), back:[], fwd:[], sel:new Set(), anchor:null, foc:0, ren:null, addr:false,
+      exp:new Set(), hl:new Set((o.hl||[]).map(lc)), hlt:new Set((o.hlTree||[]).map(p=>lc(pstr(p)))), lastTap:null, flash:new Set(), order:[], items:[]};
+    (o.expand||[]).forEach(p=>expandTo(X,p,true));
+    expandTo(X, X.cwd, true);
+    all.push(X); render(X); return X;
+  }
+  function expandTo(X, p, inclusive){ for(let i=1;i<=p.length-(inclusive?0:1);i++) X.exp.add(lc(pstr(p.slice(0,i)))); }
+  function refresh(focusX){ all.forEach(X=>render(X, X===focusX)); }
+
+  /* ---------- disegno ---------- */
+  function render(X, keepFocus){
+    if(!inBin(X)) while(X.cwd.length && !nodeAt(X.cwd)) X.cwd.pop();
+    const here = inBin(X) ? null : X.cwd.length ? nodeAt(X.cwd) : FS;
+    const items = inBin(X) ? BIN.map((b,i)=>Object.assign({}, b.node, {_bin:i, _from:b.from})) : sorted(here);
+    X.items=items; X.order = items.map(c=> c._bin!=null ? "#"+c._bin : c.name);
+    if(X.foc>=items.length) X.foc=Math.max(0,items.length-1);
+    [...X.sel].forEach(k=>{ if(!X.order.some(o=>lc(o)===lc(k))) X.sel.delete(k); });
+    const selItems = items.filter((c,i)=>isSel(X, X.order[i]));
+    const bin=inBin(X), atPC=!X.cwd.length, canSel=X.sel.size>0 && !bin && !atPC;
+    const crumbs = bin ? [[["::bin"],"Cestino"]] : [[[],"Questo PC"], ...X.cwd.map((_,i)=>[X.cwd.slice(0,i+1), dname(X.cwd.slice(0,i+1))])];
+    const addr = X.addr ? `<input class="xa-in" value="${esc(bin?"Cestino":pstr(X.cwd))}" aria-label="Percorso della cartella" spellcheck="false" autocomplete="off">`
+      : `<button type="button" class="xa-ico" aria-label="Mostra il percorso scritto" title="Mostra il percorso scritto">${bin?"🗑️":atPC?"🖥️":"📁"}</button><div class="crumbs">${crumbs.map((c,i)=>`${i?'<span class="sep">›</span>':""}<button type="button" class="cr" data-cr="${i}">${esc(c[1])}</button>`).join("")}</div>`;
+    const cmd = bin
+      ? `<button type="button" data-a="restore" ${X.sel.size?"":"disabled"}>↩️ <span class="lab">Ripristina gli elementi selezionati</span></button>`
+      : `<button type="button" data-a="new" ${atPC?"disabled":""} aria-haspopup="true">➕ <span class="lab keep">Nuovo</span> ▾</button><span class="vsep"></span>
+        <button type="button" data-a="cut" title="Taglia (${CT}+X)" aria-label="Taglia" ${canSel?"":"disabled"}>✂️ <span class="lab">Taglia</span></button>
+        <button type="button" data-a="copy" title="Copia (${CT}+C)" aria-label="Copia" ${canSel?"":"disabled"}>⧉ <span class="lab">Copia</span></button>
+        <button type="button" data-a="paste" title="Incolla (${CT}+V)" aria-label="Incolla" ${CLIP && !atPC?"":"disabled"}>📋 <span class="lab">Incolla</span></button>
+        <button type="button" data-a="ren" title="Rinomina (F2)" aria-label="Rinomina" ${X.sel.size===1 && !atPC?"":"disabled"}>✏️ <span class="lab">Rinomina</span></button>
+        <button type="button" data-a="del" title="Elimina (Canc)" aria-label="Elimina" ${canSel?"":"disabled"}>🗑️ <span class="lab">Elimina</span></button>
+        <span class="vsep"></span><button type="button" data-a="view" aria-haspopup="true">👁️ <span class="lab keep">Visualizza</span> ▾</button>`;
+    const head = `<div class="xp-head"><div></div><div>Nome</div><div class="c3">${bin?"Percorso originale":"Tipo"}</div><div class="c4">Dimensione</div></div>`;
+    const cutNow = c => CLIP && CLIP.mode==="cut" && !bin && pathEq(CLIP.src, X.cwd) && CLIP.names.some(n=>lc(n)===lc(c.name));
+    const rows = items.map((c,i)=>{ const k=X.order[i], s=isSel(X,k), rn = X.ren && !bin && lc(X.ren.name)===lc(c.name);
+      const drop = !bin && (c.type==="dir"||c.type==="drive") ? ` data-drop="${J(X.cwd.concat(c.name))}"` : "";
+      const nm = rn ? `<input class="ren" value="${esc(X.ren.value)}" aria-label="Nuovo nome" spellcheck="false" autocomplete="off">` : esc(disp(c));
+      return `<div class="xr${s?" sel":""}${i===X.foc?" foc":""}${cutNow(c)?" cut":""}${X.hl.has(lc(c.name))?" hl":""}${X.flash.has(lc(c.name))?" new":""}" data-i="${i}" role="option" aria-selected="${s}"${drop}><div aria-hidden="true">${icoOf(c)}</div><div class="nm">${nm}</div><div class="c3">${esc(bin?pstr(c._from):kindOf(c))}</div><div class="c4">${c.type==="file"?kb(c.size):""}</div></div>`; }).join("");
+    X.flash.clear();
+    const tot=selItems.filter(c=>c.type==="file").reduce((a,c)=>a+c.size,0);
+    const selInfo = X.sel.size ? `${X.sel.size} element${X.sel.size===1?"o selezionato":"i selezionati"}${tot?" · "+human(tot):""}` : "";
+    const clipInfo = CLIP ? `📋 Appunti: ${CLIP.names.length===1?"«"+esc(CLIP.names[0])+"»":CLIP.names.length+" elementi"} ${CLIP.mode==="cut"?"(tagliato)":"(copiato)"}` : "";
+    const tree = X.o.tree===false ? "" : `<nav class="xp-tree" aria-label="Albero delle cartelle">${treeHtml(X)}</nav>`;
+    X.host.innerHTML = `<div class="xp">
+      <div class="xp-title"><span class="tab">${bin?"🗑️":atPC?"🖥️":"📁"} ${esc(dname(X.cwd))}</span><span class="xp-ctl" aria-hidden="true">─ ▢ ✕</span></div>
+      <div class="xp-nav"><button type="button" class="nb" data-a="back" ${X.back.length?"":"disabled"} aria-label="Indietro" title="Indietro (Alt+←)">←</button><button type="button" class="nb" data-a="fwd" ${X.fwd.length?"":"disabled"} aria-label="Avanti" title="Avanti (Alt+→)">→</button><button type="button" class="nb" data-a="up" ${atPC||bin?"disabled":""} aria-label="Su di un livello" title="Su di un livello (Alt+↑)">↑</button>
+        <div class="xp-addr" title="Clic qui per vedere e scrivere il percorso">${addr}</div></div>
+      <div class="xp-cmd">${cmd}</div>
+      <div class="xp-body${X.o.tree===false?" notree":""}">${tree}<div class="xp-main">${head}<div class="xp-list" tabindex="0" role="listbox" aria-multiselectable="true" aria-label="Contenuto di ${esc(dname(X.cwd))}" data-drop="${J(bin?"::bin":X.cwd)}">${rows || `<div class="xp-empty">Questa cartella è vuota.</div>`}</div></div></div>
+      <div class="xp-status"><span>${items.length} element${items.length===1?"o":"i"}</span><span>${selInfo}</span><span class="clip">${clipInfo}</span></div>
+      <div class="xp-toast" aria-live="polite"></div></div>`;
+    wire(X);
+    const cr=X.host.querySelector(".crumbs"); if(cr){ const w=[...cr.children].reduce((a,c)=>a+c.offsetWidth,0); cr.classList.toggle("ov", w>cr.clientWidth+1); }
+    const list=X.host.querySelector(".xp-list"), fr=list.querySelector(`.xr[data-i="${X.foc}"]`);
+    if(fr && X.sel.size){ const t=fr.offsetTop, b=t+fr.offsetHeight; if(t<list.scrollTop) list.scrollTop=t; else if(b>list.scrollTop+list.clientHeight) list.scrollTop=b-list.clientHeight; }
+    if(X.ren){ const inp=X.host.querySelector("input.ren"); if(inp){ inp.focus({preventScroll:true}); const dot = X.ren.isFile && EXT ? X.ren.value.lastIndexOf(".") : -1; inp.setSelectionRange(0, dot>0?dot:X.ren.value.length); } }
+    else if(X.addr){ const a=X.host.querySelector(".xa-in"); a.focus(); a.select(); }
+    else if(keepFocus) list.focus({preventScroll:true});
+    const cur=X.host.querySelector(".tn.cur"); if(cur){ const tr=X.host.querySelector(".xp-tree"); if(cur.offsetTop<tr.scrollTop || cur.offsetTop>tr.scrollTop+tr.clientHeight-26) tr.scrollTop=cur.offsetTop-40; }
+  }
+  const isSel = (X,k) => [...X.sel].some(s=>lc(s)===lc(k));
+  function treeHtml(X){
+    const row=(path,label,ico,depth,kids,open)=>`<div class="tn${pathEq(path,X.cwd)?" cur":""}${X.hlt.has(lc(pstr(path)))?" hlt":""}" style="padding-left:${2+depth*14}px" data-drop="${J(path.length&&path[0]==="::bin"?"::bin":path)}">${kids?`<button type="button" class="tg" data-tg="${J(path)}" aria-label="${open?"Chiudi":"Apri"} il ramo ${esc(label)}" aria-expanded="${open}">${open?"▾":"▸"}</button>`:`<span class="tg"></span>`}<button type="button" class="tl" data-go="${J(path)}">${ico} ${esc(label)}</button></div>`;
+    let h=row([], "Questo PC", "🖥️", 0, false, true);
+    const walk=(n,path,depth)=>{ n.children.filter(c=>c.type==="dir").sort((a,b)=>a.name.localeCompare(b.name,"it",{numeric:true,sensitivity:"base"})).forEach(c=>{
+      const p=path.concat(c.name), kids=c.children.some(x=>x.type==="dir"), open=kids && X.exp.has(lc(pstr(p)));
+      h+=row(p, c.name, "📁", depth, kids, open); if(open) walk(c,p,depth+1); }); };
+    FS.children.forEach(d=>{ const p=[d.name], kids=d.children.some(c=>c.type==="dir"), open=kids && X.exp.has(lc(pstr(p)));
+      h+=row(p, d.label, d.usb?"💾":"💽", 1, kids, open); if(open) walk(d,p,2); });
+    if(X.o.bin) h+=row(["::bin"], "Cestino", "🗑️", 0, false, false);
+    return h;
+  }
+
+  /* ---------- eventi ---------- */
+  function wire(X){
+    const H=X.host;
+    H.querySelectorAll("[data-a]").forEach(b=>b.addEventListener("click", e=>act(X, b.dataset.a, e)));
+    H.querySelectorAll(".cr").forEach(b=>b.addEventListener("click", e=>{ e.stopPropagation(); const i=+b.dataset.cr; if(inBin(X)) return; const p = i===0 ? [] : X.cwd.slice(0,i); nav(X, p, "crumb"); }));
+    const addr=H.querySelector(".xp-addr");
+    addr.addEventListener("click", e=>{ if(e.target.closest(".cr") || X.addr) return; X.addr=true; USED.add("addrview"); render(X); });
+    const ai=H.querySelector(".xa-in");
+    if(ai){ ai.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); goTyped(X, ai.value); } else if(e.key==="Escape"){ e.preventDefault(); X.addr=false; render(X,true); } });
+      ai.addEventListener("blur", ()=>{ setTimeout(()=>{ if(X.addr && !dlgOpen){ X.addr=false; render(X); } }, 120); }); }
+    H.querySelectorAll(".tl").forEach(b=>b.addEventListener("click", ()=>{ const p=JSON.parse(b.dataset.go); nav(X, p, "tree"); }));
+    H.querySelectorAll(".tg").forEach(b=>{ if(b.tagName!=="BUTTON") return; b.addEventListener("click", ()=>{ const p=JSON.parse(b.dataset.tg), k=lc(pstr(p)); X.exp.has(k)?X.exp.delete(k):X.exp.add(k); USED.add("treetoggle"); render(X); const nb=X.host.querySelector(`.tg[data-tg="${CSS.escape(JSON.stringify(p))}"]`); if(nb) nb.focus(); }); });
+    const list=H.querySelector(".xp-list");
+    list.addEventListener("pointerdown", e=>{ if(e.button!==0) return; if(X.ren && e.target.closest("input.ren")) return; closeMenus();
+      if(X.ren){ const ri=X.host.querySelector("input.ren"); if(ri) commitRen(X, ri.value); return; }
+      if(e.pointerType==="mouse") e.preventDefault();   // il fuoco lo gestisce render(): l'elenco viene ridisegnato
+      const row=e.target.closest(".xr");
+      if(!row){ if(!(IS_MAC?e.metaKey:e.ctrlKey)) X.sel.clear(); render(X,true); return; }
+      rowDown(X, +row.dataset.i, e); });
+    list.addEventListener("keydown", e=>listKey(X,e));
+    list.addEventListener("contextmenu", e=>{ e.preventDefault(); if(X.ren) return; const row=e.target.closest(".xr");
+      if(row){ const k=X.order[+row.dataset.i]; if(!isSel(X,k)){ X.sel=new Set([k]); X.anchor=X.foc=+row.dataset.i; render(X,true); } ctx(X, k, e.clientX, e.clientY); }
+      else { X.sel.clear(); render(X,true); ctx(X, null, e.clientX, e.clientY); } });
+    const ri=H.querySelector("input.ren");
+    if(ri){ ri.addEventListener("keydown", e=>{ e.stopPropagation(); if(e.key==="Enter"){ e.preventDefault(); commitRen(X, ri.value); } else if(e.key==="Escape"){ e.preventDefault(); X.ren=null; render(X,true); } });
+      ri.addEventListener("blur", ()=>{ setTimeout(()=>{ if(X.ren && !dlgOpen && document.activeElement!==ri) commitRen(X, ri.value); }, 60); }); }
+  }
+  function rowDown(X, i, e){
+    const k=X.order[i], multi = IS_MAC ? e.metaKey : e.ctrlKey; let pendingSingle=null;
+    if(e.shiftKey && X.anchor!=null){ const a=Math.min(X.anchor,i), b=Math.max(X.anchor,i); X.sel=new Set(X.order.slice(a,b+1)); }
+    else if(multi){ isSel(X,k) ? X.sel.forEach(s=>{ if(lc(s)===lc(k)) X.sel.delete(s); }) : X.sel.add(k); X.anchor=i; }
+    else if(!isSel(X,k)){ X.sel=new Set([k]); X.anchor=i; }
+    else pendingSingle=k;
+    X.foc=i; render(X,true);
+    D={X, k, x0:e.clientX, y0:e.clientY, type:e.pointerType, id:e.pointerId, on:false, pendingSingle, multi:multi||e.shiftKey};
+    window.addEventListener("pointermove", dmove, {passive:false}); window.addEventListener("pointerup", dup); window.addEventListener("pointercancel", dcancel);
+  }
+  function dmove(e){
+    if(!D || e.pointerId!==D.id) return;
+    const dx=e.clientX-D.x0, dy=e.clientY-D.y0;
+    if(!D.on){
+      if(inBin(D.X) || !D.X.cwd.length) return;
+      if(D.type==="touch"){ if(Math.abs(dy)>10 && Math.abs(dy)>=Math.abs(dx)) return dcancel(); if(Math.abs(dx)<12) return; }
+      else if(Math.hypot(dx,dy)<6) return;
+      D.on=true; D.src=D.X.cwd.slice(); D.names=D.X.order.filter(o=>isSel(D.X,o));
+      D.ghost=document.createElement("div"); D.ghost.className="dragghost"; document.body.appendChild(D.ghost);
+    }
+    e.preventDefault();
+    D.ghost.style.left=(e.clientX+14)+"px"; D.ghost.style.top=(e.clientY+12)+"px";
+    const t=dropAt(e.clientX, e.clientY); document.querySelectorAll(".drop").forEach(x=>x.classList.remove("drop"));
+    D.target=t; D.eff = t ? effect(D, t.path, e) : null;
+    if(t && D.eff && t.el.classList.contains("xr")) t.el.classList.add("drop"); else if(t && D.eff && t.el.classList.contains("tn")) t.el.classList.add("drop");
+    const what = D.names.length===1 ? `${icoOf(childOf(nodeAt(D.src),D.names[0])||{type:"file",name:D.names[0]})} ${esc(disp(childOf(nodeAt(D.src),D.names[0])||{type:"file",name:D.names[0]}))}` : `📄 ${D.names.length} elementi`;
+    const lab = !D.eff ? `<span class="act no">🚫 qui non si può</span>` : D.eff==="del" ? `<span class="act">→ Sposta nel Cestino</span>` : D.eff==="move" ? `<span class="act">→ Sposta in ${esc(dname(t.path))}</span>` : `<span class="act">+ Copia in ${esc(dname(t.path))}</span>`;
+    D.ghost.innerHTML = what+lab;
+  }
+  function dropAt(x,y){ const el=document.elementFromPoint(x,y); const t=el && el.closest ? el.closest("[data-drop]") : null; if(!t) return null; return {el:t, path:JSON.parse(t.dataset.drop)}; }
+  function effect(d, path, e){
+    if(path==="::bin") return "del";
+    if(!Array.isArray(path) || !path.length) return null;
+    if(pathEq(path, d.src)) return null;
+    for(const n of d.names) if(within(path, d.src.concat(n))) return null;
+    const node=nodeAt(path); if(!node || !isCont(node)) return null;
+    const same = lc(path[0])===lc(d.src[0]), copyK = IS_MAC ? e.altKey : e.ctrlKey;
+    if(copyK) return "copy"; if(e.shiftKey) return "move";
+    return same ? "move" : "copy";
+  }
+  function dcleanup(){ window.removeEventListener("pointermove", dmove); window.removeEventListener("pointerup", dup); window.removeEventListener("pointercancel", dcancel); if(D && D.ghost) D.ghost.remove(); document.querySelectorAll(".drop").forEach(x=>x.classList.remove("drop")); }
+  function dcancel(){ dcleanup(); D=null; }
+  function dup(e){
+    if(!D || e.pointerId!==D.id) return; const d=D; dcleanup(); D=null;
+    if(d.on){ if(d.target && d.eff){ if(d.eff==="del"){ USED.add("dragbin"); delNames(d.X, d.names, d.src); } else { USED.add(d.eff==="copy"?"dragcopy":"drag"); transfer(d.names, d.src, d.target.path, d.eff, "drag"); } } return; }
+    const X=d.X; if(d.pendingSingle && !d.multi){ X.sel=new Set([d.pendingSingle]); render(X,true); }
+    const now=Date.now();
+    if(X.lastTap && lc(X.lastTap.k)===lc(d.k) && now-X.lastTap.t<450){ X.lastTap=null; open(X, d.k); }
+    else X.lastTap={k:d.k, t:now};
+  }
+
+  /* ---------- azioni ---------- */
+  function act(X, a, e){
+    closeMenus();
+    if(a==="back"){ if(X.back.length){ X.fwd.push(X.cwd); go(X, X.back.pop(), "back"); } }
+    else if(a==="fwd"){ if(X.fwd.length){ X.back.push(X.cwd); go(X, X.fwd.pop(), "fwd"); } }
+    else if(a==="up"){ if(X.cwd.length && !inBin(X)) nav(X, X.cwd.slice(0,-1), "up"); }
+    else if(a==="new") menu(X, e.currentTarget, [{label:"📁 Cartella", act:()=>newFolder(X)}, "-", {label:"📘 Documento di Microsoft Word", dis:true}, {label:"📝 Documento di testo", dis:true}, {label:"📙 Presentazione di Microsoft PowerPoint", dis:true}]);
+    else if(a==="cut"||a==="copy") clip(X, a);
+    else if(a==="paste") paste(X);
+    else if(a==="ren"){ if(X.sel.size===1) startRen(X, [...X.sel][0]); }
+    else if(a==="del") delNames(X, X.order.filter(o=>isSel(X,o)), X.cwd.slice());
+    else if(a==="restore") restore(X);
+    else if(a==="view") menu(X, e.currentTarget, [{label:"Icone grandi", dis:true},{label:"Elenco", dis:true},{label:"Dettagli", dis:true, check:true},"-",
+      {label:"Mostra", sub:[{label:"Riquadro di spostamento", dis:true, check:true},{label:"Riquadro dettagli", dis:true},{label:"Caselle di controllo elementi", dis:true},{label:"Estensioni nomi file", check:EXT, act:()=>{ EXT=!EXT; USED.add("ext"); refresh(X); }},{label:"Elementi nascosti", dis:true}]}]);
+  }
+  function nav(X, path, how){ if(!pathEq(path, X.cwd)){ X.back.push(X.cwd); X.fwd=[]; } go(X, path, how); }
+  function go(X, path, how){ X.cwd=path.slice(); X.sel.clear(); X.foc=0; X.anchor=null; X.ren=null; X.addr=false; expandTo(X, path, true); USED.add(how); USED.add("nav"); render(X,true); }
+  function goTyped(X, v){
+    const raw=v.trim(); USED.add("addrtype");
+    if(/^(questo pc)?$/i.test(raw)){ nav(X, [], "addr"); return; }
+    const parts=raw.replace(/\//g,BS).split(BS).filter(Boolean), r=parts.length ? resolve(parts) : null;
+    if(r && isCont(r.node)) nav(X, r.path, "addr");
+    else ask("Esplora file", `Windows non trova «${esc(raw)}». Verifica di aver digitato correttamente il nome e riprova.`, [{label:"OK", val:1, pri:true}], ()=>{ X.addr=true; render(X); });
+  }
+  function open(X, k){
+    if(inBin(X)){ toast(X, "Per usarlo, prima ripristinalo."); return; }
+    const here = X.cwd.length ? nodeAt(X.cwd) : FS, c=childOf(here, k); if(!c) return;
+    if(isCont(c)) nav(X, X.cwd.concat(c.name), "dbl"); else toast(X, `Si aprirebbe «${c.name}» con il suo programma.`);
+  }
+  function clip(X, mode, how){
+    if(inBin(X) || !X.cwd.length || !X.sel.size) return;
+    CLIP={mode, src:X.cwd.slice(), names:X.order.filter(o=>isSel(X,o))}; USED.add(mode); if(how==="kb") USED.add(mode==="cut"?"ctrlx":"ctrlc");
+    refresh(X);
+  }
+  function paste(X, how){
+    if(!CLIP || inBin(X) || !X.cwd.length) return;
+    USED.add("paste"); if(how==="kb") USED.add("ctrlv");
+    const c=CLIP; transfer(c.names, c.src, X.cwd.slice(), c.mode==="cut"?"move":"copy", "paste", ()=>{ if(c.mode==="cut" && CLIP===c) CLIP=null; refresh(X); });
+  }
+  function copyName(dir, name){ const m=name.match(/^(.*?)(\.[^.]+)?$/), base=m[1], ext=m[2]||""; let n=`${base} - Copia${ext}`, i=2; while(childOf(dir,n)) n=`${base} - Copia (${i++})${ext}`; return n; }
+  /* sposta o copia; i conflitti di nome chiedono che cosa fare */
+  function transfer(names, src, dest, mode, how, cb){
+    const sdir=nodeAt(src), ddir=nodeAt(dest); if(!sdir || !ddir){ cb && cb([]); return; }
+    if(pathEq(src,dest) && mode==="move"){ cb && cb([]); return; }
+    const list=names.map(n=>childOf(sdir,n)).filter(Boolean), done=[];
+    const step=i=>{
+      if(i>=list.length){ if(done.length) OPS.push({op:mode, names:done.map(d=>d.from), to:done.map(d=>d.to), src:src.slice(), dest:dest.slice(), how});
+        all.forEach(Y=>{ if(pathEq(Y.cwd,dest)){ done.forEach(d=>Y.flash.add(lc(d.to))); if(Y.host.contains(document.activeElement) || done.length){ Y.sel=new Set(done.map(d=>d.to)); } } });
+        refresh(); cb && cb(done); return; }
+      const it=list[i];
+      if(isCont(it) && within(dest, src.concat(it.name))){ ask("Interrotto", "La cartella di destinazione è una sottocartella della cartella di origine.", [{label:"OK",val:1,pri:true}], ()=>step(i+1)); return; }
+      let name=it.name; if(mode==="copy" && pathEq(src,dest)) name=copyName(ddir, it.name);
+      const clash = !pathEq(src,dest) ? childOf(ddir, name) : null;
+      const doIt = replace=>{
+        if(replace) ddir.children=ddir.children.filter(c=>lc(c.name)!==lc(name));
+        const obj = mode==="copy" ? Object.assign(clone(it), {name}) : it;
+        if(mode==="move") sdir.children=sdir.children.filter(c=>c!==it);
+        ddir.children.push(obj); done.push({from:it.name, to:name, replaced:!!replace}); step(i+1); };
+      if(clash){
+        if(isCont(clash) || isCont(it)){ ask("Esplora file", `In «${esc(dname(dest))}» c'è già una cartella o un file che si chiama «${esc(name)}». Questo elemento non è stato ${mode==="copy"?"copiato":"spostato"}.`, [{label:"OK",val:1,pri:true}], ()=>step(i+1)); return; }
+        conflict(it, clash, src, dest, mode, ch=>{ USED.add(ch==="replace"?"replace":"skip"); if(ch==="replace") doIt(true); else step(i+1); });
+      } else doIt(false);
+    };
+    step(0);
+  }
+  function conflict(inc, old, src, dest, mode, cb){
+    dlgOpen=true;
+    const w=document.createElement("div"); w.className="dlg-wrap";
+    w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-t"><h4 id="dlg-t">Sostituisci o ignora file</h4>
+      <p>${mode==="copy"?"Copia":"Spostamento"} di 1 elemento da <b>${esc(dname(src))}</b> a <b>${esc(dname(dest))}</b>.<br>La destinazione contiene già un file denominato <b>«${esc(old.name)}»</b>.</p>
+      <p class="small" style="margin:0 0 8px">Quello che c'è già: ${kb(old.size)}, modificato il ${dateIt(old.date)}<br>Quello che arriva: ${kb(inc.size)}, modificato il ${dateIt(inc.date)}</p>
+      <div class="opts"><button type="button" data-v="replace">✔ Sostituisci il file nella destinazione</button><button type="button" data-v="skip">↷ Ignora questo file</button></div></div>`;
+    document.body.appendChild(w);
+    const close=v=>{ w.remove(); dlgOpen=false; cb(v); };
+    w.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>close(b.dataset.v));
+    w.addEventListener("keydown", e=>{ if(e.key==="Escape"){ e.preventDefault(); close("skip"); } });
+    w.querySelector("[data-v]").focus();
+  }
+  function ask(title, html, btns, cb){
+    dlgOpen=true;
+    const w=document.createElement("div"); w.className="dlg-wrap";
+    w.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-t"><h4 id="dlg-t">${esc(title)}</h4><p>${html}</p><div class="row">${btns.map((b,i)=>`<button type="button" data-i="${i}" class="${b.pri?"pri":""}">${esc(b.label)}</button>`).join("")}</div></div>`;
+    document.body.appendChild(w);
+    const close=v=>{ w.remove(); dlgOpen=false; cb && cb(v); };
+    w.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>close(btns[+b.dataset.i].val));
+    w.addEventListener("keydown", e=>{ if(e.key==="Escape"){ e.preventDefault(); const c=btns.find(b=>b.cancel); close(c?c.val:null); } });
+    (w.querySelector("button.pri")||w.querySelector("button")).focus();
+  }
+  function delNames(X, names, src){
+    if(!names.length || !src.length || src[0]==="::bin") return;
+    const dir=nodeAt(src), drive=FS.children.find(d=>lc(d.name)===lc(src[0])); if(!dir) return;
+    const list=names.map(n=>childOf(dir,n)).filter(Boolean); if(!list.length) return;
+    const finish = perm => { dir.children=dir.children.filter(c=>!list.includes(c));
+      if(!perm) list.forEach(c=>BIN.push({node:c, from:src.slice()}));
+      USED.add(perm?"delperm":"del"); OPS.push({op:perm?"delperm":"del", names:list.map(c=>c.name), src:src.slice()});
+      X.sel.clear(); if(CLIP && pathEq(CLIP.src,src)) CLIP.names=CLIP.names.filter(n=>!list.some(c=>lc(c.name)===lc(n))); if(CLIP && !CLIP.names.length) CLIP=null; refresh(X); };
+    if(drive && drive.usb) ask("Elimina file", `Eliminare definitivamente ${list.length===1?`«${esc(list[0].name)}»`:`questi ${list.length} elementi`}?<br><span class="small">Da una chiavetta i file non vanno nel Cestino.</span>`, [{label:"Sì",val:1,pri:true},{label:"No",val:0,cancel:true}], v=>{ if(v) finish(true); });
+    else finish(false);
+  }
+  function restore(X){
+    const idx=X.order.filter(o=>isSel(X,o)).map(o=>+o.slice(1)).sort((a,b)=>b-a); if(!idx.length) return;
+    const go1=j=>{ if(j>=idx.length){ USED.add("restore"); OPS.push({op:"restore", n:idx.length}); X.sel.clear(); refresh(X); return; }
+      const b=BIN[idx[j]]; let n=FS; for(const p of b.from){ let c=childOf(n,p); if(!c){ c=DIR(p); n.children.push(c); } n=c; }
+      const clash=childOf(n, b.node.name);
+      const put = rep=>{ if(rep) n.children=n.children.filter(c=>lc(c.name)!==lc(b.node.name)); n.children.push(b.node); BIN.splice(idx[j],1); go1(j+1); };
+      if(clash) conflict(b.node, clash, ["::bin"], b.from, "move", v=>{ if(v==="replace") put(true); else go1(j+1); }); else put(false); };
+    go1(0);
+  }
+  function newFolder(X){
+    if(!X.cwd.length || inBin(X)) return; const dir=nodeAt(X.cwd); let n="Nuova cartella", i=2; while(childOf(dir,n)) n=`Nuova cartella (${i++})`;
+    dir.children.push(DIR(n)); USED.add("new"); OPS.push({op:"new", name:n, src:X.cwd.slice()});
+    X.sel=new Set([n]); X.foc=Math.max(0, sorted(dir).findIndex(c=>c.name===n)); X.ren={name:n, value:n, isFile:false, isNew:true, keepExt:""}; refresh(X);
+  }
+  function startRen(X, k){
+    if(inBin(X) || !X.cwd.length) return; const c=childOf(nodeAt(X.cwd), k); if(!c) return;
+    const hide = c.type==="file" && !EXT && extOf(c.name);
+    X.ren={name:c.name, value: hide ? c.name.replace(/\.[^.]+$/,"") : c.name, isFile:c.type==="file", isNew:false, keepExt: hide ? "."+extOf(c.name) : ""}; render(X);
+  }
+  function commitRen(X, v){
+    if(!X.ren) return; const r=X.ren, dir=nodeAt(X.cwd), item=dir && childOf(dir, r.name);
+    if(!item){ X.ren=null; render(X,true); return; }
+    let name=v.trim().replace(/\s+$/,""); if(!name){ X.ren=null; render(X,true); return; }
+    name += r.keepExt;
+    if(/[\\/:*?"<>|]/.test(name)){ toast(X, 'Un nome file non può contenere i seguenti caratteri: \\ / : * ? " < > |'); return; }
+    if(lc(name)!==lc(item.name) && childOf(dir,name)){ toast(X, `In questa cartella c'è già un elemento che si chiama «${name}».`); return; }
+    const done=()=>{ const old=item.name; item.name=name; X.ren=null; X.sel=new Set([name]); if(old!==name){ USED.add("rename"); OPS.push({op:"rename", from:old, to:name, src:X.cwd.slice()}); } refresh(X); };
+    if(r.isFile && EXT && extOf(name)!==extOf(item.name)){
+      X.ren.value=v; ask("Rinomina", "Se modifichi l'estensione di un file, potrebbe diventare inutilizzabile.<br>Modificarla?", [{label:"Sì",val:1},{label:"No",val:0,pri:true,cancel:true}], ok=>{ USED.add(ok?"extchange":"extkeep"); if(ok) done(); else { X.ren=null; render(X,true); } }); return; }
+    done();
+  }
+  function listKey(X, e){
+    if(X.ren) return; const k=e.key, n=X.order.length, multi = IS_MAC ? e.metaKey : e.ctrlKey;
+    if(multi && /^[aA]$/.test(k)){ e.preventDefault(); X.sel=new Set(X.order); render(X,true); return; }
+    if(multi && /^[cC]$/.test(k)){ e.preventDefault(); clip(X,"copy","kb"); return; }
+    if(multi && /^[xX]$/.test(k)){ e.preventDefault(); clip(X,"cut","kb"); return; }
+    if(multi && /^[vV]$/.test(k)){ e.preventDefault(); paste(X,"kb"); return; }
+    if(multi && e.shiftKey && /^[nN]$/.test(k)){ e.preventDefault(); newFolder(X); return; }
+    if(k==="F2"){ e.preventDefault(); if(X.sel.size===1) startRen(X,[...X.sel][0]); return; }
+    if(k==="Delete" || (IS_MAC && k==="Backspace" && e.metaKey)){ e.preventDefault(); delNames(X, X.order.filter(o=>isSel(X,o)), X.cwd.slice()); return; }
+    if(k==="Backspace" || (e.altKey && k==="ArrowLeft")){ e.preventDefault(); act(X,"back"); return; }
+    if(e.altKey && k==="ArrowRight"){ e.preventDefault(); act(X,"fwd"); return; }
+    if(e.altKey && k==="ArrowUp"){ e.preventDefault(); act(X,"up"); return; }
+    if(k==="Enter"){ e.preventDefault(); if(X.sel.size===1) open(X,[...X.sel][0]); return; }
+    if(k==="ContextMenu" || (e.shiftKey && k==="F10")){ e.preventDefault(); const r=X.host.querySelector(".xp-list").getBoundingClientRect(); ctx(X, X.sel.size?[...X.sel][0]:null, r.left+60, r.top+40); return; }
+    if(k==="Escape"){ X.sel.clear(); render(X,true); return; }
+    if(k===" " && multi){ e.preventDefault(); const kk=X.order[X.foc]; if(kk!=null){ isSel(X,kk)?X.sel.forEach(s=>{ if(lc(s)===lc(kk)) X.sel.delete(s); }):X.sel.add(kk); render(X,true); } return; }
+    let nf=null; if(k==="ArrowDown") nf=Math.min(n-1,X.foc+1); else if(k==="ArrowUp") nf=Math.max(0,X.foc-1); else if(k==="Home") nf=0; else if(k==="End") nf=n-1; else return;
+    if(!X.sel.size && (k==="ArrowDown"||k==="ArrowUp")) nf=Math.min(X.foc, n-1);   // la prima freccia sceglie l'elemento che ha il fuoco
+    e.preventDefault(); if(!n) return;
+    if(e.shiftKey){ if(X.anchor==null) X.anchor=X.foc; X.foc=nf; const a=Math.min(X.anchor,nf), b=Math.max(X.anchor,nf); X.sel=new Set(X.order.slice(a,b+1)); }
+    else if(multi) X.foc=nf;
+    else { X.foc=nf; X.anchor=nf; X.sel=new Set([X.order[nf]]); }
+    render(X,true);
+  }
+
+  /* ---------- menu ---------- */
+  function closeMenus(){ document.querySelectorAll(".xp-menu").forEach(m=>m.remove()); }
+  function menu(X, anchor, items){ const xp=X.host.querySelector(".xp"), r=anchor.getBoundingClientRect(), b=xp.getBoundingClientRect(); place(X, r.left-b.left, r.bottom-b.top+2, items, 0); }
+  function ctx(X, k, cx, cy){
+    const bin=inBin(X); let items=[];
+    if(bin) items = X.sel.size ? [{label:"↩️ Ripristina", act:()=>restore(X)}] : [];
+    else if(X.cwd.length){
+      if(k!=null){ const c=childOf(nodeAt(X.cwd), k); if(!c) return;
+        items=[{label:isCont(c)?"📂 Apri":"📄 Apri", act:()=>open(X,k)}, "-", {label:"✂️ Taglia", act:()=>clip(X,"cut")}, {label:"⧉ Copia", act:()=>clip(X,"copy")}, {label:"✏️ Rinomina", act:()=>startRen(X,k), dis:X.sel.size!==1}, {label:"🗑️ Elimina", act:()=>delNames(X, X.order.filter(o=>isSel(X,o)), X.cwd.slice())}]; }
+      else items=[{label:"➕ Nuovo", sub:[{label:"📁 Cartella", act:()=>newFolder(X)}]}, "-", {label:"📋 Incolla", act:()=>paste(X), dis:!CLIP}];
+    }
+    if(!items.length) return;
+    const b=X.host.querySelector(".xp").getBoundingClientRect(); place(X, cx-b.left, cy-b.top, items, 0);
+  }
+  function place(X, x, y, items, level){
+    document.querySelectorAll(".xp-menu").forEach(m=>{ if(+m.dataset.l>=level) m.remove(); });
+    const xp=X.host.querySelector(".xp"), m=document.createElement("div"); m.className="xp-menu"; m.dataset.l=level; m.setAttribute("role","menu");
+    m.innerHTML=items.map((it,i)=> it==="-" ? "<hr>" : `<button type="button" role="menuitem" data-i="${i}" ${it.dis?"disabled":""}><span class="ck">${it.check?"✓":""}</span>${esc(it.label)}${it.sub?'<span class="arr">›</span>':""}</button>`).join("");
+    xp.appendChild(m);
+    const W=xp.clientWidth, H=xp.clientHeight; m.style.left=Math.max(4, Math.min(x, W-m.offsetWidth-4))+"px"; m.style.top=Math.max(4, Math.min(y, H-m.offsetHeight-4))+"px";
+    m.querySelectorAll("button[data-i]").forEach(b=>{ const it=items[+b.dataset.i];
+      b.addEventListener("click", e=>{ e.stopPropagation(); if(it.sub){ const r=b.getBoundingClientRect(), xb=xp.getBoundingClientRect(); let nx=r.right-xb.left+2; if(nx+200>W) nx=Math.max(4, r.left-xb.left-200); place(X, nx, r.top-xb.top, it.sub, level+1); return; } closeMenus(); if(it.act) it.act(); });
+      b.addEventListener("keydown", e=>{ const bs=[...m.querySelectorAll("button:not(:disabled)")], i=bs.indexOf(b);
+        if(e.key==="ArrowDown"){ e.preventDefault(); bs[(i+1)%bs.length].focus(); } else if(e.key==="ArrowUp"){ e.preventDefault(); bs[(i-1+bs.length)%bs.length].focus(); }
+        else if(e.key==="ArrowRight" && it.sub){ e.preventDefault(); b.click(); } else if(e.key==="Escape" || (e.key==="ArrowLeft" && level>0)){ e.preventDefault(); m.remove(); const up=document.querySelector(`.xp-menu[data-l="${level-1}"] button`); if(up) up.focus(); else X.host.querySelector(".xp-list").focus(); } }); });
+    const f=m.querySelector("button:not(:disabled)"); if(f) f.focus({preventScroll:true});
+  }
+  document.addEventListener("pointerdown", e=>{ if(!e.target.closest(".xp-menu") && !e.target.closest('[data-a="new"],[data-a="view"]')) closeMenus(); });
+  function toast(X, t){ const el=X.host.querySelector(".xp-toast"); if(!el) return; el.textContent=t; el.classList.add("on"); clearTimeout(X.tt); X.tt=setTimeout(()=>{ const e2=X.host.querySelector(".xp-toast"); if(e2) e2.classList.remove("on"); }, 3600); }
+
+  return {load, mount, refresh, all, nav, go, render, transfer, toast, get dlg(){ return dlgOpen; }};
+})();
+
+/* =====================================================================
+   IL DISCO DELLA PALESTRA: C:\Utenti\studente
+   ===================================================================== */
+const S = ["C:","Utenti","studente"];
+const P = (...p) => S.concat(p);
+const PATH = (...p) => P(...p).join(BS);
+const PRIMO = P("Documenti","primo_anno");
+function world(mod){
+  const fs={name:"", type:"root", children:[{name:"C:", label:"Disco locale (C:)", type:"drive", children:[
+    DIR("Programmi",[DIR("Google"),DIR("Microsoft Office")]),
+    DIR("Utenti",[DIR("Pubblica"), DIR("studente",[
+      DIR("Desktop",[F("orario_classe.pdf",184655)]),
+      DIR("Documenti",[
+        DIR("primo_anno",[DIR("inglese"), DIR("italiano",[F("tema_estate.docx",36870,"2026-09-14")]), DIR("matematica",[F("esercizi_frazioni.pdf",184655,"2026-09-18"), F("verifica_equazioni.docx",41230,"2026-09-25")]), DIR("scienze"), DIR("storia")]),
+        DIR("vecchi_lavori",[F("ricerca_vulcani.pptx",2250012,"2026-05-20")]),
+        F("appunti_vari.txt",2480), F("calendario_verifiche.pdf",95120), F("lista_libri.docx",22310)]),
+      DIR("Download",[F("riassunto_storia.docx",28400,"2026-09-26"), F("scheda_inglese.pdf",231044,"2026-09-27"), F("relazione_scienze.docx",36891,"2026-09-28"), F("esercizi_geometria.pdf",169151,"2026-09-29"), F("foto_gita.jpg",3587289,"2026-09-12"), F("canzone_coro.mp3",4122087,"2026-09-22")]),
+      DIR("Immagini",[DIR("gita_2026",[F("IMG_2041.jpg",2984660,"2026-09-12"), F("IMG_2042.jpg",3102217,"2026-09-12")]), F("sfondo.png",1175814)]),
+      DIR("Musica"), DIR("Video")])]),
+    DIR("Windows",[DIR("System32")])]}]};
+  if(mod){ const save=FS; FS=fs; mod(); FS=save; }
+  return fs;
+}
+const movFile = (name, from, to) => () => { const s=nodeAt(from), d=nodeAt(to), c=childOf(s,name); s.children=s.children.filter(x=>x!==c); d.children.push(c); };
+const addDir = (at, name) => () => nodeAt(at).children.push(DIR(name));
+
+/* ---------- controlli ---------- */
+function pathCheck(exp){ return v=>{
+  const s=v.trim(); if(!s) return "Scrivi il percorso.";
+  if(s.includes("/")) return "In Windows tra le cartelle va la barra rovesciata <b>\\</b>, non la barra /.";
+  if(/\s\\|\\\s/.test(s)) return "Niente spazi prima o dopo la <b>\\</b>.";
+  const a=s.split(BS).filter(x=>x!==""), b=exp.split(BS);
+  if(!/^[a-z]:$/i.test(a[0]||"")) return "Un percorso completo parte dal disco: comincia con <b>C:\\</b>";
+  if(a.length===b.length && a.every((x,i)=>lc(x)===lc(b[i]))) return true;
+  const last=b[b.length-1];
+  if(a.length===b.length && a.slice(0,-1).every((x,i)=>lc(x)===lc(b[i])) && lc(a[a.length-1])===lc(last.replace(/\.[^.]+$/,""))) return `Manca l'estensione alla fine: <b>.${extOf(last)}</b>`;
+  for(let i=0;i<b.length;i++){ if(lc(a[i]||"")!==lc(b[i])) return a[i]===undefined ? `Manca la fine: dopo «${esc(b[i-1])}» viene «${esc(b[i])}».` : `Dopo «${esc(b[i-1])}» viene «${esc(b[i])}», non «${esc(a[i])}».`; }
+  return "Alla fine c'è un pezzo in più: il percorso finisce con il nome del file.";
+}; }
+function ruleDiag(n, exp){
+  const t=[]; if(/[A-Z]/.test(n)) t.push("tutto minuscolo"); if(/\s/.test(n)) t.push("niente spazi: usa _"); if(/[àèéìíòóùúÀÈÉÌÒÙ'’]/.test(n)) t.push("niente accenti né apostrofi");
+  return `La cartella si chiama «${esc(n)}». ` + (t.length ? `La regola dice: ${t.join(", ")}.` : `Secondo la regola deve chiamarsi «${exp}».`) + ` Per correggere: selezionala e premi F2 (o Rinomina).`;
+}
+const X0 = () => XP.all[0];
+const idle = () => !USED.size && !OPS.length;
+const newDirs = (path, before) => namesAt(path).filter(n=>!before.some(b=>lc(b)===lc(n)) && isCont(childOf(nodeAt(path), n)));
+function folderTask(path, exp, before){
+  const nd=newDirs(path, before), good=nd.filter(x=>x===exp), others=nd.filter(x=>x!==exp);
+  if(good.length && !others.length) return {ok:true};
+  if(!nd.length) return {ok:false, noTry:idle(), msg:"Non vedo ancora una cartella nuova qui: Nuovo › Cartella."};
+  if(good.length) return {ok:false, reset:true, msg:`La cartella «${esc(exp)}» va bene, ma hai creato anche «${esc(others.join("», «"))}», che non serve: selezionala ed eliminala.`};
+  const n=others[0];
+  if(/^nuova cartella/i.test(n)) return {ok:false, msg:"La cartella si chiama ancora «"+esc(n)+"»: selezionala, premi F2 (o Rinomina) e scrivi il nome giusto."};
+  return {ok:false, msg:ruleDiag(n, exp)};
+}
+function placeTask(moves, start){
+  if(idle()) return {ok:false, noTry:true, msg:"Non hai ancora spostato niente."};
+  const last = p => esc(p[p.length-1]);
+  for(const m of moves){   // prima gli sbagli da correggere, poi quello che manca
+    const inDest=has(m.to, m.name), inSrc=has(m.from, m.name);
+    if(inDest && inSrc) return {ok:false, reset:true, msg:`«${esc(m.name)}» è in ${last(m.to)}, ma anche ancora in ${last(m.from)}: l'hai <b>copiato</b>, non spostato. Usa Taglia (o trascina).`};
+    if(!inDest && !inSrc){ const where=findFile(m.name); return {ok:false, reset:true, msg: where ? `«${esc(m.name)}» è finito in «${last(where)}»: va in <b>${last(m.to)}</b>.` : `Non trovo più «${esc(m.name)}»: forse l'hai eliminato.`}; }
+  }
+  const miss=moves.filter(m=>!has(m.to, m.name));
+  if(miss.length) return {ok:false, msg: miss.length===1 ? `Manca ancora «${esc(miss[0].name)}»: va in <b>${last(miss[0].to)}</b>.` : `Mancano ancora ${miss.length} file: ${miss.map(m=>`«${esc(m.name)}» in <b>${last(m.to)}</b>`).join(", ")}.`};
+  return {ok:true};
+}
+function findFile(name, n=FS, path=[]){ for(const c of (n.children||[])){ if(c.type==="file" && lc(c.name)===lc(name)) return path; if(isCont(c)){ const r=findFile(name, c, path.concat(c.name)); if(r) return r; } } return null; }
+function cwdTask(target, hintFn){
+  const X=X0(); if(pathEq(X.cwd, target)) return {ok:true};
+  if(idle()) return {ok:false, noTry:true, msg:"Non ti sei ancora spostato: apri le cartelle con un doppio clic o dall'albero."};
+  return {ok:false, msg: hintFn ? hintFn(X.cwd) : `Sei in «${esc(pstr(X.cwd))}». Devi arrivare in «${esc(target[target.length-1])}».`};
+}
+
+/* =====================================================================
+   I PASSI
+   ===================================================================== */
+const SEC = {A:{code:"NAVIGARE", name:"Navigare"}, B:{code:"PERCORSI", name:"Percorsi"}, C:{code:"ORDINARE", name:"Mettere in ordine"}};
+const pathOpt = p => `<span class="path">${esc(p)}</span>`;
+const DL = P("Download"), MAT = P("Documenti","primo_anno","matematica");
+
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Cartelle e file", env:{cwd:P("Documenti")},
+  theory:`<p>Nel computer ci sono due tipi di oggetti. La <b>cartella</b> 📁 è un contenitore: dentro ci metti file e altre cartelle. Il <b>file</b> è il contenuto: un testo, una foto, una canzone.</p><p>Nell'elenco Windows mette sempre prima le cartelle, poi i file.</p>`,
+  keys:`📁 cartella = contenitore · 📄 file = contenuto`,
+  task:`Guarda la cartella <b>Documenti</b> nella finestra. Quante sono le cartelle e quanti i file?`,
+  quiz:[{t:"5 cartelle", fb:"Guarda le icone e la colonna Tipo: solo due righe sono «Cartella di file», le altre sono file."},
+        {t:"2 cartelle e 3 file", ok:true},
+        {t:"3 cartelle e 2 file", fb:"Le cartelle hanno l'icona 📁 e il tipo «Cartella di file»: sono due, in cima all'elenco."},
+        {t:"5 file", fb:"Le prime due righe hanno l'icona 📁: sono cartelle, non file."}],
+  hint:"Conta le righe con l'icona 📁 (sono in cima), poi le altre.",
+  success:"Le cartelle sono in cima: <b>primo_anno</b> e <b>vecchi_lavori</b>. Sotto ci sono i file. Una cartella si apre con un doppio clic.",
+  learn:{k:"📁 cartella · 📄 file", d:"contenitore · contenuto"}},
+
+ {id:"g2", phase:"g", title:"Il nome nascosto", env:{cwd:P("Documenti")},
+  theory:`<p>Guarda i file: il nome sembra incompleto. Ogni file ha un nome in due parti, separate da un punto: <code>appunti_vari<b>.txt</b></code>.</p><p>La seconda parte è l'<b>estensione</b>, e Windows spesso la nasconde. Facciamola comparire.</p>`,
+  keys:()=>MP("Visualizza","Mostra","Estensioni nomi file"),
+  task:`Nella finestra apri <b>Visualizza</b>, poi <b>Mostra</b>, e attiva <b>Estensioni nomi file</b>.`,
+  check:()=> EXT ? {ok:true} : {ok:false, noTry:idle(), msg:"Le estensioni sono ancora nascoste: clicca «Visualizza» in alto nella finestra, poi «Mostra»."},
+  hint:"In alto a destra nella finestra c'è «👁️ Visualizza ▾». Cliccalo, poi clicca «Mostra» e infine «Estensioni nomi file».",
+  success:"Ora ogni file ha la sua estensione: <b>.txt</b>, <b>.pdf</b>, <b>.docx</b>. Sul PC del laboratorio il menu è lo stesso.",
+  learn:{k:"Visualizza › Mostra › Estensioni nomi file", d:"fa vedere le estensioni"}},
+
+ {id:"g3", phase:"g", title:"Che tipo di file è?", env:{cwd:DL, ext:true, hl:["foto_gita.jpg"]},
+  theory:`<p>Dopo il punto c'è l'<b>estensione</b>: dice che tipo di file è e quale programma lo apre.</p>`,
+  keys:`<span class="chips"><span class="chip">.docx testo di Word</span><span class="chip">.pdf documento</span><span class="chip">.jpg foto</span><span class="chip">.mp3 audio</span></span>`,
+  task:`Sei nella cartella Download. Seleziona la <b>foto</b> della gita: è il file che finisce con <b>.jpg</b>.`,
+  check:()=>{ const s=[...X0().sel]; if(!s.length) return {ok:false, noTry:true, msg:"Non hai selezionato niente: fai un clic sul file."};
+    if(s.length>1) return {ok:false, msg:"Serve un file solo: fai un clic normale, senza tenere premuto niente."};
+    if(lc(s[0])==="foto_gita.jpg") return {ok:true}; const x=extOf(s[0]); return {ok:false, msg:`«${esc(s[0])}» finisce con <b>.${x}</b>: è ${EXT_DESC[x]||"un altro tipo di file"}. Cerca <b>.jpg</b>.`}; },
+  hint:"Leggi la fine dei nomi: cerca quello che termina con .jpg.",
+  success:"Anche la colonna Tipo lo conferma: «File JPG».",
+  learn:{k:"<code>.estensione</code>", d:"dice il tipo di file"}},
+
+ {id:"g4", phase:"g", title:"L'albero delle cartelle", env:{cwd:S, ext:true, hlTree:[P("Documenti"), PRIMO, MAT]},
+  theory:`<p>Le cartelle stanno una dentro l'altra, come i rami di un albero. Tutto parte da un punto solo, la <b>radice</b>: il disco <b>C:</b>.</p><p>Nel riquadro a sinistra c'è l'albero: il triangolino ▸ apre un ramo, un clic sul nome apre la cartella.</p>`,
+  keys:`▸ apre il ramo · clic sul nome = apri la cartella`,
+  task:`Usa l'albero a sinistra per arrivare alla cartella <b>matematica</b>: Documenti › primo_anno › matematica.`,
+  check:()=>cwdTask(MAT, c=> within(c, PRIMO) && c.length>PRIMO.length ? `Sei in «${esc(c[c.length-1])}»: torna in primo_anno e apri matematica.` : `Sei in «${esc(c.length?c[c.length-1]:"Questo PC")}». La strada è: Documenti › primo_anno › matematica.`),
+  hint:"Nell'albero clicca il triangolino ▸ accanto a Documenti, poi quello accanto a primo_anno, poi clicca la parola matematica.",
+  success:"Hai sceso l'albero di tre livelli. Le cartelle si aprono anche con un doppio clic nell'elenco a destra.",
+  learn:{k:"l'albero ▸", d:"le cartelle una dentro l'altra, dalla radice C:"}},
+
+ {id:"g5", phase:"g", title:"Su di un livello", env:{cwd:MAT, ext:true},
+  theory:`<p>La cartella che contiene quella in cui sei sta <b>un livello più su</b>. La freccia <b>↑</b> in alto ti porta lì.</p><p>Anche la barra in alto aiuta: clicca un nome e ci torni.</p>`,
+  keys:()=>`<b>↑</b> = su di un livello · <b>←</b> = indietro`,
+  task:`Sei in matematica. Con la freccia <b>↑</b> torna nella cartella che la contiene.`,
+  check:()=>cwdTask(PRIMO, c=> c.length<PRIMO.length ? "Sei salito troppo: matematica sta dentro primo_anno, un livello solo più su." : "Usa la freccia ↑ a sinistra della barra in alto."),
+  hint:"In alto a sinistra ci sono tre frecce: ← → ↑. Premi una volta quella verso l'alto.",
+  success:()=>`matematica sta dentro <b>primo_anno</b>. Da tastiera: ${K("Alt","↑")}.`,
+  learn:{k:"↑", d:"su di un livello"}},
+
+ {id:"g6", phase:"g", title:"Leggere un percorso", env:{cwd:MAT, ext:true},
+  theory:`<p>Il <b>percorso</b> è la strada per arrivare a un file: si parte dal disco e si scende di cartella in cartella. Tra un passo e l'altro c'è la <b>\\</b>, la barra rovesciata.</p><p>Clicca in uno spazio vuoto della barra in alto: compare il percorso scritto.</p>`,
+  keys:`<code>C:\\Utenti\\studente\\Documenti</code>`,
+  task:`Clicca nella barra in alto per vedere il percorso di matematica. Poi scegli: qual è il percorso del file <b>esercizi_frazioni.pdf</b>?`,
+  quiz:[{t:pathOpt(PATH("matematica","esercizi_frazioni.pdf")), fb:"Mancano due cartelle: matematica sta dentro primo_anno, che sta dentro Documenti."},
+        {t:pathOpt(P("Documenti","primo_anno","matematica","esercizi_frazioni.pdf").join("/")), fb:"Le cartelle sono giuste, ma in Windows la barra è \\ (rovesciata), non /."},
+        {t:pathOpt(PATH("Documenti","primo_anno","matematica","esercizi_frazioni.pdf")), ok:true},
+        {t:pathOpt(P("Documenti","primo_anno","matematica","esercizi_frazioni.pdf").reverse().join(BS)), fb:"È al contrario: il percorso parte dal disco e finisce con il nome del file."}],
+  hint:"Il percorso giusto parte da C:, ha tutte le cartelle in ordine (Documenti, primo_anno, matematica) e usa la \\.",
+  success:"Si legge da sinistra a destra: dal disco fino al file. Nella barra puoi anche <b>scrivere</b> un percorso e premere Invio: Windows ti porta lì.<br><span class=\"small\">Sul PC del laboratorio Windows può mostrare i nomi inglesi delle cartelle di sistema, per esempio <code>C:\\Users\\studente\\Documents</code>. La strada è la stessa.</span>",
+  learn:{k:"C:\\…\\…", d:"il percorso: dal disco al file, con la \\"}},
+
+ {id:"g7", phase:"g", title:"Scrivi un percorso", env:{cwd:S, ext:true},
+  theory:`<p>Ora scrivilo tu. Si parte dal disco, poi le cartelle una dentro l'altra, alla fine il nome del file con l'estensione. Tra un pezzo e l'altro va la <b>\\</b>.</p>`,
+  keys:`<b>\\</b> sulla tastiera italiana: il tasto a sinistra dell'<b>1</b>`,
+  task:`Scrivi il percorso completo del file <b>tema_estate.docx</b>, che sta nella cartella italiano di primo_anno. Puoi usare la finestra per controllare.`,
+  fields:[{id:"p", label:"Percorso", check:pathCheck(PATH("Documenti","primo_anno","italiano","tema_estate.docx"))}],
+  hint:"Parti da C:\\Utenti\\studente, poi aggiungi Documenti, primo_anno, italiano e il nome del file, separati da \\.",
+  success:"Perfetto. Il percorso dice esattamente dove sta il file, senza doverlo cercare.",
+  learn:{k:"\\", d:"la barra rovesciata, tra un pezzo e l'altro del percorso"}},
+
+ {id:"g8", phase:"g", title:"Una cartella nuova", env:{cwd:PRIMO, ext:true}, before:()=>namesAt(PRIMO),
+  theory:()=>`<p>Per creare una cartella: <b>Nuovo</b> › <b>Cartella</b>, oppure tasto destro in uno spazio vuoto › Nuovo › Cartella. Compare «Nuova cartella» con il nome già evidenziato: scrivi subito il nome e premi Invio.</p><p><b>La regola dei nomi</b>: tutto minuscolo, niente spazi (usa _), niente accenti.</p>`,
+  keys:()=>`${MP("Nuovo","Cartella")} › scrivi il nome › ${K("Invio")}`,
+  task:`Crea qui la cartella per <b>Educazione civica</b>, con il nome scritto secondo la regola.`,
+  check:s=>folderTask(PRIMO, "educazione_civica", s.before),
+  hint:"Clic su «➕ Nuovo» in alto a sinistra › Cartella. Mentre il nome è evidenziato scrivi educazione_civica e premi Invio.",
+  success:"Nome giusto: chi lo legge capisce subito che cosa c'è dentro, e nessun programma avrà problemi con spazi o accenti.",
+  learn:{k:"Nuovo › Cartella", d:"crea una cartella; nome minuscolo, con _ e senza accenti"}},
+
+ {id:"g9", phase:"g", title:"Ogni file al suo posto", env:{cwd:DL, ext:true, expand:[PRIMO], hl:["riassunto_storia.docx","scheda_inglese.pdf","relazione_scienze.docx"], hlTree:[P("Documenti","primo_anno","storia"),P("Documenti","primo_anno","inglese"),P("Documenti","primo_anno","scienze")]},
+  theory:()=>`<p><b>Spostare</b> vuol dire che il file cambia cartella: non resta in quella di prima.</p><p>Il modo più veloce: <b>trascina</b> il file con il mouse sulla cartella giusta, nell'albero a sinistra. Oppure: selezionalo, <b>Taglia</b> (${K(CT,"X")}), apri la cartella giusta, <b>Incolla</b> (${K(CT,"V")}).</p>`,
+  keys:`trascina sulla cartella · oppure Taglia › apri la cartella › Incolla`,
+  task:`In Download ci sono tre file della scuola. Mettili al loro posto: <b>riassunto_storia.docx</b> in storia, <b>scheda_inglese.pdf</b> in inglese, <b>relazione_scienze.docx</b> in scienze.`,
+  check:()=>placeTask([{name:"riassunto_storia.docx", from:DL, to:P("Documenti","primo_anno","storia")},{name:"scheda_inglese.pdf", from:DL, to:P("Documenti","primo_anno","inglese")},{name:"relazione_scienze.docx", from:DL, to:P("Documenti","primo_anno","scienze")}]),
+  hint:"Tieni premuto il tasto sinistro del mouse su riassunto_storia.docx e trascinalo sulla cartella «storia» nell'albero a sinistra. Poi fai lo stesso con gli altri due. Su tablet: seleziona, ✂️ Taglia, apri la cartella, 📋 Incolla.",
+  success:"Download è più leggera e ogni file è nella cartella della sua materia. Nella prossima palestra vedrai la differenza tra spostare e copiare.",
+  learn:{k:"trascina · Taglia e Incolla", d:"sposta un file in un'altra cartella"}},
+
+ {id:"g10", phase:"g", title:"Un livello in più", env:{cwd:MAT, ext:true, mod:addDir(MAT,"verifiche"), hl:["verifiche","verifica_equazioni.docx"]},
+  theory:`<p>Dentro una cartella puoi creare altre cartelle: si chiamano <b>sottocartelle</b>. Ogni sottocartella è un passo in più nel percorso.</p>`,
+  task:`In matematica c'è la sottocartella <b>verifiche</b>. Se ci sposti dentro <b>verifica_equazioni.docx</b>, quale sarà il suo percorso? Scrivilo e premi Controlla: il file si sposterà e vedrai se avevi ragione.`,
+  fields:[{id:"p", label:"Nuovo percorso", check:pathCheck(PATH("Documenti","primo_anno","matematica","verifiche","verifica_equazioni.docx"))}],
+  hint:"È il percorso di matematica, più \\verifiche, più il nome del file.",
+  after:()=>{ const X=X0(); XP.transfer(["verifica_equazioni.docx"], MAT, MAT.concat("verifiche"), "move", "demo", ()=>{ XP.go(X, MAT.concat("verifiche"), "demo"); X.sel=new Set(["verifica_equazioni.docx"]); XP.render(X); }); },
+  success:"Ecco il file nella sottocartella: il percorso è proprio quello che hai scritto.",
+  learn:{k:"sottocartella", d:"un passo in più nel percorso"}},
+
+ {id:"x0", screen:"finalX"},
+
+ /* ---------- SFIDA FINALE: 8 compiti in 3 sezioni ---------- */
+ {id:"x1", phase:"x", sec:"A", code:"A1", env:{cwd:PRIMO, ext:true},
+  task:"Apri la cartella <b>gita_2026</b>: sta dentro Immagini.",
+  check:()=>cwdTask(P("Immagini","gita_2026")),
+  why:"gita_2026 sta in Immagini: <code>C:\\Utenti\\studente\\Immagini\\gita_2026</code>."},
+ {id:"x2", phase:"x", sec:"A", code:"A2", env:{cwd:DL, ext:true},
+  task:()=>`Arriva nella cartella ${pathOpt(PATH("Documenti","vecchi_lavori"))}`,
+  check:()=>cwdTask(P("Documenti","vecchi_lavori")),
+  why:"Si segue il percorso un pezzo alla volta: studente › Documenti › vecchi_lavori. Oppure lo scrivi nella barra in alto e premi Invio."},
+ {id:"x3", phase:"x", sec:"B", code:"B1", env:{cwd:DL, ext:true},
+  task:"Qual è il percorso della canzone <b>canzone_coro.mp3</b>, che sta in Download?",
+  quiz:[{t:pathOpt(PATH("Download","canzone_coro")), fb:"Manca l'estensione alla fine: .mp3."},
+        {t:pathOpt(PATH("Musica","canzone_coro.mp3")), fb:"Conta dove sta il file, non che tipo è: la canzone è in Download."},
+        {t:pathOpt(PATH("Download","canzone_coro.mp3")), ok:true},
+        {t:pathOpt(["C:","Download","canzone_coro.mp3"].join(BS)), fb:"Download sta dentro studente, che sta dentro Utenti."}],
+  why:"La canzone sta in Download, con l'estensione alla fine: <code>C:\\Utenti\\studente\\Download\\canzone_coro.mp3</code>."},
+ {id:"x4", phase:"x", sec:"B", code:"B2", env:{cwd:S, ext:true},
+  task:"Scrivi il percorso della foto <b>IMG_2042.jpg</b>. Cercala tu nella finestra.",
+  fields:[{id:"p", label:"Percorso", check:pathCheck(PATH("Immagini","gita_2026","IMG_2042.jpg"))}],
+  why:"La foto sta in Immagini › gita_2026: <code>C:\\Utenti\\studente\\Immagini\\gita_2026\\IMG_2042.jpg</code>."},
+ {id:"x5", phase:"x", sec:"B", code:"B3", env:{cwd:P("Documenti","primo_anno","storia"), ext:true, mod:movFile("riassunto_storia.docx", DL, P("Documenti","primo_anno","storia"))},
+  task:()=>`Il file ${pathOpt(PATH("Documenti","primo_anno","storia","riassunto_storia.docx"))} viene spostato nella cartella <b>primo_anno</b>. Qual è il nuovo percorso?`,
+  quiz:[{t:pathOpt(PATH("Documenti","primo_anno","storia","riassunto_storia.docx")), fb:"Questo è il percorso di prima: dopo lo spostamento il file non sta più in storia."},
+        {t:pathOpt(PATH("Documenti","riassunto_storia.docx")), fb:"È salito di un livello di troppo: primo_anno sta dentro Documenti."},
+        {t:pathOpt(PATH("Documenti","primo_anno","storia")), fb:"Questo è il percorso della cartella storia, non del file."},
+        {t:pathOpt(PATH("Documenti","primo_anno","riassunto_storia.docx")), ok:true}],
+  why:"Spostato in primo_anno, il file perde il pezzo «storia» nel percorso."},
+ {id:"x6", phase:"x", sec:"C", code:"C1", env:{cwd:PRIMO, ext:true}, before:()=>namesAt(PRIMO),
+  task:"In primo_anno crea la cartella per <b>Attività alternativa</b>, con il nome secondo la regola.",
+  check:s=>folderTask(PRIMO, "attivita_alternativa", s.before),
+  why:"«Attività alternativa» con la regola diventa <code>attivita_alternativa</code>: minuscolo, _ al posto dello spazio, niente accento."},
+ {id:"x7", phase:"x", sec:"C", code:"C2", env:{cwd:DL, ext:true, expand:[PRIMO, P("Immagini")]},
+  task:"Da Download sposta <b>esercizi_geometria.pdf</b> in matematica e <b>foto_gita.jpg</b> nella cartella gita_2026, che sta dentro Immagini.",
+  check:()=>placeTask([{name:"esercizi_geometria.pdf", from:DL, to:MAT},{name:"foto_gita.jpg", from:DL, to:P("Immagini","gita_2026")}]),
+  why:"Ogni file trascinato sulla cartella giusta, oppure Taglia, apri la cartella, Incolla."},
+ {id:"x8", phase:"x", sec:"C", code:"C3", env:{cwd:P("Documenti","primo_anno","italiano"), ext:true}, before:()=>namesAt(P("Documenti","primo_anno","italiano")),
+  task:"In italiano crea la sottocartella <b>temi</b> e spostaci dentro <b>tema_estate.docx</b>.",
+  check:s=>{ const IT=P("Documenti","primo_anno","italiano"), T=IT.concat("temi");
+    const r=folderTask(IT, "temi", s.before); if(!r.ok) return r;
+    if(has(T,"tema_estate.docx") && !has(IT,"tema_estate.docx")) return {ok:true};
+    if(has(T,"tema_estate.docx")) return {ok:false, reset:true, msg:"tema_estate.docx è in temi, ma anche ancora in italiano: l'hai copiato, non spostato."};
+    return {ok:false, msg:"La cartella temi c'è: ora spostaci dentro tema_estate.docx."}; },
+  why:"Prima Nuovo › Cartella dentro italiano, poi sposti il file nella sottocartella temi."},
+
+ {id:"end", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
+   ===================================================================== */
+const TOOL = "ALB";
+function sig(s, tag){ let h=5381; const t="HWS*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const rip = () => +store.get("rip")||0;
+  const errs = () => store.get("errs")||{};
+  function addErr(id){ const e=errs(); e[id]=(e[id]||0)+1; store.set("errs", e); }
+  const mq = window.matchMedia ? window.matchMedia("(max-width:900px)") : null;
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html, reset){
+    const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML = html + (reset?` <button type="button" class="linkbtn" id="fb-reset">↺ rimetti tutto com'era</button>`:"");
+    if(reset) $("#fb-reset").onclick=()=>{ mountEnv(STEPS[pos]); fb.classList.add("hidden"); };
+  }
+  function placeDock(){
+    const d=$("#dock");
+    if(mq && mq.matches){ if(d.parentNode!==$("#work")) $("#work").appendChild(d); d.classList.add("docked"); }
+    else { if(d.parentNode!==$("#lesson")) $("#lesson").appendChild(d); d.classList.remove("docked"); }
+  }
+  if(mq){ if(mq.addEventListener) mq.addEventListener("change", placeDock); else if(mq.addListener) mq.addListener(placeDock); }
+
+  function counter(step){ return step.phase==="g" ? `Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length}` : `Sfida finale · compito ${CHAL.indexOf(step)+1} di ${CHAL.length}`; }
+  function mountEnv(step){
+    const e=step.env||{}, st=$("#stage");
+    XP.load(world(e.mod), {ext:!!e.ext});
+    st.innerHTML=`<div id="xp-host"></div><p class="small stagecap">Questa finestra imita <b>Esplora file di Windows 11</b>. Doppio clic per aprire una cartella; tasto destro (o dito premuto) per il menu.</p>`;
+    const guided = step.phase==="g" && BES;
+    XP.mount($("#xp-host"), {cwd:e.cwd, expand:e.expand, hl: guided ? e.hl : [], hlTree: guided ? e.hlTree : [], tree:true, bin:false});
+    S.before = step.before ? step.before() : null;
+  }
+  function render(){
+    const step=STEPS[pos];
+    $("#pbar").style.width = Math.round(pos/(STEPS.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false, firstDone:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.phase==="x" ? SEC[step.sec].name : step.title;
+    const th=val(step.theory); $("#l-theory").innerHTML = th; $("#l-theory").classList.toggle("hidden", !th);
+    const keys=val(step.keys); $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.quiz ? "Domanda" : step.phase==="g" ? "Il tuo compito" : "Obiettivo";
+    $("#l-task").innerHTML = val(step.task);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    q.innerHTML = step.quiz ? step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o.t}</button>`).join("") : "";
+    q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b));
+    const fl=$("#l-fields"); fl.classList.toggle("hidden", !step.fields);
+    fl.innerHTML = step.fields ? step.fields.map(f=>`<div class="fld"><label for="f-${f.id}">${f.label}</label><input type="text" id="f-${f.id}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="m-${f.id}" placeholder="C:\\…"><small class="fmsg" id="m-${f.id}"></small></div>`).join("") : "";
+    fl.querySelectorAll("input").forEach(i=>i.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); } }));
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    $("#b-next").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    $("#b-check").classList.toggle("hidden", !!step.quiz);
+    const sk=$("#b-skip"); sk.classList.remove("hidden"); sk.textContent = step.phase==="g" ? "Salta il passo ⤼" : "Salta il compito ⤼";
+    mountEnv(step); placeDock();
+  }
+  function showHintBtn(){ if(STEPS[pos].hint && !S.hint && S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function recordFirst(ok){ const step=STEPS[pos]; if(step.phase!=="x" || S.firstDone) return; S.firstDone=true; if(!res(step.id)) store.set("r_"+step.id, {first:ok, done:false}); }
+  function verify(step){
+    if(step.fields){ let bad=0, empty=0;
+      step.fields.forEach(f=>{ const el=$("#f-"+f.id), m=$("#m-"+f.id); if(!el.value.trim()){ empty++; return; } const r=f.check(el.value), ok=r===true; if(!ok) bad++;
+        el.classList.toggle("okf", ok); el.classList.toggle("kof", !ok); el.setAttribute("aria-invalid", String(!ok)); m.className="fmsg "+(ok?"ok":"ko"); m.innerHTML = ok ? "✔ giusto" : "✗ "+r; });
+      if(empty) return {ok:false, noTry:true, msg:"Scrivi il percorso nella casella, poi premi Controlla."};
+      return bad ? {ok:false, msg:"Il percorso non è ancora giusto: sotto la casella trovi il perché."} : {ok:true}; }
+    if(step.check) return step.check(S);
+    return {ok:true};
+  }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen || step.quiz) return;
+    if(S.done){ next(); return; }
+    if(XP.dlg) return;
+    const v=verify(step);
+    if(!v.ok){
+      if(!v.noTry){ S.err++; recordFirst(false); if(step.phase==="x") addErr(step.id); }
+      say(v.noTry?"mid":"ko", (v.noTry?"":"Non ancora. ")+v.msg, v.reset); showHintBtn(); return; }
+    recordFirst(true); success(step);
+  }
+  function answer(i, btn){
+    const step=STEPS[pos]; if(S.done) return; const o=step.quiz[i];
+    if(o.ok){ recordFirst(true); btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    recordFirst(false); if(step.phase==="x") addErr(step.id);
+    btn.classList.add("wrong"); btn.setAttribute("aria-disabled","true"); S.err++; say("ko", "Non è così. "+o.fb); showHintBtn();
+  }
+  function success(step){
+    S.done=true;
+    if(step.phase==="g"){ const r=Object.assign({}, res(step.id)||{}, {ok:1, err:S.err}); if(S.hint) r.hint=1; delete r.skip; store.set("r_"+step.id, r);
+      say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); if(step.after) step.after(); }
+    else { const r=res(step.id)||{first:true}; store.set("r_"+step.id, {first:!!r.first, done:true}); say("ok", (r.first?"✔ Giusto al primo colpo! ":"✔ Ora è giusto. ")+val(step.why)); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#b-skip").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →"; if(!step.after) nb.focus({preventScroll:true});
+  }
+  function skip(){
+    const step=STEPS[pos]; if(!step || step.screen || S.done) return; const r=res(step.id);
+    if(step.phase==="g"){ if(!(r && r.ok)) store.set("r_"+step.id, Object.assign({}, r||{}, {skip:1})); }
+    else store.set("r_"+step.id, {first:false, done:false, skip:1});
+    next();
+  }
+  function hint(){ S.hint=true; const id=STEPS[pos].id; store.set("r_"+id, Object.assign({}, res(id)||{}, {hint:1}));
+    const h=$("#l-hinttext"); h.innerHTML="💡 "+val(STEPS[pos].hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && (res(s.id)||{}).ok), cur=STEPS[pos], closed = cur && (cur.phase==="x" || cur.id==="x0");
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length || closed); b.textContent=`🎒 Tasca (${learned.length})`;
+    if(closed){ $("#pocket").classList.add("hidden"); b.setAttribute("aria-expanded","false"); }
+    $("#pocket").innerHTML = `<h3>Cosa so già</h3><ul>${learned.map(s=>`<li><b>${val(s.learn.k)}</b> — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket") && !$("#pocket").classList.contains("hidden")){ $("#pocket").classList.add("hidden"); $("#pocket-btn").setAttribute("aria-expanded","false"); } });
+
+  function guided(){ const r=GUIDED.map(s=>res(s.id)||{}), ok=r.filter(x=>x.ok).length, skip=r.filter(x=>x.skip && !x.ok).length;
+    return {ok, skip, miss:GUIDED.length-ok-skip, hint:(+store.get("hintsPrev")||0)+r.filter(x=>x.hint).length}; }
+  function tally(){
+    const secs = Object.keys(SEC).map(k=>{ const qs=CHAL.filter(q=>q.sec===k), r=qs.map(q=>res(q.id));
+      return {k, n:qs.length, ok:r.filter(x=>x && x.first && !x.skip).length, skip:r.filter(x=>x && x.skip).length, miss:r.filter(x=>!x).length}; });
+    const skips = CHAL.filter(q=>{ const r=res(q.id); return r && r.skip; });
+    return {secs, n:CHAL.length, miss:secs.reduce((a,x)=>a+x.miss,0), ok:secs.reduce((a,x)=>a+x.ok,0), skips};
+  }
+  const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+  function code(){
+    const t=tally(), g=guided(), e=errs();
+    const gx=[]; if(g.skip) gx.push(pl(g.skip,"saltato","saltati")); if(g.miss) gx.push(pl(g.miss,"non fatto","non fatti"));
+    const parts=["HWS-"+TOOL, curName()||"(nome non inserito)", `PASSI ${g.ok}/${GUIDED.length}`+(gx.length?` (${gx.join(", ")})`:""), `aiuti ${g.hint}`];
+    t.secs.forEach(x=>{ const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte"));
+      parts.push(`${SEC[x.k].code} ${x.ok}/${x.n}`+(ex.length?` (${ex.join(", ")})`:"")); });
+    parts.push(`TOT ${t.ok}/${t.n}`);
+    const el=CHAL.filter(q=>e[q.id]).map(q=>`${q.code}(${e[q.id]})`);
+    parts.push("errori "+(el.length?el.join(" "):"-"));
+    if(t.skips.length) parts.push("saltate "+t.skips.map(q=>q.code).join(" "));
+    parts.push("ripetizioni "+rip());
+    if(BES) parts.push("modalità facilitata");
+    const n0=store.get("nome0"); if(n0 && nameKey(n0)!==nameKey(curName())) parts.push("nome iniziale: "+n0);
+    const body=parts.join(" | ");
+    return body+" | #"+sig(body, TOOL);
+  }
+  function codeBlock(){
+    const t=tally(), g=guided(), e=errs(), rev=CHAL.filter(q=>e[q.id] || t.skips.includes(q));
+    const note = x => { const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltato","saltati")); if(x.miss) ex.push(pl(x.miss,"non fatto","non fatti")); return ex.length?`<small>${ex.join(", ")}</small>`:""; };
+    const tag = q => [e[q.id]?`<i>(sbagliato ${e[q.id]===1?"1 volta":e[q.id]+" volte"})</i>`:"", t.skips.includes(q)?"<i>(saltato)</i>":""].filter(Boolean).join(" ");
+    return `<div class="stats">${t.secs.map(x=>`<div class="stat"><small>${SEC[x.k].name}</small><b>${x.ok}/${x.n}</b>${note(x)}</div>`).join("")}<div class="stat tot"><small>Giusti al primo colpo</small><b>${t.ok}/${t.n}</b></div></div>
+      <p class="small">Passi guidati: <b>${g.ok}/${GUIDED.length}</b>${g.skip?`, ${pl(g.skip,"saltato","saltati")}`:""}${g.hint?`, aiuti usati: ${g.hint}`:""}${rip()?` · ripetizioni della sfida: ${rip()}`:""}.</p>
+      ${rev.length?`<details class="review" open><summary>Da ripassare (${rev.length})</summary><ul>${rev.map(q=>`<li><b>${plain(val(q.task))}</b> ${tag(q)}<br>${q.why}</li>`).join("")}</ul></details>`:""}
+      <h3>Il tuo codice</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} nella tua <b>scheda</b>.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="small" data-copied aria-live="polite"></span></p>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".screen").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]");
+    const ok=()=>{ out.textContent="Copiato ✓ Ora incollalo nella scheda."; };
+    const fallback=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Copia a mano: clic nel riquadro, "+CT+"+A e "+CT+"+C."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fallback); else fallback();
+  });
+
+  function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
+  function saveHistory(){ const n=curName(); if(!n || !anyWork()) return; const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint}; store.set("hist", h); }
+  function restoreHistory(n){ if(anyWork()) return; const h=store.get("hist")||{}, k=hashName(n), p=h[k]; if(!p) return;
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); delete h[k]; store.set("hist", h); }
+
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>🗂️ Albero dei file</h2>
+        <p>Sul PC della scuola hai una cartella tutta tua: <code>C:\\Utenti\\studente</code>. È il tuo zaino digitale. Oggi impari a muoverti tra le cartelle, a leggere e scrivere i percorsi e a mettere ogni file al suo posto.</p>
+        <p>Si va <b>un passo alla volta</b>: leggi la spiegazione, prova nella finestra, poi premi <b>Controlla</b>. Alla fine c'è una sfida di <b>${CHAL.length} compiti</b> e il codice da incollare nella scheda.</p>
+        <p class="small">Se un passo proprio non ti riesce puoi saltarlo: nel codice risulta saltato e non vale punti.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
+        <div class="fb ko hidden" id="w-err" role="alert"></div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim();
+        if(v.length<3){ const er=$("#w-err"); er.textContent="Scrivi il tuo nome e cognome (almeno 3 lettere), poi premi Inizia."; er.classList.remove("hidden"); $("#w-name").focus(); return; }
+        const old=curName(), any=STEPS.some(s=>res(s.id));
+        if(old && nameKey(old)!==nameKey(v) && any && !store.get("nome0")) store.set("nome0", old);
+        restoreHistory(v); store.set("nome", v); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    finalX(el){
+      el.innerHTML = `<h2>🏁 Sfida finale</h2>
+        <p><b>${CHAL.length} compiti</b> in tre gruppi: navigare tra le cartelle, leggere e scrivere i percorsi, mettere in ordine. Ogni compito dice solo <b>che cosa</b> ottenere: <b>come</b> lo scegli tu.</p>
+        <p>Conta il <b>primo tentativo</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare un compito, ma vale zero.</p>
+        <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      const t=tally();
+      el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
+        <p><button type="button" class="btn alt" id="e-redo">↺ Rifai la sfida</button> <span class="small">Puoi rifarla quante volte vuoi: il codice tiene l'ultimo tentativo, conta le ripetizioni e ricorda tutti gli errori.</span></p>
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
+      $("#e-redo").onclick=()=>{ if(!confirm(`Rifare la sfida? I ${CHAL.length} compiti di adesso vengono cancellati; gli errori fatti finora restano nel codice.`)) return; CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); };
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !/^HWS-[A-Z]{3} \|/.test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(4, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-skip").onclick=skip;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const step=STEPS[pos];
+    const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, step.quiz?step.quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):""].filter(Boolean).join(". ");
+    const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; saveHistory(); store.clear(); location.reload(); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render};
+})();
+App.render();
+</script>
+</body>
+</html>

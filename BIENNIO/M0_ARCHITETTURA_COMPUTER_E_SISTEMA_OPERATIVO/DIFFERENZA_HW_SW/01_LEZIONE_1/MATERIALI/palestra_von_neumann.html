@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Il dato in viaggio · Hardware e software</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1320px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.keys{white-space:nowrap}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.alt:hover:not(:disabled){background:var(--teal-l)}
+.btn.hintb{background:#fff;color:var(--orange-d);border:2px solid var(--orange);padding:8px 14px}
+.btn.skipb{background:#fff;color:var(--muted);border:2px solid var(--line);padding:8px 14px;margin-left:auto}
+.btn.skipb:hover{background:#f2f4f5;color:var(--ink)}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px;font-family:inherit}
+/* schermate */
+.screen{max-width:760px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen h3{color:var(--teal-d);margin:18px 0 6px}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.lvl{display:grid;gap:10px;margin:6px 0 14px}
+.lvl label{display:flex;gap:12px;align-items:flex-start;border:2px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;background:#fff}
+.lvl label.on{border-color:var(--teal);background:var(--teal-l)}
+.lvl input{margin-top:5px;transform:scale(1.25);accent-color:var(--teal)}
+.lvl b{display:block}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px;flex:1}
+.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{display:block;color:var(--muted);font-size:13px}
+.stat.tot{background:var(--orange-l)}.stat.tot b{color:var(--orange-d)}
+details.review{background:#fffaf2;border:1px solid #f0d9bf;border-radius:10px;padding:8px 14px;margin:10px 0}
+details.review summary{cursor:pointer;font-weight:bold;color:var(--orange-d)}
+details.review li{margin:6px 0}
+textarea.copy{width:100%;height:92px;font-family:"Courier New",monospace;font-size:14px;padding:8px;border:2px solid var(--line);border-radius:8px;resize:vertical}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(290px,370px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:980px){.work{grid-template-columns:minmax(0,1fr)}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em;outline:none}
+.theory p{margin:0 0 10px}
+.mini{margin:0 0 10px;padding-left:20px}.mini li{margin:3px 0}
+.keybox{display:block;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1em}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-d);font-weight:bold;margin-bottom:2px}
+.dock.docked{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.dock.docked .quiz{margin-top:0}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.qopt.right::after{content:" ✔"}
+.qopt:disabled{cursor:default;color:var(--ink)}
+.asg{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.asg li{border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff}
+.asg li.cur{border-color:var(--teal);background:var(--teal-l);font-weight:bold}
+.asg li.cur::before{content:"👉 "}
+.asg li.done{border-color:var(--ok);background:var(--ok-l);color:#14532b}
+.asg li .to{font-weight:bold;white-space:nowrap}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px;font-family:inherit}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(400px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+.stage{min-width:0}
+.stagecap{margin:8px 2px 0}
+/* ===== lo schema ===== */
+.cue{background:var(--teal-l);border-left:5px solid var(--teal);border-radius:8px;padding:8px 12px;margin:0 0 10px;font-weight:bold;color:var(--teal-d);min-height:40px}
+.cue:empty{display:none}
+.schema{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.schema svg{display:block;width:100%;height:auto;user-select:none;-webkit-user-select:none;font-family:Arial,Helvetica,sans-serif}
+.blk,.part,.busg,.key,.cell{cursor:pointer;outline:none}
+.blk>.box{fill:#fff;stroke:#b9c4cb;stroke-width:2;transition:stroke .2s,fill .2s}
+.blk:hover>.box{stroke:var(--teal);fill:#f6fbfb}
+.blk:focus-visible>.box,.part:focus-visible>.box,.busg:focus-visible>.busl,.key:focus-visible>rect,.cell:focus-visible>rect{stroke:var(--orange);stroke-width:4}
+.blk.ok>.box,.part.ok>.box{stroke:var(--ok);fill:#eaf7ee;stroke-width:3}
+.blk.bad>.box,.part.bad>.box{stroke:var(--ko);fill:#fdeceb;stroke-width:3}
+.blk.glow>.box,.part.glow>.box,.busg.glow>.busl{stroke:var(--orange);stroke-width:4;stroke-dasharray:9 6;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-30}}
+.blk.off>.box{fill:#eef0f1}
+.blk.off>text,.blk.off>.inner{opacity:.45}
+.ttl{font-weight:bold;font-size:18px;fill:var(--teal-d)}
+.sub{font-size:13px;fill:var(--muted)}
+.ico{font-size:32px}
+.cap{font-size:13px;fill:var(--muted)}
+.big{font-size:17px;font-weight:bold;fill:var(--ink)}
+.chip>rect{fill:var(--teal-l)}
+.chip>text{font-size:13.5px;fill:var(--ink)}
+.empty{font-size:13.5px;fill:var(--muted);font-style:italic}
+.conn{stroke:#9fb3bb;stroke-width:6;stroke-linecap:round}
+.busl{fill:#cfe5e6;stroke:var(--teal);stroke-width:2;transition:stroke-width .2s}
+.busg:hover .busl{fill:#b8dadb}
+.bust{font-size:14px;font-weight:bold;fill:var(--teal-d);letter-spacing:.12em;pointer-events:none}
+.b-dati .busl{fill:#cfe5e6;stroke:#0B6E75}.b-indirizzi .busl{fill:#fbe0cc;stroke:#D9661A}.b-controllo .busl{fill:#dfe3f3;stroke:#4a5a8a}
+.busg.ok .busl{stroke:var(--ok);stroke-width:4}.busg.bad .busl{stroke:var(--ko);stroke-width:4}.busg.lit .busl{stroke-width:5}
+.b3t{font-size:13px;font-weight:bold}
+.b-dati .b3t{fill:#085055}.b-indirizzi .b3t{fill:#9a4410}.b-controllo .b3t{fill:#3a4870}
+.part>.box{fill:#f7f9fa;stroke:#c6d0d6;stroke-width:1.5}
+.part:hover>.box{stroke:var(--teal)}
+.pt{font-size:13px;font-weight:bold;fill:var(--teal-d)}
+.pl{font-size:11.5px;fill:var(--muted)}
+.pv{font-size:15px;font-weight:bold;fill:var(--ink)}
+.key>rect{fill:#fff;stroke:#8a959c;stroke-width:1.5}
+.key:hover>rect{fill:var(--orange-l);stroke:var(--orange)}
+.key>text{font-size:14px;font-weight:bold;fill:var(--ink);pointer-events:none}
+.scr{fill:#16242d}.scr.off{fill:#000}
+.scrt{font-size:20px;font-weight:bold;fill:#fff}
+.cell>rect{fill:#fff;stroke:#b9c4cb;stroke-width:1.5}
+.cell:hover>rect{stroke:var(--teal)}
+.cell.sel>rect{fill:var(--orange-l);stroke:var(--orange);stroke-width:3}
+.cell.hl>rect{stroke:var(--teal);stroke-width:3.5;fill:var(--teal-l)}
+.adr{font-size:11px;fill:var(--muted)}
+.cv{font-size:12.5px;font-weight:bold;fill:var(--ink)}
+.tok>rect{fill:var(--orange);stroke:#fff;stroke-width:2.5}
+.tok>text{font-size:15px;font-weight:bold;fill:#fff}
+.tok.dat>rect{fill:#0B6E75}.tok.ctl>rect{fill:#4a5a8a}
+svg.tall .ttl{font-size:16px}svg.tall .sub,svg.tall .cap{font-size:12px}svg.tall .chip>text{font-size:12.5px}
+svg.tall .pt{font-size:11.5px}svg.tall .pv{font-size:13px}svg.tall .cv{font-size:12px}svg.tall .tok>text{font-size:13.5px}svg.tall .b3t{font-size:11.5px}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.ctl:empty{display:none}
+.ctl .state{flex-basis:100%;font-size:14px;color:var(--muted)}
+ol.log{margin:10px 0 0;padding:8px 12px 8px 32px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:.95em}
+ol.log:empty{display:none}
+ol.log li{margin:3px 0}
+/* piede */
+footer{max-width:1320px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:560px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+@media(max-width:760px){
+  main{padding:12px 12px 24px}
+  .screen{padding:20px 16px}
+  .lesson{padding:14px 16px}
+  .schema{padding:4px}
+  .pocket{right:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>⚡ Il dato in viaggio</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false" aria-controls="pocket">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+  <div id="work" class="work hidden">
+    <aside class="lesson" id="lesson">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title" tabindex="-1"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox" id="l-taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="dock" id="dock">
+        <div class="quiz hidden" id="l-quiz" role="group" aria-label="Risposte"></div>
+        <ol class="asg hidden" id="l-asg" aria-label="Da abbinare"></ol>
+        <div class="fb hidden" id="l-fb" role="status" aria-live="polite"></div>
+        <div class="hinttext hidden" id="l-hinttext"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="b-check">✔ Controlla</button>
+          <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+          <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+          <button type="button" class="btn skipb hidden" id="b-skip" title="Un passo saltato non vale punti">Salta il passo ⤼</button>
+        </div>
+      </div>
+    </aside>
+    <div class="stage" id="stage">
+      <div class="cue" id="cue" aria-live="polite"></div>
+      <div class="schema" id="sch"></div>
+      <div class="ctl" id="ctl"></div>
+      <ol class="log" id="log" aria-label="Diario di viaggio"></ol>
+      <p class="small stagecap" id="cap">Schema di Von Neumann semplificato. Clicca i blocchi (o usa Tab e Invio).</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Riepilogo e codice (anche se non hai finito)</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, blocco giusto indicato dopo il primo errore nei passi guidati, aiuto subito, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g3">il viaggio</button> ·
+        <button type="button" class="linkbtn" data-jump="g5">salvare</button> ·
+        <button type="button" class="linkbtn" data-jump="a1" data-only="approfondito">dentro la CPU</button><span data-only="approfondito"> ·</span>
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi che salti con questi link risultano «non fatti» nel codice. Link diretto a un livello: aggiungi <code>#base</code> o <code>#approfondito</code> all'indirizzo.</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Riepilogo e codice"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÀ
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const IS_MAC = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+const CT = IS_MAC ? "Cmd" : "Ctrl";
+const K = (...keys) => `<span class="keys">${keys.map(k => `<span class="kbd">${k}</span>`).join("+")}</span>`;
+const PFX = "hwsvon_", KEEP = "hist", mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && k!==PFX+KEEP).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(k!==KEEP) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const val = v => typeof v==="function" ? v() : (v||"");
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+const nameKey = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const djb = s => { let h=5381; for(let k=0;k<s.length;k++){ h=((h<<5)+h+s.charCodeAt(k))>>>0; } return h.toString(36); };
+const hashName = n => djb("nome*"+nameKey(n));
+const clone = o => JSON.parse(JSON.stringify(o));
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+const REDUCED = !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+/* =====================================================================
+   I BLOCCHI
+   ===================================================================== */
+const NAME = {cpu:"CPU", ram:"RAM", in:"Input", out:"Output", mm:"Memoria di massa", bus:"Bus", cu:"Unità di controllo", alu:"ALU", reg:"Registro A", bdati:"Bus dati", bind:"Bus indirizzi", bctl:"Bus controllo"};
+const FUN = {cpu:"esegue le istruzioni e fa i calcoli", ram:"tiene i programmi e i dati in uso, e senza corrente si svuota", in:"fa entrare i dati nel computer", out:"fa uscire i risultati", mm:"conserva i file anche a computer spento",
+  bus:"è la strada su cui viaggiano i dati", cu:"legge le istruzioni e comanda", alu:"fa i calcoli e i confronti", reg:"tiene il numero su cui la CPU sta lavorando",
+  bdati:"porta i dati e le istruzioni", bind:"porta il «dove»: il numero della cella", bctl:"porta i comandi: leggi, scrivi"};
+const PARTS = ["cu","alu","reg"], BID = {dati:"bdati", indirizzi:"bind", controllo:"bctl"};
+/* che cosa rispondere quando si clicca un blocco al posto di un altro: CONF["giusto<cliccato"] */
+const CONF = {
+  "mm<ram":"La RAM si svuota senza corrente: quello che resta a computer spento sta nella memoria di massa.",
+  "ram<mm":"Il disco conserva, ma è lento: i programmi e i dati che stai usando adesso stanno nella RAM.",
+  "cpu<ram":"La RAM tiene i dati, ma non fa calcoli: il lavoro lo fa la CPU.",
+  "ram<cpu":"La CPU lavora sui dati, ma non li tiene: stanno nella RAM.",
+  "in<out":"Attenzione alla direzione: l'output fa uscire, l'input fa entrare.",
+  "out<in":"Attenzione alla direzione: l'input fa entrare, l'output fa uscire.",
+  "alu<cu":"L'unità di controllo comanda, ma i calcoli li fa l'ALU.",
+  "cu<alu":"L'ALU fa i calcoli; leggere le istruzioni e comandare è compito dell'unità di controllo.",
+  "reg<alu":"L'ALU calcola; il numero su cui sta lavorando la CPU sta in un registro.",
+  "alu<reg":"Il registro tiene il numero; chi fa il calcolo?",
+  "reg<cu":"L'unità di controllo comanda; i numeri in uso stanno nei registri.",
+  "cu<reg":"Il registro tiene un numero; chi legge le istruzioni e comanda?",
+  "bind<bdati":"Sul bus dati viaggia il contenuto; il numero della cella è un indirizzo, il «dove».",
+  "bdati<bind":"Sul bus indirizzi viaggia il «dove»; il contenuto della cella è un dato.",
+  "bctl<bdati":"Un comando non è un dato: dice che cosa fare.",
+  "bctl<bind":"Un comando non è un indirizzo: dice che cosa fare, non dove.",
+  "bind<bctl":"Il bus controllo porta i comandi; il numero della cella è un indirizzo.",
+  "bdati<bctl":"Il bus controllo porta i comandi; il contenuto della cella è un dato."
+};
+const PROGRAM = ["CARICA 5","SOMMA 6","SCRIVI 7","STOP","—","3","4","0"];
+const DECODE = {"CARICA 5":"metti nel registro A il numero che sta nella cella 5", "SOMMA 6":"aggiungi al registro A il numero della cella 6 (il calcolo lo fa l'ALU)", "SCRIVI 7":"scrivi il numero del registro A nella cella 7", "STOP":"il programma è finito"};
+
+/* =====================================================================
+   LO SCHEMA (SVG): due impaginazioni, larga e stretta (telefono)
+   ===================================================================== */
+const SC = (()=>{
+  const NS="http://www.w3.org/2000/svg";
+  const LAY = {
+    wide:{W:760, H:460, f:1,
+      cpu:{x:20,y:16,w:320,h:164}, ram:{x:420,y:16,w:320,h:164}, in:{x:20,y:284,w:220,h:160}, out:{x:270,y:284,w:220,h:160}, mm:{x:520,y:284,w:220,h:160},
+      bus:{x:10,y:206,w:740,h:26}, b3:{x:10,w:628,ys:[198,220,242],h:14,lx:648}, cx:{cpu:180,ram:580,in:130,out:380,mm:630},
+      cu:{x:34,y:50,w:152,h:120}, alu:{x:196,y:50,w:130,h:62}, reg:{x:196,y:118,w:130,h:52},
+      cell:{x:434,y:50,w:68,h:54,gx:76,gy:62,cols:4}, chipW:288, keyW:32, keyGap:6, scrW:170},
+    tall:{W:400, H:612, f:.9,
+      cpu:{x:8,y:8,w:188,h:172}, ram:{x:204,y:8,w:188,h:172}, in:{x:8,y:262,w:188,h:156}, out:{x:204,y:262,w:188,h:156}, mm:{x:8,y:448,w:384,h:156},
+      bus:{x:4,y:204,w:392,h:26}, b3:{x:4,w:296,ys:[196,216,236],h:12,lx:306}, cx:{cpu:102,ram:298,in:102,out:298,mm:200},
+      cu:{x:16,y:44,w:84,h:128}, alu:{x:106,y:44,w:82,h:60}, reg:{x:106,y:110,w:82,h:62},
+      cell:{x:212,y:44,w:84,h:30,gx:90,gy:33,cols:2}, chipW:160, keyW:30, keyGap:5, scrW:150}
+  };
+  let host=null, L=LAY.wide, M=null, onPick=null, busy=0;
+  const TOP = {cpu:1, ram:1}, BLOCKS = ["cpu","ram","in","out","mm"];
+  const isBlock = id => BLOCKS.includes(id);
+  const R = id => L[id];
+  function layout(){ const w=host ? host.clientWidth : 800; return w && w<560 ? LAY.tall : LAY.wide; }
+  function busY(name){ if(M.view.bus!==3 || !name) return L.bus.y+L.bus.h/2; const i=["dati","indirizzi","controllo"].indexOf(name); return L.b3.ys[i]+L.b3.h/2; }
+  function cellR(i){ const c=L.cell, col=i%c.cols, row=Math.floor(i/c.cols); return {x:c.x+col*c.gx, y:c.y+row*c.gy, w:c.w, h:c.h}; }
+  function scrR(){ const r=R("out"), w=L.scrW; return {x:r.x+(r.w-w)/2, y:r.y+40, w, h:78}; }
+  function anc(id){
+    if(id==="out"){ const s=scrR(); return {x:s.x+s.w/2, y:s.y+s.h/2}; }
+    if(isBlock(id)){ const r=R(id); return {x:r.x+r.w-46, y:r.y+24}; }
+    if(PARTS.includes(id)){ const r=L[id]; return {x:r.x+r.w/2, y:r.y+r.h/2+8}; }
+    const r=cellR(+id.slice(1)); return {x:r.x+r.w/2, y:r.y+r.h/2};
+  }
+  function conn(id){ const b = PARTS.includes(id) ? "cpu" : /^c\d$/.test(id) ? "ram" : id, r=R(b); return {x:L.cx[b], ey: TOP[b] ? r.y+r.h : r.y, b}; }
+  function route(a, b, bus){
+    const A=anc(a), B=anc(b), ca=conn(a), cb=conn(b), y=busY(bus);
+    if(ca.b===cb.b) return [A,B];
+    const p=[A]; if(isBlock(a)) p.push({x:ca.x, y:A.y});
+    p.push({x:ca.x, y:ca.ey}, {x:ca.x, y}, {x:cb.x, y}, {x:cb.x, y:cb.ey});
+    if(isBlock(b)) p.push({x:cb.x, y:B.y});
+    p.push(B); return p;
+  }
+  const tw = label => Math.max(34, 18 + [...String(label)].length*(L===LAY.tall?8.4:9.4));
+  const tokInner = label => { const w=tw(label); return `<rect x="${-w/2}" y="-15" width="${w}" height="30" rx="15"/><text y="5" text-anchor="middle">${esc(label)}</text>`; };
+  function cls(id){ const m=M.marks[id]; return (m?" "+m:"")+(M.glow===id?" glow":"")+(M.lit===id?" lit":"")+(!M.on && ["cpu","ram","in","out"].includes(id)?" off":""); }
+  const T = (x,y,t,c,a) => `<text x="${x}" y="${y}" class="${c}"${a?` text-anchor="${a}"`:""}>${esc(t)}</text>`;
+  function frame(id, title, sub, inner){
+    const r=R(id), done=M.badges[id];
+    return `<g class="blk${cls(id)}" data-b="${id}" tabindex="0" role="button" aria-label="${esc(title+(sub?", "+sub:""))}"><rect class="box" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="14"/>${T(r.x+14, r.y+26, title+(done?" ✔":""), "ttl")}${sub?T(r.x+14, r.y+44, sub, "sub"):""}<g class="inner">${inner}</g></g>`;
+  }
+  function chips(r, items, emptyTxt){
+    if(!items.length) return T(r.x+r.w/2, r.y+r.h/2+20, emptyTxt, "empty", "middle");
+    return items.slice(0,4).map((t,i)=>{ const y=r.y+56+i*26; return `<g class="chip"><rect x="${r.x+14}" y="${y}" width="${Math.min(L.chipW, r.w-28)}" height="22" rx="6"/>${T(r.x+22, y+16, t, "")}</g>`; }).join("");
+  }
+  function part(id, title, lab, v){
+    const r=L[id], tall=L===LAY.tall, two = tall && id==="cu";
+    const head = two ? T(r.x+r.w/2, r.y+16, "Unità di", "pt", "middle")+T(r.x+r.w/2, r.y+30, "controllo", "pt", "middle") : T(r.x+r.w/2, r.y+18, title, "pt", "middle");
+    return `<g class="part${cls(id)}" data-b="${id}" tabindex="0" role="button" aria-label="${esc(title)}"><rect class="box" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="9"/>${head}${lab?T(r.x+r.w/2, r.y+(two?62:id==="cu"?48:36), lab, "pl", "middle"):""}${T(r.x+r.w/2, r.y+(two?82:id==="cu"?72:id==="alu"?50:42), v||"", "pv", "middle")}</g>`;
+  }
+  function draw(){
+    if(!host || !M) return;
+    const a=document.activeElement, fk = a && host.contains(a) && a.dataset ? (a.dataset.b?`[data-b="${a.dataset.b}"]`:a.dataset.c!=null?`[data-c="${a.dataset.c}"]`:a.dataset.key?`[data-key="${a.dataset.key}"]`:null) : null;
+    const v=M.view, det=v.cpu==="detail", b3=v.bus===3, tall=L===LAY.tall, bare=!!v.bare;
+    let s=`<svg viewBox="0 0 ${L.W} ${L.H}" class="${tall?"tall":"wide"}" role="group" aria-label="Schema di Von Neumann">`;
+    const bt = b3 ? L.b3.ys[0] : L.bus.y, bb = b3 ? L.b3.ys[2]+L.b3.h : L.bus.y+L.bus.h;
+    ["cpu","ram"].forEach(k=>{ const r=R(k); s+=`<line class="conn" x1="${L.cx[k]}" y1="${r.y+r.h}" x2="${L.cx[k]}" y2="${bb-4}"/>`; });
+    ["in","out","mm"].forEach(k=>{ const r=R(k); s+=`<line class="conn" x1="${L.cx[k]}" y1="${bt+4}" x2="${L.cx[k]}" y2="${r.y}"/>`; });
+    if(!b3) s+=`<g class="busg${cls("bus")}" data-b="bus" tabindex="0" role="button" aria-label="Bus"><rect class="busl" x="${L.bus.x}" y="${L.bus.y}" width="${L.bus.w}" height="${L.bus.h}" rx="${L.bus.h/2}"/>${T(L.bus.x+L.bus.w/2, L.bus.y+L.bus.h/2+5, "BUS", "bust", "middle")}</g>`;
+    else ["dati","indirizzi","controllo"].forEach((n,i)=>{ const id=BID[n], y=L.b3.ys[i]; s+=`<g class="busg b-${n}${cls(id)}" data-b="${id}" tabindex="0" role="button" aria-label="Bus ${n}"><rect class="busl" x="${L.b3.x}" y="${y}" width="${L.b3.w}" height="${L.b3.h}" rx="${L.b3.h/2}"/>${T(L.b3.lx, y+L.b3.h-1, (tall?"":"bus ")+n, "b3t")}</g>`; });
+    /* CPU */
+    const rc=R("cpu");
+    s+= det ? frame("cpu","CPU","", part("cu","Unità di controllo","istruzione", M.cu)+part("alu","ALU","", M.alu)+part("reg","Registro A","", M.regA))
+            : frame("cpu","CPU","processore", (bare?"":T(L.cx.cpu, rc.y+104, "⚙️", "ico", "middle"))+(M.cpuTxt && !bare ? T(L.cx.cpu, rc.y+rc.h-18, M.cpuTxt, "big", "middle") : ""));
+    /* RAM */
+    const rr=R("ram");
+    if(v.cells) s+=frame("ram","RAM","", M.cells.map((c,i)=>{ const r=cellR(i), sel=M.cellSel.includes(i), hl=M.cellHl===i;
+        return `<g class="cell${sel?" sel":""}${hl?" hl":""}" data-c="${i}" tabindex="0" role="button" aria-label="Cella ${i}: ${esc(c)}"${M.cellsClick?"":` aria-disabled="true"`}><rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="6"/>${tall ? T(r.x+6, r.y+20, String(i), "adr")+T(r.x+r.w/2+7, r.y+20, c, "cv", "middle") : T(r.x+6, r.y+14, "cella "+i, "adr")+T(r.x+r.w/2, r.y+38, c, "cv", "middle")}</g>`; }).join(""));
+    else s+=frame("ram","RAM","memoria centrale", bare ? "" : chips(rr, M.on?M.ram:[], M.on?"(vuota)":"(vuota: niente corrente)"));
+    /* INPUT */
+    const ri=R("in");
+    let inner="";
+    if(v.keys){ const rows=["QWERT","ASDFG"], kw=L.keyW, g=L.keyGap, x0=ri.x+(ri.w-(5*kw+4*g))/2;
+      rows.forEach((row,j)=>[...row].forEach((ch,i)=>{ const x=x0+i*(kw+g), y=ri.y+56+j*(kw+4); inner+=`<g class="key" data-key="${ch}" tabindex="0" role="button" aria-label="Tasto ${ch}"><rect x="${x}" y="${y}" width="${kw}" height="${kw-2}" rx="5"/>${T(x+kw/2, y+kw/2+3, ch, "", "middle")}</g>`; }));
+      inner+=T(ri.x+ri.w/2, ri.y+ri.h-14, "tastiera: premi un tasto", "cap", "middle"); }
+    else if(!bare){ inner=T(ri.x+ri.w/2, ri.y+100, M.inDev, "ico", "middle")+T(ri.x+ri.w/2, ri.y+ri.h-16, M.inCap, "cap", "middle"); }
+    s+=frame("in","Input","", inner);
+    /* OUTPUT */
+    const ro=R("out"), sr=scrR();
+    s+=frame("out","Output","", `<rect class="scr${M.on?"":" off"}" x="${sr.x}" y="${sr.y}" width="${sr.w}" height="${sr.h}" rx="6"/><rect x="${sr.x+sr.w/2-14}" y="${sr.y+sr.h}" width="28" height="9" fill="#8a959c"/>`
+      +(M.on && M.scr ? T(sr.x+sr.w/2, sr.y+sr.h/2+7, M.scr, "scrt", "middle") : "")+(bare?"":T(ro.x+ro.w/2, ro.y+ro.h-12, "schermo · casse · stampante", "cap", "middle")));
+    /* MEMORIA DI MASSA */
+    const rm=R("mm");
+    s+=frame("mm","Memoria di massa","disco: SSD o HDD", bare ? "" : chips(rm, M.mm, "(vuota)"));
+    if(M.tok && M.tok.at!=="out"){ const p=anc(M.tok.at); s+=`<g class="tok" id="tok" transform="translate(${p.x} ${p.y})">${tokInner(M.tok.label)}</g>`; }
+    s+="</svg>";
+    host.innerHTML=s;
+    if(fk){ const el=host.querySelector(fk); if(el) el.focus({preventScroll:true}); }
+  }
+  function fly(label, pts, o={}){
+    return new Promise(res=>{
+      const svg=host && host.querySelector("svg"); if(!svg){ res(); return; }
+      let g;
+      if(o.temp){ g=document.createElementNS(NS,"g"); g.setAttribute("class","tok "+(o.cls||"")); svg.appendChild(g); }
+      else { g=svg.querySelector("#tok"); if(!g){ g=document.createElementNS(NS,"g"); g.setAttribute("id","tok"); g.setAttribute("class","tok"); svg.appendChild(g); } }
+      g.innerHTML=tokInner(label);
+      const seg=[]; let tot=0; for(let i=1;i<pts.length;i++){ const d=Math.hypot(pts[i].x-pts[i-1].x, pts[i].y-pts[i-1].y); seg.push(d); tot+=d; }
+      const ms = REDUCED ? 0 : (o.ms || Math.max(450, Math.min(1500, tot*1.7)));
+      const put = k => { let d=k*tot, i=0; while(i<seg.length-1 && d>seg[i]){ d-=seg[i]; i++; } const a=pts[i], b=pts[i+1]||a, t=seg[i]?Math.min(1,d/seg[i]):1; g.setAttribute("transform",`translate(${(a.x+(b.x-a.x)*t).toFixed(1)} ${(a.y+(b.y-a.y)*t).toFixed(1)})`); };
+      busy++;
+      const done = () => { busy--; if(o.temp) g.remove(); res(); };
+      if(!ms || pts.length<2){ put(1); done(); return; }
+      const t0=performance.now();
+      const tick = now => { const k=Math.min(1,(now-t0)/ms), e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2; put(e); if(k<1) requestAnimationFrame(tick); else done(); };
+      requestAnimationFrame(tick);
+    });
+  }
+  function click(e){
+    if(busy) return;
+    const k=e.target.closest("[data-key]"); if(k){ onPick("key", k.dataset.key); return; }
+    const c=e.target.closest("[data-c]"); if(c){ onPick("cell", +c.dataset.c); return; }
+    const b=e.target.closest("[data-b]"); if(b) onPick("blk", b.dataset.b);
+  }
+  function mount(h, m, pick){
+    host=h; M=m; onPick=pick; L=layout(); draw();
+    host.onclick=click;
+    host.onkeydown=e=>{ if((e.key==="Enter"||e.key===" ") && e.target.closest && e.target.closest("[data-b],[data-c],[data-key]")){ e.preventDefault(); click({target:e.target}); } };
+  }
+  window.addEventListener("resize", ()=>{ if(!host || busy) return; const nl=layout(); if(nl!==L){ L=nl; draw(); } });
+  return {mount, draw, fly, route, get busy(){ return busy>0; }, wait: ms => new Promise(r=>setTimeout(r, REDUCED?0:ms))};
+})();
+
+/* =====================================================================
+   IL COMPUTER DI OGNI PASSO
+   ===================================================================== */
+function machine(step){
+  const v=step.view||{};
+  return Object.assign({view:{cpu:v.cpu||"simple", bus:v.bus||1, cells:!!v.cells, keys:!!v.keys, bare:!!v.bare}, on:true,
+    ram:["🪟 Windows"], mm:["🪟 Windows","📝 Word","📄 tema.docx"], scr:"🪟", cpuTxt:"", inDev:"⌨️ 🖱️", inCap:"tastiera · mouse",
+    cells:PROGRAM.slice(), cellSel:[], cellHl:null, cellsClick:false, cu:"—", alu:"", regA:"—", marks:{}, glow:null, lit:null, tok:null, badges:{}}, clone(step.m||{}));
+}
+const FB_IN = {
+  "in>cpu":"Quasi: la CPU lavora solo su quello che sta in memoria. Prima il dato deve arrivare nella RAM.",
+  "in>out":"Dall'input il dato non va dritto all'output: prima va in memoria, e lo elabora la CPU.",
+  "in>mm":"Il disco serve quando salvi. Adesso il dato va nella memoria veloce, quella di lavoro: quale?",
+  "ram>out":"Prima qualcuno deve elaborarlo: chi esegue i programmi?",
+  "ram>mm":"Il disco serve quando salvi. Adesso il dato deve essere elaborato: da chi?",
+  "ram>in":"L'input fa solo entrare: ora il dato deve andare avanti.",
+  "cpu>mm":"Non stai salvando: il risultato deve comparire davanti a te. Quale blocco fa uscire i risultati?",
+  "cpu>in":"L'input fa solo entrare: ora il risultato deve uscire."
+};
+const FB_MM = {
+  "mm>cpu":"La CPU non lavora direttamente sul disco, che è troppo lento: prima il file deve essere copiato nella RAM.",
+  "mm>out":"Lo schermo non pesca dal disco: prima il file va nella memoria di lavoro e lo elabora la CPU.",
+  "mm>in":"L'input fa entrare i dati da fuori: questo è già dentro il computer, nel disco.",
+  "ram>out":"Prima qualcuno deve elaborarlo: chi esegue i programmi?",
+  "ram>mm":"È appena arrivato dal disco: ora qualcuno deve usarlo.",
+  "ram>in":"L'input fa entrare i dati da fuori: ora il file deve andare avanti.",
+  "cpu>mm":"Non stai salvando: il file deve comparire davanti a te.",
+  "cpu>in":"L'input fa solo entrare: ora il file deve uscire."
+};
+
+/* =====================================================================
+   I PASSI · lv:"a" = solo nel livello approfondito
+   ===================================================================== */
+const SEC = {A:{code:"BLOCCHI", name:"Blocchi e funzioni"}, B:{code:"PERCORSO", name:"Il percorso del dato"}, C:{code:"MEMORIA", name:"RAM e disco"}, D:{code:"CPU", name:"Dentro la CPU"}};
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Cinque blocchi",
+  theory:`<p>Dal telefono al supercomputer, ogni computer segue lo stesso schema: lo ha descritto nel 1945 il matematico <b>John von Neumann</b>. I blocchi sono cinque:</p>
+   <ul class="mini"><li><b>Input</b>: fa entrare i dati (tastiera, mouse, microfono…)</li><li><b>CPU</b>: esegue le istruzioni e fa i calcoli</li><li><b>RAM</b>, la memoria centrale: tiene i programmi e i dati che stai usando; senza corrente si svuota</li><li><b>Output</b>: fa uscire i risultati (schermo, casse, stampante…)</li><li><b>Memoria di massa</b> (il disco): conserva i file anche a computer spento</li></ul>`,
+  task:"Per ogni frase della lista clicca nello schema il blocco giusto.",
+  assign:[{t:"Fa entrare i dati nel computer", b:"in"}, {t:"Esegue le istruzioni dei programmi", b:"cpu"}, {t:"Fa uscire i risultati", b:"out"},
+          {t:"Conserva i file anche a computer spento", b:"mm"}, {t:"Tiene i dati che stai usando adesso, ma senza corrente si svuota", b:"ram"}],
+  hint:"Pensa alla scrivania: tu sei la CPU, il piano del tavolo è la RAM, il cassetto è la memoria di massa.",
+  success:"Sono i cinque blocchi di ogni computer: anche del tuo telefono.",
+  learn:{k:"5 blocchi", d:"input · CPU · RAM · output · memoria di massa"}},
+
+ {id:"g2", phase:"g", title:"Il bus",
+  theory:`<p>I blocchi non hanno un filo per ogni coppia: sono tutti attaccati a una strada comune, il <b>bus</b>. Ogni dato che passa da un blocco all'altro viaggia sul bus.</p><p>Il tasto che premi, per esempio, prende il bus e arriva nella <b>RAM</b>: la CPU lavora solo su quello che sta in memoria.</p>`,
+  task:"Clicca nello schema le due risposte, una dopo l'altra.",
+  assign:[{t:"La strada su cui viaggiano i dati da un blocco all'altro", b:"bus"}, {t:"Il blocco in cui arriva il tasto che premi", b:"ram", fb:{cpu:"Quasi: la CPU lavora solo su quello che sta in memoria. Il tasto arriva prima lì."}}],
+  hint:"Il bus è la fascia lunga al centro dello schema, che tocca tutti i blocchi.",
+  success:"Il bus collega tutti i blocchi: ogni dato, per andare da un blocco all'altro, viaggia lì sopra.",
+  learn:{k:"bus", d:"la strada comune su cui viaggiano i dati"}},
+
+ {id:"g3", phase:"g", title:"Il viaggio di una lettera", view:{keys:true}, m:{ram:["🪟 Windows","📝 Word"], scr:"📝"},
+  theory:`<p>Quando premi un tasto, il carattere fa un viaggio: <b>entra</b> dall'input, va nella <b>RAM</b>, la <b>CPU</b> lo elabora (il programma di scrittura decide dove metterlo) e il risultato <b>esce</b> dall'output: lo vedi sullo schermo.</p>`,
+  keys:"input → RAM → CPU → output",
+  task:"Premi un tasto sulla tastiera dello schema (blocco Input). Poi guida la lettera: clicca, uno dopo l'altro, i blocchi in cui arriva, fino allo schermo.",
+  journey:{start:"in", key:true, fb:FB_IN,
+    soft:{"cpu>ram":"Succede anche questo (il testo aggiornato resta nella RAM), ma segui la lettera fino a dove la vedi: quale blocco la fa uscire?"},
+    hops:[{to:"ram", why:"Dalla tastiera la lettera entra nel computer e, sul bus, arriva nella RAM.", do:(M,S)=>{ M.ram.push("🔤 lettera "+S.letter); }},
+          {to:"cpu", why:"La CPU prende la lettera dalla RAM e la elabora: Word decide dove va nel testo.", do:M=>{ M.cpuTxt="elabora la lettera"; }},
+          {to:"out", hide:true, why:"Il risultato esce dall'output: la lettera compare sullo schermo.", do:(M,S)=>{ M.scr=S.letter; }}]},
+  hint:"L'ordine: input, poi la memoria in cui si lavora, poi chi elabora, poi chi fa uscire.",
+  success:"Input → RAM → CPU → output: è il viaggio di ogni tasto che premi, e dura meno di un millesimo di secondo.",
+  learn:{k:"input → RAM → CPU → output", d:"il viaggio di un tasto"}},
+
+ {id:"g4", phase:"g", title:"Calcolare e salvare", m:{ram:["🪟 Windows","📗 Excel","📊 conti: 3 e 4"], mm:["🪟 Windows","📗 Excel"], scr:"📊"},
+  theory:`<p>La CPU è velocissima nei calcoli, ma i numeri li prende dalla <b>RAM</b>, e il risultato lo rimette nella <b>RAM</b>.</p><p>Se lo vuoi conservare, lo <b>salvi</b>: salvare vuol dire copiarlo dalla RAM alla memoria di massa.</p>`,
+  keys:"RAM → CPU → RAM → (Salva) → memoria di massa",
+  task:"Nel foglio di calcolo conti.xlsx devi sommare 3 + 4 e poi salvare. Guida i numeri: dove si fa il calcolo, dove torna il risultato, dove finisce quando premi Salva.",
+  journey:{start:"ram", label:"3 + 4",
+    fb:{"ram>in":"I numeri sono già dentro il computer, nella RAM: chi li somma?", "cpu>mm":"Il risultato non va direttamente sul disco: prima torna nella memoria in cui sta il foglio aperto.", "cpu>in":"L'input fa entrare i dati da fuori: il risultato ora deve tornare nel foglio aperto."},
+    soft:{"cpu>out":"Potrebbe anche comparire sullo schermo, ma prima il risultato va messo nel foglio aperto: in quale memoria sta?"},
+    hops:[{to:"cpu", tok:"7", why:"La CPU prende 3 e 4 dalla RAM e calcola: 3 + 4 = 7.", fb:{out:"Prima bisogna fare il calcolo: chi lo fa?", mm:"Prima il calcolo, poi il salvataggio: chi fa i calcoli?"}, do:M=>{ M.cpuTxt="3 + 4 = 7"; }},
+          {to:"ram", why:"Il risultato 7 torna nella RAM: ora il foglio aperto contiene la somma.", do:M=>{ M.ram[2]="📊 conti: 3, 4 e 7"; M.scr="📊 7"; }},
+          {to:"mm", fl:"💾 conti", hide:true, why:"Premi Salva: il foglio viene copiato dalla RAM alla memoria di massa. Ora resta anche a computer spento.",
+            fb:{cpu:"Il calcolo è già fatto: ora premi Salva. Dove va il file?", out:"Sullo schermo il 7 c'è già. Ora salva: dove va il file?", in:"Ora premi Salva: dove va il file?"}, do:M=>{ M.mm.push("📊 conti.xlsx"); M.ram[2]="📊 conti · salvato"; }}]},
+  hint:"I numeri stanno nella RAM. Chi sa fare i calcoli? Dove torna il risultato? E dove va quando salvi?",
+  success:"La CPU calcola, la RAM tiene i numeri e il risultato, la memoria di massa lo conserva quando salvi.",
+  learn:{k:"CPU ⇄ RAM", d:"la CPU calcola su numeri presi dalla RAM; il risultato torna nella RAM"}},
+
+ {id:"g5", phase:"g", title:"Salvare prima di spegnere", power:true, m:{ram:["🪟 Windows","📝 Word","📄 tema.docx · non salvato"], mm:["🪟 Windows","📝 Word"], scr:"📄 tema"},
+  theory:`<p>La RAM è veloce ma <b>volatile</b>: senza corrente si svuota. La memoria di massa è più lenta ma <b>permanente</b>.</p><p>Per questo esiste <b>Salva</b>: copia il file dalla RAM al disco. Finché non salvi, il tuo lavoro esiste solo nella RAM.</p>`,
+  keys:"💾 Salva = dalla RAM al disco",
+  task:"Stai scrivendo tema.docx, che per ora è solo nella RAM. Fai in modo che sopravviva, poi spegni il computer e riaccendilo per controllare. Alla fine premi Controlla.",
+  check:S=>{ const p=S.pw;
+    if(p.lost) return {ok:false, noTry:true, reset:true, msg:"Il tema è perso: rimetti tutto com'era e salvalo prima di spegnere."};
+    if(!p.saved && !p.wasOff) return {ok:false, noTry:true, msg:"Prima salva il tema (💾 Salva), poi spegni e riaccendi il computer."};
+    if(!p.wasOff) return {ok:false, noTry:true, msg:"Il tema è salvato. Ora spegni il computer e riaccendilo: c'è ancora?"};
+    if(p.off) return {ok:false, noTry:true, msg:"Ora riaccendi il computer (⏻ Accendi)."};
+    return {ok:true}; },
+  hint:"Prima 💾 Salva (il tema va nel disco), poi ⏻ Spegni, poi ⏻ Accendi.",
+  success:"Il tema è sopravvissuto perché era nel disco. Dopo l'accensione nella RAM c'è di nuovo solo Windows: il tema ci tornerà quando lo riapri.",
+  learn:{k:"💾 Salva", d:"copia dalla RAM (volatile) al disco (permanente)"}},
+
+ {id:"g6", phase:"g", title:"Accendere il computer", m:{on:false, ram:[], scr:"", cpuTxt:""},
+  theory:`<p>A computer spento la RAM è vuota. Il sistema operativo (per esempio Windows) è un programma come gli altri, e sta nella <b>memoria di massa</b>.</p><p>Quando accendi, Windows viene <b>copiato dal disco nella RAM</b>, e da lì la CPU comincia a eseguirlo. Per questo l'accensione richiede qualche secondo, e con un SSD è più rapida.</p>`,
+  keys:"accensione: disco → RAM → CPU",
+  task:"Il computer è spento. Accendilo guidando Windows: dal blocco in cui si trova fino al blocco che lo esegue.",
+  journey:{start:"mm", label:"🪟 Windows", fb:FB_MM,
+    hops:[{to:"ram", why:"All'accensione Windows viene copiato dal disco nella RAM.", fb:{cpu:"La CPU non esegue i programmi direttamente dal disco, che è troppo lento: prima Windows deve essere copiato nella RAM.", out:"Lo schermo resta nero finché il sistema operativo non parte: prima deve arrivare nella memoria veloce."}, do:M=>{ M.on=true; M.ram=["🪟 Windows"]; }},
+          {to:"cpu", hide:true, why:"La CPU legge le istruzioni di Windows dalla RAM e le esegue: il computer è pronto.", fb:{out:"Prima qualcuno deve eseguire Windows: chi esegue i programmi?", mm:"Windows è appena arrivato dal disco: ora chi lo esegue?"}, do:M=>{ M.cpuTxt="esegue Windows"; M.scr="🪟"; }}]},
+  hint:"A computer spento Windows sta nella memoria di massa. La CPU esegue solo quello che c'è nella RAM.",
+  success:"All'accensione il sistema operativo passa dal disco alla RAM, e la CPU lo esegue. Ecco perché, a computer spento, Windows sta nella memoria di massa.",
+  learn:{k:"accensione", d:"il sistema operativo passa dal disco alla RAM"}},
+
+ {id:"g7", phase:"g", title:"Dove sta adesso?",
+  theory:`<p>La domanda che mette in ordine tutto è: <b>dove sta adesso?</b></p><p>Mentre usi qualcosa sta nella <b>RAM</b>. Quando l'hai salvato, o il computer è spento, sta nella <b>memoria di massa</b>. Nell'istante in cui viene elaborato è nella <b>CPU</b>.</p>`,
+  task:"Per ogni situazione clicca il blocco in cui si trova la cosa.",
+  assign:[{t:"Il tema che stai scrivendo, prima di salvarlo", b:"ram", fb:{mm:"Non l'hai ancora salvato: nel disco non c'è."}},
+          {t:"Lo stesso tema dopo Salva, a computer spento", b:"mm", fb:{ram:"A computer spento la RAM è vuota."}},
+          {t:"Windows, a computer spento", b:"mm", fb:{ram:"A computer spento la RAM è vuota: Windows ci viene copiato all'accensione."}},
+          {t:"Windows mentre usi il computer: la copia che la CPU sta eseguendo", b:"ram", fb:{mm:"Sul disco Windows c'è sempre, ma la CPU lo esegue dalla copia nella memoria veloce."}},
+          {t:"I due numeri che la CPU sta sommando in questo istante", b:"cpu", fb:{ram:"Stavano nella RAM, ma in questo istante sono dentro chi fa il calcolo."}}],
+  hint:"Mentre lo usi → RAM. Salvato, o a computer spento → memoria di massa. In calcolo in questo istante → CPU.",
+  success:"«Dove sta adesso?» è la domanda giusta per non confondere più RAM e disco.",
+  learn:{k:"dove sta adesso?", d:"RAM mentre lo usi, memoria di massa quando è salvato o spento"}},
+
+ {id:"a1", lv:"a", phase:"g", title:"Dentro la CPU", view:{cpu:"detail"},
+  theory:`<p>Apriamo la CPU. Dentro ci sono tre parti:</p><ul class="mini"><li>l'<b>unità di controllo</b>: legge le istruzioni una alla volta e dà gli ordini a tutti gli altri blocchi</li><li>l'<b>ALU</b> (unità aritmetico-logica): fa i calcoli (+ − × ÷) e i confronti (è più grande? sono uguali?)</li><li>i <b>registri</b>: memorie piccolissime e velocissime, dove la CPU tiene i numeri su cui sta lavorando</li></ul>`,
+  task:"Per ogni frase clicca la parte giusta dentro la CPU.",
+  assign:[{t:"Calcola 3 + 4", b:"alu"}, {t:"Legge l'istruzione e decide che cosa fare", b:"cu"}, {t:"Tiene il numero su cui la CPU sta lavorando adesso", b:"reg"},
+          {t:"Controlla se 7 è più grande di 5", b:"alu", fb:{cu:"Confrontare due numeri è un calcolo: lo fa la stessa parte che fa le somme."}}],
+  hint:"ALU = calcoli e confronti. Unità di controllo = legge le istruzioni e comanda. Registro = il numero in uso.",
+  success:"Unità di controllo = il capo che legge le istruzioni; ALU = la calcolatrice; registri = i foglietti velocissimi su cui la CPU tiene i numeri.",
+  learn:{k:"UC · ALU · registri", d:"chi comanda, chi calcola, dove tiene i numeri"}},
+
+ {id:"a2", lv:"a", phase:"g", title:"I tre bus", view:{bus:3},
+  theory:`<p>Il bus, da vicino, è fatto di tre gruppi di fili:</p><ul class="mini"><li><b>bus indirizzi</b>: porta il <b>dove</b>, cioè il numero della cella di memoria da usare. Lo decide la CPU.</li><li><b>bus dati</b>: porta il <b>che cosa</b>, cioè il dato o l'istruzione, in tutte e due le direzioni.</li><li><b>bus controllo</b>: porta il <b>che cosa fare</b>: leggi, scrivi…</li></ul><p>Per leggere la cella 5 la CPU mette 5 sul bus indirizzi e «leggi» sul bus controllo; la RAM risponde sul bus dati.</p>`,
+  task:"La CPU legge la cella 5, che contiene il numero 3. Per ogni cosa clicca il bus su cui viaggia.",
+  assign:[{t:"Il numero 5: la cella da leggere", b:"bind", fly:["5","cpu","ram","indirizzi"]},
+          {t:"Il comando «leggi»", b:"bctl", fly:["leggi","cpu","ram","controllo"]},
+          {t:"Il numero 3: il contenuto della cella", b:"bdati", fly:["3","ram","cpu","dati"]},
+          {t:"Il comando «scrivi», quando la CPU vuole mettere un risultato in memoria", b:"bctl", fly:["scrivi","cpu","ram","controllo"]}],
+  hint:"Il numero di una cella è un indirizzo; un comando viaggia sul bus controllo; il contenuto di una cella è un dato.",
+  success:"Dove (indirizzi), che cosa (dati), che cosa fare (controllo): tre bus, tre domande.",
+  learn:{k:"3 bus", d:"indirizzi = dove · dati = che cosa · controllo = che cosa fare"}},
+
+ {id:"a3", lv:"a", phase:"g", title:"Programma e dati insieme", view:{cells:true}, cells:true,
+  theory:`<p>Ecco la grande idea di Von Neumann: nella <b>stessa RAM</b> ci sono le <b>istruzioni</b> del programma e i <b>dati</b> su cui lavora, uno accanto all'altro, in celle numerate. Il numero della cella è il suo <b>indirizzo</b>.</p><p>Per far fare al computer un lavoro diverso basta caricare in memoria un altro programma: per questo il computer è una macchina <b>generica</b>.</p>`,
+  task:"Nella RAM c'è un piccolo programma che somma due numeri. Clicca tutte le celle che contengono <b>istruzioni</b>, poi premi Controlla.",
+  check:(S,M)=>{ const s=M.cellSel;
+    if(!s.length) return {ok:false, noTry:true, msg:"Non hai scelto nessuna cella: clicca quelle con le istruzioni."};
+    const data=s.filter(i=>i>=4).sort((a,b)=>a-b);
+    if(data.length){ const i=data[0]; return {ok:false, msg: i===4 ? "La cella 4 è vuota: non contiene niente." : `La cella ${i} contiene ${M.cells[i]}: è un numero, cioè un <b>dato</b> su cui il programma lavora.`}; }
+    const miss=[0,1,2,3].filter(i=>!s.includes(i));
+    if(miss.length) return {ok:false, msg: miss.length===1 && miss[0]===3 ? "Ne manca una: anche STOP è un'istruzione (dice alla CPU che il programma è finito)." : `Ne ${miss.length===1?"manca una":"mancano "+miss.length}: le istruzioni sono le parole che dicono alla CPU che cosa fare.`};
+    return {ok:true}; },
+  hint:"Le istruzioni sono parole come CARICA, SOMMA, SCRIVI, STOP. I numeri da soli sono dati.",
+  success:"Istruzioni e dati stanno nella stessa RAM, in celle numerate: è l'idea di Von Neumann. Cambi il programma in memoria, e lo stesso computer fa un lavoro diverso.",
+  learn:{k:"programma in memoria", d:"istruzioni e dati nella stessa RAM"}},
+
+ {id:"a4", lv:"a", phase:"g", title:"Prendi, decodifica, esegui", view:{cpu:"detail", bus:3, cells:true}, cycle:true,
+  theory:`<p>L'unità di controllo lavora sempre con lo stesso ciclo, per ogni istruzione:</p><ol class="mini"><li><b>Prendi</b>: chiede alla RAM l'istruzione successiva e la riceve;</li><li><b>Decodifica</b>: capisce che cosa dice l'istruzione;</li><li><b>Esegui</b>: la fa fare, all'ALU o alla memoria.</li></ol><p>Poi ricomincia con l'istruzione dopo, miliardi di volte al secondo.</p>`,
+  task:"Fai girare il programma della RAM: per ogni istruzione premi le tre fasi nell'ordine giusto (i pulsanti sono sotto lo schema). Alla fine guarda che cosa c'è nella cella 7.",
+  hint:"Sempre: Prendi, poi Decodifica, poi Esegui. Poi di nuovo Prendi, per l'istruzione dopo.",
+  success:"Nella cella 7 ora c'è 7: il programma ha preso i suoi dati dalla RAM e ci ha scritto il risultato. Prendi, decodifica, esegui: la CPU ripete questo ciclo miliardi di volte al secondo.",
+  learn:{k:"prendi → decodifica → esegui", d:"il ciclo di ogni istruzione"}},
+
+ {id:"x0", screen:"finalX"},
+
+ /* ---------- SFIDA FINALE ---------- */
+ {id:"x1", phase:"x", sec:"A", code:"A1", view:{bare:true},
+  task:"Quale blocco tiene i programmi e i dati che stai usando, e si svuota quando togli la corrente? Clicca nello schema.",
+  assign:[{b:"ram"}], why:"La RAM è la memoria di lavoro: veloce, ma volatile."},
+ {id:"x2", phase:"x", sec:"A", code:"A2", view:{bare:true},
+  task:"Le casse (gli altoparlanti) del computer: in quale blocco dello schema vanno? Clicca nello schema.",
+  assign:[{b:"out", fb:{in:"Le casse non fanno entrare niente: fanno uscire il suono."}}], why:"Le casse fanno uscire il suono: sono un dispositivo di output."},
+ {id:"x3", phase:"x", sec:"B", code:"B1", m:{inDev:"📷 ⌨️", inCap:"webcam · tastiera", ram:["🪟 Windows","📸 Fotocamera"], scr:"📸"},
+  task:"Fai una foto con la webcam e guardala sullo schermo: guida la foto, blocco dopo blocco, fino allo schermo.",
+  journey:{start:"in", label:"📷 foto", fb:FB_IN,
+    hops:[{to:"ram", do:M=>{ M.ram.push("🖼️ foto"); }}, {to:"cpu", do:M=>{ M.cpuTxt="elabora la foto"; }}, {to:"out", hide:true, do:M=>{ M.scr="🖼️ foto"; }}]},
+  why:"Come ogni dato che entra: input → RAM → CPU → output."},
+ {id:"x4", phase:"x", sec:"B", code:"B2", m:{ram:["🪟 Windows","📝 Word"], scr:"📝"},
+  task:"Apri il tema che hai salvato ieri e fallo comparire sullo schermo: guidalo dal blocco in cui si trova.",
+  journey:{start:"mm", label:"📄 tema", fb:FB_MM,
+    hops:[{to:"ram", do:M=>{ M.ram.push("📄 tema.docx"); }}, {to:"cpu", do:M=>{ M.cpuTxt="apre il tema"; }}, {to:"out", hide:true, do:M=>{ M.scr="📄 tema"; }}]},
+  why:"Aprire un file vuol dire copiarlo dal disco nella RAM; poi la CPU lo elabora e lo mostra."},
+ {id:"x5", phase:"x", sec:"C", code:"C1", m:{ram:["🪟 Windows","📝 Word","📄 ricerca · non salvata"], mm:["🪟 Windows","📝 Word"], scr:"📄"},
+  task:"Scrivi una ricerca con un programma che non salva da solo, e non hai ancora premuto Salva. Va via la corrente: che cosa succede alla ricerca?",
+  quiz:[{t:"È salva nel disco", fb:"Nel disco c'è solo quello che hai salvato."},{t:"È persa: stava solo nella RAM", ok:true},{t:"È salva nella CPU", fb:"La CPU non conserva i file: tiene solo i numeri che sta usando in quell'istante."},{t:"Si ritrova nel Cestino", fb:"Il Cestino contiene i file eliminati, non quelli mai salvati."}],
+  why:"Senza corrente la RAM si svuota: si salva spesso proprio per questo."},
+ {id:"x6", phase:"x", sec:"C", code:"C2", view:{bare:true}, m:{on:false},
+  task:"Il computer è spento. In quale blocco si trova il sistema operativo? Clicca nello schema.",
+  assign:[{b:"mm", fb:{ram:"A computer spento la RAM è vuota: Windows ci viene copiato all'accensione.", cpu:"La CPU esegue Windows, ma non lo conserva: a computer spento è nella memoria di massa."}}],
+  why:"A computer spento il sistema operativo sta nella memoria di massa; all'accensione viene copiato nella RAM."},
+ {id:"x7", lv:"a", phase:"x", sec:"D", code:"D1", view:{cpu:"detail", bare:true},
+  task:"Nella CPU, quale parte calcola 3 + 4? Clicca nello schema.",
+  assign:[{b:"alu"}], why:"L'ALU, l'unità aritmetico-logica, fa i calcoli e i confronti."},
+ {id:"x8", lv:"a", phase:"x", sec:"D", code:"D2", view:{cpu:"detail", bus:3, cells:true},
+  task:"La CPU vuole leggere la cella 6. Che cosa viaggia sul bus indirizzi?",
+  quiz:[{t:"Il contenuto della cella 6", fb:"Il contenuto arriva dopo, dalla RAM, sul bus dati."},{t:"Il comando «leggi»", fb:"I comandi viaggiano sul bus controllo."},{t:"Il numero 6: dove leggere", ok:true},{t:"Niente: la CPU entra nella RAM da sola", fb:"La CPU parla con la RAM solo attraverso il bus."}],
+  why:"Bus indirizzi = dove. Bus dati = che cosa. Bus controllo = che cosa fare."},
+ {id:"x9", lv:"a", phase:"x", sec:"D", code:"D3", view:{cpu:"detail", bus:3, cells:true},
+  task:"Per ogni istruzione, in che ordine lavora la CPU?",
+  quiz:[{t:"Decodifica → prendi → esegui", fb:"Non si può capire un'istruzione prima di averla presa dalla memoria."},{t:"Prendi → esegui → decodifica", fb:"Prima di eseguire bisogna capire che cosa dice l'istruzione."},{t:"Prendi → decodifica → esegui", ok:true},{t:"Esegui → prendi → decodifica", fb:"Per eseguire bisogna prima sapere che cosa fare."}],
+  why:"Prima prende l'istruzione dalla RAM, poi capisce che cosa dice, poi la esegue."},
+
+ {id:"end", screen:"end"}
+];
+const LEVELS = {base:"base", approfondito:"approfondito"};
+let LV="base", FLOW=[], GUIDED=[], CHAL=[];
+function setLevel(lv){ LV = lv==="approfondito" ? "approfondito" : "base"; FLOW=STEPS.filter(s=>!s.lv || LV==="approfondito"); GUIDED=FLOW.filter(s=>s.phase==="g"); CHAL=FLOW.filter(s=>s.phase==="x");
+  document.querySelectorAll("[data-only]").forEach(e=>e.classList.toggle("hidden", e.dataset.only!==LV)); }
+const idx = id => FLOW.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
+   ===================================================================== */
+const TOOL = "VON";
+function sig(s, tag){ let h=5381; const t="HWS*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  setLevel(store.get("lv") || (/approfondit/i.test(location.hash+location.search) ? "approfondito" : "base"));
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), FLOW.length-1), S={}, M=null;
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const rip = () => +store.get("rip")||0;
+  const errs = () => store.get("errs")||{};
+  function addErr(id){ const e=errs(); e[id]=(e[id]||0)+1; store.set("errs", e); }
+  const mq = window.matchMedia ? window.matchMedia("(max-width:980px)") : null;
+  const step = () => FLOW[pos];
+
+  function go(i){ if(i<0) return; pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<FLOW.length-1) go(pos+1); }
+  function say(kind, html, reset){
+    const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML = html + (reset?` <button type="button" class="linkbtn" id="fb-reset">↺ rimetti tutto com'era</button>`:"");
+    if(reset) $("#fb-reset").onclick=()=>{ setup(step()); fb.classList.add("hidden"); };
+  }
+  function placeDock(){
+    const d=$("#dock");
+    if(mq && mq.matches){ if(d.parentNode!==$("#work")) $("#work").appendChild(d); d.classList.add("docked"); }
+    else { if(d.parentNode!==$("#lesson")) $("#lesson").appendChild(d); d.classList.remove("docked"); }
+  }
+  if(mq){ if(mq.addEventListener) mq.addEventListener("change", placeDock); else if(mq.addListener) mq.addListener(placeDock); }
+  function counter(st){ return st.phase==="g" ? `Passo ${GUIDED.indexOf(st)+1} di ${GUIDED.length}${st.lv?" · approfondito":""}` : `Sfida finale · domanda ${CHAL.indexOf(st)+1} di ${CHAL.length}`; }
+  const cue = h => { $("#cue").innerHTML = h ? "👉 "+h : ""; };
+  const log = h => { const li=document.createElement("li"); li.innerHTML=h; $("#log").appendChild(li); };
+  const draw = () => SC.draw();
+
+  /* ---------- allestimento del passo ---------- */
+  function setup(st){
+    M = machine(st);
+    S.ai=0; S.j=0; S.started=!(st.journey && st.journey.key); S.letter=""; S.wrongs=new Set(); S.pw={saved:false, off:false, wasOff:false, lost:false}; S.cy={pc:0, ph:0};
+    if(st.journey){ const J=st.journey; M.tok = J.key ? null : {label:J.label, at:J.start}; }
+    if(st.cells) M.cellsClick=true;
+    $("#log").innerHTML=""; $("#ctl").innerHTML="";
+    SC.mount($("#sch"), M, pick);
+    if(st.power) powerUI();
+    if(st.cycle) cycleUI();
+    paintAssign(st); cueFor(st);
+  }
+  function cueFor(st){
+    if(S.done){ cue(""); return; }
+    if(st.assign){ const it=st.assign[S.ai]; if(!it){ cue(""); return; }
+      cue(st.phase==="x" ? "Clicca la tua risposta nello schema." : `${esc(it.t)}: clicca ${PARTS.includes(it.b)?"la parte giusta della CPU":/^b(dati|ind|ctl)$/.test(it.b)?"il bus giusto":"il blocco giusto"}.`); return; }
+    if(st.journey){ if(!S.started){ cue("Premi un tasto sulla tastiera, nel blocco Input."); return; }
+      const at=M.tok ? M.tok.at : st.journey.start; cue(`Il dato è in «${NAME[at]}»: in quale blocco va adesso?`); return; }
+    if(st.power){ cue(S.pw.off ? "Il computer è spento." : "Usa i pulsanti sotto lo schema: 💾 Salva, ⏻ Spegni, ⏻ Accendi."); return; }
+    if(st.cells){ cue("Clicca le celle che contengono istruzioni, poi premi Controlla."); return; }
+    if(st.cycle){ const ph=["prendere l'istruzione","decodificarla","eseguirla"][S.cy.ph]; cue(`Istruzione nella cella ${S.cy.pc}: quale fase viene adesso?`); return; }
+    cue("");
+  }
+  function paintAssign(st){
+    const ol=$("#l-asg");
+    if(!st.assign || st.assign.length<2){ ol.classList.add("hidden"); ol.innerHTML=""; return; }
+    ol.classList.remove("hidden");
+    ol.innerHTML = st.assign.map((it,i)=>`<li class="${i<S.ai?"done":i===S.ai && !S.done?"cur":""}">${esc(it.t)}${i<S.ai?` → <span class="to">${NAME[it.b]} ✔</span>`:""}</li>`).join("");
+  }
+  function flash(id, kind){ M.marks[id]=kind; draw(); clearTimeout(S.ft); S.ft=setTimeout(()=>{ M.marks={}; if(!SC.busy) draw(); }, 750); }
+  function miss(st, key){ if(key){ if(S.wrongs.has(key)) return; S.wrongs.add(key); } S.err++; recordFirst(false); if(st.phase==="x") addErr(st.id); }
+  function besGlow(st, id){ if(BES && st.phase==="g"){ M.glow=id; draw(); } }
+
+  /* ---------- clic nello schema ---------- */
+  function pick(kind, id){
+    const st=step(); if(!st || st.screen || S.done || SC.busy) return;
+    if(st.journey) return jPick(st, kind, id);
+    if(st.assign && kind==="blk") return aPick(st, id);
+    if(st.cells && kind==="cell"){ const s=M.cellSel, i=s.indexOf(id); if(i>=0) s.splice(i,1); else s.push(id); draw(); return; }
+    if(st.power && kind==="blk") say("mid", "In questo passo usi i pulsanti sotto lo schema: 💾 Salva, ⏻ Spegni, ⏻ Accendi.");
+    if(st.cycle && kind!=="key") say("mid", "In questo passo usi i pulsanti sotto lo schema: le tre fasi del ciclo.");
+  }
+  async function aPick(st, id){
+    const it=st.assign[S.ai]; if(!it) return;
+    if(id===it.b){
+      M.badges[id]=1; M.glow=null; S.ai++;
+      if(it.fly){ const [lab,a,b,bus]=it.fly; M.lit=it.b; draw(); await SC.fly(lab, SC.route(a,b,bus), {temp:true, cls:bus==="dati"?"dat":bus==="controllo"?"ctl":""}); M.lit=null; }
+      flash(id,"ok"); paintAssign(st);
+      if(S.ai>=st.assign.length){ recordFirst(true); success(st); } else { $("#l-fb").classList.add("hidden"); cueFor(st); }
+      return; }
+    if(PARTS.includes(it.b) && id==="cpu") return say("mid", "Clicca una parte <b>dentro</b> la CPU.");
+    if(PARTS.includes(it.b) && !PARTS.includes(id) && st.phase==="g") return say("mid", "La risposta è dentro la CPU: clicca una delle sue tre parti.");
+    const msg=(it.fb && it.fb[id]) || CONF[it.b+"<"+id] || `«${NAME[id]}» ${FUN[id]}.`;
+    flash(id,"bad"); miss(st, S.ai+":"+id);
+    say("ko", "Non è così. "+msg); showHintBtn(); besGlow(st, it.b);
+  }
+  async function jPick(st, kind, id){
+    const J=st.journey;
+    if(kind==="key"){ if(J.key && !S.started){ S.started=true; S.letter=id; M.tok={label:id, at:J.start}; draw(); cueFor(st); $("#l-fb").classList.add("hidden"); return; } kind="blk"; id="in"; }
+    if(kind!=="blk") return;
+    if(!S.started) return say("mid", "Prima premi un tasto sulla tastiera, nel blocco Input.");
+    const from=M.tok.at, hop=J.hops[S.j];
+    if(id===from) return say("mid", "Il dato è già qui: in quale blocco va adesso?");
+    if(id===hop.to){
+      $("#l-fb").classList.add("hidden");
+      if(hop.fl) M.tok.label=hop.fl;
+      await SC.fly(M.tok.label, SC.route(from, id));
+      if(hop.do) hop.do(M, S);
+      M.tok = hop.hide ? null : {label: hop.tok!=null ? hop.tok : M.tok.label, at:id};
+      M.glow=null; S.j++;
+      if(hop.why) log(`<b>${NAME[from]} → ${NAME[id]}</b>: ${hop.why}`);
+      draw();
+      if(S.j>=J.hops.length){ recordFirst(true); success(st); } else cueFor(st);
+      return; }
+    const key=from+">"+id, soft=J.soft && J.soft[key];
+    if(soft) return say("mid", soft);
+    if(id==="bus" || /^b(dati|ind|ctl)$/.test(id)) return say("mid", "Il bus è la strada, non una tappa: clicca il blocco in cui arriva il dato.");
+    const msg=(hop.fb && hop.fb[id]) || (J.fb && J.fb[key]) || `«${NAME[id]}» ${FUN[id]}: non è la prossima tappa.`;
+    flash(id,"bad"); miss(st, S.j+":"+id);
+    say("ko", "Non ancora. "+msg); showHintBtn(); besGlow(st, hop.to);
+  }
+
+  /* ---------- salvare, spegnere, accendere ---------- */
+  function powerUI(){
+    const c=$("#ctl"), p=S.pw;
+    c.innerHTML = `<button type="button" class="btn alt" data-p="save" ${p.off||p.lost?"disabled":""}>💾 Salva</button><button type="button" class="btn alt" data-p="off" ${p.off?"disabled":""}>⏻ Spegni</button><button type="button" class="btn alt" data-p="on" ${p.off?"":"disabled"}>⏻ Accendi</button>
+      <span class="state">${p.off?"Computer spento.":"Computer acceso."} ${p.lost?"Il tema è perso.":p.saved?"tema.docx è salvato nel disco.":"tema.docx non è salvato."}</span>`;
+    c.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>power(b.dataset.p));
+  }
+  async function power(a){
+    const st=step(); if(S.done || SC.busy) return; const p=S.pw;
+    if(a==="save"){ if(p.saved){ say("mid","Il tema è già salvato: è nel disco."); return; }
+      await SC.fly("📄 tema", SC.route("ram","mm")); M.mm.push("📄 tema.docx"); M.ram[2]="📄 tema.docx · salvato"; p.saved=true;
+      log("<b>💾 Salva</b>: il tema viene copiato dalla RAM alla memoria di massa."); }
+    else if(a==="off"){ M.on=false; M.ram=[]; M.scr=""; M.cpuTxt=""; p.off=true; p.wasOff=true;
+      log("<b>⏻ Spegni</b>: senza corrente la RAM si svuota; la memoria di massa conserva tutto.");
+      if(!p.saved){ p.lost=true; draw(); powerUI(); cueFor(st); miss(st); say("ko", "Hai spento senza salvare: il tema era solo nella RAM, e la RAM senza corrente si svuota. Il tema è perso!", true); showHintBtn(); return; } }
+    else if(a==="on"){ M.on=true; draw(); await SC.fly("🪟 Windows", SC.route("mm","ram")); M.ram=["🪟 Windows"]; M.scr="🪟"; p.off=false;
+      log("<b>⏻ Accendi</b>: Windows viene copiato dal disco nella RAM."); }
+    $("#l-fb").classList.add("hidden"); draw(); powerUI(); cueFor(st);
+  }
+
+  /* ---------- il ciclo della CPU ---------- */
+  const PH = ["Prendi","Decodifica","Esegui"];
+  function cycleUI(){
+    const c=$("#ctl");
+    c.innerHTML = [2,0,1].map(i=>`<button type="button" class="btn alt" data-ph="${i}">${PH[i]}</button>`).join("")+`<span class="state" id="cy-state"></span>`;
+    c.querySelectorAll("[data-ph]").forEach(b=>b.onclick=()=>phase(+b.dataset.ph));
+    cyState();
+  }
+  function cyState(){ const e=$("#cy-state"); if(!e) return; const done=S.cy.ph;
+    e.textContent = S.cy.end ? `Programma finito: nella cella 7 c'è ${M.cells[7]}.` : `Istruzione ${S.cy.pc+1} di 4 (cella ${S.cy.pc}) · fasi fatte: ${done?PH.slice(0,done).join(", "):"nessuna"}`; }
+  const CYW = {"0>1":"Non c'è ancora niente da decodificare: prima la CPU deve <b>prendere</b> l'istruzione dalla RAM.", "0>2":"La CPU non sa ancora che cosa fare: prima deve <b>prendere</b> l'istruzione dalla RAM.",
+    "1>0":"L'istruzione l'hai già presa: è nell'unità di controllo. Ora va capita.", "1>2":"Prima di eseguire bisogna capire che cosa dice l'istruzione: <b>decodifica</b>.",
+    "2>0":"Prima finisci questa istruzione: l'hai capita, ora va <b>eseguita</b>.", "2>1":"L'hai già decodificata: ora va <b>eseguita</b>."};
+  async function phase(i){
+    const st=step(); if(S.done || SC.busy) return;
+    const c=S.cy;
+    if(i!==c.ph){ miss(st, c.pc+":"+c.ph+":"+i); say("ko", "Non ancora. "+CYW[c.ph+">"+i]); showHintBtn(); return; }
+    $("#l-fb").classList.add("hidden");
+    const cell="c"+c.pc, ins=M.cells[c.pc];
+    const both = async (adr, cmd, to) => { await Promise.all([SC.fly(adr, SC.route("cu", to, "indirizzi"), {temp:true}), SC.fly(cmd, SC.route("cu", to, "controllo"), {temp:true, cls:"ctl"})]); };
+    if(i===0){ M.cellHl=c.pc; draw(); await both(String(c.pc), "leggi", cell); await SC.fly(ins, SC.route(cell, "cu", "dati"), {temp:true, cls:"dat"});
+      M.cu=ins; log(`<b>Prendi</b>: l'unità di controllo chiede la cella ${c.pc} (bus indirizzi, comando «leggi») e riceve «${esc(ins)}» (bus dati).`); }
+    else if(i===1){ M.glow="cu"; draw(); await SC.wait(350); M.glow=null; log(`<b>Decodifica</b>: «${esc(ins)}» vuol dire: ${DECODE[ins]}.`); }
+    else {
+      const n=+ins.split(" ")[1];
+      if(ins.startsWith("CARICA")){ M.cellHl=n; draw(); await both(String(n), "leggi", "c"+n); await SC.fly(M.cells[n], SC.route("c"+n, "reg", "dati"), {temp:true, cls:"dat"}); M.regA=M.cells[n]; log(`<b>Esegui</b>: il numero ${M.cells[n]} arriva dalla cella ${n} nel registro A.`); }
+      else if(ins.startsWith("SOMMA")){ M.cellHl=n; draw(); await both(String(n), "leggi", "c"+n); await SC.fly(M.cells[n], SC.route("c"+n, "alu", "dati"), {temp:true, cls:"dat"});
+        const r=(+M.regA)+(+M.cells[n]); M.alu=`${M.regA} + ${M.cells[n]} = ${r}`; draw(); await SC.fly(String(r), SC.route("alu","reg"), {temp:true, cls:"dat", ms:500}); M.regA=String(r); log(`<b>Esegui</b>: l'ALU calcola ${M.alu}; il risultato va nel registro A.`); }
+      else if(ins.startsWith("SCRIVI")){ M.cellHl=n; draw(); await both(String(n), "scrivi", "c"+n); await SC.fly(M.regA, SC.route("reg", "c"+n, "dati"), {temp:true, cls:"dat"}); M.cells[n]=M.regA; log(`<b>Esegui</b>: il numero ${M.regA} va dal registro A alla cella ${n} della RAM.`); }
+      else { log("<b>Esegui</b>: STOP, la CPU si ferma: il programma è finito."); }
+    }
+    if(i<2) c.ph++;
+    else { c.ph=0; if(ins==="STOP"){ c.end=true; M.cellHl=null; draw(); cyState(); recordFirst(true); success(st); return; } c.pc++; }
+    draw(); cyState(); cueFor(st);
+  }
+
+  /* ---------- il resto: come nelle altre palestre ---------- */
+  function render(){
+    const st=step();
+    $("#pbar").style.width = Math.round(pos/(FLOW.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(st.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[st.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false, firstDone:false};
+    $("#l-lbl").textContent = counter(st);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = st.phase==="x" ? SEC[st.sec].name : st.title;
+    const th=val(st.theory); $("#l-theory").innerHTML = th; $("#l-theory").classList.toggle("hidden", !th);
+    const keys=val(st.keys); $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = st.quiz ? "Domanda" : st.phase==="g" ? "Il tuo compito" : "Domanda";
+    $("#l-task").innerHTML = val(st.task);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !st.quiz);
+    q.innerHTML = st.quiz ? st.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o.t}</button>`).join("") : "";
+    q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b));
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    $("#b-next").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    $("#b-check").classList.toggle("hidden", !st.check);
+    const sk=$("#b-skip"); sk.classList.remove("hidden"); sk.textContent = st.phase==="g" ? "Salta il passo ⤼" : "Salta la domanda ⤼";
+    placeDock(); setup(st);
+  }
+  function showHintBtn(){ if(step().hint && !S.hint && S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function recordFirst(ok){ const st=step(); if(st.phase!=="x" || S.firstDone) return; S.firstDone=true; if(!res(st.id)) store.set("r_"+st.id, {first:ok, done:false}); }
+  function check(){
+    const st=step(); if(!st || st.screen || !st.check) return;
+    if(S.done){ next(); return; }
+    if(SC.busy) return;
+    const v=st.check(S, M);
+    if(!v.ok){
+      if(!v.noTry) miss(st);
+      say(v.noTry?"mid":"ko", (v.noTry?"":"Non ancora. ")+v.msg, v.reset); showHintBtn(); return; }
+    recordFirst(true); success(st);
+  }
+  function answer(i, btn){
+    const st=step(); if(S.done) return;
+    const o=st.quiz[i];
+    if(o.ok){ recordFirst(true); btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(st); return; }
+    if(btn.classList.contains("wrong")) return;
+    miss(st);
+    btn.classList.add("wrong"); btn.setAttribute("aria-disabled","true"); say("ko", "Non è così. "+o.fb); showHintBtn();
+  }
+  function success(st){
+    S.done=true; cue(""); M.glow=null; for(const k in M.marks) if(M.marks[k]==="bad") delete M.marks[k]; draw(); paintAssign(st);
+    if(st.phase==="g"){ const r=Object.assign({}, res(st.id)||{}, {ok:1, err:S.err}); if(S.hint) r.hint=1; delete r.skip; store.set("r_"+st.id, r);
+      say("ok", "✔ Giusto! "+val(st.success)); paintPocket(); }
+    else { const r=res(st.id)||{first:true}; store.set("r_"+st.id, {first:!!r.first, done:true}); say("ok", (r.first?"✔ Giusto al primo colpo! ":"✔ Ora è giusto. ")+val(st.why)); }
+    $("#ctl").querySelectorAll("button").forEach(b=>b.disabled=true);
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#b-skip").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = FLOW[pos+1] && FLOW[pos+1].screen ? "Continua →" : "Avanti →"; nb.focus({preventScroll:true});
+  }
+  function skip(){
+    const st=step(); if(!st || st.screen || S.done) return; const r=res(st.id);
+    if(st.phase==="g"){ if(!(r && r.ok)) store.set("r_"+st.id, Object.assign({}, r||{}, {skip:1})); }
+    else store.set("r_"+st.id, {first:false, done:false, skip:1});
+    next();
+  }
+  function hint(){ S.hint=true; const id=step().id; store.set("r_"+id, Object.assign({}, res(id)||{}, {hint:1}));
+    const h=$("#l-hinttext"); h.innerHTML="💡 "+val(step().hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && (res(s.id)||{}).ok), cur=step(), closed = cur && (cur.phase==="x" || cur.id==="x0");
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length || closed); b.textContent=`🎒 Tasca (${learned.length})`;
+    if(closed){ $("#pocket").classList.add("hidden"); b.setAttribute("aria-expanded","false"); }
+    $("#pocket").innerHTML = `<h3>Cosa so già</h3><ul>${learned.map(s=>`<li><b>${val(s.learn.k)}</b> — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket") && !$("#pocket").classList.contains("hidden")){ $("#pocket").classList.add("hidden"); $("#pocket-btn").setAttribute("aria-expanded","false"); } });
+
+  function guided(){ const r=GUIDED.map(s=>res(s.id)||{}), ok=r.filter(x=>x.ok).length, skip=r.filter(x=>x.skip && !x.ok).length;
+    return {ok, skip, miss:GUIDED.length-ok-skip, hint:(+store.get("hintsPrev")||0)+r.filter(x=>x.hint).length}; }
+  function tally(){
+    const secs = Object.keys(SEC).filter(k=>CHAL.some(q=>q.sec===k)).map(k=>{ const qs=CHAL.filter(q=>q.sec===k), r=qs.map(q=>res(q.id));
+      return {k, n:qs.length, ok:r.filter(x=>x && x.first && !x.skip).length, skip:r.filter(x=>x && x.skip).length, miss:r.filter(x=>!x).length}; });
+    const skips = CHAL.filter(q=>{ const r=res(q.id); return r && r.skip; });
+    return {secs, n:CHAL.length, miss:secs.reduce((a,x)=>a+x.miss,0), ok:secs.reduce((a,x)=>a+x.ok,0), skips};
+  }
+  const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+  function code(){
+    const t=tally(), g=guided(), e=errs();
+    const gx=[]; if(g.skip) gx.push(pl(g.skip,"saltato","saltati")); if(g.miss) gx.push(pl(g.miss,"non fatto","non fatti"));
+    const parts=["HWS-"+TOOL, curName()||"(nome non inserito)", "LIVELLO "+LV, `PASSI ${g.ok}/${GUIDED.length}`+(gx.length?` (${gx.join(", ")})`:""), `aiuti ${g.hint}`];
+    t.secs.forEach(x=>{ const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte"));
+      parts.push(`${SEC[x.k].code} ${x.ok}/${x.n}`+(ex.length?` (${ex.join(", ")})`:"")); });
+    parts.push(`TOT ${t.ok}/${t.n}`);
+    const el=CHAL.filter(q=>e[q.id]).map(q=>`${q.code}(${e[q.id]})`);
+    parts.push("errori "+(el.length?el.join(" "):"-"));
+    if(t.skips.length) parts.push("saltate "+t.skips.map(q=>q.code).join(" "));
+    parts.push("ripetizioni "+rip());
+    if(BES) parts.push("modalità facilitata");
+    const n0=store.get("nome0"); if(n0 && nameKey(n0)!==nameKey(curName())) parts.push("nome iniziale: "+n0);
+    const body=parts.join(" | ");
+    return body+" | #"+sig(body, TOOL);
+  }
+  function codeBlock(){
+    const t=tally(), g=guided(), e=errs(), rev=CHAL.filter(q=>e[q.id] || t.skips.includes(q));
+    const note = x => { const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte")); return ex.length?`<small>${ex.join(", ")}</small>`:""; };
+    const tag = q => [e[q.id]?`<i>(sbagliata ${e[q.id]===1?"1 volta":e[q.id]+" volte"})</i>`:"", t.skips.includes(q)?"<i>(saltata)</i>":""].filter(Boolean).join(" ");
+    return `<div class="stats">${t.secs.map(x=>`<div class="stat"><small>${SEC[x.k].name}</small><b>${x.ok}/${x.n}</b>${note(x)}</div>`).join("")}<div class="stat tot"><small>Giuste al primo colpo</small><b>${t.ok}/${t.n}</b></div></div>
+      <p class="small">Livello <b>${LV}</b> · passi guidati: <b>${g.ok}/${GUIDED.length}</b>${g.skip?`, ${pl(g.skip,"saltato","saltati")}`:""}${g.hint?`, aiuti usati: ${g.hint}`:""}${rip()?` · ripetizioni della sfida: ${rip()}`:""}.</p>
+      ${rev.length?`<details class="review" open><summary>Da ripassare (${rev.length})</summary><ul>${rev.map(q=>`<li><b>${plain(val(q.task))}</b> ${tag(q)}<br>${q.why}</li>`).join("")}</ul></details>`:""}
+      <h3>Il tuo codice</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} nella tua <b>scheda</b>.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="small" data-copied aria-live="polite"></span></p>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".screen").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]");
+    const ok=()=>{ out.textContent="Copiato ✓ Ora incollalo nella scheda."; };
+    const fallback=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Copia a mano: clic nel riquadro, "+CT+"+A e "+CT+"+C."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fallback); else fallback();
+  });
+
+  function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
+  const hkey = n => hashName(n)+"_"+LV;
+  function saveHistory(){ const n=curName(); if(!n || !anyWork()) return; const h=store.get("hist")||{}; h[hkey(n)]={rip:rip()+1, errs:errs(), hints:guided().hint}; store.set("hist", h); }
+  function restoreHistory(n){ if(anyWork()) return; const h=store.get("hist")||{}, k=hkey(n), p=h[k]; if(!p) return;
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); delete h[k]; store.set("hist", h); }
+
+  const SCREENS = {
+    welcome(el){
+      const any=STEPS.some(s=>res(s.id));
+      el.innerHTML = `<h2>⚡ Il dato in viaggio</h2>
+        <p>Dentro ogni computer i dati fanno sempre gli stessi giri. Qui li segui da vicino sullo <b>schema di Von Neumann</b>: clicchi i blocchi e guidi i dati da uno all'altro. Poi una sfida finale e il codice da incollare nella scheda.</p>
+        <p class="small">Se un passo proprio non ti riesce puoi saltarlo: nel codice risulta saltato e non vale punti.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
+        <p style="margin-bottom:4px"><b>Livello</b> <span class="small">(se non sai quale, chiedi al docente)</span></p>
+        <div class="lvl" role="radiogroup" aria-label="Livello">
+          <label class="${LV==="base"?"on":""}"><input type="radio" name="lv" value="base" ${LV==="base"?"checked":""} ${any?"disabled":""}><span><b>🟢 Base</b>I cinque blocchi, il bus, il viaggio di un dato, salvare e accendere. ${GUIDED_N("base")} passi e ${CHAL_N("base")} domande, circa 15 minuti.</span></label>
+          <label class="${LV==="approfondito"?"on":""}"><input type="radio" name="lv" value="approfondito" ${LV==="approfondito"?"checked":""} ${any?"disabled":""}><span><b>🔵 Approfondito</b>In più: dentro la CPU (unità di controllo, ALU, registri), i tre bus, programma e dati nella stessa memoria, il ciclo prendi-decodifica-esegui. ${GUIDED_N("approfondito")} passi e ${CHAL_N("approfondito")} domande, circa 25 minuti.</span></label>
+        </div>
+        ${any?`<p class="small">Il livello non si può cambiare a palestra iniziata: per cambiarlo usa «Nuovo studente» nelle Opzioni in fondo.</p>`:""}
+        <div class="fb ko hidden" id="w-err" role="alert"></div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      el.querySelectorAll('input[name="lv"]').forEach(r=>r.onchange=()=>{ el.querySelectorAll(".lvl label").forEach(l=>l.classList.toggle("on", l.contains(r) && r.checked)); });
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim();
+        if(v.length<3){ const er=$("#w-err"); er.textContent="Scrivi il tuo nome e cognome (almeno 3 lettere), poi premi Inizia."; er.classList.remove("hidden"); $("#w-name").focus(); return; }
+        const r=el.querySelector('input[name="lv"]:checked'); if(r && !any) setLevel(r.value); store.set("lv", LV);
+        const old=curName();
+        if(old && nameKey(old)!==nameKey(v) && any && !store.get("nome0")) store.set("nome0", old);
+        restoreHistory(v); store.set("nome", v); pos=idx("w"); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    finalX(el){
+      const ns=new Set(CHAL.map(q=>q.sec)).size;
+      el.innerHTML = `<h2>🏁 Sfida finale</h2>
+        <p><b>${CHAL.length} domande</b> in ${ns} gruppi: ${Object.keys(SEC).filter(k=>CHAL.some(q=>q.sec===k)).map(k=>SEC[k].name.toLowerCase()).join(", ")}. Alcune si rispondono cliccando lo schema, altre guidando un dato.</p>
+        <p>Conta il <b>primo tentativo</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
+        <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      const t=tally();
+      el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
+        <p><button type="button" class="btn alt" id="e-redo">↺ Rifai la sfida</button> <span class="small">Puoi rifarla quante volte vuoi: il codice tiene l'ultimo tentativo, conta le ripetizioni e ricorda tutti gli errori.</span></p>
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
+      $("#e-redo").onclick=()=>{ if(!confirm(`Rifare la sfida? Le ${CHAL.length} risposte di adesso vengono cancellate; gli errori fatti finora restano nel codice.`)) return; CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); };
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !/^HWS-[A-Z]{3} \|/.test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(4, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+  function GUIDED_N(lv){ return STEPS.filter(s=>s.phase==="g" && (!s.lv || lv==="approfondito")).length; }
+  function CHAL_N(lv){ return STEPS.filter(s=>s.phase==="x" && (!s.lv || lv==="approfondito")).length; }
+
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-skip").onclick=skip;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const st=step();
+    const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, st.quiz?st.quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):"", $("#cue").innerText].filter(Boolean).join(". ");
+    const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; saveHistory(); store.clear(); location.reload(); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render};
+})();
+App.render();
+</script>
+</body>
+</html>
