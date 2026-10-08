@@ -69,14 +69,59 @@
     {
       "titolo": "Differenza tra hardware e software",
       "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/DIFFERENZA_HW_SW/",
-      "minuti": 240,
-      "descrizione": "Due lezioni da due ore per il biennio: componenti del PC (CPU, RAM, memoria di massa, periferiche di input e output), architettura di Von Neumann, avvio e interfaccia del sistema operativo, cartelle e sottocartelle in Google Drive, copia sposta rinomina elimina, compressione in ZIP. Palestra interattiva con codice, schede di lavoro e versioni BES.",
+      "minuti": 35,
+      "descrizione": "Che cosa si tocca e che cosa no: hardware e software, i tre tipi di software (sistema operativo, app, driver), guasto hardware o problema software. Palestra interattiva «Hardware o software?» con codice.",
       "tag": [
         "competenze-base",
         "hardware",
+        "software"
+      ]
+    },
+    {
+      "titolo": "Componenti del PC: CPU, RAM, memoria di massa, periferiche di input/output",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/COMPONENTI_PC/",
+      "minuti": 75,
+      "descrizione": "Si apre un PC e si riconoscono i pezzi: CPU, RAM, SSD e hard disk, scheda madre, alimentatore, scheda video, periferiche di input e output. Palestra dei componenti con codice e identikit del computer.",
+      "tag": [
+        "competenze-base",
+        "hardware",
+        "componenti"
+      ]
+    },
+    {
+      "titolo": "Architettura di Von Neumann: unità di input, elaborazione, output, memoria",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/ARCHITETTURA_VON_NEUMANN/",
+      "minuti": 20,
+      "descrizione": "Lo schema di Von Neumann percorso seguendo un dato: i cinque blocchi, il bus, salvare, accendere. Palestra «Il dato in viaggio» con livello base e approfondito.",
+      "tag": [
+        "competenze-base",
+        "hardware",
+        "von-neumann"
+      ]
+    },
+    {
+      "titolo": "Sistema operativo: finestre, file, cartelle e percorsi",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/SISTEMA_OPERATIVO_FILE_CARTELLE/",
+      "minuti": 70,
+      "descrizione": "Compiti del sistema operativo, finestre, file ed estensioni, percorsi, regola dei nomi, cartelle e sottocartelle in Google Drive. Palestra «Albero dei file» con codice.",
+      "tag": [
+        "competenze-base",
         "sistema-operativo",
         "file",
         "drive"
+      ]
+    },
+    {
+      "titolo": "Operazioni di base: copia, sposta, rinomina, elimina file",
+      "percorso": "BIENNIO/M0_ARCHITETTURA_COMPUTER_E_SISTEMA_OPERATIVO/OPERAZIONI_BASE_FILE/",
+      "minuti": 50,
+      "descrizione": "Copiare, spostare, rinominare ed eliminare file sul PC e in Google Drive, il Cestino, la compressione in ZIP. Palestra «Copia o sposta?» con codice. Approfondimento: le stesse operazioni dal terminale; attività alternativa «La casa dei file».",
+      "tag": [
+        "competenze-base",
+        "file",
+        "drive",
+        "zip",
+        "terminale"
       ]
     }
   ]

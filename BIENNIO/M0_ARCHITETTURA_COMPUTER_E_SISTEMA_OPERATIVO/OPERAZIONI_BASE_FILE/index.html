@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%BB%3C/text%3E%3C/svg%3E">
-<title>Differenza tra hardware e software · Guida per il docente</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%84%3C/text%3E%3C/svg%3E">
+<title>Operazioni di base: copia, sposta, rinomina, elimina file · Guida per il docente</title>
 <style>
 :root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff}
 *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
@@ -62,15 +62,15 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
 <p class="back">
   <a href="../../../index.html">&#8592; Hub principale</a>
   <a href="../index.html">M0 · tutte le attività</a>
-  <span class="sp">Attività 1 di 5</span>
-  <a href="../COMPONENTI_PC/index.html">successiva &#8250;</a>
+  <span class="sp">Attività 5 di 5</span>
+  <a href="../SISTEMA_OPERATIVO_FILE_CARTELLE/index.html">&#8249; precedente</a>
 </p>
 
 <header class="hero"><div class="in">
-  <div class="kicker" style="color:#ffd9bf">Guida per il docente · M0 · attività 1 di 5</div>
-  <h1>Differenza tra hardware e software</h1>
-  <p>Che cosa si tocca e che cosa no: due parti che lavorano sempre insieme.</p>
-  <div class="pills"><span>circa 35 minuti</span><span>Biennio · primo anno</span><span>1 palestra · HWS-DIF</span></div>
+  <div class="kicker" style="color:#ffd9bf">Guida per il docente · M0 · attività 5 di 5</div>
+  <h1>Operazioni di base: copia, sposta, rinomina, elimina file</h1>
+  <p>Le quattro operazioni sui file, sul PC e in Google Drive, e l'archivio ZIP.</p>
+  <div class="pills"><span>50 minuti</span><span>Biennio · primo anno</span><span>1 palestra · HWS-MOV</span><span>Approfondimento: terminale</span><span>Attività alternativa</span></div>
 </div></header>
 
 <div class="wrap">
@@ -80,6 +80,8 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
   <a href="#palestra">Palestra</a>
   <a href="#compito">Compito</a>
   <a href="#valutazione">Valutazione</a>
+  <a href="#approfondimento">Approfondimento</a>
+  <a href="#alternativa">Attività alternativa</a>
   <a href="#bes">BES / DSA</a>
   <a href="#file">File</a>
   <a href="../verifica_codici.html" target="_blank" rel="noopener">🔎 Verifica dei codici ↗</a>
@@ -88,83 +90,94 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
 <main>
 
 <section id="breve">
-<div class="kicker">In breve</div><h2>Si tocca o no?</h2>
+<div class="kicker">In breve</div><h2>Copia o sposta?</h2>
 <div class="grid3">
-  <div class="card"><h4>🎯 Obiettivo</h4><p>Distinguere hardware e software; riconoscere sistema operativo, app e driver; capire se un problema sta in un pezzo o in un programma.</p></div>
-  <div class="card"><h4>🔩 Materiale</h4><p>Un PC del laboratorio da spegnere e riaccendere; i computer degli studenti.</p></div>
-  <div class="card"><h4>📤 Consegna</h4><p>Scheda con il codice <b>HWS-DIF</b>.</p></div>
+  <div class="card"><h4>🎯 Obiettivo</h4><p>Copiare, spostare, rinominare ed eliminare file sul PC e in Drive; comprimere una cartella in ZIP.</p></div>
+  <div class="card"><h4>🔩 Materiale</h4><p>I computer degli studenti; tre file di prova; la cartella di Drive dell'attività precedente.</p></div>
+  <div class="card"><h4>📤 Consegna</h4><p>Archivio <code>primo_anno_cognome.zip</code> e scheda con il codice <b>HWS-MOV</b>.</p></div>
 </div>
 </section>
 
 <section id="scaletta">
-<div class="kicker">Scaletta · circa 35 minuti</div><h2>Come si conduce</h2>
+<div class="kicker">Scaletta · 50 minuti</div><h2>Come si conduce</h2>
 <div class="tw"><table class="sc">
 <thead><tr><th>Minuti</th><th>Che cosa si fa</th><th>Nota</th></tr></thead>
 <tbody>
-<tr><td class="num">0–10</td><td><b>Gancio</b></td><td>Spegni un PC e riaccendilo: «Chi gli sta dicendo che cosa fare?». Scrivi tre o quattro risposte alla lavagna, senza correggerle.</td></tr>
-<tr><td class="num">10–20</td><td><b>Hardware e software</b></td><td>Una riga di definizione ciascuno. Esercizio lampo: dieci voci (mouse, Word, altoparlanti, Windows, ventola, browser, stampante, gioco, disco, driver), una mano per hardware, due per software. Il firmware resta aperto.</td></tr>
-<tr><td class="num">20–35</td><td><b>Palestra «Hardware o software?»</b></td><td>14 minuti. Alla fine torna alle risposte del gancio.</td></tr>
+<tr><td class="num">0–30</td><td><b>Copia, sposta, rinomina, elimina · palestra «Copia o sposta?»</b></td><td>Dimostrazione proiettata, 15 minuti di palestra, poi le operazioni vere sui loro file in Drive: ⋮ › Organizza › Sposta, ⋮ › Crea una copia, Sposta nel cestino, Ripristina. In Drive non c'è Taglia e Incolla; il Cestino si svuota da solo dopo 30 giorni.</td></tr>
+<tr><td class="num">30–45</td><td><b>ZIP</b></td><td>In Esplora file: tasto destro › Comprimi in › File ZIP, guarda i due pesi, poi Estrai tutto in una cartella nuova. Il controllo: aprire un file dell'archivio estratto.</td></tr>
+<tr><td class="num">45–50</td><td><b>Consegna</b></td><td>Allegano l'archivio ZIP. Verifica due consegne davanti alla classe.</td></tr>
 </tbody>
 </table></div>
-<div class="rule"><b>Da lasciare aperta</b> per la prossima attività: «Quando il computer è spento, il sistema operativo dove si trova?»</div>
+<div class="rule"><b>Una regola.</b> Non salvare tu i loro file: fermati e detta l'operazione a voce. Imparano solo se la mano è la loro.</div>
 </section>
 
 <section id="palestra">
 <div class="kicker">Attività interattiva</div><h2>Palestra</h2>
 <div class="pal-card">
-  <div class="pal-icon">🔧</div>
+  <div class="pal-icon">🔄</div>
   <div class="pal-body">
-    <h3 style="margin:0 0 4px">Hardware o software?</h3>
+    <h3 style="margin:0 0 4px">Copia o sposta?</h3>
     <ul>
-      <li><b>6 passi</b>: Si tocca o no? · Tocchi il vetro, non l'app · Chi gli dice che cosa fare? · Cacciavite o clic? · Tre tipi di software · È il pezzo o è il programma?</li>
-      <li><b>Sfida, 10 domande</b>: A hardware o software (4) · B hardware e software insieme (3) · C guasto o problema (3)</li>
-      <li>Circa 14 minuti · codice <b>HWS-DIF</b></li>
+      <li><b>11 passi</b> con due finestre affiancate e il contatore degli elementi (prima si prevede, poi si prova): selezionare · copiare · spostare · copia e originale · trascinare · la trappola della chiavetta · rinominare · il Cestino · lo stesso nome · Google Drive · il Cestino di Drive</li>
+      <li><b>Sfida, 8 compiti</b>: A prevedere (3) · B copiare e spostare (3) · C Google Drive (2)</li>
+      <li>Circa 15 minuti · codice <b>HWS-MOV</b></li>
     </ul>
-    <a class="try" href="01_LEZIONE_1/MATERIALI/palestra_hardware_software.html" target="_blank" rel="noopener">▶ Prova la palestra</a>
+    <a class="try" href="01_LEZIONE_1/MATERIALI/palestra_copia_sposta.html" target="_blank" rel="noopener">▶ Prova la palestra</a>
   </div>
 </div>
-<p class="small" style="margin:10px 0 0">File HTML autonomo: funziona online e offline (doppio clic), senza login. Alla fine dà una riga di codice firmata, da incollare nella scheda; un passo o una domanda saltati valgono zero e gli errori restano anche rifacendo la sfida. Alla fine lo studente può rifare solo la sfida o ricominciare tutto da zero: in entrambi i casi il codice di prima si cancella, quindi va incollato prima. La pagina di verifica dei codici non legge ancora <b>HWS-DIF</b>: per controllare un codice usa «Area docente: verifica un codice» nella schermata finale della palestra.</p>
+<p class="small" style="margin:10px 0 0">File HTML autonomo: funziona online e offline (doppio clic), senza login. Alla fine dà una riga di codice firmata, da incollare nella scheda; un passo o una domanda saltati valgono zero e gli errori restano anche rifacendo la sfida. Alla fine lo studente può rifare solo la sfida o ricominciare tutto da zero: in entrambi i casi il codice di prima si cancella, quindi va incollato prima. </p>
 </section>
 
 <section id="compito">
 <div class="kicker">Classroom</div><h2>Compito</h2>
 <div class="card" style="margin-bottom:14px"><h4>Prima della lezione</h4>
 <ul class="checks">
-  <li><label><input type="checkbox" data-k="p0"> Un PC pronto da spegnere e riaccendere davanti alla classe.</label></li>
-  <li><label><input type="checkbox" data-k="p1"> Palestra aperta da un PC del laboratorio.</label></li>
+  <li><label><input type="checkbox" data-k="p0"> Tre file di prova caricati e allegati al compito.</label></li>
+  <li><label><input type="checkbox" data-k="p1"> Provato con un account studente: Drive, ZIP, palestra.</label></li>
   <li><label><input type="checkbox" data-k="p2"> Scheda caricata e convertita in Documento Google.</label></li>
   <li><label><input type="checkbox" data-k="p3"> Compito creato o programmato.</label></li>
 </ul></div>
 
 <article class="task" id="c01">
-<div class="taskhead"><div><h3>Hardware o software?</h3></div>
+<div class="taskhead"><div><h3>Metti in ordine i tuoi file</h3></div>
 <label class="done"><input type="checkbox" data-k="c01"> creato in Classroom</label></div>
 
 <div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito</h4>
 <p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>M0 · Architettura e sistema operativo</b></p>
-<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">Differenza tra hardware e software · Hardware o software?</div><button class="cp" data-target="t01">Copia</button></div>
-<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Oggi distinguiamo quello che si tocca da quello che non si tocca.
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">Operazioni sui file · Metti in ordine i tuoi file</div><button class="cp" data-target="t01">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Oggi copi, sposti, rinomini ed elimini file veri: prima sul PC, poi in Drive.
 
-1. Palestra «Hardware o software?» (15 minuti): <span data-url="01_LEZIONE_1/MATERIALI/palestra_hardware_software.html">—</span>
-   Se il link non si apre, scarica il file allegato e aprilo con doppio clic.
-2. Alla fine premi «Riepilogo e codice», copia la riga HWS-DIF e incollala nella scheda.
-3. Premi CONSEGNA.</pre><button class="cp" data-target="d01">Copia</button></div></div></div>
+1. Scarica i tre file allegati: sul PC finiscono nella cartella Download.
+2. In Esplora file rinominali (F2) con la regola dei nomi: tutto minuscolo, _ al posto degli spazi, niente accenti né apostrofi, date scritte AAAA-MM-GG. L'estensione non si tocca.
+3. Palestra «Copia o sposta?» (15 minuti): <span data-url="01_LEZIONE_1/MATERIALI/palestra_copia_sposta.html">—</span>
+   Alla fine premi «Riepilogo e codice» e incolla la riga HWS-MOV nella scheda.
+4. Carica i tre file nella tua cartella di Drive (Nuovo › Caricamento file). Caricare è copiare: i file restano anche sul PC.
+5. In Drive SPOSTA il primo file nella cartella di una materia (⋮ › Organizza › Sposta). Del secondo crea una COPIA (⋮ › Crea una copia) e sposta la copia in un'altra cartella. Dopo ogni operazione guarda la cartella di partenza: che cosa è cambiato?
+6. Sposta nel cestino il terzo file, poi recuperalo (Cestino › Ripristina).
+7. Sul PC crea in Documenti la cartella primo_anno_cognome, spostaci i tre file da Download e comprimila: tasto destro › Comprimi in › File ZIP.
+8. Controllo: estrai l'archivio in una cartella nuova (tasto destro › Estrai tutto) e apri un file. Si apre? L'archivio è buono.
+9. Allega il file ZIP.
+10. Nella scheda scrivi, con parole tue, la differenza tra copiare e spostare.
+11. Premi CONSEGNA.</pre><button class="cp" data-target="d01">Copia</button></div></div></div>
 
 <div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
 <div class="tw"><table><thead><tr><th>Link</th><th>Che cos'è</th><th>Nota</th></tr></thead><tbody>
-<tr><td><div class="copybox" id="k0" style="font-size:12.5px"><span data-url="01_LEZIONE_1/MATERIALI/palestra_hardware_software.html">—</span></div><button class="cp" data-target="k0" style="margin-top:6px">Copia</button></td><td>Palestra «Hardware o software?»</td><td class="note">minuti 20–35</td></tr>
+<tr><td><div class="copybox" id="k0" style="font-size:12.5px"><span data-url="01_LEZIONE_1/MATERIALI/palestra_copia_sposta.html">—</span></div><button class="cp" data-target="k0" style="margin-top:6px">Copia</button></td><td>Palestra «Copia o sposta?»</td><td class="note">minuti 0–30</td></tr>
+<tr><td><div class="copybox" id="k1" style="font-size:12.5px">https://drive.google.com</div><button class="cp" data-target="k1" style="margin-top:6px">Copia</button></td><td>Google Drive</td><td class="note">account della scuola</td></tr>
 </tbody></table></div></div></div>
 
 <div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questi file</h4>
 <div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
-<tr><td><a class="dl" href="01_LEZIONE_1/STANDARD/scheda_hardware_software.docx" download data-c="01">⬇ scheda_hardware_software.docx</a><div class="tiny">da caricare · prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">nome, cognome, classe e lo spazio per il codice HWS-DIF</td></tr>
-<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/palestra_hardware_software.html" download data-c="01">⬇ palestra_hardware_software.html</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline: funziona con doppio clic</td></tr>
+<tr><td><a class="dl" href="01_LEZIONE_1/STANDARD/scheda_operazioni_file.docx" download data-c="01">⬇ scheda_operazioni_file.docx</a><div class="tiny">da caricare · prima convertilo in Documento Google</div></td><td class="num" data-w>—</td><td><span class="b copy">Copia per ogni studente</span></td><td class="note">le quattro operazioni; nome, cognome, classe e lo spazio per il codice HWS-MOV</td></tr>
+<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/file_di_prova.zip" download data-c="01">⬇ file_di_prova.zip</a><div class="tiny">da caricare</div></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">i tre file da rinominare, copiare e spostare</td></tr>
+<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/palestra_copia_sposta.html" download data-c="01">⬇ palestra_copia_sposta.html</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline: funziona con doppio clic</td></tr>
 </tbody></table></div>
 <p class="tiny" style="margin:6px 0 0">Se nella colonna Peso compare «manca», il file non è ancora stato caricato nel progetto.</p>
 <button class="all" data-c="01">⬇ Scarica tutti i file di questo compito</button></div></div>
 
 <div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano</h4>
-<p>La scheda con il codice <b>HWS-DIF</b>.</p></div></div>
+<p>L'archivio <code>primo_anno_cognome.zip</code> e la scheda con il codice <b>HWS-MOV</b>.</p>
+<p class="small"><b>Come controlli (30 secondi per consegna):</b> incolla i codici nella <a href="../verifica_codici.html" target="_blank" rel="noopener">verifica dei codici</a>, poi scarica due archivi a campione ed estraili. Errori tipici: cartella invece dell'archivio, estensione rimossa rinominando, copia invece di sposta, nomi con maiuscole o spazi.</p></div></div>
 </article>
 </section>
 
@@ -173,17 +186,52 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
 <div class="tw"><table>
 <thead><tr><th>Livello</th><th>Si riconosce così</th></tr></thead>
 <tbody>
-<tr><td><b>Autonomo</b></td><td>Classifica senza errori; distingue sistema operativo, app e driver; sa dire se un problema è hardware o software.</td></tr>
-<tr><td><b>Con supporto</b></td><td>Classifica gli oggetti, ma confonde i tipi di software o i guasti.</td></tr>
-<tr><td><b>Non ancora</b></td><td>Confonde l'app con il telefono su cui gira; pensa che un aggiornamento ripari un pezzo rotto.</td></tr>
+<tr><td><b>Autonomo</b></td><td>Archivio ZIP valido al primo tentativo; differenza tra copiare e spostare spiegata con parole proprie.</td></tr>
+<tr><td><b>Con supporto</b></td><td>Archivio al secondo tentativo; operazioni fatte con aiuto.</td></tr>
+<tr><td><b>Non ancora</b></td><td>Cartella allegata invece dell'archivio; file persi durante lo spostamento; nessuna spiegazione delle operazioni.</td></tr>
 </tbody>
 </table></div>
 <p class="small" style="margin:8px 0 0">Il codice della palestra è formativo: dice dove ripassare.</p>
 </section>
 
+<section id="approfondimento">
+<div class="kicker">Approfondimento · circa 60 minuti (stima)</div><h2>Le stesse operazioni dal terminale</h2>
+<div class="pal-card">
+  <div class="pal-icon">⌨️</div>
+  <div class="pal-body">
+    <h3 style="margin:0 0 4px">Palestra del terminale</h3>
+    <ul>
+      <li><b>Per chi</b>: classi o studenti che hanno finito l'attività; si fa dopo «Copia o sposta?».</li>
+      <li><b>22 passi</b> in un terminale di Windows simulato: dove sono, elenco, entrare e uscire dalle cartelle, creare cartelle, percorsi assoluti e relativi, scrivere e leggere un file, rinominare, copiare, spostare, eliminare, la cartella di un sito.</li>
+      <li><b>Sfida, 6 compiti</b> · codice <b>CLI-LAB</b>, che la verifica dei codici di M0 non legge.</li>
+    </ul>
+    <a class="try" href="02_APPROFONDIMENTO_TERMINALE/terminale_cmd_guidata.html" target="_blank" rel="noopener">▶ Prova la palestra</a>
+    <a class="try alt" href="02_APPROFONDIMENTO_TERMINALE/kit_terminale_cmd.html" target="_blank" rel="noopener">📄 Kit del terminale</a>
+  </div>
+</div>
+<p class="small" style="margin:10px 0 0">Il kit è il promemoria dei comandi, da stampare o tenere aperto.</p>
+</section>
+
+<section id="alternativa">
+<div class="kicker">Attività alternativa</div><h2>La casa dei file</h2>
+<div class="pal-card">
+  <div class="pal-icon">🏠</div>
+  <div class="pal-body">
+    <ul>
+      <li><b>Per chi</b>: studenti per cui il terminale è una barriera; sostituisce l'approfondimento.</li>
+      <li><b>5 livelli</b> senza comandi da scrivere: ogni cosa al suo posto, apri e guarda dentro, scatole dentro le scatole, salva nel posto giusto, ritrova le tue cose.</li>
+      <li>Alla fine un <b>riepilogo osservativo</b> per il docente.</li>
+    </ul>
+    <a class="try" href="02_APPROFONDIMENTO_TERMINALE/ALTERNATIVA/casa_dei_file.html" target="_blank" rel="noopener">▶ Prova l'attività</a>
+  </div>
+</div>
+</section>
+
 <section id="bes">
 <div class="kicker">Inclusione</div><h2>BES / DSA</h2>
 <div class="card"><ul class="plain">
+  <li>Attività alternativa all'approfondimento sul terminale: <a href="#alternativa">La casa dei file</a>.</li>
+  <li>Scheda con checklist, in un secondo compito con lo stesso titolo assegnato solo agli studenti interessati: ogni operazione è una riga da spuntare, con lo screenshot del menu accanto.</li>
   <li>Modalità facilitata in ogni palestra (in fondo alla pagina, «Opzioni»): testo più grande, aiuto dopo il primo errore, lettura ad alta voce. Nel codice compare «modalità facilitata».</li>
   <li>Nessuna risposta dipende dal solo colore; si usa anche da tastiera; ogni riscontro è scritto.</li>
 </ul></div>
@@ -194,15 +242,20 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
 <div class="tw"><table>
 <thead><tr><th>Cartella</th><th>File</th><th>Peso</th><th>A che cosa serve</th></tr></thead>
 <tbody>
-<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/palestra_hardware_software.html" download>palestra_hardware_software.html</a></td><td class="num" data-w>—</td><td class="note">palestra «Hardware o software?» (HWS-DIF)</td></tr>
-<tr><td class="tiny">01_LEZIONE_1/STANDARD</td><td><a href="01_LEZIONE_1/STANDARD/scheda_hardware_software.docx" download>scheda_hardware_software.docx</a></td><td class="num" data-w>—</td><td class="note">scheda dell'attività · da caricare</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/palestra_copia_sposta.html" download>palestra_copia_sposta.html</a></td><td class="num" data-w>—</td><td class="note">palestra «Copia o sposta?» (HWS-MOV)</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/file_di_prova.zip" download>file_di_prova.zip</a></td><td class="num" data-w>—</td><td class="note">i tre file su cui si esercitano · da caricare</td></tr>
+<tr><td class="tiny">02_APPROFONDIMENTO_TERMINALE</td><td><a href="02_APPROFONDIMENTO_TERMINALE/terminale_cmd_guidata.html" download>terminale_cmd_guidata.html</a></td><td class="num" data-w>—</td><td class="note">approfondimento: palestra del terminale (CLI-LAB)</td></tr>
+<tr><td class="tiny">02_APPROFONDIMENTO_TERMINALE</td><td><a href="02_APPROFONDIMENTO_TERMINALE/kit_terminale_cmd.html" download>kit_terminale_cmd.html</a></td><td class="num" data-w>—</td><td class="note">approfondimento: promemoria dei comandi</td></tr>
+<tr><td class="tiny">02_APPROFONDIMENTO_TERMINALE/ALTERNATIVA</td><td><a href="02_APPROFONDIMENTO_TERMINALE/ALTERNATIVA/casa_dei_file.html" download>casa_dei_file.html</a></td><td class="num" data-w>—</td><td class="note">attività alternativa: La casa dei file</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/STANDARD</td><td><a href="01_LEZIONE_1/STANDARD/scheda_operazioni_file.docx" download>scheda_operazioni_file.docx</a></td><td class="num" data-w>—</td><td class="note">scheda dell'attività · da caricare</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/BES</td><td><a href="01_LEZIONE_1/BES/scheda_operazioni_file_CHECKLIST.docx" download>scheda_operazioni_file_CHECKLIST.docx</a></td><td class="num" data-w>—</td><td class="note">versione facilitata · da caricare</td></tr>
 </tbody>
 </table></div>
 </section>
 
 </main></div>
 
-<footer>Differenza tra hardware e software · Biennio · <a href="[INSERIRE-LINK-CLASSROOM]" target="_blank" rel="noopener">Classroom del corso</a> · <a href="../index.html">Attività di M0</a> · <a href="../../../index.html">Hub delle attività</a><br><span class="tiny">Link della Classroom: apri questo file con un editor di testo e sostituisci <span class="ph">INSERIRE-LINK-CLASSROOM</span> con l'indirizzo del corso.</span></footer>
+<footer>Operazioni di base: copia, sposta, rinomina, elimina file · Biennio · <a href="[INSERIRE-LINK-CLASSROOM]" target="_blank" rel="noopener">Classroom del corso</a> · <a href="../index.html">Attività di M0</a> · <a href="../../../index.html">Hub delle attività</a><br><span class="tiny">Link della Classroom: apri questo file con un editor di testo e sostituisci <span class="ph">INSERIRE-LINK-CLASSROOM</span> con l'indirizzo del corso.</span></footer>
 
 <script>
 (function(){
@@ -211,7 +264,7 @@ main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
     get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
     set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
   };
-  var PFX="m0-hardware-software:";
+  var PFX="m0-operazioni-file:";
 
   var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
   Array.prototype.forEach.call(boxes,function(b){

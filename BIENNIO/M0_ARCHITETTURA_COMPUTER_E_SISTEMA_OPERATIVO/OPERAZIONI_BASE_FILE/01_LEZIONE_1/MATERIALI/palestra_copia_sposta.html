@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Copia o sposta? · Hardware e software</title>
+<title>Copia o sposta? · Operazioni di base sui file</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%84%3C/text%3E%3C/svg%3E">
 <style>
 :root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
@@ -239,6 +239,25 @@ footer details{max-width:560px}footer summary{cursor:pointer}
 .opt p{margin:6px 0}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
 .modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+/* RIAVVIO-CSS inizio: riquadro finale e avviso grande */
+.restart{border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:16px}
+.restart h3{margin:0 0 6px}
+.restart p{margin:8px 0}
+.rs-note{display:inline-block;margin-left:4px}
+.btn.danger{background:#fff;color:var(--ko);border:3px solid var(--ko);padding:7px 14px;font-weight:bold}
+.btn.danger:hover{background:var(--ko-l)}
+.modal.rs-wrap{top:0;right:0;bottom:0;left:0;z-index:200;background:rgba(0,0,0,.6)}
+.modal .screen.warn{display:flex;flex-direction:column;overflow:hidden;padding:0;max-width:640px;border:6px solid var(--ko);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
+.warn-body{overflow:auto;min-height:0;padding:20px 24px 8px;overscroll-behavior:contain}
+.warn-ic{font-size:54px;line-height:1;text-align:center}
+.screen.warn h2{color:var(--ko);text-align:center;margin:6px 0 10px}
+.warn-key{border-left:6px solid var(--ko);background:var(--ko-l);color:#7d1a14;border-radius:8px;padding:10px 14px;font-size:1.15em;margin:0 0 10px}
+.warn-body p{margin:8px 0}
+.warn-body textarea.copy{height:62px}
+.rs-copied{font-weight:bold;color:var(--ok)}
+.warn-acts{display:flex;flex-wrap:wrap-reverse;gap:12px;padding:12px 24px 16px;border-top:1px solid var(--line);background:#fff}
+.warn-acts .btn{flex:1 1 15em;padding:14px 16px;font-size:1.05em;font-weight:bold}
+/* RIAVVIO-CSS fine */
 @media(max-width:760px){
   main{padding:12px 12px 24px}
   .screen{padding:20px 16px}
@@ -1060,6 +1079,8 @@ const idx = id => STEPS.findIndex(s=>s.id===id);
    CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
    ===================================================================== */
 const TOOL = "MOV";
+/* parole dell'avviso di riavvio che cambiano da una palestra all'altra */
+const RS = {prove:"i compiti", risp:"I compiti", dove:"nella scheda", lv:false};
 function sig(s, tag){ let h=5381; const t="HWS*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
 
 /* =====================================================================
@@ -1251,9 +1272,9 @@ const App = (()=>{
   });
 
   function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
-  function saveHistory(){ const n=curName(); if(!n || !anyWork()) return; const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint}; store.set("hist", h); }
+  function saveHistory(){ const n=curName(); if(!n || !anyWork()) return; const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint, bes:BES}; store.set("hist", h); }
   function restoreHistory(n){ if(anyWork()) return; const h=store.get("hist")||{}, k=hashName(n), p=h[k]; if(!p) return;
-    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); delete h[k]; store.set("hist", h); }
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); if(p.bes){ BES=true; store.set("bes", true); document.body.classList.add("bes"); const ob=$("#o-bes"); if(ob) ob.checked=true; } delete h[k]; store.set("hist", h); }
 
   const SCREENS = {
     welcome(el){
@@ -1282,10 +1303,10 @@ const App = (()=>{
     end(el){
       const t=tally();
       el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
-        <p><button type="button" class="btn alt" id="e-redo">↺ Rifai la sfida</button> <span class="small">Puoi rifarla quante volte vuoi: il codice tiene l'ultimo tentativo, conta le ripetizioni e ricorda tutti gli errori.</span></p>
+        ${restartBox()}
         <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
           <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
-      $("#e-redo").onclick=()=>{ if(!confirm(`Rifare la sfida? I ${CHAL.length} compiti di adesso vengono cancellati; gli errori fatti finora restano nel codice.`)) return; CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); };
+      $("#e-redo").onclick=e=>askRestart("sfida", e.currentTarget); $("#e-zero").onclick=e=>askRestart("zero", e.currentTarget);
       $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
         if(k<0 || !/^HWS-[A-Z]{3} \|/.test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
         const ok = sig(raw.slice(0,k), raw.slice(4, raw.indexOf(" |")))===raw.slice(k+4).trim();
@@ -1297,11 +1318,54 @@ const App = (()=>{
   $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const step=STEPS[pos], quiz=step.predict?step.predict.opts:step.quiz;
     const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, quiz?quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):"", !$("#l-do").classList.contains("hidden")?$("#l-dotext").innerText:""].filter(Boolean).join(". ");
     const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  /* RIAVVIO-JS inizio: scelta alla fine e avviso grande prima di cancellare il codice */
+  function redoChallenge(){ CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); }
+  function resetAll(){ saveHistory(); store.clear(); window.scrollTo(0,0); location.reload(); }
+  function restartBox(){
+    const n=curName();
+    return `<div class="restart"><h3>Vuoi ricominciare?</h3>
+      <p>${n?`Questo è il lavoro di <b>${esc(n)}</b>. `:""}<b>Prima incolla il codice ${RS.dove}</b>: se ricominci, il codice qui sopra si cancella e alla fine ne avrai uno nuovo.</p>
+      <p><button type="button" class="btn alt" id="e-redo">↺ Rifai solo la sfida</button> <span class="rs-note">Restano il nome e i passi guidati. Rifai solo ${RS.prove} della sfida.</span></p>
+      <p><button type="button" class="btn danger" id="e-zero">🗑️ Ricomincia tutto da zero</button> <span class="rs-note">Si cancella tutto, anche il nome. Serve anche quando tocca a un compagno.</span></p>
+      ${RS.lv?`<p>Vuoi fare l'altro livello? Ricomincia tutto da zero: lo scegli nella prima schermata.</p>`:""}
+      <p class="small">Puoi ricominciare quante volte vuoi: il codice nuovo conta le ripetizioni e ricorda tutti gli errori.</p></div>`;
+  }
+  function askRestart(kind, opener){
+    if(document.getElementById("rs-wrap")) return;
+    const zero=kind==="zero", n=curName(), who=n?`il codice di ${esc(n)}`:"il codice salvato su questo computer";
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const w=document.createElement("div"); w.id="rs-wrap"; w.className="modal rs-wrap";
+    w.innerHTML=`<div class="screen warn" role="alertdialog" aria-modal="true" aria-labelledby="rs-t" aria-describedby="rs-d">
+      <div class="warn-body">
+        <div class="warn-ic" aria-hidden="true">⚠️</div>
+        <h2 id="rs-t">${zero?"Ricominci tutto da zero?":"Rifai solo la sfida?"}</h2>
+        <p class="warn-key" id="rs-d">Attenzione: <b>${zero?who:"il codice di adesso"} si perde per sempre</b>. È il codice da consegnare all'insegnante.</p>
+        <p>${zero ? (n?`<b>Sei tu?</b> Prima incolla il codice ${RS.dove}. <b>Non sei tu?</b> Chiedi a ${esc(n)} se l'ha già copiato.`:`<b>È tuo?</b> Prima incolla il codice ${RS.dove}.`) : `<b>Non l'hai ancora incollato ${RS.dove}?</b> Copialo adesso.`}</p>
+        <textarea class="copy" readonly aria-label="Il codice di adesso">${esc(code())}</textarea>
+        <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="rs-copied" data-copied aria-live="polite"></span></p>
+        <p>${zero?`Si cancella tutto: nome, ${RS.lv?"livello, ":""}passi guidati e sfida. Se ricominci tu${RS.lv?" con lo stesso livello":""}, il codice nuovo conta la ripetizione e ricorda gli errori di prima.`:`${RS.risp} di adesso si cancellano; nome e passi guidati restano. Se ti fermi a metà, nel codice nuovo il resto risulta non fatto. Il codice nuovo conta la ripetizione e ricorda gli errori di prima.`}</p>
+      </div>
+      <div class="warn-acts"><button type="button" class="btn" id="rs-no">No, lascio tutto com'è</button><button type="button" class="btn danger" id="rs-yes">🗑️ ${zero?"Sì, cancello tutto e ricomincio":"Sì, cancello e rifaccio la sfida"}</button></div></div>`;
+    document.body.appendChild(w);
+    const t0=Date.now(), no=w.querySelector("#rs-no"), yes=w.querySelector("#rs-yes");
+    const onKey=e=>{ if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(true); }
+      else if(e.key==="Tab"){ const f=[...w.querySelectorAll("button,textarea")], a=f[0], z=f[f.length-1];
+        if(e.shiftKey && document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey && document.activeElement===z){ e.preventDefault(); a.focus(); } } };
+    const onFocus=e=>{ if(!w.contains(e.target)) no.focus({preventScroll:true}); };
+    function close(back){ document.removeEventListener("keydown", onKey, true); document.removeEventListener("focusin", onFocus, true); w.remove();
+      if(back && opener && document.contains(opener)) opener.focus({preventScroll:true}); }
+    document.addEventListener("keydown", onKey, true); document.addEventListener("focusin", onFocus, true);
+    /* i primi 600 ms non contano: il secondo colpo di un doppio clic non conferma e non chiude */
+    no.onclick=()=>{ if(Date.now()-t0<600) return; close(true); };
+    yes.onclick=()=>{ if(Date.now()-t0<600) return; close(false); if(zero) resetAll(); else redoChallenge(); };
+    no.focus({preventScroll:true}); w.querySelector(".warn-body").scrollTop=0;
+  }
+  /* RIAVVIO-JS fine */
   $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
   document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
   $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
   $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
-  $("#o-reset").onclick=()=>{ if(!confirm("Cancellare nome e risultati salvati su questo computer?")) return; saveHistory(); store.clear(); location.reload(); };
+  $("#o-reset").onclick=e=>{ if(!anyWork()){ resetAll(); return; } askRestart("zero", e.currentTarget); };
   document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
 
   return {render};
