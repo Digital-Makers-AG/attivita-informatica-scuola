@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Spegni un nodo · Sistemi distribuiti</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.keys{white-space:nowrap}
+.menu-path{display:inline-block;background:#fff;border:1px solid #b9c2c9;border-radius:6px;padding:0 7px;font-size:.92em;white-space:nowrap}
+code{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.95em}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.hintb{background:#fff;color:var(--orange-d);border:2px solid var(--orange);padding:8px 14px}
+.btn.skipb{background:#fff;color:var(--muted);border:2px solid var(--line);padding:8px 14px;margin-left:auto}
+.btn.skipb:hover{background:#f2f4f5;color:var(--ink)}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible,.card:focus-visible,.binhead:focus-visible,.chip:focus-visible,.w-item:focus-visible,.w-ni:focus-visible,.w-back:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px;font-family:inherit}
+/* schermate */
+.screen{max-width:760px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen h3{color:var(--teal-d);margin:18px 0 6px}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px;flex:1}
+.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{display:block;color:var(--muted);font-size:13px}
+.stat.tot{background:var(--orange-l)}.stat.tot b{color:var(--orange-d)}
+details.review{background:#fffaf2;border:1px solid #f0d9bf;border-radius:10px;padding:8px 14px;margin:10px 0}
+details.review summary{cursor:pointer;font-weight:bold;color:var(--orange-d)}
+details.review li{margin:6px 0}
+textarea.copy{width:100%;height:92px;font-family:"Courier New",monospace;font-size:14px;padding:8px;border:2px solid var(--line);border-radius:8px;resize:vertical}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:minmax(0,1fr)}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em;outline:none}
+.theory p{margin:0 0 10px}
+.keybox{display:block;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1em}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-d);font-weight:bold;margin-bottom:2px}
+.dock.docked{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.dock.docked .quiz,.dock.docked .fields{margin-top:0}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.qopt.right::after{content:" ✔"}
+.qopt:disabled{cursor:default;color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px;font-family:inherit}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(390px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+/* ambienti */
+.stage{min-width:0}
+.envbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+.envstatus{font-size:14px;color:var(--muted);margin:8px 2px 0;min-height:1.4em}
+.envbox>.envstatus:first-child{margin:0 2px 10px}
+.ic{width:48px;height:48px;display:block;flex:none}
+.ic.md{width:84px;height:84px}.ic.lg{width:120px;height:120px}.ic.xl{width:180px;height:180px}
+/* la foto del PC */
+.pcbox{padding:8px;background:#e9ecee}
+.pcscroll{overflow-x:auto}
+svg.pc{width:100%;height:auto;display:block;border-radius:6px}
+.photocap{margin:6px 2px 0;font-size:12px;color:var(--muted)}
+.scrollhint{display:none}
+.hot{outline:none}
+svg.pc.int .hot{cursor:pointer}
+.hot .ol{fill:rgba(255,255,255,0);stroke:#fff;stroke-width:3;stroke-dasharray:10 6;opacity:0;transition:opacity .15s;pointer-events:all;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 2px rgba(0,0,0,.85))}
+svg.pc.int .hot:hover .ol{opacity:.95}
+svg.pc.int .hot:focus-visible .ol{opacity:1;stroke:#ffd166;stroke-width:4}
+.hot.sel .ol{opacity:1!important;stroke:var(--orange);stroke-width:5;stroke-dasharray:none;fill:rgba(217,102,26,.3)}
+.hot.hl .ol{opacity:1;stroke:#ffd166;stroke-width:6;stroke-dasharray:14 7;animation:pulse 1.3s ease-in-out infinite}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@keyframes pulse{0%,100%{stroke-opacity:1}50%{stroke-opacity:.2}}
+.tag rect{fill:#1d2329;fill-opacity:.92;stroke:#fff;stroke-width:3}
+.tag.user rect{fill:var(--orange-d);fill-opacity:1}
+.tag text{font:700 28px Arial,Helvetica,sans-serif;fill:#fff}
+.chipbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid var(--line);border-radius:20px;padding:6px 12px;font:inherit;font-size:.95em;cursor:pointer;color:var(--ink)}
+.chip b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--teal-l);color:var(--teal-d);font-size:13px}
+.chip.on{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(217,102,26,.25)}
+.chip.placed{border-style:dashed}
+.chip-at{font-size:12px;color:var(--ok);font-weight:bold}
+/* carte e cestini */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:76px;padding:10px;border:2px dashed var(--line);border-radius:12px;background:#fafbfb;align-items:flex-start}
+.pool:empty{display:none}
+.card{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:4px;width:112px;padding:8px 6px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font:inherit;font-size:.88em;color:var(--ink);text-align:center;touch-action:manipulation;user-select:none;line-height:1.2}
+.card:hover{border-color:var(--teal)}
+.card.picked{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(217,102,26,.25);transform:translateY(-2px)}
+.card.bad{border-color:var(--ko);background:var(--ko-l)}
+.card .badmark{font-size:11px;font-weight:bold;color:var(--ko)}
+.card .cs{font-size:11px;color:var(--muted)}
+.card.dragging{opacity:.35}
+.ghost{position:fixed;pointer-events:none;z-index:60;opacity:.92;transform:rotate(-3deg);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.bins{display:grid;gap:12px;margin-top:12px}
+.bins.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.bins.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bin{border:2px solid var(--teal);border-radius:14px;background:var(--teal-l);min-height:170px;display:flex;flex-direction:column;cursor:pointer}
+.bin.armed{border-style:dashed;background:#d5ecec}
+.bin.over{background:#c3e4e4;border-color:var(--orange)}
+.binhead{display:block;width:100%;background:transparent;border:0;padding:10px 12px 8px;text-align:left;font:inherit;cursor:pointer;color:var(--teal-d)}
+.binhead .bn{display:block;font-weight:bold;font-size:1.08em}
+.binhead small{display:block;color:var(--muted);font-size:13px}
+.drophere{display:inline-block;margin-top:4px;font-size:12px;font-weight:bold;color:var(--orange-d)}
+.binbody{display:flex;flex-wrap:wrap;gap:8px;padding:0 10px 10px;align-content:flex-start;flex:1}
+.bin .card{width:100px}
+.bin .card .ic{width:40px;height:40px}
+/* tappe in ordine */
+.slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;list-style:none;margin:14px 0 0;padding:0}
+.slot{position:relative;border:2px dashed #b8c3c9;border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;gap:6px;padding:6px 4px;background:#fafbfb;transition:background .3s,border-color .3s}
+.slot .n{font-weight:bold;color:var(--muted);font-size:14px}
+.slot .empty{margin-top:28px;font-size:28px;color:#b8c3c9;font-weight:bold}
+.slot .card{width:100%;max-width:112px}
+.slot:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:62px;font-weight:bold;color:var(--muted)}
+.slot.lit{border-style:solid;border-color:var(--orange);background:var(--orange-l)}
+.slot.now{box-shadow:0 0 0 4px rgba(217,102,26,.35)}
+.ordercap{margin:10px 2px 0;font-weight:bold;color:var(--orange-d);min-height:1.4em}
+/* scrivania */
+svg.desk{width:100%;height:auto;display:block;border-radius:8px}
+.desk .dark{opacity:0;transition:opacity .6s}
+.desk.out .dark{opacity:.64}
+.desk .light{transition:opacity .35s}
+.desk.out .light{opacity:0}
+.desk .paper{transition:opacity .8s}
+.desk.gone .paper{opacity:0}
+.deskcap{margin:8px 4px 0;font-size:15px;min-height:1.4em}
+/* icone grandi */
+.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:340px;text-align:center}
+.big .nm{font-size:1.45em;font-weight:bold;color:var(--teal-d)}
+.scene .row{display:flex;align-items:flex-end;gap:18px;justify-content:center}
+/* Impostazioni simulate */
+.win11{border:1px solid #c9d0d5;border-radius:10px;background:#f3f3f3;overflow:hidden;font-family:"Segoe UI",Arial,sans-serif;box-shadow:0 6px 18px rgba(0,0,0,.08);color:#1b1b1b}
+.win11+.win11{margin-top:12px}
+.w-title{display:flex;align-items:center;gap:8px;padding:8px 12px;font-size:13px;background:#eef1f3}
+.w-title .crumb{color:#555}
+.w-ctl{margin-left:auto;letter-spacing:10px;color:#555;font-size:12px}
+.w-body{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:380px}
+.w-nav{padding:10px 8px;display:flex;flex-direction:column;gap:2px}
+.w-user{display:flex;gap:10px;align-items:center;padding:4px 8px 10px;font-size:13px}
+.w-user b,.w-user small{display:block}.w-user small{color:#5f5f5f;font-size:12px}
+.av{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#0067c0;color:#fff;font-weight:bold}
+.w-search{border:1px solid #d6d6d6;border-bottom:2px solid #8a8a8a;border-radius:5px;background:#fff;padding:5px 9px;font-size:12.5px;color:#666;margin:0 4px 8px;display:flex;justify-content:space-between}
+.w-ni{display:flex;gap:10px;align-items:center;border:0;background:transparent;border-radius:6px;padding:7px 10px;font:inherit;font-size:13.5px;text-align:left;cursor:pointer;position:relative;color:#1b1b1b}
+.w-ni:hover{background:#e7eaec}.w-ni.on{background:#e3e7ea;font-weight:600}
+.w-ni.on::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:#0067c0}
+.w-main{padding:14px 18px;background:#f9f9f9;min-width:0}
+.w-h{font-size:22px;font-weight:600;margin:0 0 12px}
+.w-item{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:1px solid #e5e5e5;border-radius:6px;padding:9px 12px;margin-bottom:4px;font:inherit;text-align:left;cursor:pointer;color:#1b1b1b}
+.w-item:hover{background:#f3f6f8}
+.w-item b{display:block;font-weight:400;font-size:14px}.w-item small{color:#5f5f5f;font-size:12px}
+.w-item .chev{margin-left:auto;color:#777;font-size:18px}
+.w-ic{width:22px;text-align:center}
+.w-crumb{display:flex;align-items:center;gap:8px;font-size:18px;margin:0 0 12px}
+.w-crumb span{color:#5f5f5f}
+.w-back{border:0;background:#fff;border:1px solid #ddd;border-radius:6px;width:32px;height:30px;cursor:pointer;font-size:16px}
+.w-card{background:#fff;border:1px solid #e5e5e5;border-radius:6px;padding:12px 14px;margin-bottom:8px}
+.w-card h4{margin:0 0 8px;font-size:14px;font-weight:600}
+.w-card dl{display:grid;grid-template-columns:150px minmax(0,1fr);gap:6px 12px;margin:0;font-size:13px}
+.w-card dt{color:#5f5f5f}.w-card dd{margin:0;overflow-wrap:anywhere}
+.w-head{display:flex;gap:12px;align-items:center}.w-head b{display:block;font-size:16px}.w-head small{color:#0067c0}
+.w-pc{font-size:30px}
+.thispc{padding:12px 14px;background:#fff}
+.tp-h{font-size:13px;font-weight:600;margin-bottom:8px}
+.drv{display:flex;gap:12px;align-items:center;font-size:13.5px}
+.drv small{color:#5f5f5f;font-size:12.5px}
+.dbar{height:12px;background:#e6e6e6;border:1px solid #d0d0d0;width:240px;max-width:100%;margin:4px 0}
+.dbar i{display:block;height:100%;background:#26a0da;width:33%}
+.w-small{font-size:13px;color:#5f5f5f;margin:6px 0 0}
+.fields{display:grid;gap:8px;margin-top:12px}
+.fld{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 8px}
+.fld label{font-weight:bold;font-size:.95em}
+.fld .inrow{display:flex;align-items:center;gap:6px}
+.fld .fmsg{grid-column:1/-1}
+.fld input{font:inherit;padding:6px 8px;border:2px solid var(--line);border-radius:8px;width:92px}
+.fld input.wide{width:176px}
+.fld .u{min-width:30px}
+.fld input.okf{border-color:var(--ok)}.fld input.kof{border-color:var(--ko)}
+.fmsg{display:block;font-size:13px;margin-top:2px}.fmsg.ok{color:var(--ok)}.fmsg.ko{color:var(--ko)}
+/* piede e finestre */
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:560px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+/* RIAVVIO-CSS inizio: riquadro finale e avviso grande */
+.restart{border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:16px}
+.restart h3{margin:0 0 6px}
+.restart p{margin:8px 0}
+.rs-note{display:inline-block;margin-left:4px}
+.btn.danger{background:#fff;color:var(--ko);border:3px solid var(--ko);padding:7px 14px;font-weight:bold}
+.btn.danger:hover{background:var(--ko-l)}
+.modal.rs-wrap{top:0;right:0;bottom:0;left:0;z-index:200;background:rgba(0,0,0,.6)}
+.modal .screen.warn{display:flex;flex-direction:column;overflow:hidden;padding:0;max-width:640px;border:6px solid var(--ko);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
+.warn-body{overflow:auto;min-height:0;padding:20px 24px 8px;overscroll-behavior:contain}
+.warn-ic{font-size:54px;line-height:1;text-align:center}
+.screen.warn h2{color:var(--ko);text-align:center;margin:6px 0 10px}
+.warn-key{border-left:6px solid var(--ko);background:var(--ko-l);color:#7d1a14;border-radius:8px;padding:10px 14px;font-size:1.15em;margin:0 0 10px}
+.warn-body p{margin:8px 0}
+.warn-body textarea.copy{height:62px}
+.rs-copied{font-weight:bold;color:var(--ok)}
+.warn-acts{display:flex;flex-wrap:wrap-reverse;gap:12px;padding:12px 24px 16px;border-top:1px solid var(--line);background:#fff}
+.warn-acts .btn{flex:1 1 15em;padding:14px 16px;font-size:1.05em;font-weight:bold}
+/* RIAVVIO-CSS fine */
+@media(max-width:700px){
+  main{padding:12px 12px 24px}
+  .screen{padding:20px 16px}
+  .lesson{padding:14px 16px}
+  .card{width:96px;font-size:.82em}.card .ic{width:40px;height:40px}
+  .bin .card{width:100%}
+  .bins.c3 .binhead{padding:8px 8px 6px}.bins.c3 .binbody{padding:0 6px 8px}
+  .slots{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .slot:not(:last-child)::after{display:none}
+  .w-body{grid-template-columns:minmax(0,1fr)}.w-nav{display:none}
+  .w-card dl{grid-template-columns:minmax(0,1fr);gap:0 12px}.w-card dd{margin-bottom:6px}
+  .fld{grid-template-columns:minmax(0,1fr)}
+  .ic.xl{width:140px;height:140px}.big{min-height:260px}
+  svg.pc{min-width:680px}.scrollhint{display:inline}
+  .pocket{right:12px}
+}
+@media(prefers-reduced-motion:reduce){.hot.hl .ol{animation:none}*{transition:none!important}}
+/* ---- solo per questa palestra ---- */
+.card{width:138px}.bin .card{width:124px}
+.em{font-size:32px;line-height:1.1}
+.big .em{font-size:92px}
+.big .tx{max-width:520px;text-align:left;background:var(--teal-l);border-radius:10px;padding:10px 14px}
+.big .tx ul{margin:4px 0 0;padding-left:20px}.big .tx li{margin:3px 0}
+/* simulatore di rete */
+.net2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.net2.one{grid-template-columns:minmax(0,1fr)}.net2.one svg.net{max-width:480px;margin:0 auto}
+.panel{border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fbfcfc;min-width:0}
+.panel h3{margin:0 0 2px;color:var(--teal-d);font-size:1.05em}
+.panel .sub{margin:0 0 6px;font-size:13px;color:var(--muted)}
+svg.net{width:100%;height:auto;display:block}
+.net .wire{stroke:#7a8790;stroke-width:2.5}
+.net .wire.ko{stroke:var(--ko);stroke-dasharray:6 6}
+.net .mach{cursor:pointer;outline:none}
+.net .mach .box{fill:var(--teal);stroke:var(--teal-d);stroke-width:2}
+.net .mach .slot{stroke:#fff;stroke-width:2;opacity:.75}
+.net .mach .led{fill:#8df0a0}
+.net .mach.off .box{fill:#c3cacf;stroke:#7a8790}
+.net .mach.off .led{fill:#7a8790}
+.net .mach:focus-visible .box{stroke:var(--orange);stroke-width:5}
+.net .mach:hover .box{stroke:var(--orange)}
+.net .lab{font:700 13px Arial,Helvetica,sans-serif;fill:var(--ink);text-anchor:middle}
+.net .lab.s{font-weight:400;font-size:12px;fill:var(--muted)}
+.net .lab.x{fill:var(--ko);font-size:22px}
+.net .cli{font-size:26px;text-anchor:middle}
+.net .mark{font:700 14px Arial,Helvetica,sans-serif;text-anchor:middle}
+.net .mark.ok{fill:var(--ok)}.net .mark.ko{fill:var(--ko)}
+.nstat{margin:6px 0 0;border-radius:8px;padding:6px 10px;font-size:14px}
+.nstat.ok{background:var(--ok-l);color:#14532b}.nstat.ko{background:var(--ko-l);color:#7d1a14}.nstat.mid{background:var(--mid-l);color:var(--mid)}
+.ctl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.ctl .btn{padding:6px 10px;font-size:.9em}
+.loadbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--orange-l);border-radius:10px;padding:8px 12px;margin-bottom:10px}
+.loadbar b.n{font-size:1.5em;color:var(--orange-d);min-width:3.2em;text-align:center}
+.copies{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
+.copy1{border:2px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;text-align:center}
+.copy1 small{display:block;color:var(--muted)}.copy1 b{font-size:1.6em;color:var(--teal-d)}
+.copy1.old{border-color:var(--ko);background:var(--ko-l)}.copy1.old b{color:var(--ko)}
+/* dietro le quinte */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{flex:1 1 12em;background:#fff;border:2px solid var(--line);border-radius:10px;padding:9px 10px;font:inherit;cursor:pointer;color:var(--ink)}
+.tab.on{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:bold}
+.tab:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.uwin{border:1px solid #c9d0d5;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.08);background:#fff}
+.ubar{background:#eef1f3;padding:8px 12px;font-size:13px;color:#444;display:flex;gap:8px;align-items:center}
+.ubar i{margin-left:auto;font-style:normal;letter-spacing:8px;color:#777}
+.ubody{padding:22px 18px;min-height:230px;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:center;text-align:center}
+.ubody .em{font-size:64px}
+.ubody .okline{background:var(--ok-l);color:#14532b;border-radius:8px;padding:6px 12px;font-weight:bold}
+.ubody code{font-size:1em}
+.dcs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.dc{border:2px solid var(--line);border-radius:10px;padding:8px;text-align:center;background:#fbfcfc;min-width:0}
+.dc .em{font-size:30px}.dc b{display:block}.dc small{display:block;color:var(--muted);font-size:12.5px}
+.dc .st{display:block;margin-top:4px;font-size:13px;font-weight:bold}
+.dc.hit{border-color:var(--ok);background:var(--ok-l)}.dc.hit .st{color:var(--ok)}
+.dc.ko{border-color:var(--ko);background:var(--ko-l);border-style:dashed}.dc.ko .st{color:var(--ko)}
+.syslog{margin:12px 0 0;padding-left:24px}
+.syslog li{margin:6px 0;opacity:0;animation:logIn .45s forwards}
+@keyframes logIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.syslog li{animation:none;opacity:1}}
+@media(max-width:700px){.net2{grid-template-columns:minmax(0,1fr)}.card{width:118px}.dcs{gap:5px}.dc{padding:6px 3px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌐 Spegni un nodo</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false" aria-controls="pocket">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" id="lesson">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title" tabindex="-1"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="dock" id="dock">
+        <div class="quiz hidden" id="l-quiz" role="group" aria-label="Risposte"></div>
+        <div class="fb hidden" id="l-fb" role="status" aria-live="polite"></div>
+        <div class="hinttext hidden" id="l-hinttext"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="b-check">✔ Controlla</button>
+          <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+          <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+          <button type="button" class="btn skipb hidden" id="b-skip" title="Un passo saltato non vale punti">Salta il passo ⤼</button>
+        </div>
+      </div>
+    </aside>
+    <div class="stage" id="stage"></div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Riepilogo e codice (anche se non hai finito)</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g5">classificazione</button> ·
+        <button type="button" class="linkbtn" data-jump="g8">trasparenza</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi che salti con questi link risultano «non fatti» nel codice.</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Riepilogo e codice"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÀ
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const IS_MAC = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "");
+const CT = IS_MAC ? "Cmd" : "Ctrl";
+const K = (...keys) => `<span class="keys">${keys.map(k => `<span class="kbd">${k}</span>`).join("+")}</span>`;
+/* "hist" sopravvive a «Nuovo studente»: se lo stesso nome ricomincia sullo stesso PC, errori, aiuti e ripetizioni restano */
+const PFX = "tpssdi_", KEEP = "hist", mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && k!==PFX+KEEP).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(k!==KEEP) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const val = v => typeof v==="function" ? v() : (v||"");
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+const nameKey = s => (s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const djb = s => { let h=5381; for(let k=0;k<s.length;k++){ h=((h<<5)+h+s.charCodeAt(k))>>>0; } return h.toString(36); };
+const hashName = n => djb("nome*"+nameKey(n));
+let BES = !!store.get("bes") || /bes/i.test(location.search + location.hash);
+const EM = e => `<span class="em" aria-hidden="true">${e}</span>`;
+
+/* =====================================================================
+   AMBIENTI (la parte destra dello schermo)
+   SORT  = carte nei cestini
+   BIG   = il caso da leggere
+   NET   = simulatore: un server solo contro più nodi
+   SCENE = che cosa vede l'utente / dietro le quinte
+   ===================================================================== */
+const SORT = (()=>{
+  let host, cfg, place={}, pick=null, bad=new Set(), lastDrop=0, focusId=null;
+  function mount(h,c){ host=h; cfg=c; place={}; pick=null; bad=new Set(); render(); }
+  const label = id => cfg.cards.find(c=>c.id===id).label;
+  function card(c){ const p=pick===c.id, b=bad.has(c.id);
+    return `<button type="button" class="card${p?" picked":""}${b?" bad":""}" data-id="${c.id}" aria-pressed="${p}">${EM(c.em)}<span class="cl">${c.label}</span>${b?`<span class="badmark">✗ da spostare</span>`:""}</button>`; }
+  function render(){
+    const free=cfg.cards.filter(c=>!place[c.id]);
+    host.innerHTML = `<div class="envbox sortbox"><p class="envstatus" aria-live="polite">${pick?`Hai scelto «${label(pick)}»: ora tocca il cestino giusto.`:free.length?"Tocca una carta per sceglierla, poi tocca un cestino. Con il mouse puoi anche trascinarla.":"Tutte le carte sono nei cestini: premi Controlla. Puoi ancora spostarle."}</p>
+      <div class="pool">${free.map(card).join("")}</div>
+      <div class="bins c${cfg.bins.length}">${cfg.bins.map(b=>`<div class="bin${pick?" armed":""}" data-bin="${b.id}"><button type="button" class="binhead" data-bin="${b.id}"><span class="bn">${b.label}</span><small>${b.sub||""}</small>${pick?`<span class="drophere">⬇ metti qui</span>`:""}</button><div class="binbody">${cfg.cards.filter(c=>place[c.id]===b.id).map(card).join("")}</div></div>`).join("")}</div></div>`;
+    host.querySelectorAll(".card").forEach(el=>{
+      el.addEventListener("click", e=>{ e.stopPropagation(); if(Date.now()-lastDrop<400) return; pick = pick===el.dataset.id ? null : el.dataset.id; focusId=el.dataset.id; render(); });
+      el.addEventListener("pointerdown", startDrag); });
+    host.querySelectorAll(".bin").forEach(b=>b.addEventListener("click", ()=>{ if(Date.now()-lastDrop<400) return; drop(b.dataset.bin); }));
+    if(focusId){ const f=host.querySelector(`.card[data-id="${focusId}"]`); if(f) f.focus({preventScroll:true}); focusId=null; }
+  }
+  function drop(bin){
+    if(!pick){ const s=host.querySelector(".envstatus"); if(s) s.textContent="Prima tocca una carta, poi il cestino."; return; }
+    place[pick]=bin; bad.delete(pick); pick=null;
+    const nf=cfg.cards.find(c=>!place[c.id]); focusId = nf ? nf.id : null; render();
+    if(!nf){ const bh=host.querySelector(`.binhead[data-bin="${bin}"]`); if(bh) bh.focus({preventScroll:true}); }
+  }
+  function startDrag(e){
+    if(e.pointerType!=="mouse" || e.button!==0) return;
+    const el=e.currentTarget, id=el.dataset.id, x0=e.clientX, y0=e.clientY; let ghost=null;
+    const over = ev => { const t=document.elementFromPoint(ev.clientX, ev.clientY); return t && t.closest ? t.closest(".bin") : null; };
+    const move = ev => {
+      if(!ghost && Math.hypot(ev.clientX-x0, ev.clientY-y0)>7){ ghost=el.cloneNode(true); ghost.classList.add("ghost"); document.body.appendChild(ghost); el.classList.add("dragging"); }
+      if(ghost){ ghost.style.left=(ev.clientX-ghost.offsetWidth/2)+"px"; ghost.style.top=(ev.clientY-ghost.offsetHeight/2)+"px"; const b=over(ev); host.querySelectorAll(".bin").forEach(x=>x.classList.toggle("over", x===b)); } };
+    const up = ev => {
+      window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); window.removeEventListener("pointercancel",up);
+      if(!ghost) return; ghost.remove(); lastDrop=Date.now(); const b=over(ev);
+      if(b){ place[id]=b.dataset.bin; bad.delete(id); pick=null; } render(); };
+    window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); window.addEventListener("pointercancel",up);
+  }
+  return {mount, state:()=>({place:Object.assign({},place)}), markBad:ids=>{ bad=new Set(ids); render(); }};
+})();
+
+const BIG = { mount(h,c){ h.innerHTML=`<div class="envbox big">${EM(c.em)}<div class="nm">${c.name}</div>${c.tx?`<div class="tx">${c.tx}</div>`:""}</div>`; } };
+
+/* Simulatore. Tre modi:
+   "fail" = si spengono le macchine · "load" = crescono le richieste · "sync" = due copie dello stesso dato */
+const NET = (()=>{
+  const CAP=100, MAXN=5;
+  let host, cfg, st;
+  function mount(h,c){ host=h; cfg=c;
+    st={cOn:true, nodes:c.mode==="fail"?[true,true,true]:[true,true], load:100, link:true, v:[6,6], msgs:0, note:"", did:{}};
+    render(); }
+  const mach = (x,y,id,name,on,sub) => `<g class="mach${on?"":" off"}" data-m="${id}" tabindex="0" role="button" aria-pressed="${!on}" aria-label="${name}: ${on?"acceso":"spento"}. Premi per ${on?"spegnere":"riaccendere"}.">
+      <rect class="box" x="${x-30}" y="${y-22}" width="60" height="44" rx="7"/><path class="slot" d="M${x-20} ${y-9}h28M${x-20} ${y+1}h28M${x-20} ${y+11}h28"/><circle class="led" cx="${x+19}" cy="${y-9}" r="4"/>
+      ${on?"":`<text class="lab x" x="${x}" y="${y+8}">✗</text>`}</g>
+      <text class="lab" x="${x}" y="${y-(sub?44:30)}">${name}</text>${sub?`<text class="lab s" x="${x}" y="${y-29}">${sub}</text>`:""}`;
+  const fixed = (x,y,name,sub) => `<g class="mach"><rect class="box" x="${x-30}" y="${y-22}" width="60" height="44" rx="7"/><path class="slot" d="M${x-20} ${y-9}h28M${x-20} ${y+1}h28M${x-20} ${y+11}h28"/><circle class="led" cx="${x+19}" cy="${y-9}" r="4"/></g>
+      <text class="lab" x="${x}" y="${y-(sub?44:30)}">${name}</text>${sub?`<text class="lab s" x="${x}" y="${y-29}">${sub}</text>`:""}`;
+  const wire = (x1,y1,x2,y2,ok) => `<line class="wire${ok?"":" ko"}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const cli = (x,y,ok) => `<text class="cli" x="${x}" y="${y}" aria-hidden="true">💻</text><text class="mark ${ok?"ok":"ko"}" x="${x}" y="${y+20}">${ok?"✔":"✗"}</text>`;
+  const svg = (inner,h,label) => `<svg class="net" viewBox="0 0 320 ${h}" role="img" aria-label="${label}">${inner}</svg>`;
+  const CX=[50,123,197,270];
+
+  /* ---- modo "fail" ---- */
+  function failView(){
+    const on=st.nodes.filter(Boolean).length, NX=[60,160,260], pref=[0,1,1,2];
+    const near = i => { let best=-1; st.nodes.forEach((a,k)=>{ if(a && (best<0 || Math.abs(k-pref[i])<Math.abs(best-pref[i]))) best=k; }); return best; };
+    const c = CX.map(x=>wire(x,170,160,86,st.cOn)).join("") + mach(160,64,"c","Server",st.cOn) + CX.map(x=>cli(x,190,st.cOn)).join("");
+    const d = wire(60,64,260,64,true) + CX.map((x,i)=>{ const k=near(i); return k<0 ? wire(x,170,NX[pref[i]],86,false) : wire(x,170,NX[k],86,true); }).join("")
+      + NX.map((x,i)=>mach(x,64,"n"+i,"Nodo "+(i+1),st.nodes[i])).join("") + CX.map(x=>cli(x,190,on>0)).join("");
+    return `<div class="net2">
+      <div class="panel"><h3>Centralizzato</h3><p class="sub">Un solo server: dati e programmi stanno lì.</p>${svg(c,215,"Un server e quattro postazioni")}
+        <p class="nstat ${st.cOn?"ok":"ko"}"><b>${st.cOn?"Servizio attivo":"Servizio fermo"}</b> · postazioni servite: ${st.cOn?4:0} su 4</p>
+        <div class="ctl"><button type="button" class="btn alt" data-m="c">${st.cOn?"⏻ Spegni il server":"⏻ Riaccendi il server"}</button></div></div>
+      <div class="panel"><h3>Distribuito</h3><p class="sub">Tre nodi che collaborano, ognuno con una copia.</p>${svg(d,215,"Tre nodi e quattro postazioni")}
+        <p class="nstat ${on?"ok":"ko"}"><b>${on?"Servizio attivo":"Servizio fermo"}</b> · nodi accesi: ${on} su 3 · postazioni servite: ${on?4:0} su 4</p>
+        <div class="ctl">${st.nodes.map((a,i)=>`<button type="button" class="btn alt" data-m="n${i}">⏻ ${a?"Spegni":"Riaccendi"} nodo ${i+1}</button>`).join("")}</div></div></div>
+      <p class="envstatus" aria-live="polite">Puoi spegnere una macchina anche toccandola nel disegno.</p>`;
+  }
+  /* ---- modo "load" ---- */
+  function loadView(){
+    const n=st.nodes.length, capD=n*CAP, sC=Math.min(st.load,CAP), sD=Math.min(st.load,capD), per=Math.round(sD/n);
+    const NX=Array.from({length:n},(_,i)=>160+(i-(n-1)/2)*64);
+    const crowd = `<text class="cli" x="160" y="182" aria-hidden="true">${"👥".repeat(st.load/100)}</text>`;
+    const c = wire(160,160,160,86,sC>=st.load) + fixed(160,64,"Server",`${sC}/${CAP}`) + crowd;
+    const d = wire(NX[0],64,NX[n-1],64,true) + NX.map(x=>wire(160,160,x,86,sD>=st.load)).join("") + NX.map((x,i)=>fixed(x,64,"N"+(i+1),`${per}/${CAP}`)).join("") + crowd;
+    const stat = (served) => served>=st.load ? `<p class="nstat ok"><b>Tutti serviti</b> · ${served} richieste su ${st.load}</p>` : `<p class="nstat ko"><b>Sovraccarico</b> · servite ${served} su ${st.load} · in coda: ${st.load-served}</p>`;
+    return `<div class="loadbar"><span>Richieste al secondo:</span><button type="button" class="btn alt" data-a="l-"${st.load<=100?" disabled":""} aria-label="Cento richieste in meno">− 100</button><b class="n" aria-live="polite">${st.load}</b><button type="button" class="btn alt" data-a="l+"${st.load>=500?" disabled":""} aria-label="Cento richieste in più">+ 100</button><span class="small">Ogni macchina ne regge ${CAP}.</span></div>
+      <div class="net2">
+      <div class="panel"><h3>Centralizzato</h3><p class="sub">Un solo server da ${CAP} richieste al secondo.</p>${svg(c,200,"Un server solo")}${stat(sC)}
+        <p class="small" style="margin:8px 0 0">Per reggere di più bisogna sostituirlo con una macchina più grande: si ferma tutto e si spende molto.</p></div>
+      <div class="panel"><h3>Distribuito</h3><p class="sub">${n} nodi normali, da ${CAP} richieste l'uno.</p>${svg(d,200,n+" nodi")}${stat(sD)}
+        <div class="ctl"><button type="button" class="btn alt" data-a="n+"${n>=MAXN?" disabled":""}>+ Aggiungi un nodo</button><button type="button" class="btn alt" data-a="n-"${n<=1?" disabled":""}>− Togli un nodo</button></div></div></div>`;
+  }
+  /* ---- modo "sync" ---- */
+  function syncView(){
+    const same=st.v[0]===st.v[1];
+    const d = wire(92,64,228,64,st.link) + (st.link?"":`<text class="lab x" x="160" y="58">✂</text>`) + fixed(60,64,"Nodo 1","aula docenti") + fixed(260,64,"Nodo 2","segreteria");
+    return `<div class="net2 one"><div class="panel"><h3>Due nodi, due copie dello stesso dato</h3><p class="sub">Il voto di Rossi è salvato su tutti e due i nodi. Ogni modifica va comunicata all'altro.</p>${svg(d,100,"Due nodi collegati")}
+      <div class="copies"><div class="copy1"><small>Copia sul nodo 1</small>Voto di Rossi: <b>${st.v[0]}</b></div><div class="copy1${same?"":" old"}"><small>Copia sul nodo 2</small>Voto di Rossi: <b>${st.v[1]}</b>${same?"":"<small>⚠ non aggiornata</small>"}</div></div>
+      <p class="nstat ${same?(st.link?"ok":"mid"):"ko"}" aria-live="polite">${st.note || "Le due copie sono uguali. Collegamento attivo."}</p>
+      <p class="small" style="margin:6px 0 0">Messaggi scambiati tra i nodi: <b>${st.msgs}</b></p>
+      <div class="ctl"><button type="button" class="btn alt" data-a="w">✏ Scrivi un voto nuovo sul nodo 1</button><button type="button" class="btn alt" data-a="k">${st.link?"✂ Taglia il collegamento":"🔧 Ripara il collegamento"}</button></div></div></div>`;
+  }
+  function render(keep){
+    host.innerHTML = `<div class="envbox">${cfg.mode==="fail"?failView():cfg.mode==="load"?loadView():syncView()}</div>`;
+    host.querySelectorAll("[data-m]").forEach(el=>{ el.addEventListener("click", ()=>toggle(el.dataset.m, el.tagName));
+      if(el.tagName!=="BUTTON") el.addEventListener("keydown", e=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); toggle(el.dataset.m, el.tagName); } }); });
+    host.querySelectorAll("[data-a]").forEach(el=>el.addEventListener("click", ()=>act(el.dataset.a)));
+    if(keep){ const f=host.querySelector(keep); if(f && !f.disabled) f.focus({preventScroll:true}); }
+  }
+  function toggle(id, tag){
+    if(id==="c"){ st.cOn=!st.cOn; if(!st.cOn) st.did.cOff=true; }
+    else { const i=+id.slice(1); st.nodes[i]=!st.nodes[i]; const on=st.nodes.filter(Boolean).length; if(on>0 && on<3) st.did.part=true; if(on===0) st.did.all=true; }
+    render((tag==="BUTTON"?"button":"g")+`[data-m="${id}"]`);
+  }
+  function act(a){
+    if(a==="l+") st.load=Math.min(500, st.load+100);
+    else if(a==="l-") st.load=Math.max(100, st.load-100);
+    else if(a==="n+" && st.nodes.length<MAXN) st.nodes.push(true);
+    else if(a==="n-" && st.nodes.length>1) st.nodes.pop();
+    else if(a==="w"){ st.v[0] = st.v[0]>=10 ? 6 : st.v[0]+1;
+      if(st.link){ st.v[1]=st.v[0]; st.msgs++; st.did.wUp=true; st.note=`Il nodo 1 ha scritto ${st.v[0]} e ha avvisato il nodo 2: un messaggio in più sulla rete. Le copie sono uguali.`; }
+      else { st.did.wCut=true; st.note=`⚠ Copie diverse: il nodo 1 dice ${st.v[0]}, il nodo 2 dice ancora ${st.v[1]}. Il messaggio non è passato.`; } }
+    else if(a==="k"){ st.link=!st.link;
+      if(st.link){ const diff=st.v[0]!==st.v[1]; if(diff){ st.v[1]=st.v[0]; st.msgs++; } st.note = diff ? "Collegamento riparato: il nodo 1 ha rimandato l'aggiornamento. Le copie tornano uguali." : "Collegamento riparato. Le copie sono uguali."; }
+      else st.note="Collegamento tagliato. Per ora le copie sono uguali: nessuno ha ancora scritto."; }
+    if(cfg.mode==="load" && st.load>=400){ st.did.high=true; if(st.nodes.length*CAP>=st.load) st.did.scaled=true; }
+    render(`[data-a="${a}"]`);
+  }
+  return {mount, did:()=>st.did};
+})();
+
+const SCENE = (()=>{
+  let host, cfg, view, seen;
+  function mount(h,c){ host=h; cfg=c; view="user"; seen=false; render(); }
+  function render(focus){
+    const u=cfg.user, s=cfg.sys;
+    const body = view==="user"
+      ? `<div class="uwin"><div class="ubar">${u.bar}<i>– □ ×</i></div><div class="ubody">${EM(u.em)}${u.body}</div></div>`
+      : `<div class="dcs">${s.nodes.map(n=>`<div class="dc${n.cls?" "+n.cls:""}">${EM("🖥️")}<b>${n.n}</b><small>${n.p}</small><span class="st">${n.s}</span></div>`).join("")}</div>
+         <ol class="syslog">${s.log.map((l,i)=>`<li style="animation-delay:${(i*.7).toFixed(1)}s">${l}</li>`).join("")}</ol>`;
+    host.innerHTML = `<div class="envbox"><div class="tabs" role="tablist">
+        <button type="button" class="tab${view==="user"?" on":""}" role="tab" aria-selected="${view==="user"}" data-v="user">👤 Che cosa vede l'utente</button>
+        <button type="button" class="tab${view==="sys"?" on":""}" role="tab" aria-selected="${view==="sys"}" data-v="sys">🔧 Dietro le quinte</button></div>
+      <div role="tabpanel">${body}</div></div>`;
+    host.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ view=b.dataset.v; if(view==="sys") seen=true; render(true); });
+    if(focus){ const f=host.querySelector(".tab.on"); if(f) f.focus({preventScroll:true}); }
+  }
+  return {mount, seen:()=>seen};
+})();
+
+/* =====================================================================
+   I PASSI
+   phase "g" = percorso guidato: prima la prova, poi la pillola (nel riscontro)
+   phase "x" = sfida finale: conta la prima risposta, gli errori si contano tutti
+   need      = la prova da fare prima di rispondere: restituisce un messaggio se manca
+   ===================================================================== */
+const SEC = {A:{code:"CASI", name:"Consulente per un giorno"}, B:{code:"TRASP", name:"Trasparenza"}, C:{code:"TIPI", name:"Che sistema è?"}};
+const needSys = () => SCENE.seen() ? "" : "Prima apri «🔧 Dietro le quinte» e guarda che cosa è successo davvero.";
+const CASE = {
+  forno:{em:"🥖", name:"Forno Sole · panificio", tx:`<ul><li>3 postazioni: cassa, laboratorio, ufficio.</li><li>Un solo programma: il gestionale degli ordini.</li><li>Nessun tecnico in sede, pochi soldi da spendere.</li><li>Di notte è chiuso.</li></ul>`},
+  viaggi:{em:"🧳", name:"ViaggiaOra · prenotazioni online", tx:`<ul><li>Clienti da tutta Europa, a ogni ora.</li><li>In estate le richieste diventano dieci volte tante.</li><li>Ogni minuto di fermo sono prenotazioni perse.</li></ul>`},
+  meteo:{em:"🌦️", name:"MeteoLab · previsioni del tempo", tx:`<ul><li>Una simulazione, su un solo PC, dura 30 giorni.</li><li>La previsione serve entro domani mattina.</li><li>In sala macchine ci sono 64 computer identici, sulla stessa rete locale.</li></ul>`}
+};
+
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Spegni un nodo", env:"net", net:{mode:"fail"},
+  theory:`<p>Lo stesso registro elettronico, costruito in due modi. A sinistra un <b>solo server</b>. A destra <b>tre nodi</b> che collaborano.</p>`,
+  task:`Spegni il server a sinistra. Poi a destra spegni <b>un</b> nodo, e guarda le postazioni. Alla fine rispondi: <b>quale servizio resta attivo con una macchina spenta?</b>`,
+  need:()=>{ const d=NET.did(); return !d.cOff ? "Prima fai la prova: spegni il server del sistema centralizzato." : !d.part ? "Manca una prova: nel sistema distribuito spegni un nodo solo e guarda le postazioni." : ""; },
+  quiz:[{t:"Tutti e due: una macchina spenta non cambia niente.", fb:"Guarda a sinistra: spento il server, le quattro postazioni restano senza servizio. Lì di macchine ce n'è una sola."},
+        {t:"Solo quello distribuito: gli altri nodi prendono il lavoro di quello spento.", ok:true},
+        {t:"Nessuno dei due: basta un guasto per fermare tutto.", fb:"A destra, con un nodo spento, le postazioni si collegano a un altro nodo e continuano a lavorare."}],
+  hint:"Conta le postazioni servite nei due riquadri, con una sola macchina spenta per parte.",
+  success:`A sinistra hai visto un <b>sistema centralizzato</b>: dati e programmi stanno in un unico nodo, e se cade quello cade tutto. A destra un <b>sistema distribuito</b>: più unità di elaborazione che cooperano. Le macchine in più (<b>ridondanza</b>) lo rendono <b>affidabile</b> e <b>tollerante ai guasti</b>. Prova anche a spegnerle tutte e tre.`,
+  learn:{k:"centralizzato · distribuito", d:"un nodo solo fa tutto · più nodi cooperano; la ridondanza dà affidabilità e tolleranza ai guasti"}},
+
+ {id:"g2", phase:"g", title:"Arrivano tutti insieme", env:"net", net:{mode:"load"},
+  theory:`<p>È il giorno delle pagelle: genitori e studenti aprono il registro tutti insieme.</p>`,
+  task:`Porta le richieste a <b>400</b> al secondo. Poi fai in modo che il sistema distribuito le serva <b>tutte</b>. Alla fine rispondi: <b>come ci sei riuscito?</b>`,
+  need:()=>{ const d=NET.did(); return !d.high ? "Prima fai la prova: porta le richieste almeno a 400 al secondo." : !d.scaled ? "Il sistema distribuito è ancora in sovraccarico: trova il modo di servire tutte le richieste." : ""; },
+  quiz:[{t:"Ho aggiunto nodi normali, senza fermare il servizio e senza cambiare i programmi.", ok:true},
+        {t:"Ho sostituito i nodi con macchine più potenti.", fb:"I nodi sono rimasti quelli: da 100 richieste l'uno. Ne hai aggiunti altri accanto."},
+        {t:"Ho ridotto le richieste degli utenti.", fb:"Le richieste sono rimaste 400: non si può chiedere ai genitori di tornare domani. È cresciuto il sistema."}],
+  hint:"Guarda i pulsanti sotto il riquadro di destra: ogni nodo regge 100 richieste.",
+  success:`Questa è la <b>scalabilità</b>: il sistema cresce a pezzi, quando serve. Ed è anche <b>economicità</b>: tanti computer normali costano meno di una sola macchina enorme, e offrono un rapporto prezzo/prestazioni migliore.`,
+  learn:{k:"scalabilità · economicità", d:"si aggiungono nodi quando serve · tanti computer normali costano meno di uno enorme"}},
+
+ {id:"g3", phase:"g", title:"Marche diverse, un solo sistema", env:"big",
+  big:{em:"🧩", name:"Lo studio tecnico", tx:`<ul><li>Un server con Linux.</li><li>Sei PC con Windows.</li><li>Una stampante di un'altra marca.</li><li>I tablet dei tecnici in cantiere.</li></ul>Lavorano tutti sugli stessi progetti.`},
+  task:`Macchine e sistemi operativi diversi, comprati da fornitori diversi, eppure lavorano insieme. <b>Che cosa lo rende possibile?</b>`,
+  quiz:[{t:"Sono tutti dello stesso produttore, anche se non sembra.", fb:"Qui i fornitori sono proprio diversi: Linux, Windows, un'altra marca per la stampante. Serve qualcosa che valga per tutti."},
+        {t:"Tutti rispettano gli stessi protocolli standard: così macchine diverse si capiscono.", ok:true},
+        {t:"Ognuno tiene la sua copia dei progetti e nessuno parla con gli altri.", fb:"Allora non lavorerebbero sugli stessi progetti: avresti tante versioni diverse. Qui i dispositivi comunicano."}],
+  hint:"Pensa a che cosa hanno in comune un PC Windows e un server Linux quando si scambiano un file in rete.",
+  success:`Tre vantaggi in un colpo. <b>Apertura</b>: grazie ai protocolli standard si usano hardware e software di fornitori diversi, e il sistema si amplia senza rifarlo. <b>Integrazione</b>: macchine e sistemi operativi diversi formano un sistema solo. <b>Connettività e collaborazione</b>: dati e risorse, come la stampante, sono condivisi.`,
+  learn:{k:"apertura · integrazione · connettività", d:"protocolli standard, fornitori diversi · sistemi diversi in uno solo · risorse condivise"}},
+
+ {id:"g4", phase:"g", title:"Il prezzo da pagare", env:"net", net:{mode:"sync"},
+  theory:`<p>Più nodi vuol dire più copie dello stesso dato. E le copie vanno tenute <b>uguali</b>.</p>`,
+  task:`Scrivi un voto nuovo con il collegamento attivo. Poi <b>taglia il collegamento</b> e scrivine un altro. Alla fine rispondi: <b>che cosa legge chi interroga il nodo 2?</b>`,
+  need:()=>{ const d=NET.did(); return !d.wUp ? "Prima fai la prova: scrivi un voto nuovo con il collegamento attivo." : !d.wCut ? "Manca una prova: taglia il collegamento, poi scrivi un altro voto sul nodo 1." : ""; },
+  quiz:[{t:"Il voto nuovo: i nodi si aggiornano comunque.", fb:"Guarda la copia sul nodo 2: è rimasta al voto di prima. Senza collegamento il messaggio non arriva."},
+        {t:"Niente: il nodo 2 si spegne.", fb:"Il nodo 2 è acceso e risponde. Il guaio è che cosa risponde: guarda la sua copia."},
+        {t:"Il voto vecchio: l'aggiornamento non è arrivato e le copie non coincidono più.", ok:true}],
+  hint:"Confronta i due riquadri «Copia sul nodo 1» e «Copia sul nodo 2» dopo aver scritto con il collegamento tagliato.",
+  success:`Ecco gli <b>svantaggi</b>. <b>Comunicazione</b>: tutto dipende dalla rete, che può rallentare o cadere senza preavviso. <b>Complessità</b> e <b>produzione del software</b>: i programmi vanno scritti in un altro modo, e devono prevedere casi come questo. <b>Sicurezza</b>: più nodi e più collegamenti sono più punti da proteggere di un server chiuso in una stanza.`,
+  learn:{k:"svantaggi", d:"comunicazione (dipende dalla rete) · complessità e produzione del software · sicurezza"}},
+
+ {id:"g5", phase:"g", title:"Tre famiglie", env:"sort",
+  theory:`<p>I sistemi distribuiti si dividono in tre famiglie, secondo <b>a che cosa servono</b>.</p>`,
+  keys:`<b>di calcolo</b>: conti enormi · <b>informativi</b>: i dati di un'organizzazione · <b>pervasivi</b>: piccoli dispositivi dappertutto`,
+  task:`Metti ogni caso nella famiglia giusta.`,
+  sort:{bins:[{id:"calc",label:"Sistemi di calcolo",sub:"conti enormi, in fretta"},{id:"info",label:"Sistemi informativi",sub:"i dati di un'organizzazione"},{id:"perv",label:"Sistemi pervasivi",sub:"piccoli dispositivi ovunque"}],
+   cards:[{id:"meteo",em:"🌦️",label:"Previsioni del meteo",bin:"calc",why:"Le previsioni sono una simulazione con miliardi di operazioni: serve potenza di calcolo. Sistema di calcolo."},
+          {id:"atm",em:"🏧",label:"Rete dei bancomat",bin:"info",why:"I bancomat leggono e aggiornano i dati dei conti della banca: gestiscono informazioni. Sistema informativo."},
+          {id:"watch",em:"⌚",label:"Smartwatch e telefono",bin:"perv",why:"Dispositivi piccoli, mobili, che porti addosso e che si parlano da soli: sistema pervasivo."},
+          {id:"prot",em:"🧬",label:"Simulazione di una proteina",bin:"calc",why:"È un calcolo scientifico lunghissimo, da dividere tra molte macchine: sistema di calcolo."},
+          {id:"treni",em:"🎫",label:"Prenotazione dei treni",bin:"info",why:"Posti, orari e biglietti sono i dati di un'azienda, consultati da tante biglietterie: sistema informativo."},
+          {id:"casa",em:"🏠",label:"Casa piena di sensori",bin:"perv",why:"Tanti piccoli dispositivi sparsi nell'ambiente, che quasi non noti: sistema pervasivo."}]},
+  hint:"Chiediti qual è lo scopo: fare un conto gigantesco, gestire i dati di un'organizzazione, oppure far parlare piccoli dispositivi sparsi ovunque?",
+  success:"In un sistema <b>pervasivo</b> i nodi sono piccoli, spesso mobili e a batteria, immersi nell'ambiente: il contrario della sala macchine. Li ritroverai parlando di domotica e dispositivi indossabili.",
+  learn:{k:"di calcolo · informativi · pervasivi", d:"conti enormi · dati di un'organizzazione · piccoli dispositivi ovunque"}},
+
+ {id:"g6", phase:"g", title:"Cluster o grid?", env:"sort",
+  theory:`<p>I sistemi <b>di calcolo</b> si costruiscono in due modi.</p>`,
+  keys:`<b>cluster</b>: computer simili, vicini, stessa rete locale · <b>grid</b>: computer diversi, lontani, di proprietari diversi`,
+  task:`Per ogni caso decidi: cluster o grid?`,
+  sort:{bins:[{id:"cl",label:"Cluster computing",sub:"macchine omogenee, vicine"},{id:"gr",label:"Grid computing",sub:"macchine eterogenee, sparse"}],
+   cards:[{id:"sala",em:"🗄️",label:"200 server uguali in una sala",bin:"cl",why:"Macchine uguali, nello stesso posto, sulla stessa rete: è un cluster."},
+          {id:"vol",em:"🌍",label:"PC di volontari nel mondo",bin:"gr",why:"Computer di ogni tipo, sparsi nel mondo, ognuno con il suo proprietario: è una grid."},
+          {id:"lab",em:"🏫",label:"30 PC identici del laboratorio",bin:"cl",why:"Stesso modello, stessa stanza, stessa rete locale: usati insieme formano un cluster."},
+          {id:"cern",em:"🔬",label:"Centri di ricerca di più Paesi",bin:"gr",why:"Ogni centro ha macchine sue, diverse, e le mette in comune a distanza: è una grid."}]},
+  hint:"Guarda due cose: le macchine sono uguali o diverse? Stanno nello stesso posto o lontane?",
+  success:"<b>Omogenei e vicini</b>: cluster. <b>Eterogenei e sparsi</b>: grid. In tutti e due i casi tanti computer si comportano come un unico grande calcolatore.",
+  learn:{k:"cluster · grid", d:"computer omogenei sulla stessa rete · computer eterogenei, lontani, di proprietari diversi"}},
+
+ {id:"g7", phase:"g", title:"Il vecchio che non si spegne", env:"big",
+  big:{em:"🏦", name:"Il mainframe della banca, 1994", tx:`<ul><li>Un grande computer centrale.</li><li>Terminali con schermo a caratteri, senza mouse.</li><li>Gestisce tutti i conti correnti.</li><li>Funziona, da trent'anni.</li></ul>`},
+  task:`Il nuovo direttore dice: «È vecchio. Lunedì lo spegniamo e passiamo al sistema nuovo». <b>Che cosa gli rispondi?</b>`,
+  quiz:[{t:"Giusto: tutto ciò che è vecchio va rimpiazzato subito.", fb:"Quel computer tiene tutti i conti della banca. Se lunedì il sistema nuovo ha un problema, la banca si ferma. Non è l'età il punto: è il ruolo."},
+        {t:"Non si può spegnere così: fa un lavoro critico. Si sostituisce per gradi, oppure si collega ai sistemi nuovi.", ok:true},
+        {t:"Va tenuto per sempre: un sistema vecchio è sempre più sicuro.", fb:"Vecchio non vuol dire migliore: costa mantenerlo e trovare chi lo conosce. Ma non si spegne da un giorno all'altro."}],
+  hint:"Chiediti che cosa succede alla banca se lunedì mattina il sistema nuovo non parte.",
+  success:`Si chiama <b>sistema legacy</b> («ereditato»): un sistema di vecchia data, di solito un mainframe con terminali a caratteri, che in azienda ha ancora un <b>ruolo critico</b> e dimensioni notevoli. Non è un rottame da buttare: va integrato con il nuovo.`,
+  learn:{k:"sistema legacy", d:"sistema di vecchia data (mainframe e terminali a caratteri) che ha ancora un ruolo critico"}},
+
+ {id:"g8", phase:"g", title:"Dove sta il file?", env:"scene",
+  scene:{user:{em:"📄", bar:"Esplora file › Documenti di classe", body:`<div><code>relazione.docx</code></div><div class="okline">✔ Aperto con un doppio clic, in 0,3 secondi</div><div class="small">Come un file qualsiasi del tuo disco.</div>`},
+         sys:{nodes:[{n:"Nodo 1",p:"Milano",s:"non ce l'ha"},{n:"Nodo 2",p:"Francoforte",s:"✔ il file è qui",cls:"hit"},{n:"Nodo 3",p:"Dublino",s:"non ce l'ha"}],
+              log:["Il PC chiede al sistema: «Mi serve <code>relazione.docx</code>».","Il sistema cerca il nome nel suo elenco: il file sta sul nodo 2, a Francoforte.","Il nodo 2 manda il file al PC.","L'utente ha fatto un doppio clic. Di Francoforte non ha saputo niente."]}},
+  theory:`<p>Un sistema distribuito ben fatto <b>nasconde</b> all'utente di essere distribuito. Si chiama <b>trasparenza</b>.</p>`,
+  task:`Guarda che cosa vede l'utente, poi apri <b>🔧 Dietro le quinte</b>. Alla fine rispondi: <b>che cosa l'utente non ha avuto bisogno di sapere?</b>`,
+  need:needSys,
+  quiz:[{t:"Il nome del file.", fb:"Il nome l'ha usato eccome: è l'unica cosa che ha indicato. Guarda che cosa ha trovato il sistema al posto suo."},
+        {t:"In quale posto, su quale macchina, si trova il file.", ok:true},
+        {t:"Che il file esiste.", fb:"Che il file esiste lo sa: l'ha aperto. Non sa un'altra cosa, che il sistema ha scoperto al passo 2."}],
+  hint:"Rileggi il passo 2 dietro le quinte: chi ha scoperto che il file sta a Francoforte?",
+  success:`Due forme di trasparenza insieme. <b>Di locazione</b>: usi una risorsa senza sapere dove si trova. <b>Di accesso</b>: una risorsa lontana si usa con le stesse operazioni di una locale, qui il doppio clic. Sono considerate <b>le due più importanti</b>.`,
+  learn:{k:"trasparenza di accesso · di locazione", d:"stesse operazioni per risorse locali e remote · non serve sapere dove sta la risorsa"}},
+
+ {id:"g9", phase:"g", title:"Si è rotto qualcosa?", env:"scene",
+  scene:{user:{em:"🎬", bar:"Videolezione di TPSIT", body:`<div class="okline">▶ Riproduzione in corso · 12:41</div><div class="small">Un attimo di pausa al minuto 12, poi il video riparte da solo.</div>`},
+         sys:{nodes:[{n:"Nodo 1",p:"Milano",s:"✗ guasto alle 10:32",cls:"ko"},{n:"Nodo 2",p:"Francoforte",s:"occupato"},{n:"Nodo 3",p:"Dublino",s:"✔ ha una copia del video",cls:"hit"}],
+              log:["Il video arriva dal nodo 1.","Alle 10:32 il nodo 1 si guasta.","Il sistema se ne accorge e cerca chi ha un'altra copia dello stesso video: il nodo 3.","Il nodo 3 continua dal minuto 12. L'utente ha visto solo una breve pausa."]}},
+  task:`Guarda la videolezione dal lato dell'utente, poi apri <b>🔧 Dietro le quinte</b>. Alla fine rispondi: <b>quali due cose il sistema ha nascosto all'utente?</b>`,
+  need:needSys,
+  quiz:[{t:"Che un nodo si è guastato, e che del video esistono più copie.", ok:true},
+        {t:"Che il video è stato spostato su un disco più grande.", fb:"Nessuno ha spostato niente: il nodo 1 si è rotto, e un'altra copia c'era già sul nodo 3."},
+        {t:"Che due utenti stavano modificando il video insieme.", fb:"Qui c'è un solo utente che guarda. Il problema è stato un guasto: rileggi i passi 2 e 3."}],
+  hint:"Due parole chiave dietro le quinte: «si guasta» e «un'altra copia».",
+  success:`<b>Trasparenza ai guasti</b>: un componente si rompe e l'utente non se ne accorge. È possibile grazie alla <b>trasparenza di replicazione</b>: della stessa risorsa esistono più copie, ma l'utente ne vede una sola.`,
+  learn:{k:"trasparenza ai guasti · di replicazione", d:"un nodo si rompe e non te ne accorgi · più copie, ne vedi una sola"}},
+
+ {id:"g10", phase:"g", title:"Due mani sullo stesso voto", env:"scene",
+  scene:{user:{em:"📝", bar:"Registro elettronico · 5ª A", body:`<div>Prof.ssa Conti scrive: <b>Bianchi, TPSIT: 7</b></div><div class="okline">✔ Voto salvato</div>`},
+         sys:{nodes:[{n:"Prof.ssa Conti",p:"aula 12",s:"scrive TPSIT: 7"},{n:"Registro",p:"dato condiviso",s:"✔ una operazione alla volta",cls:"hit"},{n:"Prof. Greco",p:"aula 7",s:"scrive Sistemi: 8"}],
+              log:["Alle 9:15:02 due docenti salvano un voto di Bianchi nello stesso istante.","Il sistema mette le due operazioni in fila.","Prima scrive il 7 di TPSIT, poi l'8 di Sistemi: nessuno cancella il lavoro dell'altro.","Ognuno dei due vede «Voto salvato», come se fosse stato solo."]}},
+  task:`Guarda il registro dal lato della docente, poi apri <b>🔧 Dietro le quinte</b>. Alla fine rispondi: <b>che cosa ha nascosto il sistema?</b>`,
+  need:needSys,
+  quiz:[{t:"Che il registro stava su un altro nodo.", fb:"Qui il punto non è dove sta il registro. Guarda il passo 1: quante persone scrivevano in quel momento?"},
+        {t:"Che un nodo si era guastato.", fb:"Nessun guasto questa volta. Il problema era un altro: due persone, lo stesso dato, lo stesso istante."},
+        {t:"Che un'altra persona stava usando la stessa risorsa nello stesso momento.", ok:true}],
+  hint:"Rileggi il passo 1 dietro le quinte: che cosa succede «nello stesso istante»?",
+  success:`<b>Trasparenza di concorrenza</b>: più utenti usano insieme la stessa risorsa condivisa, senza disturbarsi e senza saperlo.`,
+  learn:{k:"trasparenza di concorrenza", d:"più utenti sulla stessa risorsa, ognuno come se fosse solo"}},
+
+ {id:"g11", phase:"g", title:"Trasloco senza avviso", env:"scene",
+  scene:{user:{em:"📁", bar:"Esplora file › Progetti › sito_scuola", body:`<div>Ieri: <code>Progetti › sito_scuola</code></div><div>Oggi: <code>Progetti › sito_scuola</code></div><div class="okline">✔ Stesso nome, stessi file</div>`},
+         sys:{nodes:[{n:"Nodo 1",p:"Milano",s:"disco quasi pieno"},{n:"Nodo 2",p:"Francoforte",s:"—"},{n:"Nodo 3",p:"Dublino",s:"✔ la cartella ora è qui",cls:"hit"}],
+              log:["Ieri la cartella stava sul nodo 1.","Stanotte il disco del nodo 1 era quasi pieno.","Il sistema ha spostato la cartella sul nodo 3 e ha aggiornato il suo elenco.","Il nome è rimasto lo stesso: stamattina l'utente la apre come ieri."]}},
+  task:`Guarda la cartella dal lato dell'utente, poi apri <b>🔧 Dietro le quinte</b>. Alla fine rispondi: <b>che cosa è successo senza che l'utente lo notasse?</b>`,
+  need:needSys,
+  quiz:[{t:"La risorsa è stata spostata da un nodo a un altro.", ok:true},
+        {t:"La risorsa è stata copiata e ora l'utente ne vede due.", fb:"L'utente vede una cartella sola, la stessa di ieri. Non è stata copiata: ha cambiato posto."},
+        {t:"Un nodo si è guastato.", fb:"Il nodo 1 funziona: aveva solo il disco quasi pieno. Guarda il passo 3."}],
+  hint:"Confronta il passo 1 e il passo 3: dove stava la cartella ieri, e dove sta oggi?",
+  success:`<b>Trasparenza di migrazione</b> (o di mobilità): una risorsa cambia posto e si continua a usarla con lo stesso nome. Ne restano due: <b>di prestazioni</b>, il sistema si riorganizza da solo quando cambia il carico; <b>di scalabilità</b>, il sistema cresce senza cambiare struttura né programmi. In tutto otto forme: accesso, locazione, concorrenza, replicazione, guasti, migrazione, prestazioni, scalabilità.`,
+  learn:{k:"trasparenza di migrazione · prestazioni · scalabilità", d:"la risorsa cambia posto · il sistema si riorganizza con il carico · cresce senza cambiare struttura"}},
+
+ {id:"x0", screen:"finalX"},
+
+ /* ---------- SFIDA FINALE: 14 domande in 3 sezioni ---------- */
+ {id:"x1", phase:"x", sec:"A", code:"A1", env:"big", big:CASE.forno, task:"Quale soluzione proponi al Forno Sole?",
+  quiz:[{t:"Un solo server con il gestionale, e le tre postazioni collegate.", ok:true},
+        {t:"Un cluster di venti nodi.", fb:"Venti nodi per tre postazioni e un programma: costi e complessità senza nessun bisogno. E nessuno, in sede, saprebbe gestirli."},
+        {t:"Una grid con computer in più Paesi.", fb:"Una grid serve a calcoli enormi condivisi tra organizzazioni. Qui c'è un gestionale per tre postazioni."}],
+  why:"Un sistema distribuito costa in complessità. Per un carico piccolo, senza tecnici, un sistema centralizzato è la scelta più semplice ed economica."},
+ {id:"x2", phase:"x", sec:"A", code:"A2", env:"big", big:CASE.forno, task:"Il titolare accetta il server unico. Quale rischio gli devi dire chiaramente?",
+  quiz:[{t:"Il server potrebbe diventare troppo veloce.", fb:"Troppa velocità non è un rischio. Pensa a che cosa hai visto spegnendo il server nel primo passo."},
+        {t:"I dati finiranno sparsi su troppi nodi.", fb:"Di nodi ce n'è uno solo: i dati stanno tutti lì. Ed è proprio questo il punto debole."},
+        {t:"Se il server si ferma, si fermano tutte e tre le postazioni.", ok:true}],
+  why:"In un sistema centralizzato dati e applicazioni stanno in un unico nodo: se cade quello, cade tutto. Serve almeno una copia di sicurezza dei dati."},
+ {id:"x3", phase:"x", sec:"A", code:"A3", env:"big", big:CASE.viaggi, task:"Quale architettura proponi a ViaggiaOra?",
+  quiz:[{t:"Un solo server molto potente.", fb:"Per quanto potente, è una macchina sola: un guasto ferma tutte le prenotazioni, e in estate potrebbe non bastare."},
+        {t:"Più nodi che collaborano, ognuno con una copia dei dati.", ok:true},
+        {t:"Un mainframe con terminali a caratteri.", fb:"Quello è il ritratto di un sistema legacy. Ai clienti di oggi serve un sito sempre raggiungibile."}],
+  why:"Con più nodi replicati, se uno si guasta gli altri continuano: affidabilità e tolleranza ai guasti, ciò che serve a chi non può fermarsi mai."},
+ {id:"x4", phase:"x", sec:"A", code:"A4", env:"big", big:CASE.viaggi, task:"In estate le richieste diventano dieci volte tante. Quale proprietà permette di reggere aggiungendo nodi, senza rifare il sistema?",
+  quiz:[{t:"La scalabilità.", ok:true},
+        {t:"La trasparenza di locazione.", fb:"La trasparenza di locazione nasconde dove si trovano le risorse. Qui il problema è reggere un carico che cresce."},
+        {t:"La sicurezza.", fb:"La sicurezza protegge il sistema, non lo fa crescere. E nei sistemi distribuiti è più difficile da garantire, non più facile."}],
+  why:"Scalabilità: il sistema cresce aggiungendo nodi quando serve. E a settembre i nodi in più si possono togliere."},
+ {id:"x5", phase:"x", sec:"A", code:"A5", env:"big", big:CASE.meteo, task:"Come può MeteoLab avere la previsione entro domani?",
+  quiz:[{t:"Aspettando: il calcolo dura quello che dura.", fb:"Trenta giorni per una previsione di domani non servono a nessuno. In sala macchine ci sono 64 computer fermi."},
+        {t:"Comprando un monitor più grande.", fb:"Il monitor mostra il risultato, non lo calcola. Serve più potenza di elaborazione."},
+        {t:"Usando i 64 computer insieme, come un cluster di calcolo.", ok:true}],
+  why:"64 macchine identiche sulla stessa rete locale: è un cluster. Il calcolo si divide in parti, eseguite in parallelo."},
+ {id:"x6", phase:"x", sec:"A", code:"A6", env:"big", big:CASE.meteo, task:"Il programma di MeteoLab è scritto per un solo computer. Che cosa comporta passare al cluster?",
+  quiz:[{t:"Niente: basta copiare il programma su tutte le macchine.", fb:"Copiato così, ogni macchina rifarebbe da sola lo stesso calcolo di 30 giorni. Bisogna dividere il lavoro e far comunicare i nodi."},
+        {t:"Il programma va riscritto per dividere il lavoro tra i nodi: più tempo e più complessità.", ok:true},
+        {t:"Il programma diventa più semplice.", fb:"Succede il contrario: coordinare tante macchine è più difficile che programmarne una."}],
+  why:"È lo svantaggio della produzione del software: i programmi per un sistema distribuito vanno pensati in un altro modo, e sono più complessi."},
+
+ {id:"x7", phase:"x", sec:"B", code:"B1", env:"big", big:{em:"🖱️", name:"Lo stesso doppio clic"},
+  task:"Apri un file che sta su un altro computer con lo stesso doppio clic che usi per un file del tuo disco. Quale forma di trasparenza è?",
+  quiz:[{t:"Di concorrenza.", fb:"La concorrenza riguarda più utenti sulla stessa risorsa nello stesso momento. Qui conta il modo in cui la usi."},
+        {t:"Di accesso.", ok:true},
+        {t:"Ai guasti.", fb:"Qui non si è rotto niente. Conta il fatto che le operazioni sono le stesse per risorse locali e remote."}],
+  why:"Trasparenza di accesso: risorse locali e remote si usano con le stesse operazioni."},
+ {id:"x8", phase:"x", sec:"B", code:"B2", env:"big", big:{em:"🕵️", name:"Trova l'intrusa"},
+  task:"Una di queste <b>non</b> è una forma di trasparenza dei sistemi distribuiti. Quale?",
+  quiz:[{t:"Trasparenza di replicazione.", fb:"Esiste: della stessa risorsa ci sono più copie e l'utente ne vede una sola."},
+        {t:"Trasparenza di migrazione.", fb:"Esiste: una risorsa cambia nodo e continui a usarla con lo stesso nome."},
+        {t:"Trasparenza di prezzo.", ok:true},
+        {t:"Trasparenza di prestazioni.", fb:"Esiste: il sistema si riorganizza da solo quando cambia il carico."}],
+  why:"Le forme previste sono otto: accesso, locazione, concorrenza, replicazione, guasti, migrazione, prestazioni, scalabilità. Di prezzo, o di sicurezza, non ne esistono."},
+ {id:"x9", phase:"x", sec:"B", code:"B3", env:"big", big:{em:"🛍️", name:"Negozio online, giorno dei saldi"},
+  task:"Durante i saldi il sistema sposta da solo il lavoro sui nodi meno carichi. Il cliente trova il sito veloce come sempre. Quale forma di trasparenza è?",
+  quiz:[{t:"Di prestazioni.", ok:true},
+        {t:"Di accesso.", fb:"L'accesso riguarda le operazioni, uguali per risorse locali e remote. Qui il sistema si riorganizza perché è cambiato il carico."},
+        {t:"Di replicazione.", fb:"La replicazione nasconde le copie di una risorsa. Qui si nasconde il modo in cui il sistema si adatta al carico."}],
+  why:"Trasparenza di prestazioni: il sistema si riconfigura al variare del carico, e l'utente non lo nota."},
+ {id:"x10", phase:"x", sec:"B", code:"B4", env:"big", big:{em:"🥇", name:"Le due più importanti"},
+  task:"Quali sono le due forme di trasparenza considerate più importanti?",
+  quiz:[{t:"Locazione e concorrenza.", fb:"La locazione sì. L'altra è quella che ti fa usare una risorsa lontana come una vicina."},
+        {t:"Accesso e scalabilità.", fb:"L'accesso sì. L'altra è quella che ti risparmia di sapere dove si trova la risorsa."},
+        {t:"Accesso e locazione.", ok:true}],
+  why:"Accesso e locazione: usi una risorsa remota come una locale, e senza sapere dove sta."},
+
+ {id:"x11", phase:"x", sec:"C", code:"C1", env:"big", big:{em:"🗄️", name:"200 computer identici"},
+  task:"200 computer identici, nella stessa sala, sulla stessa rete veloce, usati come un solo grande calcolatore. È…",
+  quiz:[{t:"Una grid.", fb:"In una grid le macchine sono diverse e sparse, spesso di organizzazioni diverse. Qui sono identiche e nella stessa sala."},
+        {t:"Un cluster.", ok:true},
+        {t:"Un sistema pervasivo.", fb:"Un sistema pervasivo è fatto di piccoli dispositivi sparsi nell'ambiente, non di una sala macchine."}],
+  why:"Macchine omogenee, vicine, sulla stessa rete: cluster computing."},
+ {id:"x12", phase:"x", sec:"C", code:"C2", env:"big", big:{em:"⌚", name:"Orologio, telefono, bilancia"},
+  task:"L'orologio misura il battito, lo passa al telefono, che lo confronta con il peso mandato dalla bilancia. Nessuno ha premuto niente. È un sistema…",
+  quiz:[{t:"Di calcolo.", fb:"Non c'è nessun calcolo enorme da dividere tra macchine potenti. Ci sono piccoli dispositivi che si parlano da soli."},
+        {t:"Legacy.", fb:"Legacy vuol dire di vecchia data, come un mainframe. Questi dispositivi sono recentissimi."},
+        {t:"Pervasivo.", ok:true}],
+  why:"Dispositivi piccoli, mobili, immersi nella vita quotidiana, che collaborano senza farsi notare: sistema distribuito pervasivo."},
+ {id:"x13", phase:"x", sec:"C", code:"C3", env:"big", big:{em:"🏦", name:"Sistemi legacy"},
+  task:"Una di queste affermazioni sui sistemi legacy è <b>falsa</b>. Quale?",
+  quiz:[{t:"Sono di solito realizzati su mainframe.", fb:"È vera: il caso tipico è un mainframe aziendale."},
+        {t:"Vanno rimpiazzati tutti, perché cominciano a dare problemi.", ok:true},
+        {t:"Vi si collegano terminali con interfaccia a caratteri.", fb:"È vera: terminali poco sofisticati, senza grafica."},
+        {t:"Hanno spesso un ruolo critico in azienda.", fb:"È vera: ed è il motivo per cui non si possono spegnere da un giorno all'altro."}],
+  why:"Un sistema legacy è vecchio, ma funziona e fa un lavoro critico: non va per forza rimpiazzato, va integrato con i sistemi nuovi."},
+ {id:"x14", phase:"x", sec:"C", code:"C4", env:"big", big:{em:"🌍", name:"Calcolo volontario"},
+  task:"Migliaia di persone nel mondo prestano il proprio PC, ognuno diverso, a un progetto di ricerca medica. È…",
+  quiz:[{t:"Una grid.", ok:true},
+        {t:"Un cluster.", fb:"In un cluster le macchine sono simili e stanno sulla stessa rete locale. Qui sono diverse e sparse nel mondo."},
+        {t:"Un sistema centralizzato.", fb:"In un sistema centralizzato lavora un nodo solo. Qui lavorano migliaia di computer."}],
+  why:"Macchine eterogenee, lontane, di proprietari diversi, unite per un calcolo: grid computing."},
+
+ {id:"end", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
+   ===================================================================== */
+const FAM = "TPS", TOOL = "SDI";
+/* parole dell'avviso di riavvio che cambiano da una palestra all'altra */
+const RS = {prove:"le domande", risp:"Le risposte", dove:"nel documento della consegna", lv:false};
+function sig(s, tag){ let h=5381; const t=FAM+"*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const rip = () => +store.get("rip")||0;
+  const errs = () => store.get("errs")||{};
+  function addErr(id){ const e=errs(); e[id]=(e[id]||0)+1; store.set("errs", e); }
+  const mq = window.matchMedia ? window.matchMedia("(max-width:900px)") : null;
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html){ const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML=html; }
+  function placeDock(){
+    const d=$("#dock");
+    if(mq && mq.matches){ if(d.parentNode!==$("#work")) $("#work").appendChild(d); d.classList.add("docked"); }
+    else { if(d.parentNode!==$("#lesson")) $("#lesson").appendChild(d); d.classList.remove("docked"); }
+  }
+  if(mq){ if(mq.addEventListener) mq.addEventListener("change", placeDock); else if(mq.addListener) mq.addListener(placeDock); }
+
+  function counter(step){ return step.phase==="g" ? `Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length}` : `Sfida finale · domanda ${CHAL.indexOf(step)+1} di ${CHAL.length}`; }
+  function mountEnv(step){
+    const st=$("#stage");
+    if(step.env==="sort") SORT.mount(st, step.sort);
+    else if(step.env==="big") BIG.mount(st, step.big);
+    else if(step.env==="net") NET.mount(st, step.net);
+    else if(step.env==="scene") SCENE.mount(st, step.scene);
+    else st.innerHTML="";
+  }
+  function render(){
+    const step=STEPS[pos];
+    $("#pbar").style.width = Math.round(pos/(STEPS.length-1)*100)+"%";
+    $("#h-name").textContent = curName();
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false, firstDone:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.phase==="x" ? SEC[step.sec].name : step.title;
+    $("#l-theory").innerHTML = step.theory||""; $("#l-theory").classList.toggle("hidden", !step.theory);
+    const keys=val(step.keys); $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.phase==="x" ? "Domanda" : step.need ? "Prova e rispondi" : step.quiz ? "Domanda" : "Il tuo compito";
+    $("#l-task").innerHTML = val(step.task);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    q.innerHTML = step.quiz ? step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o.t}</button>`).join("") : "";
+    q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b));
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    $("#b-next").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    $("#b-check").classList.toggle("hidden", !!step.quiz);
+    const sk=$("#b-skip"); sk.classList.remove("hidden"); sk.textContent = step.phase==="g" ? "Salta il passo ⤼" : "Salta la domanda ⤼";
+    mountEnv(step); placeDock();
+  }
+  function showHintBtn(){ if(STEPS[pos].hint && !S.hint && S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  function recordFirst(ok){ const step=STEPS[pos]; if(step.phase!=="x" || S.firstDone) return; S.firstDone=true; if(!res(step.id)) store.set("r_"+step.id, {first:ok, done:false}); }
+  function verify(step){
+    if(step.env==="sort"){ const st=SORT.state(), cards=step.sort.cards;
+      const miss=cards.filter(c=>!st.place[c.id]), wrong=cards.filter(c=>st.place[c.id] && st.place[c.id]!==c.bin);
+      if(miss.length===cards.length) return {ok:false, noTry:true, msg:"Non hai ancora messo nessuna carta in un cestino."};
+      if(!miss.length && !wrong.length) return {ok:true};
+      if(!wrong.length) return {ok:false, noTry:true, msg: miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`};
+      let m = wrong[0].why + (wrong.length>1 ? ` Da spostare anche: ${wrong.slice(1).map(c=>"«"+c.label+"»").join(", ")}.` : "");
+      if(miss.length) m += " " + (miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`);
+      return {ok:false, msg:m, bad:wrong.map(c=>c.id)}; }
+    return {ok:true};
+  }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen || step.quiz) return;
+    if(S.done){ next(); return; }
+    const v=verify(step);
+    if(!v.ok){
+      if(!v.noTry){ S.err++; recordFirst(false); if(step.phase==="x") addErr(step.id); }
+      if(v.bad && v.bad.length) SORT.markBad(v.bad);
+      say(v.noTry?"mid":"ko", (v.noTry?"":"Non ancora. ")+v.msg); showHintBtn(); return; }
+    recordFirst(true); success(step);
+  }
+  function answer(i, btn){
+    const step=STEPS[pos]; if(S.done) return; const o=step.quiz[i];
+    /* nei passi «prova e rispondi» la risposta si accetta solo dopo la prova */
+    if(step.need){ const m=step.need(); if(m){ say("mid", m); return; } }
+    if(o.ok){ recordFirst(true); btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    recordFirst(false); if(step.phase==="x") addErr(step.id);
+    btn.classList.add("wrong"); btn.setAttribute("aria-disabled","true"); S.err++; say("ko", "Non è così. "+o.fb); showHintBtn();
+  }
+  function success(step){
+    S.done=true;
+    if(step.phase==="g"){ const r=Object.assign({}, res(step.id)||{}, {ok:1, err:S.err}); if(S.hint) r.hint=1; delete r.skip; store.set("r_"+step.id, r);
+      say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); }
+    else { const r=res(step.id)||{first:true}; store.set("r_"+step.id, {first:!!r.first, done:true}); say("ok", (r.first?"✔ Giusto al primo colpo! ":"✔ Ora è giusta. ")+val(step.why)); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#b-skip").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →"; nb.focus({preventScroll:true});
+  }
+  /* un passo saltato resta nel codice e vale zero */
+  function skip(){
+    const step=STEPS[pos]; if(!step || step.screen || S.done) return; const r=res(step.id);
+    if(step.phase==="g"){ if(!(r && r.ok)) store.set("r_"+step.id, Object.assign({}, r||{}, {skip:1})); }
+    else store.set("r_"+step.id, {first:false, done:false, skip:1});
+    next();
+  }
+  function hint(){ S.hint=true; const id=STEPS[pos].id; store.set("r_"+id, Object.assign({}, res(id)||{}, {hint:1}));
+    const h=$("#l-hinttext"); h.innerHTML="💡 "+val(STEPS[pos].hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+
+  /* tasca: chiusa durante la sfida */
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && (res(s.id)||{}).ok), cur=STEPS[pos], closed = cur && (cur.phase==="x" || cur.id==="x0");
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length || closed); b.textContent=`🎒 Tasca (${learned.length})`;
+    if(closed){ $("#pocket").classList.add("hidden"); b.setAttribute("aria-expanded","false"); }
+    $("#pocket").innerHTML = `<h3>Cosa so già</h3><ul>${learned.map(s=>`<li><b>${val(s.learn.k)}</b> — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket") && !$("#pocket").classList.contains("hidden")){ $("#pocket").classList.add("hidden"); $("#pocket-btn").setAttribute("aria-expanded","false"); } });
+
+  /* riepilogo e codice */
+  function guided(){ const r=GUIDED.map(s=>res(s.id)||{}), ok=r.filter(x=>x.ok).length, skip=r.filter(x=>x.skip && !x.ok).length;
+    return {ok, skip, miss:GUIDED.length-ok-skip, hint:(+store.get("hintsPrev")||0)+r.filter(x=>x.hint).length}; }
+  function tally(){
+    const secs = Object.keys(SEC).map(k=>{ const qs=CHAL.filter(q=>q.sec===k), r=qs.map(q=>res(q.id));
+      return {k, n:qs.length, ok:r.filter(x=>x && x.first && !x.skip).length, skip:r.filter(x=>x && x.skip).length, miss:r.filter(x=>!x).length}; });
+    const skips = CHAL.filter(q=>{ const r=res(q.id); return r && r.skip; });
+    return {secs, n:CHAL.length, miss:secs.reduce((a,x)=>a+x.miss,0), ok:secs.reduce((a,x)=>a+x.ok,0), skips};
+  }
+  const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+  function code(){
+    const t=tally(), g=guided(), e=errs();
+    const gx=[]; if(g.skip) gx.push(pl(g.skip,"saltato","saltati")); if(g.miss) gx.push(pl(g.miss,"non fatto","non fatti"));
+    const parts=[FAM+"-"+TOOL, curName()||"(nome non inserito)", `PASSI ${g.ok}/${GUIDED.length}`+(gx.length?` (${gx.join(", ")})`:""), `aiuti ${g.hint}`];
+    t.secs.forEach(x=>{ const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte"));
+      parts.push(`${SEC[x.k].code} ${x.ok}/${x.n}`+(ex.length?` (${ex.join(", ")})`:"")); });
+    parts.push(`TOT ${t.ok}/${t.n}`);
+    const el=CHAL.filter(q=>e[q.id]).map(q=>`${q.code}(${e[q.id]})`);
+    parts.push("errori "+(el.length?el.join(" "):"-"));
+    if(t.skips.length) parts.push("saltate "+t.skips.map(q=>q.code).join(" "));
+    parts.push("ripetizioni "+rip());
+    if(BES) parts.push("modalità facilitata");
+    const n0=store.get("nome0"); if(n0 && nameKey(n0)!==nameKey(curName())) parts.push("nome iniziale: "+n0);
+    const body=parts.join(" | ");
+    return body+" | #"+sig(body, TOOL);
+  }
+  function codeBlock(){
+    const t=tally(), g=guided(), e=errs(), rev=CHAL.filter(q=>e[q.id] || t.skips.includes(q));
+    const note = x => { const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte")); return ex.length?`<small>${ex.join(", ")}</small>`:""; };
+    const tag = q => [e[q.id]?`<i>(sbagliata ${e[q.id]===1?"1 volta":e[q.id]+" volte"})</i>`:"", t.skips.includes(q)?"<i>(saltata)</i>":""].filter(Boolean).join(" ");
+    return `<div class="stats">${t.secs.map(x=>`<div class="stat"><small>${SEC[x.k].name}</small><b>${x.ok}/${x.n}</b>${note(x)}</div>`).join("")}<div class="stat tot"><small>Giuste al primo colpo</small><b>${t.ok}/${t.n}</b></div></div>
+      <p class="small">Passi guidati: <b>${g.ok}/${GUIDED.length}</b>${g.skip?`, ${pl(g.skip,"saltato","saltati")}`:""}${g.hint?`, aiuti usati: ${g.hint}`:""}${rip()?` · ripetizioni della sfida: ${rip()}`:""}.</p>
+      ${rev.length?`<details class="review" open><summary>Da ripassare (${rev.length})</summary><ul>${rev.map(q=>`<li><b>${plain(val(q.task))}</b> ${tag(q)}<br>${q.why}</li>`).join("")}</ul></details>`:""}
+      <h3>Il tuo codice</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} <b>${RS.dove}</b>.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="small" data-copied aria-live="polite"></span></p>
+      <p class="small">I risultati restano solo su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".screen").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]");
+    const ok=()=>{ out.textContent="Copiato ✓ Ora incollalo "+RS.dove+"."; };
+    const fallback=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Copia a mano: clic nel riquadro, "+CT+"+A e "+CT+"+C."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fallback); else fallback();
+  });
+
+  /* «Nuovo studente»: se il nome tornerà sullo stesso PC, errori, aiuti e ripetizioni ripartono da dove erano */
+  function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
+  function saveHistory(){
+    const n=curName(); if(!n || !anyWork()) return;
+    const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint, bes:BES}; store.set("hist", h);
+  }
+  function restoreHistory(n){
+    if(anyWork()) return; const h=store.get("hist")||{}, k=hashName(n), p=h[k]; if(!p) return;
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); if(p.bes){ BES=true; store.set("bes", true); document.body.classList.add("bes"); const ob=$("#o-bes"); if(ob) ob.checked=true; } delete h[k]; store.set("hist", h);
+  }
+
+  /* schermate */
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>🌐 Spegni un nodo</h2>
+        <p>Primo giorno di stage da <b>NodoZero</b>, studio che progetta sistemi informatici. Sara, la responsabile, non ti dà niente da leggere: ti mette davanti due sistemi e dice «<b>Prova a romperli. Poi mi dici che cosa hai visto</b>».</p>
+        <p>Si va <b>un passo alla volta</b>: fai la prova, rispondi, e solo dopo arriva il nome tecnico di quello che hai osservato. Alla fine tre clienti aspettano un tuo consiglio: <b>${CHAL.length} domande</b>, poi il codice da incollare nella consegna.</p>
+        <p class="small">Se un passo proprio non ti riesce puoi saltarlo: nel codice risulta saltato e non vale punti.</p>
+        <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
+        <div class="fb ko hidden" id="w-err" role="alert"></div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim();
+        if(v.length<3){ const er=$("#w-err"); er.textContent="Scrivi il tuo nome e cognome (almeno 3 lettere), poi premi Inizia."; er.classList.remove("hidden"); $("#w-name").focus(); return; }
+        const old=curName(), any=STEPS.some(s=>res(s.id));
+        if(old && nameKey(old)!==nameKey(v) && any && !store.get("nome0")) store.set("nome0", old);
+        restoreHistory(v);
+        store.set("nome", v); next(); };
+      $("#w-go").onclick=go1; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); }); $("#w-name").focus();
+    },
+    finalX(el){
+      el.innerHTML = `<h2>🏁 Sfida finale · Consulente per un giorno</h2>
+        <p>Sara ti lascia la scrivania. <b>${CHAL.length} domande</b> in tre gruppi: tre clienti da consigliare, la trasparenza, il tipo di sistema.</p>
+        <p>Conta la <b>prima risposta</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
+        <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      const t=tally();
+      el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
+        ${restartBox()}
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
+      $("#e-redo").onclick=e=>askRestart("sfida", e.currentTarget); $("#e-zero").onclick=e=>askRestart("zero", e.currentTarget);
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !new RegExp("^"+FAM+"-[A-Z]{3} \\|").test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(4, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  /* pulsanti */
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-skip").onclick=skip;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const step=STEPS[pos];
+    const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, step.quiz?step.quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):""].filter(Boolean).join(". ");
+    const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  /* RIAVVIO-JS inizio: scelta alla fine e avviso grande prima di cancellare il codice */
+  function redoChallenge(){ CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); }
+  function resetAll(){ saveHistory(); store.clear(); window.scrollTo(0,0); location.reload(); }
+  function restartBox(){
+    const n=curName();
+    return `<div class="restart"><h3>Vuoi ricominciare?</h3>
+      <p>${n?`Questo è il lavoro di <b>${esc(n)}</b>. `:""}<b>Prima incolla il codice ${RS.dove}</b>: se ricominci, il codice qui sopra si cancella e alla fine ne avrai uno nuovo.</p>
+      <p><button type="button" class="btn alt" id="e-redo">↺ Rifai solo la sfida</button> <span class="rs-note">Restano il nome e i passi guidati. Rifai solo ${RS.prove} della sfida.</span></p>
+      <p><button type="button" class="btn danger" id="e-zero">🗑️ Ricomincia tutto da zero</button> <span class="rs-note">Si cancella tutto, anche il nome. Serve anche quando tocca a un compagno.</span></p>
+      <p class="small">Puoi ricominciare quante volte vuoi: il codice nuovo conta le ripetizioni e ricorda tutti gli errori.</p></div>`;
+  }
+  function askRestart(kind, opener){
+    if(document.getElementById("rs-wrap")) return;
+    const zero=kind==="zero", n=curName(), who=n?`il codice di ${esc(n)}`:"il codice salvato su questo computer";
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const w=document.createElement("div"); w.id="rs-wrap"; w.className="modal rs-wrap";
+    w.innerHTML=`<div class="screen warn" role="alertdialog" aria-modal="true" aria-labelledby="rs-t" aria-describedby="rs-d">
+      <div class="warn-body">
+        <div class="warn-ic" aria-hidden="true">⚠️</div>
+        <h2 id="rs-t">${zero?"Ricominci tutto da zero?":"Rifai solo la sfida?"}</h2>
+        <p class="warn-key" id="rs-d">Attenzione: <b>${zero?who:"il codice di adesso"} si perde per sempre</b>. È il codice da consegnare all'insegnante.</p>
+        <p>${zero ? (n?`<b>Sei tu?</b> Prima incolla il codice ${RS.dove}. <b>Non sei tu?</b> Chiedi a ${esc(n)} se l'ha già copiato.`:`<b>È tuo?</b> Prima incolla il codice ${RS.dove}.`) : `<b>Non l'hai ancora incollato ${RS.dove}?</b> Copialo adesso.`}</p>
+        <textarea class="copy" readonly aria-label="Il codice di adesso">${esc(code())}</textarea>
+        <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="rs-copied" data-copied aria-live="polite"></span></p>
+        <p>${zero?`Si cancella tutto: nome, passi guidati e sfida. Se ricominci tu, il codice nuovo conta la ripetizione e ricorda gli errori di prima.`:`${RS.risp} di adesso si cancellano; nome e passi guidati restano. Se ti fermi a metà, nel codice nuovo il resto risulta non fatto. Il codice nuovo conta la ripetizione e ricorda gli errori di prima.`}</p>
+      </div>
+      <div class="warn-acts"><button type="button" class="btn" id="rs-no">No, lascio tutto com'è</button><button type="button" class="btn danger" id="rs-yes">🗑️ ${zero?"Sì, cancello tutto e ricomincio":"Sì, cancello e rifaccio la sfida"}</button></div></div>`;
+    document.body.appendChild(w);
+    const t0=Date.now(), no=w.querySelector("#rs-no"), yes=w.querySelector("#rs-yes");
+    const onKey=e=>{ if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(true); }
+      else if(e.key==="Tab"){ const f=[...w.querySelectorAll("button,textarea")], a=f[0], z=f[f.length-1];
+        if(e.shiftKey && document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey && document.activeElement===z){ e.preventDefault(); a.focus(); } } };
+    const onFocus=e=>{ if(!w.contains(e.target)) no.focus({preventScroll:true}); };
+    function close(back){ document.removeEventListener("keydown", onKey, true); document.removeEventListener("focusin", onFocus, true); w.remove();
+      if(back && opener && document.contains(opener)) opener.focus({preventScroll:true}); }
+    document.addEventListener("keydown", onKey, true); document.addEventListener("focusin", onFocus, true);
+    /* i primi 600 ms non contano: il secondo colpo di un doppio clic non conferma e non chiude */
+    no.onclick=()=>{ if(Date.now()-t0<600) return; close(true); };
+    yes.onclick=()=>{ if(Date.now()-t0<600) return; close(false); if(zero) resetAll(); else redoChallenge(); };
+    no.focus({preventScroll:true}); w.querySelector(".warn-body").scrollTop=0;
+  }
+  /* RIAVVIO-JS fine */
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=e=>{ if(!anyWork()){ resetAll(); return; } askRestart("zero", e.currentTarget); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render};
+})();
+App.render();
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Uno o tanti? · Sistemi distribuiti</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%96%A5%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#55616a;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--bg:#fbf6ea;--line:#d5dade}
+*{box-sizing:border-box}
+body{margin:0;font-family:Verdana,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:20px;line-height:1.7;letter-spacing:.01em}
+.hidden{display:none!important}
+header{background:var(--teal);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:15px}
+.hbtn{background:#fff;color:var(--teal-d);border:0;border-radius:20px;padding:6px 14px;cursor:pointer;font:inherit;font-size:16px;font-weight:bold}
+.dots{max-width:760px;margin:0 auto;padding:12px 16px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dot{width:18px;height:18px;border-radius:50%;border:3px solid var(--teal);background:#fff}
+.dot.on{background:var(--teal)}.dot.now{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-l)}
+.dots span{margin-left:8px;font-size:16px;color:var(--muted)}
+main{max-width:760px;margin:0 auto;padding:12px 16px 30px}
+.sheet{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.count{margin:0;font-size:15px;color:var(--muted);font-weight:bold}
+h2{margin:0 0 10px;color:var(--teal-d);font-size:1.45em;line-height:1.3;outline:none}
+.scene{background:#f3f8f8;border:2px solid var(--teal-l);border-radius:14px;padding:6px;margin:0 0 14px}
+.scene svg{display:block;width:100%;height:auto}
+.say{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px}
+.say p{margin:0;flex:1;max-width:32em}
+.say .q{font-weight:bold;font-size:1.08em}
+.spk{flex:none;width:46px;height:46px;border-radius:50%;border:2px solid var(--teal);background:#fff;font-size:20px;cursor:pointer;line-height:1}
+.spk:hover{background:var(--teal-l)}
+.btn{background:var(--teal);color:#fff;border:0;padding:14px 22px;border-radius:12px;font:inherit;font-weight:bold;cursor:pointer}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal-d);border:2px solid var(--teal);padding:10px 16px;font-weight:normal;font-size:.85em}
+.btn.act{background:var(--orange);font-size:1.1em;border:4px solid var(--orange-d);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,102,26,.55)}50%{box-shadow:0 0 0 12px rgba(217,102,26,0)}}
+@media(prefers-reduced-motion:reduce){.btn.act{animation:none;box-shadow:0 0 0 5px var(--orange-l)}}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:6px 0 0}
+.opt{position:relative}
+.pick{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--teal);border-radius:16px;padding:14px 10px 12px;font:inherit;font-weight:bold;color:var(--ink);cursor:pointer;text-align:center;line-height:1.35}
+.pick svg{width:104px;height:104px}
+.pick:hover{background:var(--teal-l)}
+.pick.right{border-color:var(--ok);background:var(--ok-l)}
+.pick.wrong{border-color:#9aa4ab;border-style:dashed;background:#f1f2f3;color:#6b767e;cursor:default}
+.pick.wrong svg{opacity:.35}
+.pick .mk{font-size:.85em}
+.pick.right .mk{color:var(--ok)}.pick.wrong .mk{color:var(--ko)}
+.opt .spk{position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px}
+.fb{border-radius:12px;padding:12px 16px;margin:14px 0 0}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--orange-l);color:#6b2f0a}
+.word{display:flex;gap:14px;align-items:center;border:3px solid var(--teal);border-radius:14px;padding:10px 14px;margin:14px 0 0;background:var(--teal-l)}
+.word svg{width:70px;height:70px;flex:none}
+.word small{display:block;color:var(--teal-d);font-weight:bold;font-size:.75em}
+.word b{font-size:1.15em}.word span{display:block;line-height:1.45}
+.words{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.words .word{margin:0}
+.next{margin-top:16px}
+input[type=text]{font:inherit;padding:10px 12px;border:3px solid var(--line);border-radius:10px;width:100%;max-width:400px}
+textarea.copy{width:100%;height:110px;font-family:"Courier New",monospace;font-size:15px;padding:8px;border:3px solid var(--line);border-radius:10px}
+.stars{font-size:1.2em;font-weight:bold;color:var(--teal-d)}
+.small{font-size:15px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:14px}
+.modal .sheet{max-width:720px;width:100%;max-height:92vh;overflow:auto}
+footer{max-width:760px;margin:0 auto;padding:0 16px 30px;display:flex;gap:16px;flex-wrap:wrap;font-size:15px}
+.linkbtn{background:none;border:0;color:var(--teal-d);text-decoration:underline;cursor:pointer;font:inherit;padding:4px 0}
+details summary{cursor:pointer}
+@media(max-width:520px){body{font-size:18px}.sheet{padding:16px 14px}.pick svg{width:84px;height:84px}.opts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🖥️ Uno o tanti?</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn" id="b-words">📖 Le mie parole</button></div>
+</header>
+<div class="dots" id="dots" aria-hidden="true"></div>
+<main><section class="sheet" id="app" aria-live="polite"></section></main>
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Il mio codice (anche se non ho finito)</button>
+  <button type="button" class="linkbtn" id="f-reset">Nuovo studente: cancella tutto</button>
+  <details><summary>Solo docente</summary><p class="small">Vai a: <button type="button" class="linkbtn" data-jump="g1">inizio</button> · <button type="button" class="linkbtn" data-jump="g4">passo 4</button> · <button type="button" class="linkbtn" data-jump="r">ripasso</button> · <button type="button" class="linkbtn" data-jump="x1">domande</button>. I passi saltati così nel codice risultano non fatti.</p></details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   Palestra BES della lezione sui sistemi distribuiti.
+   Regole di scrittura: una frase per volta, al massimo 15 parole;
+   una parola nuova per passo; risposte a carte con disegno.
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const PFX = "tpssdb_", mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX)).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+function speak(text){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang="it-IT"; u.rate=.85; speechSynthesis.speak(u); }catch(e){} }
+
+/* =====================================================================
+   DISEGNI
+   ===================================================================== */
+const T="#0B6E75", TD="#085055", D="#34424c", G="#c3cacf", GD="#7a8790", O="#D9661A", R="#b3261e", K="#1e7d3a", L="#d9e6ea", W="#ffffff";
+const srv = (x,y,on=true,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-26" y="-20" width="52" height="40" rx="6" fill="${on?T:G}" stroke="${on?TD:GD}" stroke-width="2"/><path d="M-17 -8h24M-17 1h24M-17 10h24" stroke="${W}" stroke-width="2.5" opacity=".85"/><circle cx="16" cy="-8" r="4" fill="${on?"#8df0a0":GD}"/>${on?"":`<path d="M-10 -10l20 20M10 -10l-20 20" stroke="${R}" stroke-width="6" stroke-linecap="round"/>`}</g>`;
+const pc = (x,y,ok,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-16" y="-13" width="32" height="22" rx="3" fill="${D}"/><rect x="-13" y="-10" width="26" height="16" fill="${ok?"#dff3e4":"#fbe3e1"}"/><rect x="-21" y="10" width="42" height="5" rx="2.5" fill="${D}"/>${ok?`<path d="M-7 -2l5 5 9-9" fill="none" stroke="${K}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`:`<path d="M-6 -8l12 12M6 -8l-12 12" stroke="${R}" stroke-width="4" stroke-linecap="round"/>`}</g>`;
+const man = (x,y,c=D,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><circle cy="-12" r="6.5" fill="${c}"/><path d="M-10 13c0-11 3-16 10-16s10 5 10 16z" fill="${c}"/></g>`;
+const wire = (x1,y1,x2,y2,ok=true) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${ok?GD:R}" stroke-width="3.5"${ok?"":' stroke-dasharray="8 7"'} stroke-linecap="round"/>`;
+const lab = (x,y,t,c=D,sz=17) => `<text x="${x}" y="${y}" text-anchor="middle" font-family="Verdana,Arial,sans-serif" font-size="${sz}" font-weight="700" fill="${c}">${t}</text>`;
+const note = (x,y,t,bad) => `<rect x="${x-58}" y="${y-19}" width="116" height="38" rx="8" fill="${bad?"#fbe3e1":W}" stroke="${bad?R:TD}" stroke-width="3"/>${lab(x,y+6,t,bad?R:D,17)}`;
+const cross = (x,y) => `<path d="M${x-11} ${y-11}l22 22M${x+11} ${y-11}l-22 22" stroke="${R}" stroke-width="6" stroke-linecap="round"/>`;
+const photo = (x,y,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-17" y="-13" width="34" height="26" rx="3" fill="#bfe3f2" stroke="${D}" stroke-width="2.5"/><circle cx="8" cy="-5" r="4" fill="#f6c343"/><path d="M-16 12l10-13 7 8 5-5 10 10z" fill="${K}"/></g>`;
+const phone = (x,y,s=1,q) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-17" y="-29" width="34" height="58" rx="6" fill="${D}"/><rect x="-13" y="-23" width="26" height="42" rx="2" fill="${L}"/>${q?lab(0,7,"?",D,26):photo(0,-2,.62)}<circle cy="24" r="2" fill="${GD}"/></g>`;
+const watch = (x,y,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-9" y="-30" width="18" height="60" rx="5" fill="${GD}"/><circle r="17" fill="${D}"/><circle r="12.5" fill="${L}"/><path d="M0 -8v8l6 4" fill="none" stroke="${T}" stroke-width="3" stroke-linecap="round"/></g>`;
+const atm = (x,y,s=1) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-22" y="-28" width="44" height="56" rx="5" fill="${D}"/><rect x="-16" y="-22" width="32" height="20" rx="2" fill="${L}"/>${lab(0,-6,"€",T,16)}<rect x="-14" y="5" width="28" height="5" rx="2" fill="#111"/><rect x="-9" y="8" width="18" height="12" rx="1.5" fill="#f6c343"/></g>`;
+const rack = (x,y,s=1) => `<g transform="translate(${x} ${y}) scale(${s})">${[-20,0,20].map(dx=>[-11,11].map(dy=>srv(dx,dy,true,.36)).join("")).join("")}</g>`;
+const pin = (x,y) => `<path d="M${x} ${y+14}c-8-10-11-14-11-19a11 11 0 0 1 22 0c0 5-3 9-11 19z" fill="${O}"/><circle cx="${x}" cy="${y-5}" r="4" fill="${W}"/>`;
+const icon = inner => `<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">${inner}</svg>`;
+const I = {
+  one:   icon(srv(32,32)),
+  many:  icon(wire(32,18,16,46)+wire(32,18,48,46)+wire(16,46,48,46)+srv(32,17,true,.52)+srv(16,47,true,.52)+srv(48,47,true,.52)),
+  pcok:  icon(pc(32,30,true,1.4)),
+  pcko:  icon(pc(32,30,false,1.4)),
+  plus:  icon(srv(26,38,true,.8)+`<circle cx="48" cy="16" r="12" fill="${O}"/><path d="M48 9v14M41 16h14" stroke="${W}" stroke-width="4" stroke-linecap="round"/>`),
+  off:   icon(srv(32,32,false)),
+  away:  icon(man(14,36)+man(32,36)+man(50,36)+cross(32,32)),
+  same:  icon(`<rect x="5" y="18" width="22" height="28" rx="4" fill="${W}" stroke="${TD}" stroke-width="3"/><rect x="37" y="18" width="22" height="28" rx="4" fill="${W}" stroke="${TD}" stroke-width="3"/>`+lab(16,39,"6",D,18)+lab(48,39,"6",D,18)+lab(32,38,"=",K,16)),
+  diff:  icon(`<rect x="5" y="18" width="22" height="28" rx="4" fill="${W}" stroke="${TD}" stroke-width="3"/><rect x="37" y="18" width="22" height="28" rx="4" fill="#fbe3e1" stroke="${R}" stroke-width="3"/>`+lab(16,39,"8",D,18)+lab(48,39,"6",R,18)+lab(32,38,"≠",R,16)),
+  net:   icon(wire(14,32,50,32)+srv(14,32,true,.5)+srv(50,32,true,.5)),
+  rack:  icon(rack(32,32,1)),
+  atm:   icon(atm(32,32,1)),
+  watch: icon(watch(32,32,1)),
+  phone: icon(phone(32,32,1)),
+  far:   icon(srv(26,42,true,.8)+pin(50,14)),
+  hide:  icon(`<path d="M6 32c8-13 17-18 26-18s18 5 26 18c-8 13-17 18-26 18S14 45 6 32z" fill="${W}" stroke="${D}" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="${T}"/><path d="M12 54L52 10" stroke="${R}" stroke-width="5" stroke-linecap="round"/>`)
+};
+const scene = (inner,label,h=230) => `<svg viewBox="0 0 480 ${h}" role="img" aria-label="${label}">${inner}</svg>`;
+/* un sistema con un solo computer, e uno con tre */
+const sysOne = (cx,on,name) => [-60,0,60].map(d=>wire(cx+d,168,cx,92,on)).join("") + srv(cx,72,on) + [-60,0,60].map(d=>pc(cx+d,186,on)).join("") + lab(cx,28,name||"1 computer");
+function sysMany(cx,ons,name){ const xs=[-64,0,64], any=ons.some(Boolean);
+  const near = i => { let b=-1; ons.forEach((a,k)=>{ if(a && (b<0 || Math.abs(k-i)<Math.abs(b-i))) b=k; }); return b; };
+  return wire(cx-64,72,cx+64,72) + xs.map((d,i)=>{ const k=near(i); return wire(cx+d,168,cx+xs[k<0?i:k],92,k>=0); }).join("")
+    + xs.map((d,i)=>srv(cx+d,72,!!ons[i],.85)).join("") + xs.map(d=>pc(cx+d,186,any)).join("") + lab(cx,28,name||"3 computer"); }
+const frame = x => `<rect x="${x}" y="6" width="228" height="218" rx="12" fill="none" stroke="${L}" stroke-width="3"/>`;
+function queue(n, servers){ const xs=Array.from({length:servers},(_,i)=>240+(i-(servers-1)/2)*74);
+  return wire(xs[0],62,xs[servers-1],62) + xs.map(x=>srv(x,62,true,.85)).join("") + lab(240,24,servers+" computer")
+    + (n ? Array.from({length:n},(_,i)=>man(240+(i-(n-1)/2)*42,168,R)).join("") + lab(240,214,"In fila: "+n+" persone",R) : lab(240,170,"✔ Nessuno in fila",K,22)); }
+function twoNodes(cut, left, right, old){ return wire(140,62,340,62,!cut) + (cut?cross(240,62):"") + srv(110,62) + srv(370,62) + lab(110,24,"Computer 1") + lab(370,24,"Computer 2")
+    + note(110,130,"Voto: "+left) + note(370,130,"Voto: "+right,old) + (old?lab(370,176,"voto vecchio!",R,16):""); }
+function photoScene(behind, ask){ return phone(110,112,2.2,ask) + lab(110,206,"Il tuo telefono")
+    + (behind ? wire(160,112,330,112,false).replace(R,GD) + srv(370,112,true,1.2) + photo(370,60,.9) + pin(418,58) + lab(370,170,"Computer lontano") + lab(370,192,"la foto sta qui",K,15) : ""); }
+
+/* =====================================================================
+   PAROLE (una per passo, sei in tutto)
+   ===================================================================== */
+const WORDS = {
+  cen:{k:"Centralizzato", ic:I.one,  d:"Lavora un solo computer."},
+  dis:{k:"Distribuito",   ic:I.many, d:"Lavorano tanti computer insieme."},
+  aff:{k:"Affidabile",    ic:I.pcok, d:"Se un computer si rompe, gli altri continuano."},
+  sca:{k:"Scalabile",     ic:I.plus, d:"Se serve, aggiungi computer."},
+  ret:{k:"Rete",          ic:I.net,  d:"I fili che collegano i computer. Se si rompe, è un problema."},
+  tra:{k:"Trasparenza",   ic:I.hide, d:"Usi una cosa lontana come se fosse vicina."}
+};
+const ORDER = ["cen","dis","aff","sca","ret","tra"];
+const wordCard = (w,lbl) => `<div class="word">${w.ic}<div>${lbl?`<small>${lbl}</small>`:""}<b>${w.k}</b><span>${w.d}</span></div></div>`;
+
+/* =====================================================================
+   PASSI
+   acts = gesti da fare, uno per volta (il pulsante lampeggia)
+   qs   = domande del passo; opts = carte con disegno
+   ===================================================================== */
+const THREE = ok => [{ic:I.rack,t:"Tanti computer in una sala"},{ic:I.atm,t:"Il bancomat"},{ic:I.watch,t:"L'orologio al polso"}].map((o,i)=>Object.assign(o, i===ok?{ok:true}:{}));
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Uno o tanti?", words:["cen","dis"],
+  scene:()=>scene(frame(6)+frame(246)+sysOne(120,true)+sysMany(360,[1,1,1]),"A sinistra un computer solo. A destra tre computer collegati."),
+  say:"Due modi di fare lo stesso lavoro. A sinistra un computer. A destra tre.",
+  qs:[{q:"Tocca il sistema con tanti computer.", opts:[{ic:I.one,t:"Un computer solo",fb:"Qui c'è un computer solo. Cerca il disegno con tre computer."},{ic:I.many,t:"Tanti computer",ok:true}]}],
+  done:"Un computer solo: sistema centralizzato. Tanti computer insieme: sistema distribuito."},
+
+ {id:"g2", phase:"g", title:"Si rompe!", words:["aff"],
+  scene:a=>scene(frame(6)+frame(246)+sysOne(120,a<1)+sysMany(360,[a<2,1,1]),"I due sistemi. Puoi spegnere i computer."),
+  say:"Ogni tanto un computer si rompe. Proviamo.",
+  acts:[{label:"⏻ Spegni il computer a sinistra", after:"A sinistra tutti fermi: c'era un computer solo."},
+        {label:"⏻ Spegni un computer a destra", after:"A destra si lavora ancora: gli altri due computer aiutano."}],
+  qs:[{q:"Quale sistema lavora ancora?", opts:[{ic:I.one,t:"Quello con un computer",fb:"Quel computer è spento: guarda le croci rosse a sinistra."},{ic:I.many,t:"Quello con tanti computer",ok:true}]}],
+  done:"Il sistema distribuito è affidabile: un guasto non lo ferma."},
+
+ {id:"g3", phase:"g", title:"Quanta gente!", words:["sca"],
+  scene:a=>scene(queue([6,3,0][a], 2+a),"Computer in alto, persone in fila in basso."),
+  say:"Oggi arriva tanta gente. I computer non bastano.",
+  acts:[{label:"+ Aggiungi un computer", after:"La fila è più corta. Ma c'è ancora."},
+        {label:"+ Aggiungi un altro computer", after:"Nessuno aspetta più."}],
+  qs:[{q:"Come hai tolto la fila?", opts:[{ic:I.plus,t:"Ho aggiunto computer",ok:true},{ic:I.away,t:"Ho mandato via la gente",fb:"La gente è rimasta, ed è stata servita. Sono cambiati i computer: quanti sono adesso?"}]}],
+  done:"Il sistema distribuito è scalabile: cresce quando serve."},
+
+ {id:"g4", phase:"g", title:"Il filo tagliato", words:["ret"],
+  scene:a=>scene(twoNodes(a>=1, a>=2?8:6, 6, a>=2),"Due computer collegati da un filo. Ognuno ha una copia del voto.",200),
+  say:"Due computer hanno lo stesso voto: 6. Un filo li collega.",
+  acts:[{label:"✂ Taglia il filo", after:"Il filo è tagliato. I due computer non si parlano più."},
+        {label:"✏ Scrivi 8 sul computer 1", after:"Il computer 1 dice 8. Il computer 2 dice ancora 6."}],
+  qs:[{q:"I due computer hanno lo stesso voto?", opts:[{ic:I.same,t:"Sì, uguale",fb:"Guarda i due cartellini: su uno c'è 8, sull'altro 6."},{ic:I.diff,t:"No, diverso",ok:true}]}],
+  done:"I computer si parlano con la rete. Se la rete si rompe, i dati non sono più uguali."},
+
+ {id:"g5", phase:"g", title:"Grande, in banca, al polso",
+  say:"I sistemi distribuiti servono a cose diverse. Guarda i tre disegni.",
+  qs:[{q:"Quale fa calcoli enormi, come le previsioni del tempo?", opts:THREE(0), fb:"Per calcoli enormi servono tanti computer potenti, tutti insieme."},
+      {q:"Quale tiene i dati dei tuoi soldi?", opts:THREE(1), fb:"I soldi li gestisce la banca. Cerca la macchina della banca."},
+      {q:"Quale porti sempre con te?", opts:THREE(2), fb:"Cerca l'oggetto piccolo, che si mette al polso."}],
+  done:"Tre usi: fare calcoli, tenere dati, far parlare piccoli oggetti che porti con te."},
+
+ {id:"g6", phase:"g", title:"Dov'è la foto?", words:["tra"],
+  scene:a=>scene(photoScene(a>=1),"Un telefono con una foto.",220),
+  say:"Apri una foto sul telefono. Si vede subito.",
+  acts:[{label:"🔍 Guarda dietro", after:"Sorpresa: la foto sta su un computer lontano."}],
+  qs:[{q:"Dove sta davvero la foto?", opts:[{ic:I.phone,t:"Nel telefono",fb:"Sembra così. Ma guarda a destra: dove c'è scritto «la foto sta qui»?"},{ic:I.far,t:"Su un computer lontano",ok:true}]}],
+  done:"Tu non te ne accorgi. Questa si chiama trasparenza."},
+
+ {id:"r", screen:"review"},
+
+ {id:"x1", phase:"x", code:"D1", scene:()=>scene(sysOne(240,true,"Un computer per tutti"),"Un computer solo, con tre postazioni."),
+  q:"Qui lavora un computer solo. Come si chiama questo sistema?",
+  opts:[{ic:I.one,t:"Centralizzato",ok:true},{ic:I.many,t:"Distribuito"}], why:"Un computer solo fa tutto: sistema centralizzato."},
+ {id:"x2", phase:"x", code:"D2", scene:()=>scene(sysMany(240,[0,1,1],"Un computer è spento"),"Tre computer, uno spento. Le postazioni lavorano."),
+  q:"Un computer è spento. Gli altri lavorano. Com'è questo sistema?",
+  opts:[{ic:I.pcko,t:"Fermo"},{ic:I.pcok,t:"Affidabile",ok:true}], why:"Affidabile: se un computer si rompe, gli altri continuano."},
+ {id:"x3", phase:"x", code:"D3", scene:()=>scene(queue(6,2),"Due computer e sei persone in fila."),
+  q:"C'è tanta gente in fila. Che cosa fai?",
+  opts:[{ic:I.plus,t:"Aggiungo un computer",ok:true},{ic:I.off,t:"Spengo un computer"}], why:"Aggiungi computer: il sistema distribuito è scalabile."},
+ {id:"x4", phase:"x", code:"D4", scene:()=>scene(twoNodes(true,8,"?"),"Due computer. Il filo tra loro è tagliato.",200),
+  q:"Il filo è tagliato. Sul computer 1 scrivi 8. E il computer 2?",
+  opts:[{ic:I.same,t:"Ha lo stesso voto"},{ic:I.diff,t:"Ha un voto diverso",ok:true}], why:"Senza rete il computer 2 non riceve il voto nuovo."},
+ {id:"x5", phase:"x", code:"D5", scene:()=>scene(watch(150,100,2.6)+wire(215,100,300,100,false).replace(R,GD)+phone(345,100,2,true)+lab(240,206,"Si parlano da soli"),"Un orologio e un telefono collegati.",220),
+  q:"Orologio e telefono si parlano da soli. Che oggetti sono?",
+  opts:[{ic:I.watch,t:"Piccoli, li porti con te",ok:true},{ic:I.rack,t:"Enormi, in una sala"}], why:"Sono oggetti piccoli, che porti con te e che lavorano insieme."},
+ {id:"x6", phase:"x", code:"D6", scene:()=>scene(photoScene(true),"Un telefono collegato a un computer lontano, dove sta la foto.",220),
+  q:"Usi la foto e non sai dove sta. Come si chiama?",
+  opts:[{ic:I.plus,t:"Scalabile"},{ic:I.hide,t:"Trasparenza",ok:true}], why:"Trasparenza: usi una cosa lontana come se fosse vicina."},
+
+ {id:"f", screen:"phrase"},
+ {id:"end", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+const PHRASE = {q:"Un sistema distribuito è fatto da…", opts:[{ic:I.one,t:"un computer solo"},{ic:I.many,t:"tanti computer che lavorano insieme",ok:true}], why:"Un sistema distribuito è fatto da tanti computer che lavorano insieme."};
+
+/* =====================================================================
+   CODICE RISULTATO · stessa firma delle altre palestre (djb2, base 36)
+   ===================================================================== */
+const FAM = "TPS", TOOL = "SDB";
+function sig(s, tag){ let h=5381; const t=FAM+"*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const rip = () => +store.get("rip")||0;
+  const app = $("#app");
+
+  function go(i){ pos=i; store.set("pos", i); S={a:0, qi:0, err:0, off:[], right:false, first:null}; render(); window.scrollTo(0,0); const h=app.querySelector("h2"); if(h) h.focus({preventScroll:true}); }
+  const next = () => { if(pos<STEPS.length-1) go(pos+1); };
+
+  function dots(){
+    const work=[...GUIDED,...CHAL], cur=STEPS[pos], k=work.indexOf(cur), doneN = k>=0 ? k : (cur.id==="w" ? 0 : cur.id==="r" ? GUIDED.length : work.length);
+    const left=work.length-doneN;
+    $("#dots").innerHTML = work.map((s,i)=>`<i class="dot${i<doneN?" on":""}${i===k?" now":""}"></i>`).join("") + `<span>${left===0?"Hai finito!":left===1?"Ti manca 1 passo":"Ti mancano "+left+" passi"}</span>`;
+    $("#h-name").textContent = curName();
+  }
+  const sayBox = (ctx,q) => `<div class="say"><div style="flex:1">${ctx?`<p>${ctx}</p>`:""}${q?`<p class="q">${q}</p>`:""}</div><button type="button" class="spk" data-say aria-label="Ascolta il testo" title="Ascolta">🔊</button></div>`;
+  function optsBox(opts){
+    return `<div class="opts" role="group" aria-label="Risposte">${opts.map((o,i)=>{ const off=S.off.includes(i), ok=S.right && o.ok;
+      return `<div class="opt"><button type="button" class="pick${off?" wrong":""}${ok?" right":""}" data-i="${i}"${off||S.right?" disabled":""}>${o.ic}<span>${o.t}</span>${off?`<span class="mk">✗ non è questa</span>`:ok?`<span class="mk">✔ giusto</span>`:""}</button><button type="button" class="spk" data-opt="${i}" aria-label="Ascolta: ${esc(o.t)}" title="Ascolta">🔊</button></div>`; }).join("")}</div>`;
+  }
+  function bind(opts, onPick){
+    app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+    app.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>speak(opts[+b.dataset.opt].t));
+    app.querySelectorAll(".pick").forEach(b=>b.onclick=()=>onPick(+b.dataset.i));
+    const n=app.querySelector("#b-next"); if(n){ n.onclick=S.onNext; n.focus({preventScroll:true}); }
+    const a=app.querySelector("#b-act"); if(a) a.onclick=()=>{ S.a++; render(); const f=app.querySelector("#b-act") || app.querySelector(".pick:not([disabled])"); if(f) f.focus({preventScroll:true}); };
+  }
+
+  /* ---- un passo guidato ---- */
+  function guided(step){
+    const acts=step.acts||[], inActs=S.a<acts.length, q=step.qs[S.qi], last=S.qi===step.qs.length-1, finished=S.right && last;
+    const ctx = S.a===0 ? step.say : acts[S.a-1].after;
+    let h = `<p class="count">Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length}</p><h2 tabindex="-1">${step.title}</h2>`;
+    if(step.scene) h += `<div class="scene">${step.scene(S.a)}</div>`;
+    if(inActs) h += sayBox(ctx, "Premi il pulsante arancione.") + `<p><button type="button" class="btn act" id="b-act">${acts[S.a].label}</button></p>`;
+    else {
+      h += sayBox(S.qi===0 ? ctx : "", q.q) + optsBox(q.opts);
+      if(S.fb) h += `<div class="fb ko" role="status">${S.fb}</div>`;
+      if(S.right) h += `<div class="fb ok" role="status">✔ Giusto! ${finished ? step.done : ""}</div>`;
+      if(finished && step.words) h += step.words.map(w=>wordCard(WORDS[w],"Parola nuova")).join("");
+      if(S.right) h += `<p class="next"><button type="button" class="btn" id="b-next">Avanti →</button></p>`;
+    }
+    app.innerHTML = h;
+    S.onNext = () => { if(!last){ S.qi++; S.off=[]; S.right=false; S.fb=""; render(); const f=app.querySelector(".pick"); if(f) f.focus({preventScroll:true}); } else next(); };
+    bind(q.opts, i=>{ const o=q.opts[i];
+      if(o.ok){ S.right=true; S.fb=""; if(last) store.set("r_"+step.id, {ok:1, err:S.err}); }
+      else { S.err++; S.off.push(i); S.fb="Non è questa. "+(o.fb||q.fb||"Riprova con un'altra carta."); }
+      render(); });
+  }
+  /* ---- una domanda finale: conta la prima risposta ---- */
+  function question(step, cfg){
+    const q = cfg || step;
+    let h = cfg ? `<p class="count">Ultima cosa</p><h2 tabindex="-1">Completa la frase</h2>` : `<p class="count">Domanda ${CHAL.indexOf(step)+1} di ${CHAL.length}</p><h2 tabindex="-1">Domanda ${CHAL.indexOf(step)+1}</h2><div class="scene">${step.scene()}</div>`;
+    h += sayBox("", q.q) + optsBox(q.opts);
+    if(S.right) h += `<div class="fb ok" role="status">${S.first?"✔ Giusto al primo colpo! ":"✔ Adesso è giusta. "}${q.why}</div><p class="next"><button type="button" class="btn" id="b-next">Avanti →</button></p>`;
+    else if(S.fb) h += `<div class="fb ko" role="status">${S.fb}</div>`;
+    app.innerHTML = h; S.onNext = next;
+    bind(q.opts, i=>{ const o=q.opts[i];
+      if(S.first===null){ S.first=!!o.ok; if(!res(step.id)) store.set("r_"+step.id, {first:S.first}); }
+      if(o.ok) S.right=true; else { S.off.push(i); S.fb="Non è questa. Guarda bene il disegno e tocca l'altra carta."; }
+      render(); });
+  }
+
+  /* ---- schermate ---- */
+  const SCREENS = {
+    welcome(){
+      app.innerHTML = `<h2 tabindex="-1">Uno o tanti?</h2>
+        <div class="scene">${scene(frame(6)+frame(246)+sysOne(120,true)+sysMany(360,[1,1,1]),"Un computer solo e tre computer collegati.")}</div>
+        ${sayBox("Oggi scopri che cosa cambia tra un computer solo e tanti computer insieme.","Ci sono 6 passi e 6 domande. Vai con calma: non c'è tempo.")}
+        <ul><li>Il pulsante 🔊 legge il testo.</li><li>In alto, 📖 <b>Le mie parole</b> ti ricorda le parole nuove.</li><li>Se sbagli, riprovi.</li></ul>
+        <p><label for="w-name"><b>Scrivi nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}"></p>
+        <div class="fb ko hidden" id="w-err" role="alert">Scrivi il tuo nome e cognome, poi premi Inizia.</div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const start=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(); if(v.length<3){ $("#w-err").classList.remove("hidden"); $("#w-name").focus(); return; } store.set("nome", v); next(); };
+      $("#w-go").onclick=start; $("#w-name").addEventListener("keydown", e=>{ if(e.key==="Enter") start(); });
+      app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+    },
+    review(){
+      app.innerHTML = `<p class="count">Ripasso</p><h2 tabindex="-1">Le tue 6 parole</h2>
+        ${sayBox("Hai finito i passi. Bravo!","Rileggi le parole. Poi ci sono 6 domande.")}
+        <div class="words">${ORDER.map(k=>`<div style="position:relative">${wordCard(WORDS[k])}<button type="button" class="spk" data-w="${k}" style="position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px" aria-label="Ascolta: ${WORDS[k].k}">🔊</button></div>`).join("")}</div>
+        <p class="small">Durante le domande puoi riaprire 📖 Le mie parole.</p>
+        <p class="next"><button type="button" class="btn" id="b-next">Vai alle domande →</button></p>`;
+      $("#b-next").onclick=next;
+      app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+      app.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>speak(WORDS[b.dataset.w].k+". "+WORDS[b.dataset.w].d));
+    },
+    phrase(){ question(STEPS[pos], PHRASE); },
+    end(){
+      const t=tally();
+      app.innerHTML = `<h2 tabindex="-1">🎉 Hai finito!</h2>${summary()}
+        <div style="border:2px solid var(--line);border-radius:12px;padding:10px 16px;margin-top:18px"><p><b>Vuoi rifare?</b> Prima incolla il codice nella consegna: se ricominci, questo codice si cancella.</p>
+        <p><button type="button" class="btn alt" id="e-redo">↺ Rifaccio solo le domande</button> <button type="button" class="btn alt" id="e-zero">🗑️ Ricomincio tutto</button></p></div>
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:70px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
+      $("#e-redo").onclick=()=>{ if(!confirm("Rifai le domande?\n\nIl codice di adesso si cancella. L'hai già incollato nella consegna?")) return; CHAL.forEach(q=>store.del("r_"+q.id)); store.del("r_f"); store.set("rip", rip()+1); go(idx("x1")); };
+      $("#e-zero").onclick=resetAll;
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !new RegExp("^"+FAM+"-[A-Z]{3} \\|").test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color=R; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(4, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? K : R; };
+    }
+  };
+
+  /* ---- riepilogo e codice ---- */
+  function tally(){ const g=GUIDED.map(s=>res(s.id)), x=CHAL.map(s=>res(s.id)), f=res("f");
+    return {gok:g.filter(Boolean).length, gerr:g.reduce((a,r)=>a+(r?r.err||0:0),0), xok:x.filter(r=>r && r.first).length, xdone:x.filter(Boolean).length,
+            xbad:CHAL.filter(s=>{ const r=res(s.id); return r && !r.first; }).map(s=>s.code), f}; }
+  function code(){ const t=tally();
+    const parts=[FAM+"-"+TOOL, curName()||"(nome non inserito)", `PASSI ${t.gok}/${GUIDED.length}`, `tentativi sbagliati nei passi ${t.gerr}`,
+      `DOMANDE ${t.xok}/${CHAL.length}`+(t.xdone<CHAL.length?` (${CHAL.length-t.xdone} non fatte)`:""), "sbagliate "+(t.xbad.length?t.xbad.join(" "):"-"),
+      "FRASE "+(t.f ? (t.f.first?"giusta":"sbagliata") : "non fatta"), "ripetizioni "+rip(), "palestra BES"];
+    const body=parts.join(" | "); return body+" | #"+sig(body, TOOL); }
+  function summary(){ const t=tally();
+    return `<p class="stars">⭐ Passi fatti: ${t.gok} su ${GUIDED.length}<br>⭐ Domande giuste al primo colpo: ${t.xok} su ${CHAL.length}</p>
+      <h3 style="margin:14px 0 4px">Il tuo codice</h3><p>Premi <b>Copia il codice</b>. Poi incollalo nella consegna di Classroom.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn" data-copy>📋 Copia il codice</button> <b data-copied aria-live="polite" style="color:var(--ok)"></b></p>`; }
+  document.addEventListener("click", e=>{ const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".sheet").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]"), ok=()=>{ out.textContent="Copiato ✓ Ora incollalo nella consegna."; };
+    const fb=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Seleziona il codice e copialo a mano."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fb); else fb(); });
+  function resetAll(){ const any=STEPS.some(s=>res(s.id));
+    if(any && !confirm("Cancello tutto: nome, passi e codice.\n\nIl codice è già stato incollato nella consegna?")) return;
+    store.clear(); location.reload(); }
+
+  /* ---- finestre ---- */
+  function modal(html){ const m=$("#modal"); m.innerHTML=`<div class="sheet">${html}<p class="next"><button type="button" class="btn" id="m-close">Chiudi</button></p></div>`; m.classList.remove("hidden");
+    const back=document.activeElement; $("#m-close").onclick=()=>{ m.classList.add("hidden"); try{ speechSynthesis.cancel(); }catch(e){} if(back && back.focus) back.focus(); }; $("#m-close").focus();
+    m.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>speak(WORDS[b.dataset.w].k+". "+WORDS[b.dataset.w].d)); }
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")) $("#m-close").click(); });
+  $("#b-words").onclick=()=>{ const all = pos>=idx("r"), known = ORDER.filter(k=>all || GUIDED.some(s=>s.words && s.words.includes(k) && res(s.id)));
+    modal(`<h2>📖 Le mie parole</h2>${known.length ? `<div class="words">${known.map(k=>`<div style="position:relative">${wordCard(WORDS[k])}<button type="button" class="spk" data-w="${k}" style="position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px" aria-label="Ascolta: ${WORDS[k].k}">🔊</button></div>`).join("")}</div>` : "<p>Ancora nessuna parola. Arrivano una alla volta, dopo ogni passo.</p>"}`); };
+  $("#f-code").onclick=()=>modal(`<h2>📋 Il mio codice</h2>${summary()}`);
+  $("#f-reset").onclick=resetAll;
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>go(idx(b.dataset.jump)));
+
+  function render(){ dots(); try{ speechSynthesis.cancel(); }catch(e){}
+    const step=STEPS[pos];
+    if(step.screen) SCREENS[step.screen](); else if(step.phase==="g") guided(step); else question(step); }
+  S={a:0, qi:0, err:0, off:[], right:false, first:null};
+  return {render};
+})();
+App.render();
+</script>
+</body>
+</html>
