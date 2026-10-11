@@ -37,7 +37,7 @@
     "SOCIO_SANITARIO": "Socio sanitario",
     "BIENNIO": "Biennio",
     "TECNICO_INFORMATICO": "Tecnico informatico",
-    "TPSIT_5_SISTEMI_DISTRIBUITI": "TPSIT 5 · Sistemi distribuiti",
+    "TPSIT_CLASSE_5": "TPSIT 5° anno",
     "WORDPRESS": "WordPress",
     "SEO": "SEO"
   },
@@ -128,7 +128,7 @@
     },
     {
       "titolo": "Sistemi distribuiti: centralizzato e distribuito, vantaggi, trasparenza",
-      "percorso": "TECNICO_INFORMATICO/TPSIT_5_SISTEMI_DISTRIBUITI/SISTEMI_DISTRIBUITI/",
+      "percorso": "TECNICO_INFORMATICO/TPSIT_CLASSE_5/SISTEMI_DISTRIBUITI/",
       "minuti": 100,
       "descrizione": "TPSIT quinto anno. Si spegne un nodo, si alza il carico, si taglia un collegamento: dai simulatori escono affidabilità, scalabilità, svantaggi, classificazione (cluster, grid, pervasivi, legacy) e le otto forme di trasparenza. Palestra «Spegni un nodo» con codice; attività alternativa al terminale su sistemi reali; palestra BES dedicata «Uno o tanti?».",
       "tag": [
