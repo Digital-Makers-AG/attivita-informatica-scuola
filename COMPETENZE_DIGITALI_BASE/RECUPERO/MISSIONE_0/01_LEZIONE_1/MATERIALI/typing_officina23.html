@@ -194,9 +194,9 @@ textarea.copy{width:100%;height:84px;font-family:"Courier New",monospace;font-si
 <!-- ============ 5 TEST FINALE ============ -->
 <section id="t5" class="hidden">
 <div class="card">
-  <h2>5 · Test finale (60 secondi)</h2>
+  <h2>5 · Test finale (180 secondi)</h2>
   <p>Stesse regole del test iniziale, testo diverso. Obiettivo: <b>essere più precisi</b> di prima (la velocità viene dopo).</p>
-  <div class="stats"><div class="stat"><small>Tempo</small><b id="t5-time">60</b></div><div class="stat"><small>Caratteri giusti</small><b id="t5-ok">0</b></div><div class="stat"><small>Errori</small><b id="t5-err">0</b></div></div>
+  <div class="stats"><div class="stat"><small>Tempo</small><b id="t5-time">180</b></div><div class="stat"><small>Caratteri giusti</small><b id="t5-ok">0</b></div><div class="stat"><small>Errori</small><b id="t5-err">0</b></div></div>
   <div class="typearea" id="t5-area" tabindex="0" aria-label="Area di digitazione test finale"></div>
   <p><button class="btn alt" onclick="tests.t5.reset()">↺ Ricomincia</button></p>
   <div class="result hidden" id="t5-res"></div>
@@ -303,11 +303,11 @@ function TypingTest(prefix, text, key){
   }
   function finish(){
     if(done) return; done=true; clearInterval(timer);
-    const secs = Math.max(1,(Date.now()-start)/1000); const mins = Math.min(secs,60)/60;
+    const secs = Math.max(1,(Date.now()-start)/1000); const mins = Math.min(secs,180)/60;
     const okc = typed.filter((c,i)=>c===text[i]).length;
     const cpm = Math.round(okc/mins); const acc = total? Math.round((total-errors)/total*1000)/10 : 0;
     const worst = Object.entries(wrong).sort((a,b)=>b[1]-a[1]).slice(0,5).map(x=>`<span class="pill">${esc(x[0]===" "?"spazio":x[0])} ×${x[1]}</span>`).join(" ")||"nessuno";
-    const prev=store.get(key); const r={cpm, wpm:Math.round(cpm/5), acc:String(acc).replace(".",","), errors, total, secs:Math.round(Math.min(secs,60)), n:(prev&&prev.n?prev.n:0)+1};
+    const prev=store.get(key); const r={cpm, wpm:Math.round(cpm/5), acc:String(acc).replace(".",","), errors, total, secs:Math.round(Math.min(secs,180)), n:(prev&&prev.n?prev.n:0)+1};
     store.set(key,r); render();
     let medal = acc>=97?"🥇 Precisione d'oro":acc>=93?"🥈 Precisione d'argento":acc>=88?"🥉 Precisione di bronzo":"🎯 Allenati sulla precisione";
     $("#"+prefix+"-res").classList.remove("hidden");
@@ -315,7 +315,7 @@ function TypingTest(prefix, text, key){
       <div class="stats"><div class="stat"><small>Accuratezza</small><b>${r.acc}%</b></div><div class="stat"><small>Caratteri al minuto (netti)</small><b>${cpm}</b></div><div class="stat"><small>Parole al minuto</small><b>${r.wpm}</b></div><div class="stat"><small>Errori</small><b>${errors}</b></div></div>
       <p>Tasti che hai sbagliato di più: ${worst}</p><p class="small">Accuratezza = tasti giusti ÷ tasti premuti. Caratteri al minuto netti = solo i caratteri giusti. Scrivi questi numeri nella tua scheda.</p>`;
   }
-  function tick(){ const left = 60-Math.floor((Date.now()-start)/1000); $("#"+prefix+"-time").textContent=Math.max(0,left); if(left<=0) finish(); }
+  function tick(){ const left = 180-Math.floor((Date.now()-start)/1000); $("#"+prefix+"-time").textContent=Math.max(0,left); if(left<=0) finish(); }
   area.addEventListener("focus",()=>area.classList.add("focus")); area.addEventListener("blur",()=>area.classList.remove("focus"));
   area.addEventListener("click",()=>area.focus());
   area.addEventListener("keydown",e=>{
@@ -328,7 +328,7 @@ function TypingTest(prefix, text, key){
     total++; if(e.key!==text[i]){ errors++; wrong[text[i]]=(wrong[text[i]]||0)+1; }
     typed.push(e.key); render(); if(typed.length>=text.length) finish();
   });
-  function reset(){ typed=[]; total=0; errors=0; start=null; done=false; wrong={}; clearInterval(timer); $("#"+prefix+"-time").textContent="60"; $("#"+prefix+"-res").classList.add("hidden"); render(); area.focus(); }
+  function reset(){ typed=[]; total=0; errors=0; start=null; done=false; wrong={}; clearInterval(timer); $("#"+prefix+"-time").textContent="180"; $("#"+prefix+"-res").classList.add("hidden"); render(); area.focus(); }
   render(); return {reset};
 }
 const tests = { t1: TypingTest("t1",TXT1,"ini"), t5: TypingTest("t5",TXT2,"fin") };
