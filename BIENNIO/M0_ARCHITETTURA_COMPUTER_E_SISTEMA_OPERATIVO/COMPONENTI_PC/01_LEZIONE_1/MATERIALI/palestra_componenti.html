@@ -330,6 +330,12 @@ const SYM = {
   mfp:`<rect x="6" y="10" width="52" height="8" rx="3" fill="${M}"/><rect x="6" y="17" width="52" height="27" rx="4" fill="${D}"/><rect x="10" y="19" width="44" height="2.5" fill="${T}" fill-opacity=".8"/><rect x="40" y="25" width="12" height="7" rx="1" fill="${L}"/><rect x="14" y="37" width="36" height="3" rx="1.5" fill="#1c252b"/><rect x="17" y="40" width="30" height="18" fill="${W}" stroke="${M}" stroke-width="2"/><path d="M22 47h20M22 52h12" stroke="${M}" stroke-width="2"/>`,
   scanner:`<path d="M8 27L52 15l2 6L10 33z" fill="${M}"/><rect x="6" y="32" width="52" height="19" rx="4" fill="${D}"/><rect x="10" y="34" width="44" height="3" fill="${T}"/><rect x="12" y="39" width="5" height="9" rx="1" fill="${T}" fill-opacity=".6"/><circle cx="50" cy="45" r="2.2" fill="${L}"/>`,
   projector:`<path d="M44 29L63 17v34L44 39z" fill="#f6d49a" fill-opacity=".85"/><rect x="3" y="22" width="44" height="24" rx="6" fill="${D}"/><circle cx="38" cy="34" r="8" fill="${T}"/><circle cx="36" cy="32" r="2.5" fill="${W}" fill-opacity=".7"/><path d="M9 29h15M9 34h15M9 39h15" stroke="${M}" stroke-width="2"/><rect x="7" y="46" width="6" height="4" fill="${D}"/><rect x="36" y="46" width="6" height="4" fill="${D}"/>`,
+  doc:`<path d="M14 4h26l12 12v44H14z" fill="${W}" stroke="${D}" stroke-width="3" stroke-linejoin="round"/><path d="M40 4v12h12" fill="${L}" stroke="${D}" stroke-width="3" stroke-linejoin="round"/><path d="M20 26h26M20 33h26M20 40h26M20 47h16" stroke="${M}" stroke-width="3"/>`,
+  msg:`<path d="M11 10h42a7 7 0 0 1 7 7v23a7 7 0 0 1-7 7H28l-11 10v-10h-6a7 7 0 0 1-7-7V17a7 7 0 0 1 7-7z" fill="${T}"/><path d="M16 23h32M16 33h20" stroke="${W}" stroke-width="4" stroke-linecap="round"/>`,
+  photo:`<rect x="5" y="10" width="54" height="44" rx="5" fill="${D}"/><rect x="9" y="14" width="46" height="36" rx="2" fill="${L}"/><circle cx="21" cy="25" r="5" fill="${G}"/><path d="M9 50l15-17 9 10 8-8 14 15z" fill="${T}"/>`,
+  music:`<circle cx="20" cy="48" r="9" fill="${D}"/><circle cx="46" cy="42" r="9" fill="${D}"/><path d="M26 48V12l26-6v36" fill="none" stroke="${D}" stroke-width="5" stroke-linejoin="round"/><path d="M26 22l26-6" stroke="${T}" stroke-width="5"/>`,
+  film:`<rect x="5" y="10" width="54" height="44" rx="5" fill="${D}"/><rect x="15" y="16" width="34" height="32" rx="2" fill="${L}"/><path d="M27 24l13 8-13 8z" fill="${O}"/>${[16,26,36,46].map(y=>`<rect x="8" y="${y}" width="4" height="5" rx="1" fill="${M}"/><rect x="52" y="${y}" width="4" height="5" rx="1" fill="${M}"/>`).join("")}`,
+  game:`<rect x="4" y="18" width="56" height="30" rx="15" fill="${D}"/><path d="M15 33h12M21 27v12" stroke="${L}" stroke-width="4" stroke-linecap="round"/><circle cx="41" cy="37" r="3.5" fill="${O}"/><circle cx="49" cy="29" r="3.5" fill="${T}"/>`,
   tower:`<rect x="18" y="4" width="28" height="56" rx="4" fill="${D}"/><rect x="22" y="10" width="20" height="4" rx="1" fill="${M}"/><path d="M24 22h16M24 27h16M24 32h16" stroke="${M}" stroke-width="2"/><circle cx="32" cy="50" r="3.2" fill="${T}"/>`,
   disk:`<rect x="10" y="5" width="44" height="54" rx="5" fill="#aeb6bc" stroke="${M}" stroke-width="2"/><circle cx="32" cy="27" r="15" fill="#e3e7ea" stroke="${M}" stroke-width="2"/><circle cx="32" cy="27" r="3" fill="#6b747b"/><path d="M47 50L36 33" stroke="#6b747b" stroke-width="4" stroke-linecap="round"/><circle cx="47" cy="50" r="4.5" fill="#6b747b"/>`
 };
@@ -525,7 +531,7 @@ const SCENE = { mount(h){ h.innerHTML=`<div class="envbox big scene" aria-hidden
    phase "x" = sfida finale: conta la prima risposta, gli errori si contano tutti
    ===================================================================== */
 /* La sezione C tiene il codice "DATO" e le domande i codici C1 e C3: così la verifica dei codici continua a leggerle. */
-const SEC = {A:{code:"COMPONENTI", name:"Componenti"}, B:{code:"INPUT-OUTPUT", name:"Input e output"}, C:{code:"DATO", name:"RAM o disco"}};
+const SEC = {A:{code:"COMPONENTI", name:"Componenti"}, B:{code:"INPUT-OUTPUT", name:"Input e output"}, C:{code:"DATO", name:"RAM o disco"}, D:{code:"SCELTA", name:"Quale PC scegli?"}};
 const q3 = (ok, fbs) => ["Input","Output","Tutti e due"].map((t,i)=> i===ok ? {t, ok:true} : {t, fb:fbs[i]});
 
 const STEPS = [
@@ -640,9 +646,35 @@ const STEPS = [
   success:"Sono proprio i dati dell'identikit: sul PC che hai davanti li trovi negli stessi posti, con gli stessi nomi. Se sulla scatola c'era scritto 512 GB e Windows dice 476, niente paura: Windows conta i GB in un modo un po' diverso.",
   learn:{k:"GHz · GB", d:"velocità del processore · spazio di una memoria"}},
 
+ {id:"g12", phase:"g", title:"Quanto è grande un GB?", env:"sort",
+  theory:`<p>Lo spazio che occupa un file si misura in <b>byte</b>. Le unità vanno di mille in mille: mille <b>KB</b> fanno un <b>MB</b>, mille MB fanno un <b>GB</b>, mille GB fanno un <b>TB</b>.</p><p>Il testo pesa poco, le immagini e la musica di più, i video moltissimo.</p>`,
+  keys:`<b>KB</b> testo · <b>MB</b> foto e canzoni · <b>GB</b> film e giochi · 1 TB = 1000 GB`,
+  task:`Quanto pesa, più o meno, ognuna di queste cose? Tocca una carta, poi l'unità giusta.`,
+  sort:{bins:[{id:"kb",label:"KB",sub:"pochissimo"},{id:"mb",label:"MB",sub:"mille volte di più"},{id:"gb",label:"GB",sub:"un milione di volte di più"}],
+   cards:[{id:"film",icon:"film",label:"Un film in alta definizione",bin:"gb",why:"Un film sono migliaia di immagini al minuto, più l'audio: pesa alcuni GB."},
+          {id:"msg",icon:"msg",label:"Un messaggio di solo testo",bin:"kb",why:"Poche parole pesano pochissimo: meno di un KB."},
+          {id:"photo",icon:"photo",label:"Una foto del telefono",bin:"mb",why:"Una foto del telefono pesa qualche MB: molto più del testo, molto meno di un film."},
+          {id:"game",icon:"game",label:"Un videogioco per PC",bin:"gb",why:"Un videogioco contiene grafica, video e suoni: decine di GB."},
+          {id:"doc",icon:"doc",label:"Un tema di due pagine",bin:"kb",why:"Due pagine di testo pesano qualche decina di KB."},
+          {id:"music",icon:"music",label:"Una canzone",bin:"mb",why:"Una canzone di tre minuti pesa qualche MB."}]},
+  hint:"Solo testo: KB. Una foto o una canzone: MB. Tanti minuti di video o un gioco intero: GB.",
+  success:"Ora i numeri del disco dicono qualcosa: in 476 GB stanno circa cento film, oppure più di centomila foto.",
+  learn:{k:"KB · MB · GB · TB", d:"di mille in mille: testo · foto e canzoni · film e giochi"}},
+
+ {id:"g13", phase:"g", title:"Leggere una scheda tecnica", env:"big", big:{icon:"tower", name:"Intel Core i5 · 16 GB · SSD 512 GB"},
+  theory:`<p>Negli annunci un computer è descritto con tre dati.</p><p>Il <b>processore</b>: nome e velocità in GHz. La <b>RAM</b>, in GB: più ce n'è, più programmi restano aperti insieme senza rallentare. La <b>memoria di massa</b>, in GB o TB: quanti file ci stanno. Un SSD è più veloce di un hard disk; l'hard disk costa meno a parità di spazio.</p>`,
+  keys:`<b>RAM</b> = quanti programmi insieme · <b>disco</b> = quanti file ci stanno`,
+  task:`Un annuncio dice soltanto: «Core i5 · <b>16 GB</b> · <b>512 GB</b>». Qual è la RAM?`,
+  quiz:[{t:"512 GB: è il numero più grande.", fb:"Il numero più grande è quasi sempre il disco: deve contenere tutti i file. La RAM è il piano di lavoro, molto più piccola."},
+        {t:"16 GB: la RAM è sempre molto più piccola del disco.", ok:true},
+        {t:"Non si può sapere: sono tutti e due GB.", fb:"L'unità è la stessa, ma le misure sono molto diverse: una RAM va da 4 a 64 GB, un disco da 256 GB in su."}],
+  hint:"Pensa alla scrivania: il piano (RAM) è piccolo, il cassetto (disco) è grande.",
+  success:"Nel tuo identikit hai trovato gli stessi tre dati: adesso li sai leggere anche in un negozio.",
+  learn:{k:"scheda tecnica", d:"processore · RAM (GB, piccola) · disco (GB o TB, grande)"}},
+
  {id:"x0", screen:"finalX"},
 
- /* ---------- SFIDA FINALE: 16 domande in 3 sezioni ---------- */
+ /* ---------- SFIDA FINALE: 19 domande in 4 sezioni ---------- */
  {id:"x1", phase:"x", sec:"A", code:"A1", env:"pc", pc:{mode:"show", hl:"ram"},
   task:"Davide indica un pezzo: è quello circondato da un bordo spesso nella foto. Che componente è?",
   sr:"Il pezzo indicato: stecche lunghe in verticale, a destra del quadrato di metallo al centro della scheda.",
@@ -708,6 +740,25 @@ const STEPS = [
   task:"Salvi il file, spegni il PC e lo riaccendi il giorno dopo. Da dove riapri il file?",
   quiz:[{t:"Dalla RAM (memoria di lavoro)", fb:"Spegnendo, la RAM si è svuotata: il file è rimasto sul disco."},{t:"Dal disco (memoria di massa)", ok:true},{t:"Dalla CPU (processore)", fb:"La CPU non conserva i file: esegue le istruzioni."}],
   why:"Spegnendo, la RAM si svuota: il file salvato resta sul disco."},
+
+ {id:"x18", phase:"x", sec:"D", code:"D1", env:"big", big:{icon:"tower", name:"Un PC per la nonna"},
+  task:"La nonna di Sara usa il computer solo per la posta e le videochiamate. Quale PC le basta?",
+  quiz:[{t:"Core i3 · 8 GB di RAM · SSD 256 GB", ok:true},
+        {t:"Core i9 · 64 GB di RAM · SSD 4 TB · scheda video da gioco", fb:"Funzionerebbe, ma è sprecato: tutta quella potenza la nonna non la userebbe mai, e costa molto di più."},
+        {t:"Core i3 · 2 GB di RAM · hard disk 2 TB", fb:"Lo spazio è tantissimo, ma 2 GB di RAM non bastano nemmeno per Windows e una videochiamata: sarebbe lentissimo."}],
+  why:"Per posta e videochiamate basta un PC semplice: il computer giusto è quello adatto a chi lo usa, non il più potente."},
+ {id:"x19", phase:"x", sec:"D", code:"D2", env:"big", big:{icon:"tower", name:"Un PC per Giulia"},
+  task:"Giulia tiene aperti insieme il browser con trenta schede, Word e una videochiamata: il suo PC rallenta. Due PC nuovi costano uguale. Quale sceglie?",
+  quiz:[{t:"8 GB di RAM · SSD 1 TB", fb:"1 TB è spazio per i file, ma i programmi aperti stanno nella RAM. Con 8 GB Giulia avrebbe lo stesso problema di adesso."},
+        {t:"16 GB di RAM · SSD 512 GB", ok:true},
+        {t:"È lo stesso: conta solo il processore.", fb:"Il processore conta, ma qui il problema sono tanti programmi aperti insieme: stanno tutti nella RAM."}],
+  why:"Tanti programmi aperti insieme occupano la RAM: a Giulia serve più RAM, non più disco."},
+ {id:"x20", phase:"x", sec:"D", code:"D3", env:"big", big:{icon:"disk", name:"Un PC per Marco"},
+  task:"Marco ha 400 GB di foto e video e li vuole tenere tutti nel computer. Quale PC va bene?",
+  quiz:[{t:"32 GB di RAM · SSD 256 GB", fb:"La RAM non conserva i file: quando spegni si svuota. Sul disco ci sono solo 256 GB: 400 non ci stanno."},
+        {t:"16 GB di RAM · SSD 256 GB", fb:"I file stanno sul disco, e 400 GB non entrano in 256."},
+        {t:"8 GB di RAM · SSD 1 TB", ok:true}],
+  why:"I file si conservano sul disco: 1 TB sono circa 1000 GB, quindi 400 ci stanno. La RAM qui non c'entra."},
 
  {id:"end", screen:"end"}
 ];
@@ -947,7 +998,7 @@ const App = (()=>{
     },
     finalX(el){
       el.innerHTML = `<h2>🏁 Sfida finale</h2>
-        <p>Hai visto tutti i pezzi. Prima di affidarti un PC, Davide ti fa <b>${CHAL.length} domande veloci</b> in tre gruppi: componenti, input e output, RAM o disco.</p>
+        <p>Hai visto tutti i pezzi. Prima di affidarti un PC, Davide ti fa <b>${CHAL.length} domande veloci</b> in quattro gruppi: componenti, input e output, RAM o disco, quale PC scegli.</p>
         <p>Conta la <b>prima risposta</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
         <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
         <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;

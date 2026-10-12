@@ -544,6 +544,20 @@ const STEPS = [
   success:"«Dove sta adesso?» è la domanda giusta per non confondere più RAM e disco.",
   learn:{k:"dove sta adesso?", d:"RAM mentre lo usi, memoria di massa quando è salvato o spento"}},
 
+ {id:"g8", phase:"g", title:"Lo stesso schema nel telefono", m:{inDev:"👆 🎤", inCap:"schermo touch · microfono", ram:["🤖 Android","💬 chat"], mm:["🤖 Android","💬 chat","🖼️ foto"], scr:"💬"},
+  theory:`<p>Un telefono non ha tastiera né mouse, ma i blocchi sono gli stessi cinque: cambiano solo i pezzi.</p><p>Attenzione allo <b>schermo touch</b>: quando lo tocchi fa entrare dati, quando ti mostra qualcosa li fa uscire. Un solo pezzo, due blocchi.</p>`,
+  keys:"stessi blocchi, pezzi diversi · lo schermo touch è input <b>e</b> output",
+  task:"Per ogni parte del telefono clicca nello schema il blocco a cui appartiene.",
+  assign:[{t:"Il microfono, mentre registri un vocale", b:"in", fb:{out:"Il microfono non fa uscire niente: raccoglie la voce e la fa entrare."}},
+          {t:"L'altoparlante, mentre ascolti il vocale", b:"out", fb:{in:"L'altoparlante non raccoglie niente: fa uscire il suono."}},
+          {t:"Lo schermo, mentre ci scrivi con il dito", b:"in", fb:{out:"Quando mostra è output. Ma adesso lo stai toccando: il dato entra."}},
+          {t:"Lo schermo, mentre ti mostra una foto", b:"out", fb:{in:"Quando lo tocchi è input. Ma adesso sta mostrando: il dato esce."}},
+          {t:"La «memoria da 128 GB» scritta sulla scatola: foto e app restano anche a telefono spento", b:"mm", fb:{ram:"La RAM si svuota quando spegni. Qui foto e app restano: è la memoria di massa."}},
+          {t:"Il chip che esegue le istruzioni delle app", b:"cpu"}],
+  hint:"Chiediti per ogni parte: fa entrare, fa uscire, conserva o esegue?",
+  success:"Telefono, console, smartwatch, automobile: dove c'è un computer ci sono questi cinque blocchi. Sulla scatola del telefono «memoria» vuol dire quasi sempre memoria di massa; la RAM è l'altro numero, più piccolo.",
+  learn:{k:"lo schema vale ovunque", d:"stessi blocchi, pezzi diversi · lo schermo touch è input e output"}},
+
  {id:"a1", lv:"a", phase:"g", title:"Dentro la CPU", view:{cpu:"detail"},
   theory:`<p>Apriamo la CPU. Dentro ci sono tre parti:</p><ul class="mini"><li>l'<b>unità di controllo</b>: legge le istruzioni una alla volta e dà gli ordini a tutti gli altri blocchi</li><li>l'<b>ALU</b> (unità aritmetico-logica): fa i calcoli (+ − × ÷) e i confronti (è più grande? sono uguali?)</li><li>i <b>registri</b>: memorie piccolissime e velocissime, dove la CPU tiene i numeri su cui sta lavorando</li></ul>`,
   task:"Per ogni frase clicca la parte giusta dentro la CPU.",
@@ -594,6 +608,9 @@ const STEPS = [
  {id:"x2", phase:"x", sec:"A", code:"A2", view:{bare:true},
   task:"Le casse (gli altoparlanti) del computer: in quale blocco dello schema vanno? Clicca nello schema.",
   assign:[{b:"out", fb:{in:"Le casse non fanno entrare niente: fanno uscire il suono."}}], why:"Le casse fanno uscire il suono: sono un dispositivo di output."},
+ {id:"x10", phase:"x", sec:"A", code:"A3", view:{bare:true},
+  task:"Scrivi un messaggio toccando lo schermo del telefono. In quell'istante, quale blocco dello schema sta facendo lo schermo? Clicca nello schema.",
+  assign:[{b:"in", fb:{out:"Lo schermo è output quando mostra. Mentre ci scrivi con il dito sta facendo entrare dati."}}], why:"Lo schermo touch fa due lavori: mentre lo tocchi è input, mentre mostra è output."},
  {id:"x3", phase:"x", sec:"B", code:"B1", m:{inDev:"📷 ⌨️", inCap:"webcam · tastiera", ram:["🪟 Windows","📸 Fotocamera"], scr:"📸"},
   task:"Fai una foto con la webcam e guardala sullo schermo: guida la foto, blocco dopo blocco, fino allo schermo.",
   journey:{start:"in", label:"📷 foto", fb:FB_IN,
@@ -943,8 +960,8 @@ const App = (()=>{
         <p><label for="w-name"><b>Il tuo nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
         <p style="margin-bottom:4px"><b>Livello</b> <span class="small">(se non sai quale, chiedi al docente)</span></p>
         <div class="lvl" role="radiogroup" aria-label="Livello">
-          <label class="${LV==="base"?"on":""}"><input type="radio" name="lv" value="base" ${LV==="base"?"checked":""} ${any?"disabled":""}><span><b>🟢 Base</b>I cinque blocchi, il bus, il viaggio di un dato, salvare e accendere. ${GUIDED_N("base")} passi e ${CHAL_N("base")} domande, circa 15 minuti.</span></label>
-          <label class="${LV==="approfondito"?"on":""}"><input type="radio" name="lv" value="approfondito" ${LV==="approfondito"?"checked":""} ${any?"disabled":""}><span><b>🔵 Approfondito</b>In più: dentro la CPU (unità di controllo, ALU, registri), i tre bus, programma e dati nella stessa memoria, il ciclo prendi-decodifica-esegui. ${GUIDED_N("approfondito")} passi e ${CHAL_N("approfondito")} domande, circa 25 minuti.</span></label>
+          <label class="${LV==="base"?"on":""}"><input type="radio" name="lv" value="base" ${LV==="base"?"checked":""} ${any?"disabled":""}><span><b>🟢 Base</b>I cinque blocchi, il bus, il viaggio di un dato, salvare e accendere. ${GUIDED_N("base")} passi e ${CHAL_N("base")} domande, circa 18 minuti.</span></label>
+          <label class="${LV==="approfondito"?"on":""}"><input type="radio" name="lv" value="approfondito" ${LV==="approfondito"?"checked":""} ${any?"disabled":""}><span><b>🔵 Approfondito</b>In più: dentro la CPU (unità di controllo, ALU, registri), i tre bus, programma e dati nella stessa memoria, il ciclo prendi-decodifica-esegui. ${GUIDED_N("approfondito")} passi e ${CHAL_N("approfondito")} domande, circa 28 minuti.</span></label>
         </div>
         ${any?`<p class="small">Il livello non si può cambiare a palestra iniziata: per cambiarlo usa «Ricomincia tutto da zero» alla fine, oppure «Nuovo studente» nelle Opzioni in fondo.</p>`:""}
         <div class="fb ko hidden" id="w-err" role="alert"></div>

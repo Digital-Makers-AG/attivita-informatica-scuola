@@ -345,6 +345,7 @@ const SYM = {
   screwdriver:`<g transform="rotate(-45 32 32)"><rect x="26" y="2" width="12" height="24" rx="5" fill="${O}"/><rect x="29.5" y="26" width="5" height="22" fill="${M}"/><path d="M28 48h8l-2 8h-4z" fill="${D}"/></g><circle cx="53" cy="53" r="6" fill="#b3bcc2" stroke="${D}" stroke-width="2"/><path d="M49.5 53h7M53 49.5v7" stroke="${D}" stroke-width="2"/>`,
   download:`<path d="M32 8v28" stroke="${T}" stroke-width="7" stroke-linecap="round"/><path d="M19 26l13 13 13-13" fill="none" stroke="${T}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 44v10h44V44" fill="none" stroke="${D}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`,
   trash:`<rect x="18" y="20" width="28" height="36" rx="3" fill="${D}"/><rect x="13" y="13" width="38" height="6" rx="2" fill="${D}"/><rect x="26" y="7" width="12" height="7" rx="2" fill="${D}"/><path d="M26 30l12 14M38 30L26 44" stroke="${W}" stroke-width="4" stroke-linecap="round"/>`,
+  chip:(()=>{ let s=""; for(let i=0;i<4;i++){ const q=f1(20+i*8); s+=`<rect x="${q}" y="6" width="3" height="10" fill="${M}"/><rect x="${q}" y="48" width="3" height="10" fill="${M}"/><rect x="6" y="${q}" width="10" height="3" fill="${M}"/><rect x="48" y="${q}" width="10" height="3" fill="${M}"/>`; } return s+`<rect x="14" y="14" width="36" height="36" rx="4" fill="${D}"/><rect x="21" y="21" width="22" height="22" rx="2" fill="${T}"/><path d="M26 29h12M26 35h8" stroke="${W}" stroke-width="2.5" stroke-linecap="round"/>`; })(),
   crack:`<rect x="16" y="3" width="32" height="58" rx="6" fill="${D}"/><rect x="19" y="8" width="26" height="48" rx="2" fill="${L}"/><path d="M38 8l-8 14 7 6-10 12 6 5-6 11" fill="none" stroke="${D}" stroke-width="2.5" stroke-linejoin="round"/><path d="M30 22l-9 4M27 40l12 3" fill="none" stroke="${D}" stroke-width="1.8"/>`
 };
 document.body.insertAdjacentHTML("afterbegin", `<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">${Object.keys(SYM).map(k=>`<symbol id="i-${k}" viewBox="0 0 64 64">${SYM[k]}</symbol>`).join("")}</svg>`);
@@ -399,7 +400,7 @@ const BIG = { mount(h,c){ h.innerHTML=`<div class="envbox big">${ICON(c.icon,"xl
    phase "g" = percorso guidato: pillola di teoria + pratica
    phase "x" = sfida finale: conta la prima risposta, gli errori si contano tutti
    ===================================================================== */
-const SEC = {A:{code:"HW-SW", name:"Hardware o software"}, B:{code:"INSIEME", name:"Hardware e software insieme"}, C:{code:"GUASTI", name:"Guasto o problema?"}};
+const SEC = {A:{code:"HW-SW", name:"Hardware o software"}, B:{code:"INSIEME", name:"Hardware e software insieme"}, C:{code:"GUASTI", name:"Guasto o problema?"}, D:{code:"FIRMWARE", name:"Firmware e programmi"}};
 const hw2 = (ok, fb) => ["Hardware","Software"].map((t,i)=> i===ok ? {t, ok:true} : {t, fb});
 const gp2 = (ok, fb) => ["Guasto hardware","Problema software"].map((t,i)=> i===ok ? {t, ok:true} : {t, fb});
 
@@ -441,6 +442,17 @@ const STEPS = [
   success:"Gli ordini li dà il <b>software</b>. Senza programmi i pezzi resterebbero fermi; senza pezzi i programmi non partirebbero: servono sempre tutti e due.",
   learn:{k:"chi dà gli ordini", d:"il software dà le istruzioni · l'hardware le esegue"}},
 
+ {id:"g8", phase:"g", title:"Stesso pezzo, programmi diversi", env:"big", big:{icon:"game", name:"La stessa console, due giochi"},
+  theory:`<p>Lo stesso hardware può fare cose molto diverse: dipende da quale <b>programma</b> sta eseguendo.</p><p>Una console è sempre la stessa scatola. Con un gioco di calcio fa una cosa, con un gioco di corse ne fa un'altra. I pezzi non cambiano: cambiano le <b>istruzioni</b>.</p>`,
+  keys:`cambi il programma = cambia <b>che cosa fa</b> · cambi il pezzo = cambia <b>quanto bene</b> lo fa`,
+  task:`Sara vuole che la sua console faccia girare un gioco nuovo, uscito ieri. La console funziona bene. Che cosa le serve?`,
+  quiz:[{t:"Una console nuova: quella di prima conosce solo i giochi vecchi.", fb:"La console non «conosce» i giochi: esegue le istruzioni che le dai. Per un gioco nuovo bastano istruzioni nuove, cioè un programma."},
+        {t:"Il gioco: un programma in più sulla stessa console.", ok:true},
+        {t:"Un controller nuovo.", fb:"Il controller è un pezzo: serve a dare i comandi, non a far partire un gioco che non c'è. Manca il programma."}],
+  hint:"La console è la stessa di ieri e funziona. Che cosa manca, un pezzo o delle istruzioni?",
+  success:"Un pezzo, tanti programmi: per questo lo stesso telefono fa da sveglia, da macchina fotografica e da navigatore. Un pezzo nuovo serve solo quando quello vecchio è rotto o troppo lento.",
+  learn:{k:"stesso pezzo, programmi diversi", d:"il programma decide che cosa fa · il pezzo quanto bene lo fa"}},
+
  {id:"g4", phase:"g", title:"Cacciavite o clic?", env:"sort",
   theory:`<p>Hardware e software si trattano in modo diverso.</p><p>Un pezzo lo <b>monti</b>, lo <b>colleghi</b> con un cavo, lo <b>cambi</b> se si rompe: servono le mani, a volte un cacciavite. Un programma lo <b>installi</b>, lo <b>aggiorni</b>, lo <b>disinstalli</b>: bastano pochi clic, e nessun pezzo si muove.</p>`,
   keys:`🔧 monti, colleghi, cambi = <b>hardware</b> · ⬇️ installi, aggiorni, disinstalli = <b>software</b>`,
@@ -468,8 +480,19 @@ const STEPS = [
           {id:"phoneos",icon:"phoneos",label:"Android",bin:"so",why:"Android non è un'app: è il sistema operativo di molti telefoni. Le app girano su Android."},
           {id:"drvgpu",icon:"drvgpu",label:"Driver della scheda video",bin:"drv",why:"Serve a Windows per usare la scheda video: è un driver."}]},
   hint:"Chi comanda tutto e fa partire gli altri programmi? Il sistema operativo. Chi usi tu? Le app. Chi serve solo a far funzionare un pezzo? Il driver.",
-  success:"E il <b>firmware</b>? È un programma scritto dentro un chip di un dispositivo: per esempio il BIOS della scheda madre, che parte per primo all'accensione. Software che vive dentro l'hardware: un caso di confine. Tu come lo classificheresti? Parlane con l'insegnante.",
+  success:"Sistema operativo, app e driver stanno tutti sul disco del computer. Esiste però un programma che sta in un altro posto: dentro un pezzo. Lo vedi nel prossimo passo.",
   learn:{k:"sistema operativo · app · driver", d:"comanda · la usi tu · fa usare un dispositivo"}},
+
+ {id:"g7", phase:"g", title:"Il firmware: software dentro il pezzo", env:"big", big:{icon:"chip", name:"Chip con il firmware"},
+  theory:`<p>Alcuni programmi non stanno sul disco: sono scritti dentro un <b>chip</b> del dispositivo. Si chiamano <b>firmware</b>.</p><p>Il firmware della scheda madre (BIOS o UEFI) è il primo programma che parte quando accendi il PC: controlla i pezzi e avvia il sistema operativo. Hanno un firmware anche la stampante, il router, la smart TV, le cuffie senza fili.</p>`,
+  keys:`il chip si tocca = <b>hardware</b> · le istruzioni scritte dentro = <b>software</b> (firmware)`,
+  task:`Un compagno dice: «Il firmware sta dentro un chip, e il chip si tocca: quindi il firmware è hardware». Che cosa rispondi?`,
+  quiz:[{t:"Giusto: quello che sta dentro un pezzo è hardware.", fb:"Anche Windows sta dentro un pezzo, il disco, ma resta un programma. Conta che cosa è, non dove sta: il firmware è un elenco di istruzioni."},
+        {t:"Il chip è hardware. Il firmware sono le istruzioni scritte dentro: è software.", ok:true},
+        {t:"Il firmware non è né hardware né software: è una terza cosa.", fb:"Le parti restano due. Il firmware è un elenco di istruzioni, e infatti si può aggiornare: è software. Di particolare ha solo il posto in cui sta."}],
+  hint:"Un firmware si può aggiornare scaricando una versione nuova. Si può fare con un pezzo?",
+  success:"Il firmware è <b>software che vive dentro l'hardware</b>. Si aggiorna, come ogni programma, ma di rado e con attenzione: se l'aggiornamento si interrompe a metà, il dispositivo può non accendersi più.",
+  learn:{k:"firmware", d:"programma scritto dentro un chip · parte per primo all'accensione"}},
 
  {id:"g6", phase:"g", title:"È il pezzo o è il programma?", env:"sort",
   theory:`<p>Quando qualcosa non funziona, ogni tecnico parte dalla stessa domanda: <b>è il pezzo o è il programma?</b></p><p>Se si è rotto un pezzo è un <b>guasto hardware</b>: il pezzo si ripara o si cambia. Se i pezzi sono a posto ma un programma manca o sbaglia è un <b>problema software</b>: il programma si aggiorna o si installa di nuovo.</p>`,
@@ -488,7 +511,7 @@ const STEPS = [
 
  {id:"x0", screen:"finalX"},
 
- /* ---------- SFIDA FINALE: 10 domande in 3 sezioni ---------- */
+ /* ---------- SFIDA FINALE: 13 domande in 4 sezioni ---------- */
  {id:"x1", phase:"x", sec:"A", code:"A1", env:"big", big:{icon:"drvprinter", name:"Driver della stampante"}, task:"Il driver della stampante è…",
   quiz:hw2(1,"Il driver non si tocca: è un piccolo programma che insegna a Windows a usare la stampante."),
   why:"Il driver è un programma: software. La stampante, invece, è hardware."},
@@ -533,6 +556,21 @@ const STEPS = [
         {t:"No: lo schermo è hardware, va sostituito.", ok:true},
         {t:"Sì, ma bisogna anche reinstallare le app.", fb:"Reinstallare le app sistema i programmi, non i pezzi. Il vetro rotto resta rotto."}],
   why:"Un pezzo rotto si sostituisce con le mani. Il software si scarica, l'hardware no."},
+ {id:"x11", phase:"x", sec:"D", code:"D1", env:"big", big:{icon:"chip", name:"BIOS della scheda madre"}, task:"Il BIOS, il programma che parte per primo quando accendi il PC, è…",
+  quiz:hw2(1,"Il chip che lo contiene è un pezzo, ma il BIOS è un elenco di istruzioni: è un programma, e infatti si può aggiornare."),
+  why:"Il BIOS è un firmware: software scritto dentro un chip della scheda madre. Il chip è hardware, le istruzioni no."},
+ {id:"x12", phase:"x", sec:"D", code:"D2", env:"big", big:{icon:"update", name:"Cuffie senza fili, aggiornate"},
+  task:"Dopo un aggiornamento del firmware, le cuffie senza fili di Sara hanno una funzione in più: si mettono in pausa quando le toglie. Che cosa è cambiato nelle cuffie?",
+  quiz:[{t:"L'hardware: dentro c'è un sensore nuovo.", fb:"Nessuno ha aperto le cuffie: il sensore c'era già. Sono cambiate le istruzioni che lo usano, cioè il firmware."},
+        {t:"Il software: le istruzioni scritte nel chip.", ok:true},
+        {t:"Niente: la funzione c'era già, Sara non l'aveva vista.", fb:"Prima dell'aggiornamento le cuffie non lo facevano. I pezzi sono gli stessi, ma il firmware nuovo li usa in un altro modo."}],
+  why:"Stessi pezzi, istruzioni nuove: un aggiornamento del firmware cambia solo il software."},
+ {id:"x13", phase:"x", sec:"D", code:"D3", env:"big", big:{icon:"touch", name:"Tablet di tre anni fa"},
+  task:"Il tablet di Marco funziona bene, ma i video in altissima definizione vanno a scatti: il processore non ce la fa. Marco ha già aggiornato tutto. Che cosa risolve il problema?",
+  quiz:[{t:"Un altro aggiornamento.", fb:"Un aggiornamento cambia le istruzioni, non la potenza del processore. I programmi sono già a posto: è il pezzo che non basta."},
+        {t:"Un'app diversa per i video.", fb:"Un'altra app darebbe le stesse istruzioni allo stesso processore. Qui il limite è nel pezzo."},
+        {t:"Un hardware più potente.", ok:true}],
+  why:"Il programma decide che cosa fare, il pezzo quanto bene riesce a farlo. Quando il limite è nel pezzo, nessun programma lo sposta."},
 
  {id:"end", screen:"end"}
 ];
@@ -743,7 +781,7 @@ const App = (()=>{
     },
     finalX(el){
       el.innerHTML = `<h2>🏁 Sfida finale</h2>
-        <p>Adesso il banco delle riparazioni è tuo. Davide ti fa <b>${CHAL.length} domande veloci</b> in tre gruppi: hardware o software, hardware e software insieme, guasto o problema.</p>
+        <p>Adesso il banco delle riparazioni è tuo. Davide ti fa <b>${CHAL.length} domande veloci</b> in quattro gruppi: hardware o software, hardware e software insieme, guasto o problema, firmware e programmi.</p>
         <p>Conta la <b>prima risposta</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
         <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
         <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
