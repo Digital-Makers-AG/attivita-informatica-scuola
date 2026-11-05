@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Il viaggio di una pagina · Linguaggi web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%8D%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.keys{white-space:nowrap}
+code{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.95em;font-family:Consolas,"Courier New",monospace}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.star{background:var(--orange-d)}.btn.star:hover{background:#7d3609}
+.btn.hintb{background:#fff;color:var(--orange-d);border:2px solid var(--orange);padding:8px 14px}
+.btn.skipb{background:#fff;color:var(--muted);border:2px solid var(--line);padding:8px 14px;margin-left:auto}
+.btn.skipb:hover{background:#f2f4f5;color:var(--ink)}
+.btn:focus-visible,input:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible,.card:focus-visible,.binhead:focus-visible,.fopt:focus-visible,.sw:focus-visible,.cl:focus-visible,[data-el]:focus-visible,.rl:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px;font-family:inherit}
+/* schermate */
+.screen{max-width:760px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen h3{color:var(--teal-d);margin:18px 0 6px}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.screen .fields{display:flex;gap:14px;flex-wrap:wrap}.screen .fields p{margin:6px 0}
+.screen input#w-cls{max-width:120px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px;flex:1}
+.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{display:block;color:var(--muted);font-size:13px}
+.stat.tot{background:var(--orange-l)}.stat.tot b{color:var(--orange-d)}
+details.review{background:#fffaf2;border:1px solid #f0d9bf;border-radius:10px;padding:8px 14px;margin:10px 0}
+details.review summary{cursor:pointer;font-weight:bold;color:var(--orange-d)}
+details.review li{margin:6px 0}
+textarea.copy{width:100%;height:92px;font-family:"Courier New",monospace;font-size:14px;padding:8px;border:2px solid var(--line);border-radius:8px;resize:vertical}
+.bonusbox{background:var(--orange-l);border-radius:12px;padding:12px 16px;margin:16px 0}.bonusbox p{margin:6px 0}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:minmax(0,1fr)}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em;outline:none}
+.theory{border-left:4px solid var(--teal);padding-left:10px}
+.theory p{margin:0 0 10px}
+.theory .pill{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-d);font-weight:bold;margin-bottom:2px}
+.keybox{display:block;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1em}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-d);font-weight:bold;margin-bottom:2px}
+.dock.docked{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.dock.docked .quiz{margin-top:0}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.qopt.right::after{content:" ✔"}
+.qopt:disabled{cursor:default;color:var(--ink)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px;font-family:inherit}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(390px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+/* ambienti */
+.stage{min-width:0}
+.envbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+.envstatus{font-size:14px;color:var(--muted);margin:8px 2px 0;min-height:1.4em}
+.envbox>.envstatus:first-child{margin:0 2px 10px}
+.em{font-size:32px;line-height:1.1}
+.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:300px;text-align:center}
+.big .nm{font-size:1.45em;font-weight:bold;color:var(--teal-d)}
+.big .em{font-size:92px}
+.big .tx{max-width:560px;text-align:left;background:var(--teal-l);border-radius:10px;padding:10px 14px}
+.big .tx ul{margin:4px 0 0;padding-left:20px}.big .tx li{margin:3px 0}
+.big .tx.shot{background:none;padding:0;max-width:600px;width:100%}
+/* carte e cestini */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:76px;padding:10px;border:2px dashed var(--line);border-radius:12px;background:#fafbfb;align-items:flex-start}
+.pool:empty{display:none}
+.card{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:4px;width:124px;padding:8px 6px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font:inherit;font-size:.88em;color:var(--ink);text-align:center;touch-action:manipulation;user-select:none;line-height:1.2}
+.card:hover{border-color:var(--teal)}
+.card.picked{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(217,102,26,.25);transform:translateY(-2px)}
+.card.bad{border-color:var(--ko);background:var(--ko-l)}
+.card .badmark{font-size:11px;font-weight:bold;color:var(--ko)}
+.card.dragging{opacity:.35}
+.ghost{position:fixed;pointer-events:none;z-index:60;opacity:.92;transform:rotate(-3deg);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.bins{display:grid;gap:12px;margin-top:12px}
+.bins.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.bins.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bin{border:2px solid var(--teal);border-radius:14px;background:var(--teal-l);min-height:170px;display:flex;flex-direction:column;cursor:pointer}
+.bin.armed{border-style:dashed;background:#d5ecec}
+.bin.over{background:#c3e4e4;border-color:var(--orange)}
+.binhead{display:block;width:100%;background:transparent;border:0;padding:10px 12px 8px;text-align:left;font:inherit;cursor:pointer;color:var(--teal-d)}
+.binhead .bn{display:block;font-weight:bold;font-size:1.08em}
+.binhead small{display:block;color:var(--muted);font-size:13px}
+.drophere{display:inline-block;margin-top:4px;font-size:12px;font-weight:bold;color:var(--orange-d)}
+.binbody{display:flex;flex-wrap:wrap;gap:8px;padding:0 10px 10px;align-content:flex-start;flex:1}
+.bin .card{width:112px}
+/* gioco di ruolo: diagramma dei messaggi */
+.actors,.mrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.actor{text-align:center;padding:4px 4px 8px;border-bottom:2px solid var(--line)}
+.actor .em{font-size:42px;display:block}.actor b{display:block}.actor small{display:block;color:var(--muted);font-size:13px}
+.actor.lit{background:var(--ok-l);border-radius:10px 10px 0 0}
+.lane{min-height:60px;padding:6px 0 10px;background:linear-gradient(#c9d3d8,#c9d3d8) no-repeat 16.66% 0/2px 100%,linear-gradient(#c9d3d8,#c9d3d8) no-repeat 50% 0/2px 100%,linear-gradient(#c9d3d8,#c9d3d8) no-repeat 83.33% 0/2px 100%}
+.msg{position:relative;padding:20px 0 6px}
+.msg .line{position:absolute;top:10px;left:var(--m);right:var(--m);height:3px;background:var(--teal)}
+.msg.r .line::after,.msg.l .line::after{content:"";position:absolute;top:-5px;border-top:6.5px solid transparent;border-bottom:6.5px solid transparent}
+.msg.r .line::after{right:-3px;border-left:11px solid var(--teal)}
+.msg.l .line::after{left:-3px;border-right:11px solid var(--teal)}
+.msg.resp .line{background:var(--orange)}.msg.resp.r .line::after{border-left-color:var(--orange)}.msg.resp.l .line::after{border-right-color:var(--orange)}
+.msg .mt{display:block;margin:0 calc(var(--m) - 6%);text-align:center;font-size:.86em;background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 6px;position:relative}
+.msg .mt b{color:var(--muted);font-size:11px;display:block;letter-spacing:.04em;text-transform:uppercase}
+.fask{margin:12px 2px 6px;font-weight:bold;color:var(--orange-d)}
+.fchoices{display:flex;flex-direction:column;gap:8px}
+.fopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer;font:inherit;font-size:.95em;color:var(--ink)}
+.fopt:hover{border-color:var(--teal)}
+.fopt small{display:block;color:var(--muted);font-weight:bold}
+.fopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.fmsg{margin:8px 2px 0;border-radius:8px;padding:8px 12px}
+.fmsg.ko{background:var(--ko-l);color:#7d1a14}.fmsg.ok{background:var(--ok-l);color:#14532b;font-weight:bold}
+/* terminale */
+.term{background:#0c0c0c;color:#e6e6e6;font-family:Consolas,"Courier New",monospace;border-radius:10px;overflow:hidden;font-size:15px}
+.term .tbar{background:#e9ecee;color:#1d2329;font:13px Arial,sans-serif;padding:6px 10px;display:flex;gap:8px;align-items:center}
+.term .tbar span{margin-left:auto;color:var(--muted)}
+.term pre{margin:0;padding:10px 12px 0;white-space:pre-wrap;word-break:break-word;font:inherit;min-height:60px;max-height:330px;overflow:auto}
+.term .tin{display:flex;align-items:center;padding:0 12px 12px;flex-wrap:wrap}
+.term .tin label{white-space:nowrap}
+.term .tin input{flex:1;min-width:140px;background:transparent;border:0;color:#fff;font:inherit;caret-color:#fff;padding:2px 0;outline:none}
+.term .tin input:focus-visible{outline:none;box-shadow:0 2px 0 #ffd166}
+.term .hl{color:#ffd166}.term .er{color:#ff9b8f}
+.term.static pre{max-height:none;padding-bottom:12px}
+/* browser e strumenti per sviluppatori */
+.bw{border:1px solid #b9c2c9;border-radius:10px;overflow:hidden;background:#fff}
+.bw-bar{display:flex;align-items:center;gap:8px;background:#e9ecee;padding:6px 10px}
+.bw-bar .dots{color:#b9c2c9;font-size:11px;letter-spacing:2px}
+.rl{background:#fff;border:1px solid #b9c2c9;border-radius:6px;font-size:16px;line-height:1;padding:3px 8px;cursor:pointer}
+.rl.hl{border-color:var(--orange);box-shadow:0 0 0 3px rgba(217,102,26,.35)}
+.url{flex:1;background:#fff;border-radius:14px;padding:3px 12px;font-size:14px;color:#3a474d;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.site{padding:14px 16px;font-family:"Times New Roman",Times,serif;color:#000;min-height:250px}
+.site h1{font-size:2em;margin:.4em 0}
+.site p{margin:.6em 0}
+.site .s-img{font-size:40px;line-height:1}
+.site .s-btn{font:inherit;font-size:14px}
+.site.css{font-family:Georgia,serif;background:#fffaf3;color:#3b2a1e}
+.site.css h1{color:#6b3a1e;font-size:1.9em;border-bottom:3px solid #e8b48a;padding-bottom:6px;margin-top:0}
+.site.css p{font-family:Arial,sans-serif}
+.site.css .s-img{font-size:72px;background:#fde9d6;border-radius:14px;display:inline-block;padding:6px 18px}
+.site.css .prezzo{font-size:1.3em}.site.css .prezzo b{color:#b3261e}
+.site.css .s-btn{background:#d9661a;color:#fff;border:0;border-radius:20px;padding:8px 16px;font-family:Arial,sans-serif;font-weight:bold}
+.site .s-offer{margin:10px 0;padding:8px 12px;border:2px dashed #d9661a;font-family:Arial,sans-serif}
+.site.css .s-offer{background:#fff1e3;border-radius:10px}
+.site.insp [data-el]{cursor:pointer}
+.site.insp [data-el]:hover,.site [data-el].sel{outline:2px solid #4a90e2;outline-offset:2px;background-color:rgba(74,144,226,.12)}
+.site-load{padding:40px 16px;color:var(--muted);text-align:center;font-style:italic}
+.dt{margin-top:10px;border:1px solid #b9c2c9;border-radius:10px;overflow:hidden;font-size:14px}
+.dt-tabs{display:flex;gap:2px;background:#f1f3f4;border-bottom:1px solid #b9c2c9;padding:0 8px}
+.dt-tab{padding:7px 12px;border-bottom:3px solid transparent;color:#3a474d}
+.dt-tab.on{border-bottom-color:#4a90e2;color:#1d2329;font-weight:bold}
+.dt-tabs .f12{margin-left:auto;align-self:center;color:var(--muted);font-size:12px}
+.dt-body{padding:10px 12px;background:#fff}
+.dt-empty{margin:0;color:var(--muted)}
+.dt table{border-collapse:collapse;width:100%}.dt th,.dt td{text-align:left;padding:5px 8px;border-bottom:1px solid #eef0f1}.dt th{color:var(--muted);font-weight:normal;font-size:13px}
+.dt tr.new td{animation:rowin .45s ease}
+@keyframes rowin{from{background:#fff4cc}to{background:transparent}}
+.dt-foot{margin:6px 0 0;color:var(--muted);font-size:13px}
+.sw{font:inherit;border:2px solid var(--teal);background:var(--teal-l);color:var(--teal-d);border-radius:20px;padding:6px 14px;cursor:pointer;margin-bottom:8px}
+.sw[aria-pressed="false"]{border-color:var(--ko);background:var(--ko-l);color:var(--ko)}
+pre.code,div.code{margin:0;background:#f7f8f9;border:1px solid #e3e6e8;border-radius:6px;padding:8px 10px;font:13.5px/1.6 Consolas,"Courier New",monospace;white-space:pre-wrap;color:#1d2329}
+pre.code.off{color:#9aa4ab;font-style:italic}
+.cl{display:block;padding:0 4px;border-radius:4px;cursor:pointer;color:#881280}
+.cl .tx{color:#1d2329}
+.cl:hover,.cl.sel{background:#d7e7fb}
+.cl.ind{padding-left:22px}
+.cl.static{cursor:default;color:#9aa4ab}.cl.static:hover{background:none}
+.ced{font:inherit;width:70px;border:2px solid var(--orange);border-radius:4px;padding:0 4px;background:#fff8f0}
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:560px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+.restart{border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:16px}
+.restart h3{margin:0 0 6px}
+.restart p{margin:8px 0}
+.rs-note{display:inline-block;margin-left:4px}
+.btn.danger{background:#fff;color:var(--ko);border:3px solid var(--ko);padding:7px 14px;font-weight:bold}
+.btn.danger:hover{background:var(--ko-l)}
+.modal.rs-wrap{z-index:200;background:rgba(0,0,0,.6)}
+.modal .screen.warn{display:flex;flex-direction:column;overflow:hidden;padding:0;max-width:640px;border:6px solid var(--ko);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
+.warn-body{overflow:auto;min-height:0;padding:20px 24px 8px;overscroll-behavior:contain}
+.warn-ic{font-size:54px;line-height:1;text-align:center}
+.screen.warn h2{color:var(--ko);text-align:center;margin:6px 0 10px}
+.warn-key{border-left:6px solid var(--ko);background:var(--ko-l);color:#7d1a14;border-radius:8px;padding:10px 14px;font-size:1.15em;margin:0 0 10px}
+.warn-body p{margin:8px 0}
+.warn-body textarea.copy{height:62px}
+.rs-copied{font-weight:bold;color:var(--ok)}
+.warn-acts{display:flex;flex-wrap:wrap-reverse;gap:12px;padding:12px 24px 16px;border-top:1px solid var(--line);background:#fff}
+.warn-acts .btn{flex:1 1 15em;padding:14px 16px;font-size:1.05em;font-weight:bold}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:700px){
+  main{padding:12px 12px 24px}.screen{padding:18px 16px}
+  .card{width:100px;font-size:.82em}.bin .card{width:100%}
+  .bins.c3{grid-template-columns:minmax(0,1fr)}
+  .actor .em{font-size:32px}.msg .mt{font-size:.78em;margin:0 2px}
+  .big{min-height:220px}.big .em{font-size:70px}
+  .pocket{right:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌍 Il viaggio di una pagina</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false" aria-controls="pocket">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" id="lesson">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title" tabindex="-1"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="dock" id="dock">
+        <div class="quiz hidden" id="l-quiz" role="group" aria-label="Risposte"></div>
+        <div class="fb hidden" id="l-fb" role="status" aria-live="polite"></div>
+        <div class="hinttext hidden" id="l-hinttext"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="b-check">✔ Controlla</button>
+          <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+          <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+          <button type="button" class="btn skipb hidden" id="b-skip" title="Un passo saltato non vale punti">Salta il passo ⤼</button>
+        </div>
+      </div>
+    </aside>
+    <div class="stage" id="stage"></div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Riepilogo e codice (anche se non hai finito)</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g5">nslookup</button> ·
+        <button type="button" class="linkbtn" data-jump="g8">strumenti del browser</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi che salti con questi link risultano «non fatti» nel codice.</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Riepilogo e codice"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÀ
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const K = (...keys) => `<span class="keys">${keys.map(k => `<span class="kbd">${k}</span>`).join("+")}</span>`;
+const CT = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "") ? "Cmd" : "Ctrl";
+/* "hist" sopravvive a «Nuovo studente» */
+const PFX = "webvia_", KEEP = ["hist"], mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && !KEEP.includes(k.slice(PFX.length))).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(!KEEP.includes(k)) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const val = v => typeof v==="function" ? v() : (v||"");
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+const nameKey = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const djb = s => { let h=5381; for(let k=0;k<s.length;k++){ h=((h<<5)+h+s.charCodeAt(k))>>>0; } return h; };
+const hashName = n => djb("nome*"+nameKey(n)).toString(36);
+const EM = e => `<span class="em" aria-hidden="true">${e}</span>`;
+/* indirizzo: #bes apre la modalità facilitata */
+const HASH = location.hash.replace(/^#/,"").split("&").filter(Boolean);
+let BES = !!store.get("bes") || HASH.includes("bes") || /(^|[?&])bes\b/i.test(location.search.slice(1));
+
+/* =====================================================================
+   AMBIENTI (la parte destra dello schermo)
+   SORT = carte nei cestini · BIG = il caso da leggere
+   FLOW = gioco di ruolo: chi manda quale messaggio a chi
+   TERM = terminale con nslookup · WEB = browser con strumenti per sviluppatori
+   ===================================================================== */
+const SORT = (()=>{
+  let host, cfg, place={}, pick=null, bad=new Set(), lastDrop=0, focusId=null;
+  function mount(h,c){ host=h; cfg=c; place={}; pick=null; bad=new Set(); render(); }
+  const label = id => cfg.cards.find(c=>c.id===id).label;
+  function card(c){ const p=pick===c.id, b=bad.has(c.id);
+    return `<button type="button" class="card${p?" picked":""}${b?" bad":""}" data-id="${c.id}" aria-pressed="${p}">${EM(c.em)}<span class="cl2">${c.label}</span>${b?`<span class="badmark">✗ da spostare</span>`:""}</button>`; }
+  function render(){
+    const free=cfg.cards.filter(c=>!place[c.id]);
+    host.innerHTML = `<div class="envbox sortbox"><p class="envstatus" aria-live="polite">${pick?`Hai scelto «${plain(label(pick))}»: ora tocca il cestino giusto.`:free.length?"Tocca una carta per sceglierla, poi tocca un cestino. Con il mouse puoi anche trascinarla.":"Tutte le carte sono nei cestini: premi Controlla. Puoi ancora spostarle."}</p>
+      <div class="pool">${free.map(card).join("")}</div>
+      <div class="bins c${cfg.bins.length}">${cfg.bins.map(b=>`<div class="bin${pick?" armed":""}" data-bin="${b.id}"><button type="button" class="binhead" data-bin="${b.id}"><span class="bn">${b.label}</span><small>${b.sub||""}</small>${pick?`<span class="drophere">⬇ metti qui</span>`:""}</button><div class="binbody">${cfg.cards.filter(c=>place[c.id]===b.id).map(card).join("")}</div></div>`).join("")}</div></div>`;
+    host.querySelectorAll(".card").forEach(el=>{
+      el.addEventListener("click", e=>{ e.stopPropagation(); if(Date.now()-lastDrop<400) return; pick = pick===el.dataset.id ? null : el.dataset.id; focusId=el.dataset.id; render(); });
+      el.addEventListener("pointerdown", startDrag); });
+    host.querySelectorAll(".bin").forEach(b=>b.addEventListener("click", ()=>{ if(Date.now()-lastDrop<400) return; drop(b.dataset.bin); }));
+    if(focusId){ const f=host.querySelector(`.card[data-id="${focusId}"]`); if(f) f.focus({preventScroll:true}); focusId=null; }
+  }
+  function drop(bin){
+    if(!pick){ const s=host.querySelector(".envstatus"); if(s) s.textContent="Prima tocca una carta, poi il cestino."; return; }
+    place[pick]=bin; bad.delete(pick); pick=null;
+    const nf=cfg.cards.find(c=>!place[c.id]); focusId = nf ? nf.id : null; render();
+    if(!nf){ const bh=host.querySelector(`.binhead[data-bin="${bin}"]`); if(bh) bh.focus({preventScroll:true}); }
+  }
+  function startDrag(e){
+    if(e.pointerType!=="mouse" || e.button!==0) return;
+    const el=e.currentTarget, id=el.dataset.id, x0=e.clientX, y0=e.clientY; let ghost=null;
+    const over = ev => { const t=document.elementFromPoint(ev.clientX, ev.clientY); return t && t.closest ? t.closest(".bin") : null; };
+    const move = ev => {
+      if(!ghost && Math.hypot(ev.clientX-x0, ev.clientY-y0)>7){ ghost=el.cloneNode(true); ghost.classList.add("ghost"); document.body.appendChild(ghost); el.classList.add("dragging"); }
+      if(ghost){ ghost.style.left=(ev.clientX-ghost.offsetWidth/2)+"px"; ghost.style.top=(ev.clientY-ghost.offsetHeight/2)+"px"; const b=over(ev); host.querySelectorAll(".bin").forEach(x=>x.classList.toggle("over", x===b)); } };
+    const up = ev => {
+      window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); window.removeEventListener("pointercancel",up);
+      if(!ghost) return; ghost.remove(); lastDrop=Date.now(); const b=over(ev);
+      if(b){ place[id]=b.dataset.bin; bad.delete(id); pick=null; } render(); };
+    window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); window.addEventListener("pointercancel",up);
+  }
+  function verify(){
+    const cards=cfg.cards, miss=cards.filter(c=>!place[c.id]), wrong=cards.filter(c=>place[c.id] && place[c.id]!==c.bin);
+    if(miss.length===cards.length) return {ok:false, noTry:true, msg:"Non hai ancora messo nessuna carta in un cestino."};
+    if(!miss.length && !wrong.length) return {ok:true};
+    if(!wrong.length) return {ok:false, noTry:true, msg: miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`};
+    let m = wrong[0].why + (wrong.length>1 ? ` Da spostare anche: ${wrong.slice(1).map(c=>"«"+plain(c.label)+"»").join(", ")}.` : "");
+    if(miss.length) m += " " + (miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`);
+    bad=new Set(wrong.map(c=>c.id)); render();
+    return {ok:false, msg:m};
+  }
+  return {mount, verify};
+})();
+
+const BIG = { mount(h,c){ h.innerHTML=`<div class="envbox big">${EM(c.em)}<div class="nm">${c.name}</div>${c.tx?`<div class="tx${c.shot?" shot":""}">${c.tx}</div>`:""}</div>`; } };
+
+/* ---------- gioco di ruolo: i sei messaggi del viaggio di una pagina ---------- */
+const FLOW = (()=>{
+  const A=[{em:"💻",n:"Browser",s:"il client"},{em:"📒",n:"Server DNS",s:"la rubrica"},{em:"🗄️",n:"Server del sito",s:"93.41.120.7"}];
+  const T=[
+    [{f:0,t:2,m:"Mi mandi la pagina di www.dolcevita.it?",fb:"Il browser conosce solo il nome: non sa ancora dove si trova il server. Chi può trasformare il nome in un indirizzo?"},
+     {f:0,t:1,m:"Qual è l'indirizzo IP di www.dolcevita.it?",ok:1},
+     {f:1,t:0,m:"Ecco la pagina della pasticceria.",fb:"Il DNS non conserva pagine: conosce solo nomi e indirizzi. E nessuno gli ha ancora chiesto niente."}],
+    [{f:1,t:0,m:"È 93.41.120.7",ok:1},
+     {f:1,t:2,m:"Manda la pagina al browser.",fb:"Il DNS non dà ordini ai server: risponde solo a chi gli ha fatto la domanda."},
+     {f:2,t:0,m:"Ecco index.html",fb:"Il server non ha ancora ricevuto nessuna richiesta. Chi deve rispondere alla domanda sull'indirizzo?"}],
+    [{f:0,t:1,m:"Mi mandi la pagina principale?",fb:"Il DNS ha già fatto il suo lavoro: ha dato l'indirizzo. Le pagine stanno sul server."},
+     {f:2,t:0,m:"Ecco index.html",fb:"Prima della risposta serve la richiesta: è sempre il client che chiede per primo."},
+     {f:0,t:2,m:"Mi mandi la pagina principale?",ok:1}],
+    [{f:2,t:1,m:"Ecco index.html",fb:"La richiesta è arrivata dal browser: la risposta torna a chi ha chiesto."},
+     {f:2,t:0,m:"Ecco index.html: la pagina, scritta in HTML.",ok:1},
+     {f:0,t:2,m:"Allora? Mi rispondi?",fb:"Il server ha ricevuto la richiesta: ora tocca a lui."}],
+    [{f:0,t:2,m:"Nella pagina ci sono stile.css e torta.png: mi mandi anche quelli?",ok:1},
+     {f:0,t:1,m:"Mi mandi stile.css e torta.png?",fb:"Il DNS non ha file: i file della pagina stanno sul server."},
+     {f:1,t:2,m:"Il browser vuole altri file.",fb:"Il DNS non fa da postino: il browser parla direttamente con il server."}],
+    [{f:2,t:1,m:"Ecco stile.css e torta.png",fb:"I file tornano a chi li ha chiesti: il browser."},
+     {f:1,t:0,m:"Ecco stile.css e torta.png",fb:"Il DNS non ha file. Chi ha i file della pasticceria?"},
+     {f:2,t:0,m:"Ecco stile.css e torta.png",ok:1}]
+  ];
+  let host, k=0, msg="", off=[];
+  function mount(h){ host=h; k=Math.min(+store.get("flow")||0, T.length); msg=""; off=[]; render(); }
+  const who = i => `${A[i].em} ${A[i].n}`;
+  function row(m){ const a=Math.min(m.f,m.t), b=Math.max(m.f,m.t), span=b-a+1;
+    return `<div class="mrow"><div class="msg ${m.t>m.f?"r":"l"}${m.f?" resp":""}" style="grid-column:${a+1} / ${b+2};--m:${(100/(2*span)).toFixed(2)}%"><span class="line" aria-hidden="true"></span><span class="mt"><b>${m.f?"risposta":"richiesta"}</b><span class="sr">${A[m.f].n} a ${A[m.t].n}: </span>«${m.m}»</span></div></div>`; }
+  function render(){
+    const done = T.slice(0,k).map(t=>t.find(o=>o.ok)), fin = k>=T.length;
+    host.innerHTML = `<div class="envbox flow">
+      <div class="actors">${A.map((a,i)=>`<div class="actor${fin&&i===0?" lit":""}">${EM(a.em)}<b>${a.n}</b><small>${a.s}</small></div>`).join("")}</div>
+      <div class="lane" role="list" aria-label="Messaggi">${done.map(row).join("")}</div>
+      ${fin ? `<p class="fmsg ok">🎂 Il browser mette insieme i file: la pagina della pasticceria appare sullo schermo del cliente.</p><p><button type="button" class="linkbtn" id="f-again">↺ Rifai il gioco da capo</button></p>`
+        : `<p class="fask">Messaggio ${k+1} di ${T.length} · Chi parla adesso, e che cosa dice?</p>
+           <div class="fchoices">${T[k].map((o,i)=>`<button type="button" class="fopt${off.includes(i)?" wrong":""}" data-i="${i}"${off.includes(i)?' aria-disabled="true"':""}><small>${who(o.f)} → ${who(o.t)}</small>«${o.m}»</button>`).join("")}</div>
+           ${msg?`<p class="fmsg ko" role="status">${msg}</p>`:""}`}
+    </div>`;
+    host.querySelectorAll(".fopt").forEach(b=>b.onclick=()=>{ const i=+b.dataset.i, o=T[k][i]; if(off.includes(i)) return;
+      if(o.ok){ k++; store.set("flow", k); msg=""; off=[]; render(); const f=host.querySelector(".fopt"); if(f) f.focus({preventScroll:true}); if(k>=T.length) App.envDone(); }
+      else { off.push(i); msg="Non ancora. "+o.fb; App.envErr(); render(); } });
+    const ag=host.querySelector("#f-again"); if(ag) ag.onclick=()=>{ k=0; store.set("flow",0); render(); };
+  }
+  return {mount, done:()=>k>=T.length};
+})();
+
+/* ---------- il DNS della scuola, simulato ---------- */
+const DNS_SRV = {n:"dns.scuola.local", ip:"192.168.1.1"};
+const DNS = {"www.wikipedia.org":"185.15.59.224","www.google.it":"142.250.180.131","www.dolcevita.it":"93.41.120.7","www.amazon.it":"54.239.33.91","www.instagram.com":"157.240.203.174","www.youtube.com":"142.250.184.46"};
+const NX = /(finta|finto|inesistente|non-?esiste|che-non-c|dolcevitta)/;
+const bare = n => n.replace(/^www\./,"");
+function nsl(raw){
+  const n=(raw||"").trim().toLowerCase().replace(/^https?:\/\//,"").replace(/[\/?#].*$/,"").replace(/\.$/,"");
+  const head=`Server:  ${DNS_SRV.n}\nAddress:  ${DNS_SRV.ip}\n\n`, nf=`*** ${DNS_SRV.n} non trova ${n}: Non-existent domain`;
+  if(/^\d{1,3}(\.\d{1,3}){3}$/.test(n)){ const hit=Object.keys(DNS).find(k=>DNS[k]===n); return {n, txt:head+(hit?`Nome:    ${hit}\nAddress:  ${n}`:nf), err:!hit}; }
+  if(!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(n) || NX.test(n)) return {n, nx:true, txt:head+nf, err:true};
+  const key=Object.keys(DNS).find(k=>bare(k)===bare(n)), h=djb("ip*"+bare(n));
+  const ip = key ? DNS[key] : [31+h%180, (h>>>8)%256, (h>>>16)%256, 1+(h>>>24)%254].join(".");
+  return {n, ip, txt:head+`Risposta da un server non autorevole:\nNome:    ${n}\nAddress:  ${ip}`};
+}
+const shot = cmd => `<div class="term static"><div class="tbar">⌨️ Prompt dei comandi</div><pre>C:\\Users\\studente&gt;${esc(cmd)}\n${esc(nsl(cmd.replace(/^nslookup\s+/,"")).txt)}</pre></div>`;
+
+const TERM = (()=>{
+  let host, lines=[], hist=[], hi=0;
+  const asked = new Set(store.get("dns")||[]);
+  const PROMPT = "C:\\Users\\studente>";
+  function mount(h){ host=h; render(); }
+  function out(t, cls){ lines.push(cls?`<span class="${cls}">${esc(t)}</span>`:esc(t)); }
+  function run(cmd){
+    out(PROMPT+cmd); const c=cmd.trim(), w=c.split(/\s+/), v=(w[0]||"").toLowerCase();
+    if(!c){ return; }
+    if(v==="cls"){ lines=[]; return; }
+    if(v==="help" || v==="aiuto"){ out("Questo simulatore conosce due comandi:\n  nslookup nome-del-sito   chiede al DNS l'indirizzo IP\n  cls                      pulisce lo schermo"); return; }
+    if(v==="nslookup"){
+      if(w.length<2){ out("Scrivi il nome del sito dopo nslookup, per esempio:  nslookup www.google.it", "hl"); return; }
+      const r=nsl(w[1]); asked.add(bare(r.n)); if(r.nx) asked.add("#nx"); store.set("dns",[...asked]);
+      out(r.txt, r.err?"er":""); App.envDone(); return; }
+    if(["ping","ipconfig","tracert"].includes(v)){ out(`Il comando ${v} esiste davvero, ma questo simulatore conosce solo nslookup e cls. Provalo sul terminale del laboratorio.`, "hl"); return; }
+    out(`'${w[0]}' non è riconosciuto come comando interno o esterno,\nun programma eseguibile o un file batch.`, "er");
+  }
+  function render(){
+    host.innerHTML = `<div class="envbox"><div class="term" id="t-box">
+      <div class="tbar">⌨️ Prompt dei comandi <span>simulatore · indirizzi d'esempio</span></div>
+      <pre id="t-out" role="log" aria-live="polite">Microsoft Windows [Versione 10.0.22631]\n(c) Microsoft Corporation. Tutti i diritti riservati.\n\n${lines.join("\n")}${lines.length?"\n":""}</pre>
+      <div class="tin"><label for="t-in">${esc(PROMPT)}</label><input id="t-in" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="Comando"></div></div>
+      <p class="envstatus">Scrivi il comando e premi Invio. Con ↑ richiami il comando di prima.</p></div>`;
+    const inp=host.querySelector("#t-in"), o=host.querySelector("#t-out"); o.scrollTop=o.scrollHeight;
+    host.querySelector("#t-box").addEventListener("click", e=>{ if(!e.target.closest("input")) inp.focus({preventScroll:true}); });
+    inp.addEventListener("keydown", e=>{
+      if(e.key==="Enter"){ e.preventDefault(); const c=inp.value; if(c.trim()) hist.push(c); hi=hist.length; run(c); if(lines.length && !/^\s*cls\s*$/i.test(c)) lines.push(""); render(); host.querySelector("#t-in").focus({preventScroll:true}); }
+      else if(e.key==="ArrowUp" && hist.length){ e.preventDefault(); hi=Math.max(0,hi-1); inp.value=hist[hi]; }
+      else if(e.key==="ArrowDown" && hist.length){ e.preventDefault(); hi=Math.min(hist.length,hi+1); inp.value=hist[hi]||""; } });
+  }
+  return {mount, asked:n=>asked.has(bare(n)), nx:()=>asked.has("#nx")};
+})();
+
+/* ---------- il sito della pasticceria nel browser, con gli strumenti per sviluppatori ---------- */
+let CD = 135;
+setInterval(()=>{ CD = CD>0 ? CD-1 : 180; const el=document.getElementById("cd"); if(el) el.textContent=mmss(CD); }, 1000);
+function mmss(s){ return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+const WEB = (()=>{
+  const FILES=[{n:"index.html",ty:"documento · HTML",sz:"4 KB",em:"📄"},{n:"stile.css",ty:"foglio di stile · CSS",sz:"2 KB",em:"🎨"},{n:"script.js",ty:"script · JavaScript",sz:"1 KB",em:"⚙️"},{n:"torta.png",ty:"immagine · PNG",sz:"85 KB",em:"🖼️"}];
+  const NAMES={h1:"il titolo",p1:"il primo paragrafo",img:"l'immagine",prezzo:"il prezzo",btn:"il pulsante",count:"il conto alla rovescia"};
+  let host, cfg, st, timer=null;
+  function mount(h,c){ host=h; cfg=c; if(timer){ clearInterval(timer); timer=null; } st={css:true, js:true, offer:false, pick:null, price:"18 €", net:-1, loading:false, did:{}}; render(); }
+  const insp = () => cfg.tool==="elem" || cfg.tool==="edit";
+  function site(){
+    if(st.loading) return `<div class="site-load">Caricamento… il browser sta chiedendo i file al server</div>`;
+    const a = k => `data-el="${k}"${insp()?` tabindex="0" role="button" aria-label="Ispeziona ${NAMES[k]}"`:""}`, s = k => st.pick===k ? " sel" : "";
+    return `<div class="site${st.css?" css":""}${insp()?" insp":""}">
+      <h1 class="${s("h1")}" ${a("h1")}>Pasticceria Dolce Vita</h1>
+      <p class="${s("p1")}" ${a("p1")}>Torte fresche ogni giorno, dal 1985.</p>
+      <div class="s-img${s("img")}" ${a("img")}><span aria-hidden="true">🎂</span><span class="sr">Foto di una torta</span></div>
+      <p class="prezzo${s("prezzo")}" ${a("prezzo")}>Torta Sacher: <b>${esc(st.price)}</b></p>
+      <button type="button" class="s-btn${s("btn")}" ${insp()?a("btn"):"data-offer"}>Mostra l'offerta del giorno</button>
+      ${st.offer && st.js ? `<div class="s-offer" role="status">🎉 Solo oggi: −20% sulle crostate!</div>` : ""}
+      <p class="s-count${s("count")}" ${a("count")}>L'offerta scade tra ${st.js?`<b id="cd">${mmss(CD)}</b>`:"<b>--:--</b>"}</p></div>`;
+  }
+  function tools(){
+    const tab = t => `<div class="dt-tabs"><span class="dt-tab on">${t}</span><span class="f12">strumenti per sviluppatori · ${K("F12")}</span></div>`;
+    if(cfg.tool==="rete") return tab("Rete")+`<div class="dt-body">${st.net<0?`<p class="dt-empty">La scheda Rete registra le richieste solo da quando è aperta. Premi <b>⟳</b>, in alto accanto all'indirizzo, per ricaricare la pagina.</p>`
+      :`<table><thead><tr><th>Nome</th><th>Tipo</th><th>Dimensione</th></tr></thead><tbody>${FILES.slice(0,st.net).map((f,i)=>`<tr${i===st.net-1&&st.loading?' class="new"':""}><td>${f.em} ${f.n}</td><td>${f.ty}</td><td>${f.sz}</td></tr>`).join("")}</tbody></table><p class="dt-foot">${st.net} ${st.net===1?"richiesta":"richieste"}${st.loading?" · caricamento…":" · pagina completa"}</p>`}</div>`;
+    if(cfg.tool==="css") return tab("Stili")+`<div class="dt-body"><button type="button" class="sw" data-sw="css" aria-pressed="${st.css}">🎨 CSS: <b>${st.css?"acceso":"spento"}</b></button>
+      <pre class="code${st.css?"":" off"}">${st.css?"h1      { color: marrone; font-family: Georgia; }\n.prezzo { font-size: 1.3em; }\nbutton  { background: arancione; color: bianco; }":"/* stile.css non applicato */"}</pre></div>`;
+    if(cfg.tool==="js") return tab("Sorgenti")+`<div class="dt-body"><button type="button" class="sw" data-sw="js" aria-pressed="${st.js}">⚙️ JavaScript: <b>${st.js?"acceso":"spento"}</b></button>
+      <pre class="code${st.js?"":" off"}">${st.js?"pulsante.onclick = mostraOfferta;      // al clic\nsetInterval(contoAllaRovescia, 1000); // ogni secondo":"// script.js non eseguito"}</pre></div>`;
+    const L = (k, html, ind) => `<span class="cl${ind?" ind":""}${st.pick===k?" sel":""}" data-cl="${k}" tabindex="0" role="button">${html}</span>`;
+    const t = (tag, txt, attr) => `&lt;${tag}${attr||""}&gt;<span class="tx">${txt}</span>&lt;/${tag}&gt;`;
+    const priceLine = cfg.tool==="edit"
+      ? `<span class="cl ind${st.pick==="prezzo"?" sel":""}" data-cl="prezzo">&lt;p class="prezzo"&gt;<span class="tx">Torta Sacher: </span>&lt;b&gt;<input class="ced" id="ced" value="${esc(st.price)}" aria-label="Prezzo della torta nel codice">&lt;/b&gt;&lt;/p&gt;</span>`
+      : L("prezzo", `&lt;p class="prezzo"&gt;<span class="tx">Torta Sacher: </span>&lt;b&gt;<span class="tx">${esc(st.price)}</span>&lt;/b&gt;&lt;/p&gt;`, 1);
+    return tab("Elementi")+`<div class="dt-body"><div class="code"><span class="cl static">&lt;body&gt;</span>${L("h1", t("h1","Pasticceria Dolce Vita"),1)}${L("p1", t("p","Torte fresche ogni giorno, dal 1985."),1)}${L("img", `&lt;img src="torta.png" alt="Foto di una torta"&gt;`,1)}${priceLine}${L("btn", t("button","Mostra l'offerta del giorno"),1)}${L("count", `&lt;p id="conto"&gt;<span class="tx">L'offerta scade tra …</span>&lt;/p&gt;`,1)}<span class="cl static">&lt;/body&gt;</span></div></div>`;
+  }
+  function status(){
+    const d=st.did;
+    if(cfg.tool==="rete") return st.net<0 ? "Premi ⟳ per ricaricare la pagina." : st.loading ? "Il browser sta chiedendo i file al server…" : "Fatto: ogni riga è un file che il browser ha chiesto al server.";
+    if(cfg.tool==="css") return st.css ? (d.cssOff?"CSS riacceso: tornano colori e caratteri.":"Premi l'interruttore 🎨 per spegnere il CSS.") : "CSS spento: guarda la pagina. Poi riaccendilo.";
+    if(cfg.tool==="js") return !d.jsOnClick ? "Premi il pulsante arancione nella pagina." : st.js ? "Ora spegni JavaScript con l'interruttore ⚙️." : d.jsOffClick ? "Hai premuto il pulsante con JavaScript spento: è successo qualcosa?" : "JavaScript spento: premi di nuovo il pulsante nella pagina.";
+    if(cfg.tool==="elem") return st.pick ? `Selezionato: ${NAMES[st.pick]}. Si illumina sia nella pagina sia nel codice.` : "Clicca un pezzo della pagina, oppure una riga del codice.";
+    return !d.edited ? "Nel codice, alla riga del prezzo, scrivi un altro prezzo." : !d.reload ? "Il prezzo nella pagina è cambiato. Ora premi ⟳." : "Hai ricaricato: guarda il prezzo nella pagina.";
+  }
+  function render(){
+    host.innerHTML = `<div class="envbox"><div class="bw"><div class="bw-bar"><span class="dots" aria-hidden="true">●●●</span><button type="button" class="rl${(cfg.tool==="rete"&&st.net<0)||(cfg.tool==="edit"&&st.did.edited&&!st.did.reload)?" hl":""}" id="w-rl" title="Ricarica la pagina" aria-label="Ricarica la pagina">⟳</button><span class="url">🔒 www.dolcevita.it</span></div>${site()}</div>
+      <div class="dt">${tools()}</div><p class="envstatus" aria-live="polite">${status()}</p></div>`;
+    host.querySelector("#w-rl").onclick = reload;
+    host.querySelectorAll("[data-offer]").forEach(b=>b.onclick=()=>{ if(st.js){ st.offer=true; st.did.jsOnClick=true; } else if(st.did.jsOnClick) st.did.jsOffClick=true; render(); App.envDone(); });
+    host.querySelectorAll("[data-sw]").forEach(b=>b.onclick=()=>{ const k=b.dataset.sw; st[k]=!st[k]; if(k==="css" && !st.css) st.did.cssOff=true; if(k==="js") st.offer=false; render(); App.envDone(); host.querySelector("[data-sw]").focus({preventScroll:true}); });
+    const pick = k => { st.pick=k; if(k==="h1") st.did.h1=true; render(); App.envDone(); const f=host.querySelector(`[data-cl="${k}"]`); if(f && f.tabIndex>=0) f.focus({preventScroll:true}); };
+    if(insp()){
+      host.querySelectorAll(".site [data-el]").forEach(el=>{ el.onclick=e=>{ e.preventDefault(); pick(el.dataset.el); }; el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(el.dataset.el); } }; });
+      host.querySelectorAll("[data-cl]").forEach(el=>{ el.onclick=e=>{ if(e.target.closest("input")) return; pick(el.dataset.cl); }; el.onkeydown=e=>{ if(e.target.closest("input")) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(el.dataset.cl); } }; });
+    }
+    const ced=host.querySelector("#ced");
+    if(ced) ced.addEventListener("input", ()=>{ st.price=ced.value; const b=host.querySelector(".prezzo b"); if(b) b.textContent=ced.value;
+      const ch=ced.value.replace(/\s/g,"")!=="18€"; if(ch && !st.did.edited){ st.did.edited=true; st.did.reload=false; host.querySelector(".envstatus").textContent=status(); host.querySelector("#w-rl").classList.add("hl"); App.envDone(); } });
+  }
+  function reload(){
+    st.offer=false; st.pick=null;
+    if(cfg.tool==="rete"){ if(st.loading) return; st.loading=true; st.net=0; render(); let i=0;
+      timer=setInterval(()=>{ i++; st.net=i; if(i>=FILES.length){ clearInterval(timer); timer=null; st.loading=false; st.did.net=true; App.envDone(); } render(); }, 550); return; }
+    if(cfg.tool==="edit" && st.did.edited){ st.price="18 €"; st.did.reload=true; render(); App.envDone(); return; }
+    st.price="18 €"; render();
+  }
+  return {mount, did:()=>st.did};
+})();
+const ENVS = {sort:SORT, big:BIG, flow:FLOW, term:TERM, web:WEB};
+
+/* =====================================================================
+   I PASSI
+   phase "g" = percorso guidato: pillola di teoria + esercizio
+   phase "x" = sfida finale: conta la prima risposta, gli errori si contano tutti
+   phase "b" = livello bonus, facoltativo: non entra nel totale
+   need      = la prova da fare prima di rispondere: restituisce un messaggio se manca
+   ===================================================================== */
+const SEC = {A:{code:"VIAGGIO", name:"Il viaggio di una pagina"}, B:{code:"DNS", name:"Il DNS al terminale"}, C:{code:"LINGUAGGI", name:"HTML, CSS e JavaScript"}};
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Chi chiede, chi risponde", env:"sort",
+  theory:`<p>Ricordi il gioco di ruolo? Su Internet c'è sempre qualcuno che <b>chiede</b> e qualcuno che <b>risponde</b>.</p>`,
+  keys:`<b>client</b>: chiede (il browser, un'app) · <b>server</b>: risponde, è sempre acceso, conserva pagine e dati`,
+  task:`Metti ogni carta nel cestino giusto, poi premi Controlla.`,
+  sort:{bins:[{id:"cl",label:"Client",sub:"chiede"},{id:"sv",label:"Server",sub:"risponde"}],
+   cards:[{id:"chrome",em:"🌐",label:"Chrome sul tuo telefono",bin:"cl",why:"Chrome è un browser: chiede le pagine. È un client."},
+          {id:"netflix",em:"🎬",label:"Il computer di Netflix che conserva i film",bin:"sv",why:"Conserva i film e li manda a chi li chiede: è un server."},
+          {id:"insta",em:"📱",label:"L'app di Instagram",bin:"cl",why:"L'app chiede foto e messaggi a Instagram: è un client, anche se non è un browser."},
+          {id:"banca",em:"🏦",label:"Il computer della banca con i conti",bin:"sv",why:"Risponde alle app e ai siti che chiedono il saldo: è un server."},
+          {id:"lab",em:"🖥️",label:"Firefox su un PC del laboratorio",bin:"cl",why:"Firefox è un browser: chiede le pagine, quindi è un client."},
+          {id:"dolce",em:"🗄️",label:"Il computer con il sito della pasticceria",bin:"sv",why:"Conserva le pagine del sito e le manda a chi le chiede: è un server."}]},
+  hint:"Per ogni carta chiediti: chiede qualcosa, o conserva qualcosa da dare agli altri?",
+  success:`Il <b>client</b> fa la <b>richiesta</b>, il <b>server</b> manda la <b>risposta</b>. Il server di solito è acceso giorno e notte e risponde a tanti client insieme.`,
+  learn:{k:"client · server", d:"chi chiede (browser, app) · chi risponde (sempre acceso, conserva pagine e dati)"}},
+
+ {id:"g2", phase:"g", title:"La rubrica di Internet", env:"big",
+  big:{em:"📒", name:"Nomi e numeri", tx:`<ul><li>Ogni computer collegato a Internet ha un <b>indirizzo IP</b>: quattro numeri, come <code>93.41.120.7</code>.</li><li>Le persone ricordano i <b>nomi</b>: <code>www.dolcevita.it</code>.</li></ul>`},
+  theory:`<p>I computer si trovano con i <b>numeri</b>, le persone ricordano i <b>nomi</b>. Qualcuno deve tradurre.</p>`,
+  task:`Chi traduce il nome del sito nel suo indirizzo IP? E a che cosa somiglia?`,
+  quiz:[{t:"Google: cerchi il nome e trovi il sito.", fb:"Google è un motore di ricerca: trova pagine a partire da parole. E anche per aprire google.it serve prima il suo indirizzo IP!"},
+        {t:"Il server DNS: come la rubrica del telefono, dal nome trova il numero.", ok:true},
+        {t:"Il Wi-Fi: trasforma il nome in segnale.", fb:"Il Wi-Fi porta i dati dal dispositivo al router, ma non sa quale numero corrisponde a un nome."}],
+  hint:"Sul telefono non ricordi i numeri degli amici: cerchi il nome e il telefono trova il numero. Chi fa lo stesso su Internet?",
+  success:`Il <b>DNS</b> (Domain Name System) è la rubrica di Internet: riceve un <b>nome di dominio</b> e restituisce l'<b>indirizzo IP</b>. Il browser lo interroga quando scrivi un indirizzo.`,
+  learn:{k:"DNS · indirizzo IP", d:"la rubrica che traduce i nomi · il numero che identifica un computer in rete"}},
+
+ {id:"g3", phase:"g", title:"Rifai il gioco di ruolo", env:"flow",
+  theory:`<p>Un cliente scrive <b>www.dolcevita.it</b> e preme Invio. Tre personaggi, sei messaggi: le frecce <b style="color:#0B6E75">scure</b> sono richieste, quelle <b style="color:#9a4410">arancioni</b> risposte.</p>`,
+  task:`Scegli, messaggio per messaggio, chi parla e che cosa dice. Alla fine rispondi: <b>chi conserva i file della pagina?</b>`,
+  need:()=>FLOW.done() ? "" : "Prima completa i sei messaggi del gioco, nel riquadro a destra.",
+  quiz:[{t:"Il browser.", fb:"Il browser riceve i file e li mostra, ma non li conserva per gli altri. Chi ha mandato index.html?"},
+        {t:"Il server DNS.", fb:"Il DNS ha dato solo un numero: l'indirizzo IP. I file non li ha mai avuti."},
+        {t:"Il server del sito.", ok:true}],
+  hint:"Guarda nella sequenza chi ha mandato la freccia con «Ecco index.html».",
+  success:`Hai ricostruito il viaggio: <b>nome → DNS → indirizzo IP → richiesta al server → risposta con i file → pagina</b>. Per una sola pagina il browser fa più richieste: una per ogni file.`,
+  learn:{k:"richiesta · risposta", d:"il client chiede un file al server · il server lo manda indietro"}},
+
+ {id:"g4", phase:"g", title:"Richiesta o risposta?", env:"sort",
+  theory:`<p>Ogni messaggio che viaggia su Internet è una <b>richiesta</b> o una <b>risposta</b>.</p>`,
+  task:`Metti ogni messaggio nel cestino giusto, poi premi Controlla.`,
+  sort:{bins:[{id:"rq",label:"Richiesta",sub:"chi chiede"},{id:"rs",label:"Risposta",sub:"chi risponde"}],
+   cards:[{id:"q1",em:"❓",label:"Qual è l'IP di www.dolcevita.it?",bin:"rq",why:"È una domanda al DNS: il browser chiede, quindi è una richiesta."},
+          {id:"a1",em:"🔢",label:"L'IP è 93.41.120.7",bin:"rs",why:"Il DNS risponde alla domanda del browser: è una risposta."},
+          {id:"q2",em:"📄",label:"Mi mandi index.html?",bin:"rq",why:"Il browser chiede un file al server: è una richiesta."},
+          {id:"a2",em:"📦",label:"Ecco index.html",bin:"rs",why:"Il server manda il file che gli è stato chiesto: è una risposta."},
+          {id:"q3",em:"🖼️",label:"Mi mandi torta.png?",bin:"rq",why:"Anche un'immagine si chiede: è una richiesta."},
+          {id:"a3",em:"⚠️",label:"Errore 404: file non trovato",bin:"rs",why:"Anche un errore è una risposta: il server dice che quel file non ce l'ha."}]},
+  hint:"Chiediti: questo messaggio chiede qualcosa o dà qualcosa?",
+  success:`Anche un <b>errore</b> è una risposta: <b>404</b> vuol dire che il server c'è, ma il file chiesto no. Lo vedi quando un link porta a una pagina cancellata.`,
+  learn:{k:"errore 404", d:"il server risponde, ma il file chiesto non c'è"}},
+
+ {id:"g5", phase:"g", title:"Chiedilo tu al DNS", env:"term",
+  theory:`<p>In classe l'hai visto al terminale: il comando <code>nslookup</code> chiede al DNS l'indirizzo IP di un nome.</p>`,
+  keys:()=>`Scrivi <code>nslookup www.wikipedia.org</code> e premi ${K("Invio")}`,
+  task:`Nel terminale chiedi l'indirizzo di <b>www.wikipedia.org</b>. Poi rispondi: <b>qual è l'indirizzo IP di Wikipedia?</b>`,
+  need:()=>TERM.asked("www.wikipedia.org") ? "" : "Prima scrivi nel terminale: nslookup www.wikipedia.org e premi Invio.",
+  quiz:[{t:"192.168.1.1", fb:"Questo numero sta in alto, accanto a «Server»: è il DNS della scuola, quello che ti ha risposto. L'indirizzo di Wikipedia è più in basso, dopo «Nome»."},
+        {t:"185.15.59.224", ok:true},
+        {t:"www.wikipedia.org", fb:"Questo è il nome: tu cerchi il numero che il DNS ha trovato."}],
+  hint:"Guarda le ultime due righe dell'uscita: «Nome» e, sotto, «Address».",
+  success:`L'indirizzo di Wikipedia è nelle ultime righe, sotto «Nome». <b>Risposta da un server non autorevole</b> vuol dire che il DNS della scuola aveva già la risposta in memoria e non l'ha chiesta a chi gestisce Wikipedia.`,
+  learn:{k:"nslookup", d:"comando che chiede al DNS l'indirizzo IP di un nome"}},
+
+ {id:"g6", phase:"g", title:"Chi ti ha risposto?", env:"term",
+  theory:`<p>L'uscita di <code>nslookup</code> ha due parti: una <b>in alto</b> e una <b>in basso</b>.</p>`,
+  task:`Chiedi l'indirizzo di <b>www.dolcevita.it</b>. Poi guarda le due righe in alto, «Server» e «Address»: <b>che cosa sono?</b>`,
+  need:()=>TERM.asked("www.dolcevita.it") ? "" : "Prima scrivi nel terminale: nslookup www.dolcevita.it e premi Invio.",
+  quiz:[{t:"Il server della pasticceria, dove sta il sito.", fb:"Il server della pasticceria è in basso: 93.41.120.7. In alto c'è sempre lo stesso nome, qualunque sito chiedi. Prova con un altro sito e guarda."},
+        {t:"Il server DNS che ha risposto alla domanda.", ok:true},
+        {t:"Il tuo computer.", fb:"Il tuo computer fa la domanda e non compare nell'uscita. In alto c'è chi ha risposto."}],
+  hint:"Chiedi anche un altro sito, per esempio nslookup www.google.it: che cosa cambia e che cosa resta uguale?",
+  success:`In alto c'è il <b>server DNS</b> che ti ha risposto: a scuola di solito è un computer della rete locale. In basso c'è la risposta: il <b>nome</b> che hai chiesto e il suo <b>indirizzo IP</b>.`,
+  learn:{k:"uscita di nslookup", d:"in alto chi risponde (il DNS) · in basso il nome e il suo IP"}},
+
+ {id:"g7", phase:"g", title:"Un nome che non esiste", env:"term",
+  theory:`<p>Che cosa succede se il nome <b>non c'è</b> nella rubrica?</p>`,
+  task:`Prova un sito inventato: <b>nslookup www.dolcevita-finta.it</b>. Poi rispondi: <b>che cosa vuol dire «Non-existent domain»?</b>`,
+  need:()=>TERM.nx() ? "" : "Prima scrivi nel terminale: nslookup www.dolcevita-finta.it e premi Invio.",
+  quiz:[{t:"Il sito è lento: bisogna riprovare più tardi.", fb:"Se il sito fosse solo lento, il DNS darebbe comunque l'indirizzo. Qui il DNS non ha trovato il nome."},
+        {t:"Il DNS non trova quel nome: senza indirizzo IP il browser non sa dove andare.", ok:true},
+        {t:"Il computer non è collegato a Internet.", fb:"Il DNS della scuola ha risposto (guarda Server e Address in alto): la rete funziona. È il nome che non esiste."}],
+  hint:"Leggi l'ultima riga: chi «non trova» che cosa?",
+  success:`<b>Non-existent domain</b>: il nome non è nella rubrica. Succede anche quando sbagli a scrivere l'indirizzo: il browser non arriva nemmeno al server.`,
+  learn:{k:"Non-existent domain", d:"il DNS non trova il nome: il browser non sa dove andare"}},
+
+ {id:"g8", phase:"g", title:"Una pagina, tanti file", env:"web", web:{tool:"rete"},
+  theory:()=>`<p>Con ${K("F12")} il browser apre gli <b>strumenti per sviluppatori</b>. La scheda <b>Rete</b> mostra ogni richiesta che parte.</p>`,
+  task:`Premi ⟳ per ricaricare la pagina e guarda la scheda Rete. Poi rispondi: <b>quante richieste ha fatto il browser per mostrare questa pagina?</b>`,
+  need:()=>WEB.did().net ? "" : "Prima premi ⟳ (in alto, accanto all'indirizzo) e guarda arrivare i file.",
+  quiz:[{t:"Una: la pagina è un file solo.", fb:"Conta le righe nella scheda Rete: ogni riga è un file chiesto al server."},
+        {t:"Quattro: una per ogni file.", ok:true},
+        {t:"Nessuna: la pagina era già nel computer.", fb:"Dopo ⟳ le righe sono comparse una alla volta: il browser le ha chieste al server."}],
+  hint:"Conta le righe che compaiono nella scheda Rete dopo ⟳.",
+  success:`Una pagina è fatta di più file: <b>index.html</b> (il contenuto, in HTML), <b>stile.css</b> (l'aspetto, in CSS), <b>script.js</b> (i comportamenti, in JavaScript) e le immagini. Il browser li chiede uno per uno e li mette insieme.`,
+  learn:{k:"HTML · CSS · JavaScript", d:"contenuto e struttura · aspetto · comportamenti"}},
+
+ {id:"g9", phase:"g", title:"Spegni il CSS", env:"web", web:{tool:"css"},
+  theory:`<p>Il file <b>stile.css</b> dice al browser colori, caratteri e dimensioni.</p>`,
+  task:`Spegni il CSS con l'interruttore e guarda la pagina. Poi riaccendilo. <b>Che cosa sparisce senza CSS?</b>`,
+  need:()=>WEB.did().cssOff ? "" : "Prima spegni il CSS con l'interruttore 🎨 sotto la pagina.",
+  quiz:[{t:"Il testo: la pagina resta vuota.", fb:"Guarda bene: titolo, prezzo e pulsante ci sono ancora. Che cosa hanno perso?"},
+        {t:"L'aspetto: colori, caratteri e impaginazione.", ok:true},
+        {t:"Il prezzo della torta.", fb:"Il prezzo c'è ancora, solo scritto in modo semplice: il testo sta nell'HTML."}],
+  hint:"Confronta la pagina con il CSS acceso e spento: che cosa cambia, che cosa resta?",
+  success:`Senza CSS resta il <b>contenuto</b>, scritto in HTML, con l'aspetto di base del browser: caratteri semplici, niente colori. Il CSS è il «vestito» della pagina.`},
+
+ {id:"g10", phase:"g", title:"Spegni JavaScript", env:"web", web:{tool:"js"},
+  theory:`<p>Il file <b>script.js</b> contiene istruzioni in <b>JavaScript</b>: fanno succedere cose mentre guardi la pagina.</p>`,
+  task:`Premi «Mostra l'offerta del giorno». Poi spegni JavaScript e premilo di nuovo. <b>Che cosa fa JavaScript in questa pagina?</b>`,
+  need:()=>{ const d=WEB.did(); return !d.jsOnClick ? "Prima premi il pulsante «Mostra l'offerta del giorno» con JavaScript acceso." : !d.jsOffClick ? "Ora spegni JavaScript con l'interruttore ⚙️ e premi di nuovo il pulsante." : ""; },
+  quiz:[{t:"Dà il colore arancione al pulsante.", fb:"Il colore resta anche con JavaScript spento: quello è CSS."},
+        {t:"Fa reagire la pagina: apre l'offerta al clic e muove il conto alla rovescia.", ok:true},
+        {t:"Scrive il nome della pasticceria.", fb:"Il nome c'è anche senza JavaScript: il testo sta nell'HTML."}],
+  hint:"Con JavaScript spento guarda il pulsante e il conto alla rovescia: che cosa si è fermato?",
+  success:`JavaScript dà i <b>comportamenti</b>: reazioni ai clic, conti alla rovescia, menu che si aprono. Senza, la pagina si vede ma resta ferma.`},
+
+ {id:"g11", phase:"g", title:"Ispeziona", env:"web", web:{tool:"elem"},
+  theory:`<p>La scheda <b>Elementi</b> mostra l'<b>HTML</b> della pagina. Con il tasto destro › <b>Ispeziona</b> arrivi dritto al pezzo che ti interessa.</p>`,
+  task:`Clicca il titolo «Pasticceria Dolce Vita» nella pagina e guarda quale riga si illumina. <b>Con quale tag è scritto il titolo?</b>`,
+  need:()=>WEB.did().h1 ? "" : "Prima clicca il titolo nella pagina (o la sua riga nel codice) e guarda che cosa si illumina.",
+  quiz:[{t:"&lt;p&gt;", fb:"&lt;p&gt; è il paragrafo: nella pagina sono le righe di testo normale, come «Torte fresche ogni giorno»."},
+        {t:"&lt;h1&gt;", ok:true},
+        {t:"&lt;title&gt;", fb:"&lt;title&gt; è il titolo nella scheda del browser, in alto, non quello dentro la pagina."}],
+  hint:"Clicca il titolo grande: la riga che si colora nel codice comincia con il tag.",
+  success:`<b>&lt;h1&gt;</b> è il titolo principale. Ogni pezzo della pagina ha il suo <b>tag</b>: &lt;p&gt; per i paragrafi, &lt;img&gt; per le immagini, &lt;button&gt; per i pulsanti.`,
+  learn:{k:"tag", d:"l'etichetta tra &lt; &gt; che dice al browser che cos'è un pezzo di pagina"}},
+
+ {id:"g12", phase:"g", title:"Modifica e ricarica", env:"web", web:{tool:"edit"},
+  theory:`<p>Nella scheda Elementi puoi anche <b>cambiare</b> la pagina. Ma che cosa cambi, davvero?</p>`,
+  task:`Nel codice cambia il prezzo da 18 € a 1 €: la pagina cambia? Poi premi ⟳. <b>Hai cambiato il prezzo per tutti i clienti?</b>`,
+  need:()=>{ const d=WEB.did(); return !d.edited ? "Prima, nel codice, alla riga del prezzo, scrivi un prezzo diverso (per esempio 1 €)." : !d.reload ? "Ora premi ⟳ per ricaricare la pagina e guarda il prezzo." : ""; },
+  quiz:[{t:"Sì: ora la torta costa 1 € per tutti.", fb:"Dopo ⟳ il prezzo è tornato 18 €: il browser ha chiesto di nuovo il file al server, che non è cambiato."},
+        {t:"No: ho cambiato solo la copia sul mio schermo; il file vero sta sul server.", ok:true},
+        {t:"Sì, ma solo finché non spengo il computer.", fb:"È bastato ⟳ per perdere la modifica. E gli altri clienti non l'hanno mai vista."}],
+  hint:"Che prezzo vedi dopo ⟳? Da dove è arrivato?",
+  success:`Gli strumenti per sviluppatori lavorano sulla <b>copia</b> che il browser ha ricevuto. Per cambiare il sito per tutti bisogna cambiare i file <b>sul server</b>.`},
+
+ {id:"g13", phase:"g", title:"Chi fa cosa?", env:"sort",
+  theory:`<p>Ultimo passo prima della sfida: tre linguaggi, tre lavori.</p>`,
+  keys:`<b>HTML</b>: che cosa c'è · <b>CSS</b>: come appare · <b>JavaScript</b>: che cosa succede`,
+  task:`Metti ogni carta nel linguaggio giusto, poi premi Controlla.`,
+  sort:{bins:[{id:"h",label:"HTML",sub:"contenuto e struttura"},{id:"c",label:"CSS",sub:"aspetto"},{id:"j",label:"JavaScript",sub:"comportamento"}],
+   cards:[{id:"t",em:"🔤",label:"Il testo «Torta Sacher»",bin:"h",why:"Il testo è contenuto: sta nell'HTML."},
+          {id:"col",em:"🟤",label:"Il colore marrone del titolo",bin:"c",why:"I colori sono aspetto: li decide il CSS."},
+          {id:"f",em:"🔠",label:"Il carattere più grande del prezzo",bin:"c",why:"Grandezza e tipo di carattere sono aspetto: CSS."},
+          {id:"o",em:"💬",label:"L'offerta che compare al clic",bin:"j",why:"Una reazione a un clic è un comportamento: JavaScript."},
+          {id:"i",em:"🖼️",label:"La foto della torta nella pagina",bin:"h",why:"Che nella pagina ci sia un'immagine lo dice l'HTML, con il tag &lt;img&gt;."},
+          {id:"k",em:"⏱️",label:"Il conto alla rovescia che scorre",bin:"j",why:"Un numero che cambia da solo mentre guardi è un comportamento: JavaScript."}]},
+  hint:"Per ogni carta chiediti: è qualcosa che c'è, un modo di apparire, o qualcosa che succede?",
+  success:`Contenuto, aspetto, comportamento: <b>HTML</b>, <b>CSS</b>, <b>JavaScript</b>. Nella prossima palestra l'HTML lo scrivi tu.`},
+
+ {id:"x0", screen:"finalX"},
+
+ {id:"x1", phase:"x", sec:"A", code:"A1", env:"big", big:{em:"📱", name:"Apri Instagram"},
+  task:"Apri Instagram sul telefono e scorri le foto. In questo momento il telefono è…",
+  quiz:[{t:"Un client: chiede le foto.", ok:true},{t:"Un server: conserva le foto.", fb:"Le foto stanno sui computer di Instagram. Il telefono le chiede e le mostra."},{t:"Un DNS: traduce i nomi.", fb:"Il DNS è un server che traduce nomi in numeri. Il telefono gli fa domande, non risponde."}],
+  why:"Chi chiede è il client: il telefono, con la sua app, chiede le foto ai server di Instagram."},
+ {id:"x2", phase:"x", sec:"A", code:"A2", env:"big", big:{em:"📒", name:"La domanda al DNS"},
+  task:"Che cosa chiede il browser al server DNS?",
+  quiz:[{t:"La pagina del sito.", fb:"Il DNS non ha pagine: conosce solo nomi e numeri."},{t:"La password del Wi-Fi.", fb:"Il DNS non sa niente del Wi-Fi: traduce nomi."},{t:"L'indirizzo IP che corrisponde al nome del sito.", ok:true}],
+  why:"Il DNS è la rubrica: dal nome del sito restituisce l'indirizzo IP del server."},
+ {id:"x3", phase:"x", sec:"A", code:"A3", env:"big", big:{em:"⏎", name:"Hai appena premuto Invio"},
+  task:"Hai scritto www.dolcevita.it e premuto Invio. Che cosa succede per primo?",
+  quiz:[{t:"Il server manda la pagina al browser.", fb:"Il server non sa ancora niente: nessuno gli ha chiesto la pagina."},{t:"Il browser chiede al DNS l'indirizzo IP del sito.", ok:true},{t:"Il browser mostra la pagina.", fb:"Per mostrarla deve prima averla: e per chiederla deve sapere dove si trova il server."}],
+  why:"Prima il nome si traduce in indirizzo (DNS), poi la richiesta al server, poi la risposta, poi la pagina."},
+ {id:"x4", phase:"x", sec:"A", code:"A4", env:"big", big:{em:"🔌", name:"Il server della pasticceria è spento"},
+  task:"Il server della pasticceria si è spento; il DNS funziona. Un cliente scrive www.dolcevita.it. Che cosa succede?",
+  quiz:[{t:"La pagina si apre lo stesso: ce l'ha il DNS.", fb:"Il DNS conosce solo l'indirizzo: la pagina sta sul server, che è spento."},{t:"Il browser ottiene l'indirizzo IP, ma la pagina non arriva: errore.", ok:true},{t:"La pagina si apre, ma senza colori.", fb:"Senza server non arriva nessun file: né l'HTML né il CSS."}],
+  why:"Il DNS risponde con l'indirizzo, ma a quell'indirizzo nessuno risponde: il browser mostra un errore."},
+
+ {id:"x5", phase:"x", sec:"B", code:"B1", env:"big", big:{em:"⌨️", name:"Al terminale", shot:true, tx:shot("nslookup www.google.it")},
+  task:"Qual è l'indirizzo IP di www.google.it?",
+  quiz:[{t:"192.168.1.1", fb:"È accanto a «Server», in alto: è il DNS della scuola, che ha risposto."},{t:"dns.scuola.local", fb:"È il nome del DNS della scuola, non di Google."},{t:"142.250.180.131", ok:true}],
+  why:"L'indirizzo del sito è in basso, sotto «Nome». In alto c'è il DNS che ha risposto."},
+ {id:"x6", phase:"x", sec:"B", code:"B2", env:"big", big:{em:"⌨️", name:"Il comando giusto"},
+  task:"Vuoi sapere l'indirizzo IP di www.amazon.it. Che cosa scrivi nel terminale?",
+  quiz:[{t:"www.amazon.it nslookup", fb:"Prima si scrive il comando, poi il nome: l'ordine conta."},{t:"nslookup www.amazon.it", ok:true},{t:"cd www.amazon.it", fb:"cd serve a entrare in una cartella, non a interrogare il DNS."}],
+  why:"Si scrive il comando, uno spazio, poi il nome: nslookup www.amazon.it."},
+ {id:"x7", phase:"x", sec:"B", code:"B3", env:"big", big:{em:"⌨️", name:"Un errore di battitura", shot:true, tx:shot("nslookup www.dolcevitta.it")},
+  task:"Lucia ha scritto male il nome del suo sito. Che cosa vuol dire l'ultima riga?",
+  quiz:[{t:"Il DNS non trova quel nome: il browser non saprebbe dove andare.", ok:true},{t:"Il sito della pasticceria è chiuso per ferie.", fb:"Il DNS non sa se il negozio è aperto: sa solo se il nome esiste. E «dolcevitta», con due t, non esiste."},{t:"Il PC del laboratorio è rotto.", fb:"Il DNS ha risposto (vedi Server in alto): il PC e la rete funzionano. È il nome che non c'è."}],
+  why:"Non-existent domain: il nome non è nella rubrica. Basta una lettera sbagliata."},
+ {id:"x8", phase:"x", sec:"B", code:"B4", env:"big", big:{em:"⌨️", name:"Le prime righe", shot:true, tx:shot("nslookup www.youtube.com")},
+  task:"Che cosa indicano le due righe in alto, «Server» e «Address»?",
+  quiz:[{t:"Il server di YouTube.", fb:"YouTube è in basso, sotto «Nome». In alto c'è sempre lo stesso nome, qualunque sito chiedi."},{t:"Il server DNS che ha risposto alla domanda.", ok:true},{t:"Il tuo computer.", fb:"Il tuo computer ha fatto la domanda: in alto c'è chi ha risposto."}],
+  why:"In alto il DNS che risponde, in basso il nome chiesto e il suo indirizzo IP."},
+
+ {id:"x9", phase:"x", sec:"C", code:"C1", env:"big", big:{em:"🎨", name:"Il titolo diventa rosso"},
+  task:"Lucia vuole il titolo del sito rosso invece che marrone. Quale file si cambia?",
+  quiz:[{t:"Il CSS.", ok:true},{t:"L'HTML.", fb:"Il testo del titolo resta uguale: cambia solo come appare."},{t:"Il JavaScript.", fb:"Il colore non è un comportamento: non succede niente, cambia l'aspetto."}],
+  why:"Colori, caratteri, dimensioni: aspetto, quindi CSS."},
+ {id:"x10", phase:"x", sec:"C", code:"C2", env:"big", big:{em:"🕘", name:"Gli orari del negozio"},
+  task:"Lucia vuole aggiungere un paragrafo con gli orari del negozio. In quale linguaggio si scrive?",
+  quiz:[{t:"CSS.", fb:"Il CSS decide come appaiono le cose, ma non le scrive: il paragrafo nuovo è contenuto."},{t:"HTML.", ok:true},{t:"JavaScript.", fb:"Gli orari non devono muoversi né reagire ai clic: sono contenuto."}],
+  why:"Un testo nuovo nella pagina è contenuto: si scrive in HTML, con il tag &lt;p&gt;."},
+ {id:"x11", phase:"x", sec:"C", code:"C3", env:"big", big:{em:"🛒", name:"Il carrello"},
+  task:"Premi «Aggiungi al carrello» e il numero sull'icona del carrello passa da 0 a 1, senza ricaricare la pagina. Chi lo fa?",
+  quiz:[{t:"HTML.", fb:"L'HTML scrive il contenuto quando la pagina arriva; qui la pagina reagisce a un clic."},{t:"CSS.", fb:"Il CSS decide l'aspetto del numero, non lo fa cambiare."},{t:"JavaScript.", ok:true}],
+  why:"Una reazione a un clic, senza ricaricare: è un comportamento, quindi JavaScript."},
+ {id:"x12", phase:"x", sec:"C", code:"C4", env:"big", big:{em:"🔧", name:"F12 sul sito della scuola"},
+  task:"Apri il sito della scuola, premi F12 e in Elementi cambi il nome del preside. Che cosa succede?",
+  quiz:[{t:"Il nome cambia per tutti quelli che aprono il sito.", fb:"Hai cambiato la copia che il tuo browser ha ricevuto: il file sul server resta com'era."},{t:"Cambia solo sul tuo schermo, finché non ricarichi la pagina.", ok:true},{t:"Il sito si blocca per tutti.", fb:"Il server non sa nemmeno che hai aperto F12: lavori solo sulla tua copia."}],
+  why:"Gli strumenti per sviluppatori cambiano solo la copia nel tuo browser: con ⟳ torna tutto com'era."},
+
+ {id:"end", screen:"end"},
+
+ {id:"b1", phase:"b", code:"K1", title:"Più veloce la seconda volta", env:"big", big:{em:"⚡", name:"Il giorno dopo"},
+  task:"Ieri hai aperto www.dolcevita.it. Oggi il tuo computer non chiede di nuovo l'indirizzo al DNS. Perché?",
+  quiz:[{t:"Il computer ricorda per un po' l'indirizzo già trovato.", ok:true},{t:"Il server della pasticceria si è avvicinato.", fb:"I server non si spostano per farti piacere. Il computer ha qualcosa in memoria."},{t:"Oggi Internet è meno affollato.", fb:"Il traffico non c'entra: il computer ha saltato proprio la domanda al DNS."}],
+  why:"Le risposte del DNS restano in memoria per un po': si chiama cache. Per questo nslookup diceva «server non autorevole»: anche il DNS della scuola aveva la risposta in memoria."},
+ {id:"b2", phase:"b", code:"K2", title:"Un indirizzo, tanti siti", env:"big", big:{em:"🏬", name:"Trenta negozi, un server"},
+  task:"Bottega Web mette i siti di 30 negozi sullo stesso server. Che cosa risponde nslookup per quei 30 nomi?",
+  quiz:[{t:"30 indirizzi IP diversi, per forza.", fb:"Un indirizzo IP è un computer: se il server è uno, l'indirizzo può essere uno."},{t:"Lo stesso indirizzo IP per tutti e 30.", ok:true},{t:"Errore: un server può ospitare un sito solo.", fb:"Un server può ospitare centinaia di siti."}],
+  why:"Nomi diversi, stesso indirizzo IP: nella richiesta il browser dice al server quale sito vuole."},
+ {id:"b3", phase:"b", code:"K3", title:"Senza nome", env:"big", big:{em:"🔢", name:"93.41.120.7"},
+  task:"Scrivi 93.41.120.7 direttamente nella barra del browser. Serve ancora il DNS?",
+  quiz:[{t:"Sì: il DNS serve sempre, anche con i numeri.", fb:"Il DNS serve a trovare il numero partendo dal nome. Il numero ce l'hai già."},{t:"Sì: il DNS trasforma il numero in nome.", fb:"Al browser serve il numero, non il nome: e il numero ce l'hai già."},{t:"No: hai già l'indirizzo, il browser va dritto al server.", ok:true}],
+  why:"Il DNS traduce nomi in numeri: con il numero si salta quel passo. Ma se sul server ci sono tanti siti, come nella domanda di prima, il server potrebbe non capire quale vuoi."},
+ {id:"endb", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x"), BONUS = STEPS.filter(s=>s.phase==="b");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
+   Formato comune alle palestre di Linguaggi web: lo legge verifica_codici.html
+   ===================================================================== */
+const FAM = "WEB", TOOL = "VIA";
+const RS = {prove:"le domande", risp:"Le risposte", dove:"nel documento della consegna"};
+function sig(s, tag){ let h=5381; const t=FAM+"*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+const two = n => String(n).padStart(2,"0");
+const nowStr = () => { const d=new Date(); return `${two(d.getDate())}/${two(d.getMonth()+1)}/${d.getFullYear()} ${two(d.getHours())}:${two(d.getMinutes())}`; };
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const curCls = () => (store.get("classe")||"").replace(/\s+/g,"").toUpperCase();
+  const rip = () => +store.get("rip")||0;
+  const errs = () => store.get("errs")||{};
+  function addErr(id){ const e=errs(); e[id]=(e[id]||0)+1; store.set("errs", e); }
+  const mq = window.matchMedia ? window.matchMedia("(max-width:900px)") : null;
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html){ const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML=html; }
+  function placeDock(){
+    const d=$("#dock");
+    if(mq && mq.matches){ if(d.parentNode!==$("#work")) $("#work").appendChild(d); d.classList.add("docked"); }
+    else { if(d.parentNode!==$("#lesson")) $("#lesson").appendChild(d); d.classList.remove("docked"); }
+  }
+  if(mq){ if(mq.addEventListener) mq.addEventListener("change", placeDock); else if(mq.addListener) mq.addListener(placeDock); }
+
+  function counter(step){ return step.phase==="g" ? `Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length} · pillola ed esercizio` : step.phase==="b" ? `Livello bonus · domanda ${BONUS.indexOf(step)+1} di ${BONUS.length}` : `Sfida finale · domanda ${CHAL.indexOf(step)+1} di ${CHAL.length}`; }
+  function where(){ const s=STEPS[pos];
+    return s.phase==="g" ? `passo ${GUIDED.indexOf(s)+1}/${GUIDED.length}` : s.phase==="x" ? `sfida ${CHAL.indexOf(s)+1}/${CHAL.length}` : s.phase==="b" ? `bonus ${BONUS.indexOf(s)+1}/${BONUS.length}` : s.id==="x0" ? `sfida 0/${CHAL.length}` : s.screen==="end" ? "fine" : "inizio"; }
+  function render(){
+    const step=STEPS[pos], main=idx("end");
+    $("#pbar").style.width = Math.min(100, Math.round(Math.min(pos,main)/main*100))+"%";
+    $("#h-name").textContent = curName() + (curCls()?" · "+curCls():"");
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false, firstDone:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.phase==="x" ? SEC[step.sec].name : step.phase==="b" ? "⭐ "+step.title : step.title;
+    const th=val(step.theory); $("#l-theory").innerHTML = th ? `<span class="pill">💊 Pillola</span>${th}` : ""; $("#l-theory").classList.toggle("hidden", !th);
+    const keys=val(step.keys); $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.phase!=="g" ? "Domanda" : step.need ? "Esercizio: prova e rispondi" : step.quiz ? "Esercizio" : "Esercizio";
+    $("#l-task").innerHTML = val(step.task);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    q.innerHTML = step.quiz ? step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o.t}</button>`).join("") : "";
+    q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b));
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    $("#b-next").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    $("#b-check").classList.toggle("hidden", !!step.quiz);
+    const sk=$("#b-skip"); sk.classList.remove("hidden"); sk.textContent = step.phase==="g" ? "Salta il passo ⤼" : "Salta la domanda ⤼";
+    const env=ENVS[step.env]; if(env) env.mount($("#stage"), step[step.env]||{}); else $("#stage").innerHTML="";
+    placeDock();
+  }
+  function showHintBtn(){ if(STEPS[pos].hint && !S.hint && S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  const scored = step => step.phase==="x" || step.phase==="b";
+  function recordFirst(ok){ const step=STEPS[pos]; if(!scored(step) || S.firstDone) return; S.firstDone=true; if(!res(step.id)) store.set("r_"+step.id, {first:ok, done:false}); }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen || step.quiz) return;
+    if(S.done){ next(); return; }
+    const env=ENVS[step.env], v = env && env.verify ? env.verify(step) : {ok:true};
+    if(!v.ok){
+      if(!v.noTry){ S.err++; recordFirst(false); if(step.phase==="x") addErr(step.id); }
+      say(v.noTry?"mid":"ko", (v.noTry?"":"Non ancora. ")+v.msg); showHintBtn(); return; }
+    recordFirst(true); success(step);
+  }
+  function answer(i, btn){
+    const step=STEPS[pos]; if(S.done) return; const o=step.quiz[i];
+    /* negli esercizi «prova e rispondi» la risposta si accetta solo dopo la prova */
+    if(step.need){ const m=step.need(); if(m){ say("mid", m); return; } }
+    if(o.ok){ recordFirst(true); btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    recordFirst(false); if(step.phase==="x") addErr(step.id);
+    btn.classList.add("wrong"); btn.setAttribute("aria-disabled","true"); S.err++; say("ko", "Non è così. "+o.fb); showHintBtn();
+  }
+  function success(step){
+    S.done=true;
+    if(step.phase==="g"){ const r=Object.assign({}, res(step.id)||{}, {ok:1, err:Math.max(S.err, (res(step.id)||{}).err||0)}); if(S.hint) r.hint=1; delete r.skip; store.set("r_"+step.id, r);
+      say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); }
+    else { const r=res(step.id)||{first:true}; store.set("r_"+step.id, {first:!!r.first, done:true}); say("ok", (r.first?"✔ Giusto al primo colpo! ":"✔ Ora è giusta. ")+val(step.why)); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#b-skip").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →"; nb.focus({preventScroll:true});
+  }
+  /* un passo saltato resta nel codice e vale zero */
+  function skip(){
+    const step=STEPS[pos]; if(!step || step.screen || S.done) return; const r=res(step.id);
+    if(step.phase==="g"){ if(!(r && r.ok)) store.set("r_"+step.id, Object.assign({}, r||{}, {skip:1, err:S.err})); }
+    else store.set("r_"+step.id, {first:false, done:false, skip:1});
+    next();
+  }
+  function hint(){ S.hint=true; const id=STEPS[pos].id; store.set("r_"+id, Object.assign({}, res(id)||{}, {hint:1}));
+    const h=$("#l-hinttext"); h.innerHTML="💡 "+val(STEPS[pos].hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+  /* gli ambienti segnalano un tentativo sbagliato (envErr) o una prova fatta (envDone) */
+  function envErr(){ S.err++; showHintBtn(); }
+  function envDone(){ const fb=$("#l-fb"); if(fb.classList.contains("mid") && STEPS[pos].need && !STEPS[pos].need()) fb.classList.add("hidden"); }
+
+  /* tasca: chiusa durante la sfida e il bonus */
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && (res(s.id)||{}).ok), cur=STEPS[pos], closed = cur && (cur.phase==="x" || cur.phase==="b" || cur.id==="x0");
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length || closed); b.textContent=`🎒 Tasca (${learned.length})`;
+    if(closed){ $("#pocket").classList.add("hidden"); b.setAttribute("aria-expanded","false"); }
+    $("#pocket").innerHTML = `<h3>Cosa so già</h3><ul>${learned.map(s=>`<li><b>${val(s.learn.k)}</b> — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket") && !$("#pocket").classList.contains("hidden")){ $("#pocket").classList.add("hidden"); $("#pocket-btn").setAttribute("aria-expanded","false"); } });
+
+  /* riepilogo e codice */
+  function guided(){ const r=GUIDED.map(s=>res(s.id)||{}), ok=r.filter(x=>x.ok).length, skip=r.filter(x=>x.skip && !x.ok).length;
+    const hard=GUIDED.map((s,i)=>({n:i+1, e:r[i].err||0})).filter(x=>x.e>=2);
+    return {ok, skip, miss:GUIDED.length-ok-skip, hint:(+store.get("hintsPrev")||0)+r.filter(x=>x.hint).length, hard}; }
+  function tally(){
+    const secs = Object.keys(SEC).map(k=>{ const qs=CHAL.filter(q=>q.sec===k), r=qs.map(q=>res(q.id));
+      return {k, n:qs.length, ok:r.filter(x=>x && x.first && !x.skip).length, skip:r.filter(x=>x && x.skip).length, miss:r.filter(x=>!x).length}; });
+    const skips = CHAL.filter(q=>{ const r=res(q.id); return r && r.skip; });
+    return {secs, n:CHAL.length, miss:secs.reduce((a,x)=>a+x.miss,0), ok:secs.reduce((a,x)=>a+x.ok,0), skips};
+  }
+  function bonus(){ const r=BONUS.map(q=>res(q.id)); return {n:BONUS.length, ok:r.filter(x=>x && x.first && !x.skip).length, any:r.some(Boolean), all:r.every(x=>x && (x.done||x.skip))}; }
+  const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+  function code(){
+    const t=tally(), g=guided(), e=errs(), b=bonus();
+    const gx=[]; if(g.skip) gx.push(pl(g.skip,"saltato","saltati")); if(g.miss) gx.push(pl(g.miss,"non fatto","non fatti"));
+    const parts=[FAM+"-"+TOOL, curName()||"(nome non inserito)"];
+    if(curCls()) parts.push("CLASSE "+curCls());
+    parts.push(`PASSI ${g.ok}/${GUIDED.length}`+(gx.length?` (${gx.join(", ")})`:""), `aiuti ${g.hint}`, "inciampi "+(g.hard.length?g.hard.map(x=>`P${x.n}(${x.e})`).join(" "):"-"));
+    t.secs.forEach(x=>{ const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte"));
+      parts.push(`${SEC[x.k].code} ${x.ok}/${x.n}`+(ex.length?` (${ex.join(", ")})`:"")); });
+    parts.push(`TOT ${t.ok}/${t.n}`);
+    const el=CHAL.filter(q=>e[q.id]).map(q=>`${q.code}(${e[q.id]})`);
+    parts.push("errori "+(el.length?el.join(" "):"-"));
+    if(t.skips.length) parts.push("saltate "+t.skips.map(q=>q.code).join(" "));
+    parts.push(`BONUS ${b.ok}/${b.n}`+(b.any?"":" (non fatto)"));
+    parts.push("ripetizioni "+rip());
+    if(BES) parts.push("modalità facilitata");
+    const n0=store.get("nome0"); if(n0 && nameKey(n0)!==nameKey(curName())) parts.push("nome iniziale: "+n0);
+    parts.push("ADESSO "+where(), "ORA "+nowStr());
+    const body=parts.join(" | ");
+    return body+" | #"+sig(body, TOOL);
+  }
+  function codeBlock(){
+    const t=tally(), g=guided(), e=errs(), b=bonus(), rev=CHAL.filter(q=>e[q.id] || t.skips.includes(q));
+    const note = x => { const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte")); return ex.length?`<small>${ex.join(", ")}</small>`:""; };
+    const tag = q => [e[q.id]?`<i>(sbagliata ${e[q.id]===1?"1 volta":e[q.id]+" volte"})</i>`:"", t.skips.includes(q)?"<i>(saltata)</i>":""].filter(Boolean).join(" ");
+    return `<div class="stats">${t.secs.map(x=>`<div class="stat"><small>${SEC[x.k].name}</small><b>${x.ok}/${x.n}</b>${note(x)}</div>`).join("")}<div class="stat tot"><small>Giuste al primo colpo</small><b>${t.ok}/${t.n}</b></div>${b.any?`<div class="stat"><small>⭐ Bonus</small><b>${b.ok}/${b.n}</b></div>`:""}</div>
+      <p class="small">Passi guidati: <b>${g.ok}/${GUIDED.length}</b>${g.skip?`, ${pl(g.skip,"saltato","saltati")}`:""}${g.hint?`, aiuti usati: ${g.hint}`:""}${rip()?` · ripetizioni della sfida: ${rip()}`:""}.</p>
+      ${rev.length?`<details class="review" open><summary>Da ripassare (${rev.length})</summary><ul>${rev.map(q=>`<li><b>${plain(val(q.task))}</b> ${tag(q)}<br>${q.why}</li>`).join("")}</ul></details>`:""}
+      <h3>Il tuo codice</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} <b>${RS.dove}</b>.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="small" data-copied aria-live="polite"></span></p>
+      <p class="small">I risultati restano su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".screen").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]");
+    const ok=()=>{ out.textContent="Copiato ✓ Ora incollalo "+RS.dove+"."; };
+    const fallback=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Copia a mano: clic nel riquadro, "+CT+"+A e "+CT+"+C."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fallback); else fallback();
+  });
+
+  /* «Nuovo studente»: se il nome tornerà sullo stesso PC, errori, aiuti e ripetizioni ripartono da dove erano */
+  function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
+  function saveHistory(){
+    const n=curName(); if(!n || !anyWork()) return;
+    const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint, bes:BES}; store.set("hist", h);
+  }
+  function restoreHistory(n){
+    if(anyWork()) return; const h=store.get("hist")||{}, k=hashName(n), p=h[k]; if(!p) return;
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); if(p.bes){ BES=true; store.set("bes", true); document.body.classList.add("bes"); const ob=$("#o-bes"); if(ob) ob.checked=true; } delete h[k]; store.set("hist", h);
+  }
+
+  /* schermate */
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>🌍 Il viaggio di una pagina</h2>
+        <p>Primo giorno di stage da <b>Bottega Web</b>, l'agenzia che fa i siti per i negozi del quartiere. La prima cliente è Lucia, della <b>Pasticceria Dolce Vita</b>: «Quando i clienti scrivono il nome del mio sito, come fa la pagina ad arrivare sul loro telefono?».</p>
+        <p>Oggi glielo spieghi tu, rimettendo in fila quello che hai visto in classe. <b>${GUIDED.length} passi brevi</b>: in ognuno una pillola di teoria e un esercizio da fare. Poi una sfida di <b>${CHAL.length} domande</b> e il codice da consegnare. Chi finisce prima trova un livello bonus.</p>
+        <p class="small">Se un passo proprio non ti riesce puoi saltarlo: nel codice risulta saltato e non vale punti.</p>
+        <div class="fields"><p><label for="w-name"><b>Nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
+        <p><label for="w-cls"><b>Classe</b></label><br><input type="text" id="w-cls" autocomplete="off" value="${esc(curCls())}" placeholder="es. 3B" maxlength="8"></p></div>
+        <div class="fb ko hidden" id="w-err" role="alert"></div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(), c=$("#w-cls").value.replace(/[^0-9A-Za-z]/g,"").toUpperCase(), er=$("#w-err");
+        if(v.length<3){ er.textContent="Scrivi il tuo nome e cognome (almeno 3 lettere), poi premi Inizia."; er.classList.remove("hidden"); $("#w-name").focus(); return; }
+        if(!/^[1-5][A-Z]{1,4}$/.test(c)){ er.textContent="Scrivi la classe come sul registro, per esempio 3B."; er.classList.remove("hidden"); $("#w-cls").focus(); return; }
+        const old=curName(), any=STEPS.some(s=>res(s.id));
+        if(old && nameKey(old)!==nameKey(v) && any && !store.get("nome0")) store.set("nome0", old);
+        restoreHistory(v);
+        store.set("nome", v); store.set("classe", c); next(); };
+      $("#w-go").onclick=go1; ["#w-name","#w-cls"].forEach(s=>$(s).addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); })); $("#w-name").focus();
+    },
+    finalX(el){
+      el.innerHTML = `<h2>🏁 Sfida finale · Le domande di Lucia</h2>
+        <p>Lucia ha capito quasi tutto, ma ha ancora <b>${CHAL.length} domande</b> in tre gruppi: il viaggio di una pagina, il DNS al terminale, HTML, CSS e JavaScript.</p>
+        <p>Conta la <b>prima risposta</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
+        <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      const t=tally(), b=bonus();
+      el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
+        ${!b.all?`<div class="bonusbox"><p><b>⭐ Hai ancora tempo?</b> Tre domande in più, per veri esperti di DNS. Non tolgono punti: nel codice compaiono a parte.</p><p><button type="button" class="btn star" id="e-bonus">⭐ Livello bonus →</button></p></div>`:""}
+        ${restartBox()}
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p>
+          <p class="small">Per tutta la classe: pagina «Verifica dei codici» nell'argomento Linguaggi web.</p></details>`;
+      const eb=$("#e-bonus"); if(eb) eb.onclick=()=>{ const f=BONUS.find(q=>{ const r=res(q.id); return !(r && (r.done||r.skip)); }); go(idx(f?f.id:"b1")); };
+      $("#e-redo").onclick=e=>askRestart("sfida", e.currentTarget); $("#e-zero").onclick=e=>askRestart("zero", e.currentTarget);
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !new RegExp("^"+FAM+"-[A-Z]{3} \\|").test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(FAM.length+1, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  /* pulsanti */
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-skip").onclick=skip;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const step=STEPS[pos];
+    const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, step.quiz?step.quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):""].filter(Boolean).join(". ");
+    const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  /* RIAVVIO-JS inizio: scelta alla fine e avviso grande prima di cancellare il codice */
+  function redoChallenge(){ CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); }
+  function resetAll(){ saveHistory(); store.clear(); window.scrollTo(0,0); location.reload(); }
+  function restartBox(){
+    const n=curName();
+    return `<div class="restart"><h3>Vuoi ricominciare?</h3>
+      <p>${n?`Questo è il lavoro di <b>${esc(n)}</b>. `:""}<b>Prima incolla il codice ${RS.dove}</b>: se ricominci, il codice qui sopra si cancella e alla fine ne avrai uno nuovo.</p>
+      <p><button type="button" class="btn alt" id="e-redo">↺ Rifai solo la sfida</button> <span class="rs-note">Restano il nome e i passi guidati. Rifai solo ${RS.prove} della sfida.</span></p>
+      <p><button type="button" class="btn danger" id="e-zero">🗑️ Ricomincia tutto da zero</button> <span class="rs-note">Si cancella tutto, anche il nome. Serve anche quando tocca a un compagno.</span></p>
+      <p class="small">Puoi ricominciare quante volte vuoi: il codice nuovo conta le ripetizioni e ricorda tutti gli errori.</p></div>`;
+  }
+  function askRestart(kind, opener){
+    if(document.getElementById("rs-wrap")) return;
+    const zero=kind==="zero", n=curName(), who=n?`il codice di ${esc(n)}`:"il codice salvato su questo computer";
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const w=document.createElement("div"); w.id="rs-wrap"; w.className="modal rs-wrap";
+    w.innerHTML=`<div class="screen warn" role="alertdialog" aria-modal="true" aria-labelledby="rs-t" aria-describedby="rs-d">
+      <div class="warn-body">
+        <div class="warn-ic" aria-hidden="true">⚠️</div>
+        <h2 id="rs-t">${zero?"Ricominci tutto da zero?":"Rifai solo la sfida?"}</h2>
+        <p class="warn-key" id="rs-d">Attenzione: <b>${zero?who:"il codice di adesso"} si perde per sempre</b>. È il codice da consegnare all'insegnante.</p>
+        <p>${zero ? (n?`<b>Sei tu?</b> Prima incolla il codice ${RS.dove}. <b>Non sei tu?</b> Chiedi a ${esc(n)} se l'ha già copiato.`:`<b>È tuo?</b> Prima incolla il codice ${RS.dove}.`) : `<b>Non l'hai ancora incollato ${RS.dove}?</b> Copialo adesso.`}</p>
+        <textarea class="copy" readonly aria-label="Il codice di adesso">${esc(code())}</textarea>
+        <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="rs-copied" data-copied aria-live="polite"></span></p>
+        <p>${zero?`Si cancella tutto: nome, passi guidati e sfida. Se ricominci tu, il codice nuovo conta la ripetizione e ricorda gli errori di prima.`:`${RS.risp} di adesso si cancellano; nome e passi guidati restano. Se ti fermi a metà, nel codice nuovo il resto risulta non fatto. Il codice nuovo conta la ripetizione e ricorda gli errori di prima.`}</p>
+      </div>
+      <div class="warn-acts"><button type="button" class="btn" id="rs-no">No, lascio tutto com'è</button><button type="button" class="btn danger" id="rs-yes">🗑️ ${zero?"Sì, cancello tutto e ricomincio":"Sì, cancello e rifaccio la sfida"}</button></div></div>`;
+    document.body.appendChild(w);
+    const t0=Date.now(), no=w.querySelector("#rs-no"), yes=w.querySelector("#rs-yes");
+    const onKey=e=>{ if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(true); }
+      else if(e.key==="Tab"){ const f=[...w.querySelectorAll("button,textarea")], a=f[0], z=f[f.length-1];
+        if(e.shiftKey && document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey && document.activeElement===z){ e.preventDefault(); a.focus(); } } };
+    const onFocus=e=>{ if(!w.contains(e.target)) no.focus({preventScroll:true}); };
+    function close(back){ document.removeEventListener("keydown", onKey, true); document.removeEventListener("focusin", onFocus, true); w.remove();
+      if(back && opener && document.contains(opener)) opener.focus({preventScroll:true}); }
+    document.addEventListener("keydown", onKey, true); document.addEventListener("focusin", onFocus, true);
+    /* i primi 600 ms non contano: il secondo colpo di un doppio clic non conferma e non chiude */
+    no.onclick=()=>{ if(Date.now()-t0<600) return; close(true); };
+    yes.onclick=()=>{ if(Date.now()-t0<600) return; close(false); if(zero) resetAll(); else redoChallenge(); };
+    no.focus({preventScroll:true}); w.querySelector(".warn-body").scrollTop=0;
+  }
+  /* RIAVVIO-JS fine */
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=e=>{ if(!anyWork()){ resetAll(); return; } askRestart("zero", e.currentTarget); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render, envErr, envDone};
+})();
+App.render();
+</script>
+</body>
+</html>

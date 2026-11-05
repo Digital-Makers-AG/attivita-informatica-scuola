@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Il tuo primo HTML · Linguaggi web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B7%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--mid:#7a5c00;--mid-l:#fff4cc;--bg:#f7f5f0;--line:#d5dade;--fs:16px}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:var(--fs);line-height:1.45}
+body.bes{--fs:19px}
+header{background:var(--teal);color:#fff;padding:10px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:19px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:14px}
+.pbar{height:6px;background:#cfe3e4}.pbar div{height:100%;background:var(--orange);width:0;transition:width .4s}
+main{max-width:1240px;margin:0 auto;padding:18px 20px 30px}
+.hidden{display:none!important}
+.small{font-size:13px;color:var(--muted)}
+.kbd{display:inline-block;border:1px solid #9aa4ab;border-bottom-width:3px;border-radius:5px;padding:0 7px;background:#fff;font-size:.9em;margin:0 1px;white-space:nowrap;color:var(--ink);font-weight:normal}
+.keys{white-space:nowrap}
+code{background:#f1f1f1;border-radius:4px;padding:1px 5px;font-size:.95em;font-family:Consolas,"Courier New",monospace}
+.btn{background:var(--teal);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-size:1em;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal);padding:8px 14px}
+.btn.star{background:var(--orange-d)}.btn.star:hover{background:#7d3609}
+.btn.hintb{background:#fff;color:var(--orange-d);border:2px solid var(--orange);padding:8px 14px}
+.btn.skipb{background:#fff;color:var(--muted);border:2px solid var(--line);padding:8px 14px;margin-left:auto}
+.btn.skipb:hover{background:#f2f4f5;color:var(--ink)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,.linkbtn:focus-visible,summary:focus-visible,.qopt:focus-visible,.card:focus-visible,.binhead:focus-visible,.tagbtn:focus-visible,.ln:focus-visible,.tb:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.linkbtn{background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;font-size:inherit;padding:0;font-family:inherit}
+.hbtn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:16px;padding:4px 12px;cursor:pointer;font-size:14px;font-family:inherit}
+/* schermate */
+.screen{max-width:760px;margin:20px auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 30px}
+.screen h2{color:var(--teal);margin:0 0 12px;font-size:1.6em}
+.screen h3{color:var(--teal-d);margin:18px 0 6px}
+.screen input[type=text]{font-size:1.1em;padding:9px 11px;border:2px solid var(--line);border-radius:8px;width:100%;max-width:360px;font-family:inherit}
+.screen .fields{display:flex;gap:14px;flex-wrap:wrap}.screen .fields p{margin:6px 0}
+.screen input#w-cls{max-width:120px}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.stat{background:var(--teal-l);border-radius:10px;padding:10px 14px;min-width:130px;flex:1}
+.stat b{display:block;font-size:24px;color:var(--teal)}.stat small{display:block;color:var(--muted);font-size:13px}
+.stat.tot{background:var(--orange-l)}.stat.tot b{color:var(--orange-d)}
+details.review{background:#fffaf2;border:1px solid #f0d9bf;border-radius:10px;padding:8px 14px;margin:10px 0}
+details.review summary{cursor:pointer;font-weight:bold;color:var(--orange-d)}
+details.review li{margin:6px 0}
+textarea.copy{width:100%;height:92px;font-family:"Courier New",monospace;font-size:14px;padding:8px;border:2px solid var(--line);border-radius:8px;resize:vertical}
+.bonusbox{background:var(--orange-l);border-radius:12px;padding:12px 16px;margin:16px 0}.bonusbox p{margin:6px 0}
+/* lavoro */
+.work{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.work{grid-template-columns:minmax(0,1fr)}.lesson{position:static!important}}
+.lesson{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;position:sticky;top:12px}
+.step-lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:bold;display:flex;align-items:center;gap:8px}
+.lesson h2{margin:4px 0 10px;color:var(--teal);font-size:1.35em;outline:none}
+.theory{border-left:4px solid var(--teal);padding-left:10px}
+.theory p{margin:0 0 10px}
+.theory .pill{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--teal-d);font-weight:bold;margin-bottom:2px}
+.keybox{display:block;background:var(--teal-l);border-radius:10px;padding:10px 12px;margin:6px 0 12px;font-size:1em}
+.taskbox{border-left:5px solid var(--orange);background:var(--orange-l);border-radius:8px;padding:10px 14px;margin:12px 0 4px}
+.taskbox .lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--orange-d);font-weight:bold;margin-bottom:2px}
+.dock.docked{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.dock.docked .quiz{margin-top:0}
+.quiz{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.qopt{text-align:left;background:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.98em;cursor:pointer;font-family:inherit;color:var(--ink)}
+.qopt:hover{border-color:var(--teal)}
+.qopt.wrong{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through;cursor:default}
+.qopt.right{border-color:var(--ok);background:var(--ok-l);font-weight:bold}
+.qopt.right::after{content:" ✔"}
+.qopt:disabled{cursor:default;color:var(--ink)}
+.qopt code{background:#eef2f3}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.fb{margin-top:12px;border-radius:8px;padding:10px 12px}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--ko-l);color:#7d1a14}.fb.mid{background:var(--mid-l);color:var(--mid)}
+.hinttext{margin-top:10px;background:#fff;border:2px dashed var(--orange);border-radius:8px;padding:8px 12px}
+.speak{margin-left:auto;background:none;border:1px solid var(--line);border-radius:14px;padding:2px 9px;cursor:pointer;font-size:13px;font-family:inherit}
+.pocket{position:absolute;right:20px;top:52px;z-index:20;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18);padding:14px 16px;width:min(390px,calc(100vw - 32px))}
+.pocket h3{margin:0 0 8px;color:var(--teal);font-size:16px}.pocket li{margin:0 0 6px}.pocket ul{padding-left:18px;margin:0}
+/* ambienti */
+.stage{min-width:0}
+.envbox{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px}
+.envstatus{font-size:14px;color:var(--muted);margin:8px 2px 0;min-height:1.4em}
+.envbox>.envstatus:first-child{margin:0 2px 10px}
+.em{font-size:32px;line-height:1.1}
+.big{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:300px;text-align:center}
+.big .nm{font-size:1.45em;font-weight:bold;color:var(--teal-d)}
+.big .em{font-size:92px}
+.big .tx{max-width:560px;text-align:left;background:var(--teal-l);border-radius:10px;padding:10px 14px}
+.big .tx.shot{background:none;padding:0;max-width:600px;width:100%}
+pre.code,div.code{margin:0;background:#f7f8f9;border:1px solid #e3e6e8;border-radius:6px;padding:8px 10px;font:14px/1.6 Consolas,"Courier New",monospace;white-space:pre-wrap;color:#1d2329;text-align:left}
+/* carte e cestini */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:76px;padding:10px;border:2px dashed var(--line);border-radius:12px;background:#fafbfb;align-items:flex-start}
+.pool:empty{display:none}
+.card{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:4px;width:130px;padding:8px 6px;border:2px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;font:inherit;font-size:.88em;color:var(--ink);text-align:center;touch-action:manipulation;user-select:none;line-height:1.2}
+.card:hover{border-color:var(--teal)}
+.card.picked{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(217,102,26,.25);transform:translateY(-2px)}
+.card.bad{border-color:var(--ko);background:var(--ko-l)}
+.card .badmark{font-size:11px;font-weight:bold;color:var(--ko)}
+.card code{background:#eef2f3;font-size:.95em}
+.card.dragging{opacity:.35}
+.ghost{position:fixed;pointer-events:none;z-index:60;opacity:.92;transform:rotate(-3deg);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.bins{display:grid;gap:12px;margin-top:12px}
+.bins.c2{grid-template-columns:repeat(2,minmax(0,1fr))}.bins.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.bin{border:2px solid var(--teal);border-radius:14px;background:var(--teal-l);min-height:170px;display:flex;flex-direction:column;cursor:pointer}
+.bin.armed{border-style:dashed;background:#d5ecec}
+.bin.over{background:#c3e4e4;border-color:var(--orange)}
+.binhead{display:block;width:100%;background:transparent;border:0;padding:10px 12px 8px;text-align:left;font:inherit;cursor:pointer;color:var(--teal-d)}
+.binhead .bn{display:block;font-weight:bold;font-size:1.08em}
+.binhead small{display:block;color:var(--muted);font-size:13px}
+.drophere{display:inline-block;margin-top:4px;font-size:12px;font-weight:bold;color:var(--orange-d)}
+.binbody{display:flex;flex-wrap:wrap;gap:8px;padding:0 10px 10px;align-content:flex-start;flex:1}
+.bin .card{width:118px}
+/* caccia al tag sbagliato */
+.bugcode{font:17px/2.1 Consolas,"Courier New",monospace;background:#f7f8f9;border:1px solid #e3e6e8;border-radius:8px;padding:10px 12px;word-break:break-word}
+.tagbtn{font:inherit;color:#881280;background:#fff;border:2px solid #d6c3d9;border-radius:6px;padding:0 4px;cursor:pointer;margin:0 1px}
+.tagbtn:hover{border-color:var(--orange)}
+.tagbtn.picked{border-color:var(--orange);background:var(--orange-l);box-shadow:0 0 0 3px rgba(217,102,26,.25)}
+.tagbtn.no{border-color:var(--ko);background:var(--ko-l);text-decoration:line-through}
+.tagbtn.found{border-color:var(--ok);background:var(--ok-l)}
+.prevlbl{margin:12px 2px 4px;font-size:13px;font-weight:bold;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.bugprev{border:1px solid #b9c2c9;border-radius:8px;padding:10px 14px;font-family:"Times New Roman",Times,serif;font-size:18px;background:#fff}
+.bugprev p{margin:0}
+/* editor con anteprima */
+.ed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media(max-width:1100px){.ed{grid-template-columns:minmax(0,1fr)}}
+.ed .tbar2{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;font-size:13px;color:var(--muted)}
+.tb{font:13px Consolas,"Courier New",monospace;background:#fff;color:#881280;border:1px solid #c9b5cc;border-radius:6px;padding:3px 8px;cursor:pointer}
+.tb:hover{background:#f6eef7}
+.ed textarea{width:100%;min-height:210px;font:15px/1.55 Consolas,"Courier New",monospace;padding:10px;border:2px solid var(--teal);border-radius:8px;resize:vertical;background:#fbfdfd;color:var(--ink);tab-size:2}
+.ed textarea.full{min-height:280px}
+.pv{border:1px solid #b9c2c9;border-radius:10px;overflow:hidden;background:#fff;display:flex;flex-direction:column;min-height:210px}
+.pv .pvtab{background:#e9ecee;padding:6px 10px;font-size:13px;display:flex;gap:8px;align-items:center}
+.pv .pvtab b{background:#fff;border-radius:8px 8px 0 0;padding:3px 12px;font-weight:normal;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv iframe{border:0;width:100%;flex:1;min-height:180px;background:#fff}
+.goals{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:4px 14px}
+.goals li{font-size:14px;padding-left:24px;position:relative}
+.goals li::before{content:"☐";position:absolute;left:2px;color:var(--muted)}
+.goals li.on{color:var(--ok)}.goals li.on::before{content:"✔";color:var(--ok);font-weight:bold}
+/* righe da mettere in ordine */
+.ord{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media(max-width:700px){.ord{grid-template-columns:minmax(0,1fr)}}
+.ord h4{margin:0 0 6px;font-size:14px;color:var(--muted)}
+.slots2{list-style:none;margin:0;padding:0;counter-reset:s}
+.slots2 li{display:flex;align-items:center;gap:8px;margin:0 0 6px;counter-increment:s}
+.slots2 li::before{content:counter(s);width:24px;text-align:right;font-size:13px;color:var(--muted);flex:none}
+.ln{flex:1;min-height:36px;text-align:left;white-space:pre;font:14px Consolas,"Courier New",monospace;background:#fff;border:2px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;color:#881280}
+.ln:hover{border-color:var(--teal)}
+.ln.empty{border-style:dashed;color:var(--muted);cursor:default;font-family:inherit}
+.ln.bad{border-color:var(--ko);background:var(--ko-l)}
+.ln.good{border-color:var(--ok);background:var(--ok-l)}
+.pool2{display:flex;flex-direction:column;gap:6px}
+/* terminale */
+.term{background:#0c0c0c;color:#e6e6e6;font-family:Consolas,"Courier New",monospace;border-radius:10px;overflow:hidden;font-size:15px}
+.term .tbar{background:#e9ecee;color:#1d2329;font:13px Arial,sans-serif;padding:6px 10px;display:flex;gap:8px;align-items:center}
+.term .tbar span{margin-left:auto;color:var(--muted)}
+.term pre{margin:0;padding:10px 12px 0;white-space:pre-wrap;word-break:break-word;font:inherit;min-height:60px;max-height:320px;overflow:auto}
+.term .tin{display:flex;align-items:center;padding:0 12px 12px;flex-wrap:wrap}
+.term .tin label{white-space:nowrap}
+.term .tin input{flex:1;min-width:140px;background:transparent;border:0;color:#fff;font:inherit;caret-color:#fff;padding:2px 0;outline:none}
+.term .tin input:focus-visible{outline:none;box-shadow:0 2px 0 #ffd166}
+.term .hl{color:#ffd166}.term .er{color:#ff9b8f}
+.tree{margin:10px 2px 0;font:13px/1.5 Consolas,"Courier New",monospace;color:var(--muted);white-space:pre}
+.bw{border:1px solid #b9c2c9;border-radius:10px;overflow:hidden;background:#fff;margin-top:10px}
+.bw-bar{display:flex;align-items:center;gap:8px;background:#e9ecee;padding:6px 10px}
+.url{flex:1;background:#fff;border-radius:14px;padding:3px 12px;font-size:13px;color:#3a474d;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.bw iframe{border:0;width:100%;height:150px}
+.bw .blank{padding:30px 14px;color:var(--muted);text-align:center;font-style:italic}
+footer{max-width:1240px;margin:0 auto;padding:0 20px 30px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;font-size:13px;color:var(--muted)}
+footer details{max-width:560px}footer summary{cursor:pointer}
+.opt{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-top:6px}
+.opt p{margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal .screen{margin:0;max-height:90vh;overflow:auto;width:100%}
+.restart{border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:16px}
+.restart h3{margin:0 0 6px}
+.restart p{margin:8px 0}
+.rs-note{display:inline-block;margin-left:4px}
+.btn.danger{background:#fff;color:var(--ko);border:3px solid var(--ko);padding:7px 14px;font-weight:bold}
+.btn.danger:hover{background:var(--ko-l)}
+.modal.rs-wrap{z-index:200;background:rgba(0,0,0,.6)}
+.modal .screen.warn{display:flex;flex-direction:column;overflow:hidden;padding:0;max-width:640px;border:6px solid var(--ko);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px)}
+.warn-body{overflow:auto;min-height:0;padding:20px 24px 8px;overscroll-behavior:contain}
+.warn-ic{font-size:54px;line-height:1;text-align:center}
+.screen.warn h2{color:var(--ko);text-align:center;margin:6px 0 10px}
+.warn-key{border-left:6px solid var(--ko);background:var(--ko-l);color:#7d1a14;border-radius:8px;padding:10px 14px;font-size:1.15em;margin:0 0 10px}
+.warn-body p{margin:8px 0}
+.warn-body textarea.copy{height:62px}
+.rs-copied{font-weight:bold;color:var(--ok)}
+.warn-acts{display:flex;flex-wrap:wrap-reverse;gap:12px;padding:12px 24px 16px;border-top:1px solid var(--line);background:#fff}
+.warn-acts .btn{flex:1 1 15em;padding:14px 16px;font-size:1.05em;font-weight:bold}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:700px){
+  main{padding:12px 12px 24px}.screen{padding:18px 16px}
+  .card{width:100px;font-size:.82em}.bin .card{width:100%}
+  .bins.c2,.bins.c3{grid-template-columns:minmax(0,1fr)}
+  .big{min-height:220px}.big .em{font-size:70px}
+  .pocket{right:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏷️ Il tuo primo HTML</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn hidden" id="pocket-btn" aria-expanded="false" aria-controls="pocket">🎒 Tasca</button></div>
+</header>
+<div class="pbar" aria-hidden="true"><div id="pbar"></div></div>
+<div class="pocket hidden" id="pocket" role="dialog" aria-label="Cosa so già"></div>
+
+<main>
+  <section id="screen" class="screen hidden"></section>
+
+  <div id="work" class="work hidden">
+    <aside class="lesson" id="lesson">
+      <div class="step-lbl"><span id="l-lbl"></span><button type="button" class="speak hidden" id="l-speak" title="Leggi ad alta voce">🔊 Leggi</button></div>
+      <h2 id="l-title" tabindex="-1"></h2>
+      <div class="theory" id="l-theory"></div>
+      <div class="keybox hidden" id="l-keys"></div>
+      <div class="taskbox"><span class="lbl" id="l-tasklbl">Il tuo compito</span><div id="l-task"></div></div>
+      <div class="dock" id="dock">
+        <div class="quiz hidden" id="l-quiz" role="group" aria-label="Risposte"></div>
+        <div class="fb hidden" id="l-fb" role="status" aria-live="polite"></div>
+        <div class="hinttext hidden" id="l-hinttext"></div>
+        <div class="actions">
+          <button type="button" class="btn" id="b-check">✔ Controlla</button>
+          <button type="button" class="btn hidden" id="b-next">Avanti →</button>
+          <button type="button" class="btn hintb hidden" id="b-hint">💡 Aiuto</button>
+          <button type="button" class="btn skipb hidden" id="b-skip" title="Un passo saltato non vale punti">Salta il passo ⤼</button>
+        </div>
+      </div>
+    </aside>
+    <div class="stage" id="stage"></div>
+  </div>
+</main>
+
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Riepilogo e codice (anche se non hai finito)</button>
+  <details id="opts"><summary>⚙ Opzioni</summary>
+    <div class="opt">
+      <p><label><input type="checkbox" id="o-bes"> <b>Modalità facilitata</b>: testo più grande, aiuto dopo il primo errore, lettura ad alta voce.</label></p>
+      <p><button type="button" class="linkbtn" id="o-reset">Nuovo studente: cancella nome e risultati</button></p>
+      <p><b>Solo docente</b> · vai a:
+        <button type="button" class="linkbtn" data-jump="g1">inizio</button> ·
+        <button type="button" class="linkbtn" data-jump="g7">struttura</button> ·
+        <button type="button" class="linkbtn" data-jump="g9">terminale</button> ·
+        <button type="button" class="linkbtn" data-jump="x0">sfida finale</button><br>
+        <span class="small">I passi che salti con questi link risultano «non fatti» nel codice.</span></p>
+    </div>
+  </details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Riepilogo e codice"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÀ
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const K = (...keys) => `<span class="keys">${keys.map(k => `<span class="kbd">${k}</span>`).join("+")}</span>`;
+const CT = /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent || "") ? "Cmd" : "Ctrl";
+/* "hist" sopravvive a «Nuovo studente» */
+const PFX = "webtag_", KEEP = ["hist"], mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && !KEEP.includes(k.slice(PFX.length))).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(!KEEP.includes(k)) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const val = v => typeof v==="function" ? v() : (v||"");
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+const nameKey = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim().split(" ").sort().join(" ");
+const djb = s => { let h=5381; for(let k=0;k<s.length;k++){ h=((h<<5)+h+s.charCodeAt(k))>>>0; } return h; };
+const hashName = n => djb("nome*"+nameKey(n)).toString(36);
+const EM = e => `<span class="em" aria-hidden="true">${e}</span>`;
+const C = s => `<code>${esc(s)}</code>`;
+/* indirizzo: #bes apre la modalità facilitata */
+const HASH = location.hash.replace(/^#/,"").split("&").filter(Boolean);
+let BES = !!store.get("bes") || HASH.includes("bes") || /(^|[?&])bes\b/i.test(location.search.slice(1));
+
+/* =====================================================================
+   AMBIENTI (la parte destra dello schermo)
+   SORT = carte nei cestini · BIG = il caso da leggere · BUG = trova il tag sbagliato
+   EDITOR = scrivi l'HTML e guarda l'anteprima · ORDER = righe in ordine
+   CMD = terminale di Windows con cartelle e file
+   ===================================================================== */
+const SORT = (()=>{
+  let host, cfg, place={}, pick=null, bad=new Set(), lastDrop=0, focusId=null;
+  function mount(h,c){ host=h; cfg=c; place={}; pick=null; bad=new Set(); render(); }
+  const label = id => cfg.cards.find(c=>c.id===id).label;
+  function card(c){ const p=pick===c.id, b=bad.has(c.id);
+    return `<button type="button" class="card${p?" picked":""}${b?" bad":""}" data-id="${c.id}" aria-pressed="${p}">${EM(c.em)}<span>${c.label}</span>${b?`<span class="badmark">✗ da spostare</span>`:""}</button>`; }
+  function render(){
+    const free=cfg.cards.filter(c=>!place[c.id]);
+    host.innerHTML = `<div class="envbox sortbox"><p class="envstatus" aria-live="polite">${pick?`Hai scelto «${plain(label(pick))}»: ora tocca il cestino giusto.`:free.length?"Tocca una carta per sceglierla, poi tocca un cestino. Con il mouse puoi anche trascinarla.":"Tutte le carte sono nei cestini: premi Controlla. Puoi ancora spostarle."}</p>
+      <div class="pool">${free.map(card).join("")}</div>
+      <div class="bins c${cfg.bins.length}">${cfg.bins.map(b=>`<div class="bin${pick?" armed":""}" data-bin="${b.id}"><button type="button" class="binhead" data-bin="${b.id}"><span class="bn">${b.label}</span><small>${b.sub||""}</small>${pick?`<span class="drophere">⬇ metti qui</span>`:""}</button><div class="binbody">${cfg.cards.filter(c=>place[c.id]===b.id).map(card).join("")}</div></div>`).join("")}</div></div>`;
+    host.querySelectorAll(".card").forEach(el=>{
+      el.addEventListener("click", e=>{ e.stopPropagation(); if(Date.now()-lastDrop<400) return; pick = pick===el.dataset.id ? null : el.dataset.id; focusId=el.dataset.id; render(); });
+      el.addEventListener("pointerdown", startDrag); });
+    host.querySelectorAll(".bin").forEach(b=>b.addEventListener("click", ()=>{ if(Date.now()-lastDrop<400) return; drop(b.dataset.bin); }));
+    if(focusId){ const f=host.querySelector(`.card[data-id="${focusId}"]`); if(f) f.focus({preventScroll:true}); focusId=null; }
+  }
+  function drop(bin){
+    if(!pick){ const s=host.querySelector(".envstatus"); if(s) s.textContent="Prima tocca una carta, poi il cestino."; return; }
+    place[pick]=bin; bad.delete(pick); pick=null;
+    const nf=cfg.cards.find(c=>!place[c.id]); focusId = nf ? nf.id : null; render();
+    if(!nf){ const bh=host.querySelector(`.binhead[data-bin="${bin}"]`); if(bh) bh.focus({preventScroll:true}); }
+  }
+  function startDrag(e){
+    if(e.pointerType!=="mouse" || e.button!==0) return;
+    const el=e.currentTarget, id=el.dataset.id, x0=e.clientX, y0=e.clientY; let ghost=null;
+    const over = ev => { const t=document.elementFromPoint(ev.clientX, ev.clientY); return t && t.closest ? t.closest(".bin") : null; };
+    const move = ev => {
+      if(!ghost && Math.hypot(ev.clientX-x0, ev.clientY-y0)>7){ ghost=el.cloneNode(true); ghost.classList.add("ghost"); document.body.appendChild(ghost); el.classList.add("dragging"); }
+      if(ghost){ ghost.style.left=(ev.clientX-ghost.offsetWidth/2)+"px"; ghost.style.top=(ev.clientY-ghost.offsetHeight/2)+"px"; const b=over(ev); host.querySelectorAll(".bin").forEach(x=>x.classList.toggle("over", x===b)); } };
+    const up = ev => {
+      window.removeEventListener("pointermove",move); window.removeEventListener("pointerup",up); window.removeEventListener("pointercancel",up);
+      if(!ghost) return; ghost.remove(); lastDrop=Date.now(); const b=over(ev);
+      if(b){ place[id]=b.dataset.bin; bad.delete(id); pick=null; } render(); };
+    window.addEventListener("pointermove",move); window.addEventListener("pointerup",up); window.addEventListener("pointercancel",up);
+  }
+  function verify(){
+    const cards=cfg.cards, miss=cards.filter(c=>!place[c.id]), wrong=cards.filter(c=>place[c.id] && place[c.id]!==c.bin);
+    if(miss.length===cards.length) return {ok:false, noTry:true, msg:"Non hai ancora messo nessuna carta in un cestino."};
+    if(!miss.length && !wrong.length) return {ok:true};
+    if(!wrong.length) return {ok:false, noTry:true, msg: miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`};
+    let m = wrong[0].why + (wrong.length>1 ? ` Da spostare anche: ${wrong.slice(1).map(c=>"«"+plain(c.label)+"»").join(", ")}.` : "");
+    if(miss.length) m += " " + (miss.length===1 ? "Manca ancora una carta da mettere in un cestino." : `Mancano ancora ${miss.length} carte da mettere nei cestini.`);
+    bad=new Set(wrong.map(c=>c.id)); render();
+    return {ok:false, msg:m};
+  }
+  return {mount, verify};
+})();
+
+const BIG = { mount(h,c){ h.innerHTML=`<div class="envbox big">${EM(c.em)}<div class="nm">${c.name}</div>${c.tx?`<div class="tx${c.shot?" shot":""}">${c.tx}</div>`:""}</div>`; } };
+
+/* ---------- trova il tag sbagliato: i tag della riga diventano pulsanti ---------- */
+const BUG = (()=>{
+  let host, cfg, pick=null, solved=false, no=[];
+  function mount(h,c){ host=h; cfg=c; pick=null; solved=false; no=[]; render(); }
+  function render(){
+    let ti=-1;
+    const toks = cfg.code.split(/(<[^>]+>)/).filter(Boolean).map(t=>{
+      if(!/^</.test(t)) return `<span>${esc(t)}</span>`;
+      ti++; const cls = solved && cfg.bad.includes(ti) ? " found" : no.includes(ti) ? " no" : pick===ti ? " picked" : "";
+      return `<button type="button" class="tagbtn${cls}" data-t="${ti}" aria-pressed="${pick===ti}">${esc(t)}</button>`; }).join("");
+    host.innerHTML = `<div class="envbox"><p class="envstatus">${solved?"Trovato! Sotto vedi la riga corretta.":pick===null?"Tocca il tag che secondo te è sbagliato, poi premi Controlla.":"Hai scelto un tag: premi Controlla."}</p>
+      <div class="bugcode">${toks}</div>
+      <p class="prevlbl">Così la mostra il browser${solved?", corretta":""}</p><div class="bugprev">${solved?cfg.fixed:cfg.code}</div>
+      ${solved?`<p class="prevlbl">Il codice corretto</p><div class="code">${esc(cfg.fixed)}</div>`:""}</div>`;
+    host.querySelectorAll(".tagbtn").forEach(b=>b.onclick=()=>{ if(solved) return; pick=+b.dataset.t; render(); host.querySelector(`.tagbtn[data-t="${pick}"]`).focus({preventScroll:true}); });
+  }
+  function verify(){
+    if(pick===null) return {ok:false, noTry:true, msg:"Prima tocca il tag che secondo te è sbagliato."};
+    if(cfg.bad.includes(pick)){ solved=true; render(); return {ok:true}; }
+    const m=(cfg.fb && cfg.fb[pick]) || "Questo tag è giusto: cercane un altro."; no.push(pick); pick=null; render();
+    return {ok:false, msg:m};
+  }
+  return {mount, verify};
+})();
+
+/* ---------- editor con anteprima dal vivo ---------- */
+const OPEN_CLOSE = ["html","head","title","body","h1","h2","h3","p","b","i","s","u","strong","em","ul","ol","li"];
+function unclosed(code){
+  const lc=code.toLowerCase(), out=[];
+  OPEN_CLOSE.forEach(t=>{ const o=(lc.match(new RegExp("<"+t+"(\\s[^>]*)?>","g"))||[]).length, c=(lc.match(new RegExp("</"+t+"\\s*>","g"))||[]).length; if(o!==c) out.push(t); });
+  if(/<\\/.test(code)) out.unshift("\\");
+  return out;
+}
+const CLOSED = {t:"ogni tag aperto è chiuso", f:(d,code)=>!unclosed(code).length,
+  tip:(d,code)=>{ const u=unclosed(code)[0]; return u==="\\" ? "C'è una barra al contrario: la chiusura si scrive con /, per esempio &lt;/b&gt;." : `Controlla &lt;${u}&gt;: le aperture e le chiusure non sono lo stesso numero.`; }};
+const txt = (d,sel) => [...d.querySelectorAll(sel)].map(e=>e.textContent.replace(/\s+/g," ").trim());
+const EDITOR = (()=>{
+  let host, cfg, sid, timer=null;
+  const wrapDoc = code => cfg.full ? code : `<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:"Times New Roman",serif;margin:12px;font-size:17px}</style></head><body>${code}</body></html>`;
+  const parse = code => new DOMParser().parseFromString(wrapDoc(code), "text/html");
+  const goals = () => cfg.goals.concat(cfg.noClosed ? [] : [CLOSED]);
+  function mount(h,c,step){ host=h; cfg=c; sid=step.id;
+    const code = store.get("ed_"+sid) ?? c.start;
+    host.innerHTML = `<div class="envbox"><div class="ed">
+      <div><div class="tbar2"><span>Inserisci:</span>${(c.tools||[]).map(t=>`<button type="button" class="tb" data-tag="${t}" title="Inserisci il tag ${t} (se selezioni del testo, lo racchiude)">&lt;${t}&gt;</button>`).join("")}<button type="button" class="linkbtn" id="ed-reset" style="margin-left:auto;font-size:13px">↺ codice di partenza</button></div>
+        <textarea id="ed-ta" class="${c.full?"full":""}" spellcheck="false" autocapitalize="off" aria-label="Il tuo codice HTML">${esc(code)}</textarea></div>
+      <div class="pv"><div class="pvtab"><b id="ed-tab"></b><span class="small">anteprima: si aggiorna mentre scrivi</span></div><iframe id="ed-pv" sandbox="" title="Anteprima della pagina"></iframe></div>
+    </div><ul class="goals" id="ed-goals" aria-live="polite"></ul></div>`;
+    const ta=host.querySelector("#ed-ta");
+    ta.addEventListener("input", ()=>{ clearTimeout(timer); timer=setTimeout(update, 180); });
+    host.querySelectorAll("[data-tag]").forEach(b=>b.onclick=()=>wrap(b.dataset.tag));
+    host.querySelector("#ed-reset").onclick=()=>{ ta.value=cfg.start; update(); ta.focus(); };
+    update(true);
+  }
+  function wrap(tag){
+    const ta=host.querySelector("#ed-ta"), s=ta.selectionStart, e=ta.selectionEnd, v=ta.value;
+    const open = tag==="br" ? "<br>" : `<${tag}>`, close = tag==="br" ? "" : `</${tag}>`;
+    ta.value = v.slice(0,s)+open+v.slice(s,e)+close+v.slice(e);
+    const c = e===s ? s+open.length : e+open.length+close.length; ta.focus(); ta.setSelectionRange(c,c); update();
+  }
+  function update(first){
+    const ta=host.querySelector("#ed-ta"); if(!ta) return; const code=ta.value;
+    if(!first) store.set("ed_"+sid, code);
+    const d=parse(code);
+    host.querySelector("#ed-pv").srcdoc = wrapDoc(code);
+    host.querySelector("#ed-tab").textContent = cfg.full ? (d.title.trim() || "Senza titolo") : "Anteprima";
+    host.querySelector("#ed-goals").innerHTML = goals().map(g=>`<li class="${g.f(d,code)?"on":""}">${g.t}</li>`).join("");
+  }
+  function verify(){
+    const code=host.querySelector("#ed-ta").value, d=parse(code), bad=goals().find(g=>!g.f(d,code));
+    if(code.trim()===String(cfg.start).trim()) return {ok:false, noTry:true, msg:"Il codice è ancora quello di partenza: modificalo seguendo la lista sotto l'anteprima."};
+    if(!bad) return {ok:true};
+    return {ok:false, msg:`Manca ancora: <b>${bad.t}</b>. ${typeof bad.tip==="function"?bad.tip(d,code):bad.tip}`};
+  }
+  return {mount, verify};
+})();
+
+/* ---------- righe in ordine: si tocca una riga e va nel primo posto libero ---------- */
+const ORDER = (()=>{
+  let host, cfg, slots=[], bad=new Set(), ok=false;
+  function mount(h,c){ host=h; cfg=c; slots=Array(c.items.length).fill(null); bad=new Set(); ok=false; render(); }
+  const item = id => cfg.items.find(x=>x.id===id);
+  function render(){
+    const pool=cfg.shuffle.filter(id=>!slots.includes(id));
+    host.innerHTML = `<div class="envbox"><p class="envstatus" aria-live="polite">${pool.length?"Tocca una riga a destra: va nel primo posto libero. Tocca una riga a sinistra per toglierla.":ok?"Lo scheletro è giusto.":"Tutte le righe sono al loro posto? Premi Controlla."}</p>
+      <div class="ord"><div><h4>Il documento</h4><ol class="slots2">${slots.map((id,i)=>`<li>${id?`<button type="button" class="ln${bad.has(i)?" bad":""}${ok?" good":""}" data-slot="${i}" aria-label="Riga ${i+1}: ${esc(item(id).t)}. Tocca per toglierla">${esc(item(id).t)}</button>`:`<span class="ln empty">riga ${i+1}</span>`}</li>`).join("")}</ol></div>
+      <div><h4>Righe da sistemare (${pool.length})</h4><div class="pool2">${pool.map(id=>`<button type="button" class="ln" data-id="${id}">${esc(item(id).t)}</button>`).join("")}</div></div></div></div>`;
+    host.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>{ if(ok) return; const i=slots.indexOf(null); if(i<0) return; slots[i]=b.dataset.id; bad.delete(i); render(); const n=host.querySelector("[data-id]")||host.querySelector(`[data-slot="${i}"]`); if(n) n.focus({preventScroll:true}); });
+    host.querySelectorAll("[data-slot]").forEach(b=>b.onclick=()=>{ if(ok) return; const i=+b.dataset.slot; slots[i]=null; bad.delete(i); render(); const n=host.querySelector("[data-id]"); if(n) n.focus({preventScroll:true}); });
+  }
+  function verify(){
+    const miss=slots.filter(x=>!x).length;
+    if(miss===slots.length) return {ok:false, noTry:true, msg:"Non hai ancora messo nessuna riga."};
+    if(miss) return {ok:false, noTry:true, msg: miss===1 ? "Manca ancora una riga." : `Mancano ancora ${miss} righe.`};
+    const wrong=slots.map((id,i)=>id!==cfg.items[i].id?i:-1).filter(i=>i>=0);
+    if(!wrong.length){ ok=true; render(); return {ok:true}; }
+    bad=new Set(wrong); render();
+    const want=cfg.items[wrong[0]];
+    return {ok:false, msg:`Le righe in rosso sono al posto sbagliato (${wrong.length}). Riga ${wrong[0]+1}: ${want.tip||cfg.tip}`};
+  }
+  return {mount, verify};
+})();
+
+/* ---------- terminale di Windows: cartelle e file restano tra un passo e l'altro ---------- */
+const CMD = (()=>{
+  const ROOT="C:\\Users\\studente";
+  let host, lines=[], hist=[], hi=0;
+  let fs = store.get("fs") || {d:{Desktop:{d:{}}, Documenti:{d:{}}, Download:{d:{}}, Immagini:{d:{}}}};
+  let cwd = store.get("cwd") || [];
+  let st = store.get("cmdst") || {dirSeen:false, opened:null};
+  const save = () => { store.set("fs",fs); store.set("cwd",cwd); store.set("cmdst",st); };
+  const find = (dir, name) => Object.keys(dir.d).find(x=>x.toLowerCase()===name.toLowerCase());
+  function walk(p){ let n=fs; for(const s of p){ const k=find(n,s); if(!k || !n.d[k].d) return null; n=n.d[k]; } return n; }
+  const pathStr = p => ROOT + (p.length ? "\\"+p.join("\\") : "");
+  const here = () => walk(cwd);
+  function resolve(arg){ /* restituisce il nuovo percorso, oppure null */
+    let p = /^\\/.test(arg) ? [] : cwd.slice();
+    for(const seg of arg.split(/[\\/]+/).filter(Boolean)){
+      if(seg===".") continue;
+      if(seg===".."){ if(p.length) p.pop(); continue; }
+      const n=walk(p), k=n && find(n,seg); if(!k || !n.d[k].d) return null; p.push(k); }
+    return p;
+  }
+  const today = () => { const d=new Date(), t=n=>String(n).padStart(2,"0"); return `${t(d.getDate())}/${t(d.getMonth()+1)}/${d.getFullYear()}  ${t(d.getHours())}:${t(d.getMinutes())}`; };
+  function out(t, cls){ lines.push(cls?`<span class="${cls}">${esc(t)}</span>`:esc(t)); }
+  const NOTREC = w => `'${w}' non è riconosciuto come comando interno o esterno,\nun programma eseguibile o un file batch.`;
+  function mkfile(name, content){
+    const n=here(), k=find(n,name);
+    if(k && n.d[k].d){ out("Accesso negato.", "er"); return false; }
+    n.d[k||name]={f:content}; save(); return true;
+  }
+  function run(raw){
+    out(pathStr(cwd)+">"+raw);
+    const c=raw.trim(); if(!c) return;
+    const red=c.match(/^(type\s+nul|echo\.?(?:\s+(.*?))?)\s*>\s*"?([^"]+?)"?\s*$/i);
+    if(red){ mkfile(red[3].trim(), /^echo/i.test(red[1]) ? (red[2]||"") : ""); return; }
+    const args=(c.match(/"[^"]*"|\S+/g)||[]).map(a=>a.replace(/^"|"$/g,"")), v=args[0].toLowerCase(), rest=args.slice(1);
+    if(/^cd\.\.$/.test(v)){ if(cwd.length) cwd.pop(); save(); return; }
+    if(/^cd\\$/.test(v)){ cwd=[]; save(); return; }
+    switch(v){
+      case "cls": lines=[]; return;
+      case "help": case "aiuto":
+        out("Comandi di questo simulatore:\n  dir                     mostra file e cartelle\n  cd nome / cd ..         entra in una cartella / torna indietro\n  mkdir nome  (o md)      crea una cartella\n  type nul > nome.html    crea un file vuoto\n  notepad nome.html       apre (o crea) un file con il Blocco note\n  start nome.html         apre il file con il browser\n  del nome / rd nome      cancella un file / una cartella vuota\n  cls                     pulisce lo schermo"); return;
+      case "cd": case "chdir": {
+        if(!rest.length){ out(pathStr(cwd)); return; }
+        const a=rest.filter(x=>x.toLowerCase()!=="/d").join(" ");
+        if(/^[a-z]:\\?$/i.test(a) || /^c:\\users\\?$/i.test(a)){ out("In questo simulatore resti nella cartella C:\\Users\\studente e nelle sue sottocartelle.", "hl"); return; }
+        const p=resolve(a.replace(/^c:\\users\\studente\\?/i,"\\"));
+        if(!p){ out("Impossibile trovare il percorso specificato.", "er"); return; }
+        cwd=p; save(); return; }
+      case "mkdir": case "md": {
+        if(!rest.length){ out("Sintassi del comando errata.", "er"); return; }
+        const n=here(); rest.forEach(name=>{ if(find(n,name)){ out(`Esiste già una sottodirectory o un file ${name}.`, "er"); return; } n.d[name]={d:{}}; });
+        if(rest.length>1) out(`(Hai creato ${rest.length} cartelle: ${rest.join(", ")}. Per un nome con lo spazio servono le virgolette.)`, "hl");
+        save(); return; }
+      case "rd": case "rmdir": {
+        const n=here(), k=rest[0] && find(n,rest[0]);
+        if(!k || !n.d[k].d){ out("Impossibile trovare il file specificato.", "er"); return; }
+        if(Object.keys(n.d[k].d).length){ out("La directory non è vuota.", "er"); return; }
+        delete n.d[k]; save(); return; }
+      case "del": case "erase": {
+        const n=here(), k=rest[0] && find(n,rest[0]);
+        if(!k || n.d[k].d){ out(`Impossibile trovare ${pathStr(cwd)}\\${rest[0]||""}`, "er"); return; }
+        delete n.d[k]; save(); return; }
+      case "dir": {
+        const n=here(), ks=Object.keys(n.d).sort((a,b)=>(!!n.d[b].d - !!n.d[a].d) || a.localeCompare(b));
+        const fl=ks.filter(k=>!n.d[k].d), dl=ks.filter(k=>n.d[k].d), sz=k=>new Blob([n.d[k].f]).size;
+        const row=(k)=> n.d[k].d ? `${today()}    <DIR>          ${k}` : `${today()}    ${String(sz(k)).padStart(14)} ${k}`;
+        out(` Il volume nell'unità C non ha etichetta.\n\n Directory di ${pathStr(cwd)}\n\n${today()}    <DIR>          .\n${today()}    <DIR>          ..\n${ks.map(row).join("\n")}${ks.length?"\n":""}${String(fl.length).padStart(15)} File ${String(fl.reduce((a,k)=>a+sz(k),0)).padStart(14)} byte\n${String(dl.length+2).padStart(15)} Directory`);
+        if(isSite() && find(n,"index.html") && !n.d[find(n,"index.html")].d){ st.dirSeen=true; save(); }
+        return; }
+      case "echo": out(rest.length ? c.replace(/^echo\s+/i,"") : "ECHO attivato."); return;
+      case "type": {
+        const n=here(), k=rest[0] && find(n,rest[0]);
+        if(!k || n.d[k].d){ out("Impossibile trovare il file specificato.", "er"); return; }
+        if(n.d[k].f) out(n.d[k].f); return; }
+      case "copy":
+        if(rest[0] && rest[0].toLowerCase()==="nul" && rest[1]){ if(mkfile(rest[1],"")) out("        1 file copiati."); return; }
+        out("Sintassi del comando errata.", "er"); return;
+      case "notepad": case "notepad.exe": {
+        if(!rest[0]){ out("(Si apre il Blocco note senza nessun file. Per creare la pagina scrivi: notepad index.html)", "hl"); return; }
+        const n=here(), k=find(n,rest[0]);
+        if(k && n.d[k].d){ out("Accesso negato.", "er"); return; }
+        if(!k){ mkfile(rest[0],""); out(`Blocco note: impossibile trovare il file ${rest[0]}. Creare un nuovo file?  → Sì\n(Il Blocco note si apre con ${rest[0]} vuoto. Chiudilo per tornare qui.)`, "hl"); }
+        else out(`(Il Blocco note apre ${k}. Chiudilo per tornare qui.)`, "hl");
+        return; }
+      case "start": return open(rest.filter(x=>!/^(chrome|firefox|msedge)$/i.test(x))[0]);
+      case "nslookup": case "ping": case "ipconfig":
+        out(`Il comando ${v} esiste davvero, ma questo simulatore è per file e cartelle. nslookup l'hai usato nell'altra palestra.`, "hl"); return;
+    }
+    if(/\.html?$/i.test(v)) return open(args[0]);
+    out(NOTREC(args[0]), "er");
+  }
+  function open(name){
+    if(!name){ out("Scrivi il nome del file dopo start, per esempio: start index.html", "hl"); return; }
+    const n=here(), k=find(n,name);
+    if(!k || n.d[k].d){ out(`Impossibile trovare il file '${name}'.`, "er"); return; }
+    st.opened={path:cwd.concat(k), f:n.d[k].f}; save(); out(`(Si apre il browser con ${k}.)`, "hl");
+  }
+  const isSite = () => cwd.length===2 && cwd[0].toLowerCase()==="desktop" && cwd[1].toLowerCase()==="dolcevita";
+  function tree(){
+    const w=(n,pre)=>Object.keys(n.d).sort().map((k,i,a)=>{ const last=i===a.length-1, isD=!!n.d[k].d;
+      return pre+(last?"└─ ":"├─ ")+(isD?"📁 ":"📄 ")+k+(isD?"\n"+w(n.d[k], pre+(last?"   ":"│  ")):"\n"); }).join("");
+    return "📁 studente\n"+w(fs,"").replace(/\n+$/,"");
+  }
+  function render(){
+    const o=st.opened, url = o ? "file:///C:/Users/studente/"+o.path.join("/") : "";
+    host.innerHTML = `<div class="envbox"><div class="term" id="t-box">
+      <div class="tbar">⌨️ Prompt dei comandi <span>simulatore · scrivi help per l'elenco dei comandi</span></div>
+      <pre id="t-out" role="log" aria-live="polite">Microsoft Windows [Versione 10.0.22631]\n(c) Microsoft Corporation. Tutti i diritti riservati.\n\n${lines.join("\n")}${lines.length?"\n":""}</pre>
+      <div class="tin"><label for="t-in">${esc(pathStr(cwd)+">")}</label><input id="t-in" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="Comando"></div></div>
+      <details class="small"${lines.length?"":" open"} style="margin-top:8px"><summary>📂 Le cartelle, come le vedi in Esplora file</summary><div class="tree">${esc(tree())}</div></details>
+      ${o?`<div class="bw"><div class="bw-bar"><span class="url">${esc(url)}</span></div>${o.f.trim()?`<iframe sandbox="" title="Il file aperto nel browser" srcdoc="${esc(o.f)}"></iframe>`:`<div class="blank">Pagina bianca: il file è vuoto. Ci scriverai dentro l'HTML.</div>`}</div>`:""}
+      <p class="envstatus">Scrivi il comando e premi Invio. Con ↑ richiami il comando di prima.</p></div>`;
+    const inp=host.querySelector("#t-in"), op=host.querySelector("#t-out"); op.scrollTop=op.scrollHeight;
+    host.querySelector("#t-box").addEventListener("click", e=>{ if(!e.target.closest("input")) inp.focus({preventScroll:true}); });
+    inp.addEventListener("keydown", e=>{
+      if(e.key==="Enter"){ e.preventDefault(); const c=inp.value; if(c.trim()) hist.push(c); hi=hist.length; run(c); if(lines.length && !/^\s*cls\s*$/i.test(c)) lines.push(""); render(); host.querySelector("#t-in").focus({preventScroll:true}); App.envDone(); }
+      else if(e.key==="ArrowUp" && hist.length){ e.preventDefault(); hi=Math.max(0,hi-1); inp.value=hist[hi]; }
+      else if(e.key==="ArrowDown" && hist.length){ e.preventDefault(); hi=Math.min(hist.length,hi+1); inp.value=hist[hi]||""; } });
+  }
+  function site(){ const d=walk(["Desktop"]), k=d && find(d,"dolcevita"); return k && d.d[k].d ? d.d[k] : null; }
+  return {mount(h){ host=h; render(); },
+    inSite: isSite, hasSite: ()=>!!site(),
+    hasIndex: ()=>{ const s=site(), k=s && find(s,"index.html"); return !!(k && !s.d[k].d); },
+    dirSeen: ()=>st.dirSeen, opened: ()=>!!st.opened, mkdirInDesktop: ()=>{ const d=walk(["Desktop"]); return d ? Object.keys(d.d).filter(k=>d.d[k].d) : []; }};
+})();
+const ENVS = {sort:SORT, big:BIG, bug:BUG, editor:EDITOR, order:ORDER, cmd:CMD};
+
+/* =====================================================================
+   I PASSI
+   phase "g" = percorso guidato: pillola di teoria + esercizio
+   phase "x" = sfida finale: conta la prima risposta, gli errori si contano tutti
+   phase "b" = livello bonus, facoltativo: non entra nel totale
+   need      = la prova da fare prima di rispondere: restituisce un messaggio se manca
+   ===================================================================== */
+const SEC = {A:{code:"TAG", name:"I tag"}, B:{code:"STRUTTURA", name:"La struttura"}, C:{code:"CMD", name:"Il terminale"}};
+const PAGE0 = "<!DOCTYPE html>\n<html>\n<head>\n  <title>Dolce Vita</title>\n</head>\n<body>\n\n\n</body>\n</html>";
+const inBody = code => { const lc=code.toLowerCase(), a=lc.indexOf("<body"), z=lc.indexOf("</body"); return a>=0 && z>a ? code.slice(a,z) : ""; };
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Come su WhatsApp", env:"sort",
+  theory:`<p>Su WhatsApp scrivi ${C("*ciao*")} e l'app mostra <b>ciao</b>: i simboli dicono come mostrare il testo. In HTML lo stesso lavoro lo fanno i <b>tag</b>, scritti tra ${C("<")} e ${C(">")}.</p>`,
+  keys:`${C("<b>")} <b>b</b>old, grassetto · ${C("<i>")} <i>i</i>talic, corsivo · ${C("<s>")} <s>s</s>trike, barrato`,
+  task:`Ogni carta è un pezzo di HTML. Mettila sotto l'effetto che avrà nella pagina, poi premi Controlla.`,
+  sort:{bins:[{id:"b",label:"<b>Grassetto</b>",sub:"come *testo* su WhatsApp"},{id:"i",label:"<i>Corsivo</i>",sub:"come _testo_ su WhatsApp"},{id:"s",label:"<s>Barrato</s>",sub:"come ~testo~ su WhatsApp"}],
+   cards:[{id:"c1",em:"🏷️",label:C("<b>Offerta</b>"),bin:"b",why:"&lt;b&gt; è il grassetto: come gli asterischi su WhatsApp."},
+          {id:"c2",em:"✨",label:C("<i>novità</i>"),bin:"i",why:"&lt;i&gt; è il corsivo: come i trattini bassi su WhatsApp."},
+          {id:"c3",em:"💶",label:C("<s>22 €</s>"),bin:"s",why:"&lt;s&gt; è il barrato: come le tilde su WhatsApp. Si usa per i prezzi vecchi."},
+          {id:"c4",em:"🕗",label:C("<b>Aperto</b>"),bin:"b",why:"Guarda la lettera nel tag: b come bold, grassetto."},
+          {id:"c5",em:"🤲",label:C("<i>fatto a mano</i>"),bin:"i",why:"Guarda la lettera nel tag: i come italic, corsivo."},
+          {id:"c6",em:"🚫",label:C("<s>esaurito</s>"),bin:"s",why:"Guarda la lettera nel tag: s come strike, barrato."}]},
+  hint:"Guarda la lettera dentro il tag: b, i oppure s.",
+  success:`Su WhatsApp un simbolo all'inizio e uno alla fine; in HTML un <b>tag di apertura</b> e un <b>tag di chiusura</b>. Il browser non mostra i tag: li usa per sapere come mostrare il testo.`,
+  learn:{k:"&lt;b&gt; · &lt;i&gt; · &lt;s&gt;", d:"grassetto · corsivo · barrato"}},
+
+ {id:"g2", phase:"g", title:"Apri e chiudi", env:"bug",
+  theory:`<p>Quasi tutti i tag vanno in coppia: ${C("<b>")} <b>apre</b>, ${C("</b>")} <b>chiude</b>. La differenza è la barra ${C("/")}. In mezzo c'è il contenuto.</p>`,
+  task:`In questa riga un tag è sbagliato: il grassetto non si chiude e «si mangia» il resto della frase. Trova il tag sbagliato e toccalo.`,
+  bug:{code:"<p>Oggi <b>torte</b> e <b>biscotti<b> in offerta</p>", bad:[4], fixed:"<p>Oggi <b>torte</b> e <b>biscotti</b> in offerta</p>",
+   fb:{0:"&lt;p&gt; apre il paragrafo: va bene.", 1:"Questo &lt;b&gt; apre il grassetto di «torte», e subito dopo c'è la sua chiusura: va bene.", 2:"&lt;/b&gt; chiude il grassetto di «torte»: ha la barra, va bene.", 3:"Questo &lt;b&gt; apre il grassetto di «biscotti»: va bene. Guarda il tag che viene dopo «biscotti».", 5:"&lt;/p&gt; chiude il paragrafo: va bene."}},
+  hint:"Ogni &lt;b&gt; ha bisogno del suo &lt;/b&gt;. Conta: quanti &lt;b&gt; e quanti &lt;/b&gt; ci sono?",
+  success:`Mancava la barra: dopo «biscotti» ci voleva ${C("</b>")}. Senza chiusura il grassetto continua fino in fondo, come quando su WhatsApp dimentichi l'ultimo asterisco.`,
+  learn:{k:"tag di apertura e di chiusura", d:"&lt;b&gt; apre, &lt;/b&gt; chiude: la barra fa la differenza"}},
+
+ {id:"g3", phase:"g", title:"Il primo grassetto", env:"editor",
+  theory:`<p>Per mettere in grassetto una parola la racchiudi tra ${C("<b>")} e ${C("</b>")}. Nell'anteprima vedi subito il risultato.</p>`,
+  task:`Lucia vuole la parola «fresche» in grassetto. Correggi il codice, guarda l'anteprima, poi premi Controlla.`,
+  editor:{start:"<p>Torte fresche ogni giorno</p>", tools:["b"],
+   goals:[{t:"«fresche» è in grassetto", f:d=>txt(d,"b,strong").some(x=>/fresche/i.test(x)), tip:"Scrivi &lt;b&gt; subito prima di «fresche» e &lt;/b&gt; subito dopo."},
+          {t:"solo «fresche» è in grassetto", f:d=>{ const t=txt(d,"b,strong"); return t.length>0 && t.every(x=>/^fresche$/i.test(x)); }, tip:"Dentro &lt;b&gt;…&lt;/b&gt; deve esserci solo la parola «fresche»."}]},
+  hint:"Seleziona la parola «fresche» con il mouse e premi il pulsante &lt;b&gt; sopra il codice: il tag la racchiude da solo.",
+  success:`Hai scritto il tuo primo tag. Nell'anteprima il browser non mostra ${C("<b>")}: mostra il suo effetto.`},
+
+ {id:"g4", phase:"g", title:"Titoli e paragrafi", env:"editor",
+  theory:`<p>${C("<h1>")} è il <b>titolo</b> più importante, poi ${C("<h2>")} e giù fino a ${C("<h6>")}. ${C("<p>")} è un <b>paragrafo</b> di testo normale.</p>`,
+  task:`Trasforma la prima riga in un titolo ${C("<h1>")} e la seconda in un paragrafo ${C("<p>")}.`,
+  editor:{start:"Pasticceria Dolce Vita\nDal 1985 nel cuore del quartiere.", tools:["h1","p"],
+   goals:[{t:"«Pasticceria Dolce Vita» è un titolo &lt;h1&gt;", f:d=>txt(d,"h1").some(x=>/^pasticceria dolce vita$/i.test(x)), tip:"Racchiudi la prima riga tra &lt;h1&gt; e &lt;/h1&gt;: dentro, solo il nome della pasticceria."},
+          {t:"la seconda riga è un paragrafo &lt;p&gt;", f:d=>txt(d,"p").some(x=>/1985/.test(x)), tip:"Racchiudi la seconda riga tra &lt;p&gt; e &lt;/p&gt;."}]},
+  hint:"Seleziona la prima riga e premi &lt;h1&gt;; poi seleziona la seconda e premi &lt;p&gt;.",
+  success:`I titoli ${C("<h1>")}…${C("<h6>")} danno l'ordine di importanza: un solo ${C("<h1>")} per pagina, il nome del sito o dell'argomento.`,
+  learn:{k:"&lt;h1&gt; · &lt;p&gt;", d:"titolo principale · paragrafo"}},
+
+ {id:"g5", phase:"g", title:"Andare a capo", env:"editor",
+  theory:`<p>Nel codice puoi andare a capo quanto vuoi: il browser <b>ignora gli Invio</b> e mette tutto di seguito. Per andare a capo dentro un paragrafo c'è ${C("<br>")}: un tag che <b>non si chiude</b>.</p>`,
+  task:`Nel codice l'indirizzo sta su tre righe, ma nell'anteprima esce su una sola. Aggiungi ${C("<br>")} dove serve.`,
+  editor:{start:"<p>Via Roma 12\nMilano\nTel. 02 1234567</p>", tools:["br"],
+   goals:[{t:"«Milano» va a capo", f:d=>/12\s*<br\s*\/?>\s*milano/i.test((d.querySelector("p")||{}).innerHTML||""), tip:"Scrivi &lt;br&gt; alla fine di «Via Roma 12»."},
+          {t:"il telefono va a capo", f:d=>/milano\s*<br\s*\/?>\s*tel/i.test((d.querySelector("p")||{}).innerHTML||""), tip:"Scrivi &lt;br&gt; anche alla fine di «Milano»."},
+          {t:"tutto resta in un solo paragrafo", f:d=>d.querySelectorAll("p").length===1, tip:"Lascia un solo &lt;p&gt; all'inizio e un solo &lt;/p&gt; alla fine."}]},
+  hint:"Clicca alla fine di «Via Roma 12» e premi il pulsante &lt;br&gt;. Poi fai lo stesso alla fine di «Milano».",
+  success:`${C("<br>")} è un <b>tag vuoto</b>: non ha contenuto, quindi non ha chiusura. Gli Invio nel codice servono solo a te, per leggerlo meglio.`,
+  learn:{k:"&lt;br&gt;", d:"va a capo; è un tag vuoto e non si chiude"}},
+
+ {id:"g6", phase:"g", title:"Scatole dentro scatole", env:"bug",
+  theory:`<p>Un tag può stare dentro un altro, come una scatola dentro una scatola: <b>l'ultimo aperto è il primo che si chiude</b>.</p>`,
+  keys:`giusto: ${C("<b><i>crostate</i></b>")}`,
+  task:`In questa riga due chiusure sono nell'ordine sbagliato. Tocca il tag di chiusura che arriva troppo presto.`,
+  bug:{code:"<p>Solo oggi: <b><i>crostate</b></i></p>", bad:[3], fixed:"<p>Solo oggi: <b><i>crostate</i></b></p>",
+   fb:{0:"&lt;p&gt; è la scatola più grande: si apre per prima e si chiude per ultima. Va bene.", 1:"&lt;b&gt; apre il grassetto: va bene. Il problema è nelle chiusure.", 2:"&lt;i&gt; apre il corsivo dentro il grassetto: va bene. Il problema è nelle chiusure.", 4:"&lt;/i&gt; chiude il corsivo: ma prima di lui qualcuno ha chiuso una scatola che non era l'ultima aperta.", 5:"&lt;/p&gt; chiude la scatola più grande, per ultima: va bene."}},
+  hint:"Si è aperto &lt;b&gt;, poi &lt;i&gt;. Quale dei due deve chiudersi per primo?",
+  success:`Si apre ${C("<b>")}, poi ${C("<i>")}: quindi si chiude prima ${C("</i>")}, poi ${C("</b>")}. Come le scatole: non chiudi quella grande se dentro quella piccola è ancora aperta.`,
+  learn:{k:"tag annidati", d:"l'ultimo tag aperto è il primo che si chiude"}},
+
+ {id:"g7", phase:"g", title:"Lo scheletro", env:"order",
+  theory:`<p>Ogni pagina HTML ha lo stesso <b>scheletro</b>: ${C("<head>")} con le informazioni per il browser, ${C("<body>")} con quello che si vede.</p>`,
+  task:`Metti in ordine le nove righe dello scheletro, poi premi Controlla.`,
+  order:{items:[{id:"dt",t:"<!DOCTYPE html>",tip:"La prima riga è sempre &lt;!DOCTYPE html&gt;: dice al browser che è una pagina HTML."},
+                {id:"ho",t:"<html>",tip:"&lt;html&gt; contiene tutto il resto: viene subito dopo &lt;!DOCTYPE html&gt;."},
+                {id:"he",t:"  <head>",tip:"Dentro &lt;html&gt; viene prima &lt;head&gt;, poi &lt;body&gt;."},
+                {id:"ti",t:"    <title>Dolce Vita</title>",tip:"&lt;title&gt; sta dentro &lt;head&gt;: tra &lt;head&gt; e &lt;/head&gt;."},
+                {id:"hc",t:"  </head>",tip:"&lt;/head&gt; chiude la testa, prima che inizi &lt;body&gt;."},
+                {id:"bo",t:"  <body>",tip:"&lt;body&gt; viene dopo la chiusura di &lt;head&gt;."},
+                {id:"h1",t:"    <h1>Pasticceria Dolce Vita</h1>",tip:"Il titolo che si vede nella pagina sta dentro &lt;body&gt;."},
+                {id:"bc",t:"  </body>",tip:"&lt;/body&gt; chiude il corpo, dopo tutto quello che si vede."},
+                {id:"hx",t:"</html>",tip:"&lt;/html&gt; è l'ultima riga: chiude tutto."}],
+   shuffle:["h1","he","hx","bo","dt","bc","ti","hc","ho"]},
+  hint:"Prima &lt;!DOCTYPE html&gt; e &lt;html&gt;; poi la testa (&lt;head&gt; … &lt;/head&gt;) con il titolo della scheda; poi il corpo (&lt;body&gt; … &lt;/body&gt;); in fondo &lt;/html&gt;.",
+  success:`Lo scheletro è sempre questo: ${C("<!DOCTYPE html>")} in cima; ${C("<html>")} contiene tutto; dentro, prima ${C("<head>")} e poi ${C("<body>")}.`,
+  learn:{k:"struttura del documento", d:"&lt;!DOCTYPE html&gt; · &lt;html&gt; · &lt;head&gt; con &lt;title&gt; · &lt;body&gt;"}},
+
+ {id:"g8", phase:"g", title:"Testa o corpo?", env:"sort",
+  theory:`<p>In ${C("<head>")} ci sono informazioni <b>per il browser</b>: nella pagina non si vedono. In ${C("<body>")} c'è tutto quello che <b>vedi</b>.</p>`,
+  task:`Metti ogni pezzo nella parte giusta del documento, poi premi Controlla.`,
+  sort:{bins:[{id:"he",label:"&lt;head&gt;",sub:"per il browser: nella pagina non si vede"},{id:"bo",label:"&lt;body&gt;",sub:"si vede nella pagina"}],
+   cards:[{id:"ti",em:"🗂️",label:"Il nome nella scheda del browser",bin:"he",why:"Il nome nella scheda è il &lt;title&gt;: sta nel &lt;head&gt;, e nella pagina non compare."},
+          {id:"h1",em:"🔠",label:"Il titolo grande nella pagina",bin:"bo",why:"Il titolo &lt;h1&gt; si vede nella pagina: sta nel &lt;body&gt;."},
+          {id:"or",em:"🕗",label:"Un paragrafo con gli orari",bin:"bo",why:"Un paragrafo si legge nella pagina: sta nel &lt;body&gt;."},
+          {id:"ch",em:"🔤",label:"La codifica dei caratteri, per le lettere accentate",bin:"he",why:"La codifica è un'informazione per il browser, che così mostra bene à, è, ù: sta nel &lt;head&gt;."},
+          {id:"im",em:"🖼️",label:"La foto della vetrina",bin:"bo",why:"La foto si vede nella pagina: sta nel &lt;body&gt;."},
+          {id:"cs",em:"🎨",label:"Il collegamento al file stile.css",bin:"he",why:"Il collegamento al CSS dice al browser quale file chiedere: sta nel &lt;head&gt;."}]},
+  hint:"Per ogni carta chiediti: la vedo dentro la pagina, o serve solo al browser?",
+  success:`Nella pagina si vede solo il ${C("<body>")}. Anche il collegamento a ${C("stile.css")} sta nel ${C("<head>")}: ricordi i file nella scheda Rete? Il browser lo legge lì e chiede il file al server.`},
+
+ {id:"g9", phase:"g", title:"Al terminale: la cartella del sito", env:"cmd",
+  theory:`<p>Al terminale: ${C("cd")} entra in una cartella, ${C("mkdir")} ne crea una nuova, ${C("dir")} mostra che cosa c'è. Il percorso prima del ${C(">")} dice dove sei.</p>`,
+  keys:`${C("cd Desktop")} · ${C("mkdir dolcevita")} · ${C("cd dolcevita")}`,
+  task:`Sul <b>Desktop</b> crea la cartella <b>dolcevita</b> ed entraci. Quando il percorso finisce con ${C("dolcevita>")}, premi Controlla.`,
+  need:()=>{ if(!CMD.hasSite()){ const ds=CMD.mkdirInDesktop().filter(k=>/dolce/i.test(k)); return ds.length ? `Sul Desktop c'è «${ds.join("», «")}», ma non «dolcevita»: tutto attaccato, senza spazi.` : "Manca la cartella dolcevita sul Desktop: entra nel Desktop con cd Desktop, poi scrivi mkdir dolcevita."; }
+    return CMD.inSite() ? "" : "La cartella c'è: ora entraci con cd dolcevita (dal Desktop)."; },
+  hint:"Tre comandi, uno alla volta: cd Desktop, poi mkdir dolcevita, poi cd dolcevita. Se sbagli, cd .. torna indietro di una cartella.",
+  success:`Il percorso prima del ${C(">")} si chiama <b>prompt</b>: ${C("C:\\Users\\studente\\Desktop\\dolcevita")}. Ogni ${C("\\")} separa una cartella da quella che la contiene. Se scrivi ${C("mkdir dolce vita")} con lo spazio, nascono <b>due</b> cartelle: per questo nei nomi dei siti niente spazi.`,
+  learn:{k:"cd · mkdir · dir", d:"entra in una cartella · crea una cartella · mostra il contenuto"}},
+
+ {id:"g10", phase:"g", title:"Al terminale: il file della pagina", env:"cmd",
+  theory:`<p>Un file vuoto si crea con ${C("type nul > index.html")}, oppure si apre con il Blocco note: ${C("notepad index.html")}. <b>index.html</b> è il nome della pagina principale di un sito.</p>`,
+  task:`Dentro <b>dolcevita</b> crea il file <b>index.html</b>, poi controlla con ${C("dir")} che ci sia. Poi premi Controlla.`,
+  need:()=> !CMD.hasSite() ? "Prima serve la cartella dolcevita sul Desktop (passo precedente)." : !CMD.hasIndex() ? (CMD.inSite() ? "Nella cartella dolcevita non c'è ancora index.html: scrivi type nul > index.html" : "Entra nella cartella dolcevita (cd Desktop, poi cd dolcevita) e crea lì index.html.") : !CMD.dirSeen() ? "Il file c'è: ora controllalo con dir, dentro la cartella dolcevita." : "",
+  hint:"Se il prompt non finisce con dolcevita&gt;, prima entra nella cartella. Poi: type nul &gt; index.html e dir.",
+  success:`Con ${C("dir")} vedi il file: <b>0 byte</b>, perché è vuoto. Ricordi ${C("index.html")} nella scheda Rete dell'altra palestra? È proprio lui: il primo file che il browser chiede al server.`,
+  learn:{k:"index.html", d:"il file della pagina principale di un sito"}},
+
+ {id:"g11", phase:"g", title:"Aprilo nel browser", env:"cmd",
+  theory:`<p>${C("start index.html")} apre il file con il browser, come un doppio clic in Esplora file.</p>`,
+  task:`Apri index.html dal terminale e leggi l'indirizzo nella barra del browser. <b>Chi ha mandato questa pagina al browser?</b>`,
+  need:()=>CMD.opened() ? "" : "Prima apri il file: dentro la cartella dolcevita scrivi start index.html",
+  quiz:[{t:"Il server della pasticceria.", fb:"L'indirizzo comincia con file:///, non con www: non c'è nessun server di mezzo."},
+        {t:"Il server DNS.", fb:"Il DNS traduce i nomi dei siti; qui non c'è nessun nome da tradurre, c'è un percorso del tuo disco."},
+        {t:"Nessuno: il browser ha aperto un file del mio computer.", ok:true}],
+  hint:"Leggi come comincia l'indirizzo nella barra: www oppure file:///?",
+  success:`Con <b>file:///</b> il browser legge un file dal disco: niente DNS, niente server. Per pubblicare il sito, Bottega Web dovrà copiare i file <b>su un server</b>: allora chiunque potrà chiederli scrivendo www.dolcevita.it.`},
+
+ {id:"g12", phase:"g", title:"La prima pagina di Dolce Vita", env:"editor",
+  theory:`<p>Tutto insieme: lo scheletro c'è già. Tu riempi il ${C("<body>")}.</p>`,
+  task:`Scrivi la pagina di Lucia <b>tra ${C("<body>")} e ${C("</body>")}</b>. Ogni voce della lista si spunta da sola quando è fatta. Il titolo della scheda dell'anteprima viene da ${C("<title>")}.`,
+  editor:{full:true, start:PAGE0, tools:["h1","p","b","i","br"],
+   goals:[{t:"un titolo &lt;h1&gt; con «Dolce Vita»", f:d=>txt(d,"h1").some(x=>/dolce vita/i.test(x)), tip:"Scrivi nel body &lt;h1&gt;Pasticceria Dolce Vita&lt;/h1&gt;."},
+          {t:"almeno due paragrafi &lt;p&gt;", f:d=>d.querySelectorAll("p").length>=2, tip:"Ogni paragrafo comincia con &lt;p&gt; e finisce con &lt;/p&gt;: ne servono due."},
+          {t:"una parola in grassetto &lt;b&gt;", f:d=>txt(d,"b,strong").some(x=>x.length>0), tip:"Racchiudi una parola tra &lt;b&gt; e &lt;/b&gt;."},
+          {t:"una parola in corsivo &lt;i&gt;", f:d=>txt(d,"i,em").some(x=>x.length>0), tip:"Racchiudi una parola tra &lt;i&gt; e &lt;/i&gt;."},
+          {t:"un &lt;br&gt; per andare a capo", f:d=>d.querySelectorAll("body br").length>0, tip:"Dentro un paragrafo scrivi &lt;br&gt; dove vuoi andare a capo."},
+          {t:"tutto dentro &lt;body&gt;", f:(d,code)=>{ const b=inBody(code).toLowerCase(); return /<h1/.test(b) && /<p/.test(b) && !/<h1|<p[\s>]/.test(code.toLowerCase().split("<body")[0]); }, tip:"Titolo e paragrafi vanno tra &lt;body&gt; e &lt;/body&gt;, non nel &lt;head&gt;."}]},
+  hint:"Un esempio da cui partire: &lt;h1&gt;Pasticceria Dolce Vita&lt;/h1&gt; poi &lt;p&gt;Torte &lt;b&gt;fresche&lt;/b&gt; ogni giorno&lt;/p&gt; poi &lt;p&gt;Via Roma 12&lt;br&gt;&lt;i&gt;Milano&lt;/i&gt;&lt;/p&gt;",
+  success:`Questa è la prima pagina del sito di Lucia. Salvata come ${C("index.html")} nella cartella ${C("dolcevita")} e copiata su un server, chiunque potrebbe aprirla.`},
+
+ {id:"x0", screen:"finalX"},
+
+ {id:"x1", phase:"x", sec:"A", code:"A1", env:"big", big:{em:"💬", name:"Da WhatsApp all'HTML"},
+  task:"Su WhatsApp scrivi *saldi* per il grassetto. In HTML come lo scrivi?",
+  quiz:[{t:C("<b>saldi</b>"), ok:true},{t:C("*saldi*"), fb:"Gli asterischi funzionano su WhatsApp: il browser li mostrerebbe così come sono."},{t:C("<b>saldi<b>"), fb:"Il secondo tag non ha la barra: invece di chiudere, apre un altro grassetto."}],
+  why:"Il grassetto si apre con &lt;b&gt; e si chiude con &lt;/b&gt;."},
+ {id:"x2", phase:"x", sec:"A", code:"A2", env:"big", big:{em:"🏷️", name:"La chiusura"},
+  task:"Quale tag chiude il corsivo?",
+  quiz:[{t:C("<i/>"), fb:"La barra va subito dopo &lt;, prima della lettera."},{t:C("</i>"), ok:true},{t:C("<\\i>"), fb:"È la barra al contrario: quella giusta è /, la stessa degli indirizzi web."}],
+  why:"La chiusura ha la barra / subito dopo &lt;: &lt;/i&gt;."},
+ {id:"x3", phase:"x", sec:"A", code:"A3", env:"big", big:{em:"🔠", name:"Il titolo della pagina"},
+  task:"Quale codice mostra «Dolce Vita» come titolo più importante, dentro la pagina?",
+  quiz:[{t:C("<h6>Dolce Vita</h6>"), fb:"&lt;h6&gt; è il titolo meno importante, il più piccolo."},{t:C("<title>Dolce Vita</title>"), fb:"&lt;title&gt; si vede nella scheda del browser, non dentro la pagina."},{t:C("<h1>Dolce Vita</h1>"), ok:true}],
+  why:"&lt;h1&gt; è il titolo principale della pagina. &lt;title&gt; è il nome nella scheda."},
+ {id:"x4", phase:"x", sec:"A", code:"A4", env:"big", big:{em:"↩️", name:"Tutto su una riga", tx:`<div class="code">&lt;p&gt;Via Roma 12\nMilano&lt;/p&gt;</div>`},
+  task:"Nel codice l'indirizzo sta su due righe, ma nella pagina esce su una sola. Che cosa manca?",
+  quiz:[{t:"Un altro Invio nel codice.", fb:"Il browser ignora gli Invio del codice, anche se sono due o tre."},{t:`${C("<br>")} dopo «Via Roma 12».`, ok:true},{t:`${C("</br>")} alla fine.`, fb:"&lt;br&gt; non si chiude: basta da solo, dove vuoi andare a capo."}],
+  why:"Per andare a capo dentro un paragrafo serve &lt;br&gt;, che è un tag vuoto."},
+
+ {id:"x5", phase:"x", sec:"B", code:"B1", env:"big", big:{em:"📄", name:"La prima riga"},
+  task:"Qual è la prima riga di un documento HTML?",
+  quiz:[{t:C("<html>"), fb:"&lt;html&gt; viene subito dopo: prima c'è la riga che dichiara il tipo di documento."},{t:C("<!DOCTYPE html>"), ok:true},{t:C("<head>"), fb:"&lt;head&gt; sta dentro &lt;html&gt;: non può essere la prima riga."}],
+  why:"&lt;!DOCTYPE html&gt; in cima dice al browser che è una pagina HTML."},
+ {id:"x6", phase:"x", sec:"B", code:"B2", env:"big", big:{em:"🗂️", name:"La scheda del browser"},
+  task:"Il nome che compare nella scheda del browser si scrive…",
+  quiz:[{t:`in ${C("<title>")}, dentro ${C("<head>")}.`, ok:true},{t:`in ${C("<h1>")}, dentro ${C("<body>")}.`, fb:"&lt;h1&gt; è il titolo dentro la pagina, non nella scheda."},{t:`in ${C("<p>")}, dentro ${C("<head>")}.`, fb:"Nel &lt;head&gt; non ci sono paragrafi: lì ci sono informazioni per il browser."}],
+  why:"&lt;title&gt; sta nel &lt;head&gt; e dà il nome alla scheda (e ai preferiti)."},
+ {id:"x7", phase:"x", sec:"B", code:"B3", env:"big", big:{em:"👀", name:"Che cosa si vede?", tx:`<div class="code">&lt;head&gt;\n  &lt;title&gt;Orari&lt;/title&gt;\n&lt;/head&gt;\n&lt;body&gt;\n  &lt;p&gt;Aperto dalle 8&lt;/p&gt;\n&lt;/body&gt;</div>`},
+  task:"Che cosa si vede dentro la pagina?",
+  quiz:[{t:"«Orari» e «Aperto dalle 8».", fb:"«Orari» sta nel &lt;head&gt;: compare nella scheda, non nella pagina."},{t:"Niente: manca il CSS.", fb:"Senza CSS la pagina si vede lo stesso, con l'aspetto di base del browser."},{t:"Solo «Aperto dalle 8».", ok:true}],
+  why:"Nella pagina si vede solo il contenuto del &lt;body&gt;."},
+ {id:"x8", phase:"x", sec:"B", code:"B4", env:"big", big:{em:"📦", name:"Scatole dentro scatole"},
+  task:"Quale riga è scritta bene?",
+  quiz:[{t:C("<p><b>Offerta</p></b>"), fb:"&lt;b&gt; è stato aperto per ultimo: deve chiudersi per primo."},{t:C("<p><b>Offerta</b></p>"), ok:true},{t:C("<b><p>Offerta</b></p>"), fb:"Anche qui le chiusure sono invertite: si apre &lt;p&gt; per ultimo, quindi &lt;/p&gt; va prima di &lt;/b&gt;."}],
+  why:"L'ultimo tag aperto è il primo che si chiude."},
+
+ {id:"x9", phase:"x", sec:"C", code:"C1", env:"big", big:{em:"📁", name:"Una cartella nuova"},
+  task:"Quale comando crea la cartella «sito»?",
+  quiz:[{t:C("cd sito"), fb:"cd entra in una cartella che c'è già: non la crea."},{t:C("dir sito"), fb:"dir mostra che cosa c'è: non crea niente."},{t:C("mkdir sito"), ok:true}],
+  why:"mkdir (make directory) crea una cartella."},
+ {id:"x10", phase:"x", sec:"C", code:"C2", env:"big", big:{em:"🧭", name:"Dove sei?", tx:`<div class="code">C:\\Users\\studente\\Desktop&gt;cd sito</div>`},
+  task:"Premi Invio. Che cosa scrive adesso il prompt?",
+  quiz:[{t:C("C:\\Users\\studente\\Desktop\\sito>"), ok:true},{t:C("C:\\sito>"), fb:"cd entra in una cartella dentro quella in cui sei: il Desktop."},{t:C("C:\\Users\\studente>"), fb:"Quello è un passo indietro: si fa con cd .."}],
+  why:"cd entra nella cartella indicata, dentro quella in cui ti trovi: il percorso si allunga."},
+ {id:"x11", phase:"x", sec:"C", code:"C3", env:"big", big:{em:"📋", name:"Che cosa c'è qui?"},
+  task:"Quale comando mostra file e cartelle della cartella in cui ti trovi?",
+  quiz:[{t:C("dir"), ok:true},{t:C("cd"), fb:"cd da solo dice solo dove sei, non che cosa c'è."},{t:C("mkdir"), fb:"mkdir crea una cartella."}],
+  why:"dir elenca file e cartelle, con data e dimensione."},
+ {id:"x12", phase:"x", sec:"C", code:"C4", env:"big", big:{em:"📄", name:"Il file della pagina"},
+  task:"Quale comando crea il file vuoto index.html?",
+  quiz:[{t:C("mkdir index.html"), fb:"mkdir crea una cartella, anche se il nome finisce con .html!"},{t:C("type nul > index.html"), ok:true},{t:C("cd index.html"), fb:"cd entra nelle cartelle; index.html deve essere un file."}],
+  why:"type nul &gt; index.html crea un file vuoto. Anche notepad index.html lo crea, aprendolo con il Blocco note."},
+
+ {id:"end", screen:"end"},
+
+ {id:"b1", phase:"b", code:"K1", title:"Il cartello degli orari", env:"editor",
+  theory:`<p>${C("<h2>")} è un titolo di secondo livello: più piccolo di ${C("<h1>")}, buono per le sezioni.</p>`,
+  task:`Scrivi un titolo ${C("<h2>")} «Orari» e sotto un paragrafo su tre righe: Lun-Ven 7-19, Sabato 7-13, Domenica chiuso.`,
+  editor:{start:"", tools:["h2","p","br"],
+   goals:[{t:"un titolo &lt;h2&gt; «Orari»", f:d=>txt(d,"h2").some(x=>/orari/i.test(x)), tip:"&lt;h2&gt;Orari&lt;/h2&gt;"},
+          {t:"un paragrafo con le tre righe", f:d=>[...d.querySelectorAll("p")].some(p=>/domenica/i.test(p.textContent) && p.querySelectorAll("br").length>=2), tip:"Un solo &lt;p&gt;, con &lt;br&gt; alla fine della prima e della seconda riga."}]},
+  why:"&lt;h2&gt; per la sezione, &lt;p&gt; con due &lt;br&gt; per le tre righe."},
+ {id:"b2", phase:"b", code:"K2", title:"Il prezzo scontato", env:"editor",
+  task:`Barra il prezzo vecchio con ${C("<s>")} e metti il nuovo in grassetto.`,
+  editor:{start:"<p>Crostata di frutta: 22 € 18 €</p>", tools:["s","b"],
+   goals:[{t:"22 € barrato", f:d=>txt(d,"s,del,strike").some(x=>/22/.test(x)), tip:"&lt;s&gt;22 €&lt;/s&gt;"},
+          {t:"18 € in grassetto", f:d=>txt(d,"b,strong").some(x=>/18/.test(x)), tip:"&lt;b&gt;18 €&lt;/b&gt;"},
+          {t:"il 18 non è barrato", f:d=>!txt(d,"s,del,strike").some(x=>/18/.test(x)), tip:"Chiudi &lt;/s&gt; subito dopo «22 €»."}]},
+  why:"Come su WhatsApp con ~22 €~ e *18 €*: &lt;s&gt; e &lt;b&gt;."},
+ {id:"b3", phase:"b", code:"K3", title:"L'elenco delle torte", env:"editor",
+  theory:`<p>Un <b>elenco puntato</b> si scrive con ${C("<ul>")}; ogni voce dell'elenco è un ${C("<li>")}.</p>`,
+  task:`Fai un elenco puntato con tre torte: Sacher, Crostata, Tiramisù.`,
+  editor:{start:"<ul>\n\n</ul>", tools:["li"],
+   goals:[{t:"un elenco &lt;ul&gt; con almeno tre &lt;li&gt;", f:d=>[...d.querySelectorAll("ul")].some(u=>u.querySelectorAll("li").length>=3), tip:"Tra &lt;ul&gt; e &lt;/ul&gt; scrivi tre righe &lt;li&gt;…&lt;/li&gt;."},
+          {t:"ci sono Sacher, Crostata e Tiramisù", f:d=>{ const t=txt(d,"li").join(" ").toLowerCase(); return /sacher/.test(t) && /crostata/.test(t) && /tiramis/.test(t); }, tip:"Una torta per ogni &lt;li&gt;."}]},
+  why:"&lt;ul&gt; è l'elenco, &lt;li&gt; ogni voce: annidati come le scatole."},
+ {id:"endb", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x"), BONUS = STEPS.filter(s=>s.phase==="b");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+
+/* =====================================================================
+   CODICE RISULTATO · firma come nelle altre palestre (djb2, base 36)
+   Formato comune alle palestre di Linguaggi web: lo legge verifica_codici.html
+   ===================================================================== */
+const FAM = "WEB", TOOL = "TAG";
+const RS = {prove:"le domande", risp:"Le risposte", dove:"nel documento della consegna"};
+function sig(s, tag){ let h=5381; const t=FAM+"*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+const two = n => String(n).padStart(2,"0");
+const nowStr = () => { const d=new Date(); return `${two(d.getDate())}/${two(d.getMonth()+1)}/${d.getFullYear()} ${two(d.getHours())}:${two(d.getMinutes())}`; };
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const curCls = () => (store.get("classe")||"").replace(/\s+/g,"").toUpperCase();
+  const rip = () => +store.get("rip")||0;
+  const errs = () => store.get("errs")||{};
+  function addErr(id){ const e=errs(); e[id]=(e[id]||0)+1; store.set("errs", e); }
+  const mq = window.matchMedia ? window.matchMedia("(max-width:900px)") : null;
+
+  function go(i){ pos=i; store.set("pos", i); render(); window.scrollTo(0,0); }
+  function next(){ if(pos<STEPS.length-1) go(pos+1); }
+  function say(kind, html){ const fb=$("#l-fb"); fb.className="fb "+kind; fb.innerHTML=html; }
+  function placeDock(){
+    const d=$("#dock");
+    if(mq && mq.matches){ if(d.parentNode!==$("#work")) $("#work").appendChild(d); d.classList.add("docked"); }
+    else { if(d.parentNode!==$("#lesson")) $("#lesson").appendChild(d); d.classList.remove("docked"); }
+  }
+  if(mq){ if(mq.addEventListener) mq.addEventListener("change", placeDock); else if(mq.addListener) mq.addListener(placeDock); }
+
+  function counter(step){ return step.phase==="g" ? `Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length} · pillola ed esercizio` : step.phase==="b" ? `Livello bonus · esercizio ${BONUS.indexOf(step)+1} di ${BONUS.length}` : `Sfida finale · domanda ${CHAL.indexOf(step)+1} di ${CHAL.length}`; }
+  function where(){ const s=STEPS[pos];
+    return s.phase==="g" ? `passo ${GUIDED.indexOf(s)+1}/${GUIDED.length}` : s.phase==="x" ? `sfida ${CHAL.indexOf(s)+1}/${CHAL.length}` : s.phase==="b" ? `bonus ${BONUS.indexOf(s)+1}/${BONUS.length}` : s.id==="x0" ? `sfida 0/${CHAL.length}` : s.screen==="end" ? "fine" : "inizio"; }
+  function render(){
+    const step=STEPS[pos], main=idx("end");
+    $("#pbar").style.width = Math.min(100, Math.round(Math.min(pos,main)/main*100))+"%";
+    $("#h-name").textContent = curName() + (curCls()?" · "+curCls():"");
+    paintPocket();
+    try{ speechSynthesis.cancel(); }catch(e){}
+    if(step.screen){ $("#work").classList.add("hidden"); $("#screen").classList.remove("hidden"); SCREENS[step.screen]($("#screen")); return; }
+    $("#screen").classList.add("hidden"); $("#work").classList.remove("hidden");
+    S = {err:0, hint:false, done:false, firstDone:false};
+    $("#l-lbl").textContent = counter(step);
+    $("#l-speak").classList.toggle("hidden", !BES);
+    $("#l-title").innerHTML = step.phase==="x" ? SEC[step.sec].name : step.phase==="b" ? "⭐ "+step.title : step.title;
+    const th=val(step.theory); $("#l-theory").innerHTML = th ? `<span class="pill">💊 Pillola</span>${th}` : ""; $("#l-theory").classList.toggle("hidden", !th);
+    const keys=val(step.keys); $("#l-keys").innerHTML=keys; $("#l-keys").classList.toggle("hidden", !keys);
+    $("#l-tasklbl").textContent = step.phase==="x" ? "Domanda" : step.need && step.quiz ? "Esercizio: prova e rispondi" : "Esercizio";
+    $("#l-task").innerHTML = val(step.task);
+    const q=$("#l-quiz"); q.classList.toggle("hidden", !step.quiz);
+    q.innerHTML = step.quiz ? step.quiz.map((o,i)=>`<button type="button" class="qopt" data-i="${i}"><b>${String.fromCharCode(65+i)}.</b> ${o.t}</button>`).join("") : "";
+    q.querySelectorAll(".qopt").forEach(b=>b.onclick=()=>answer(+b.dataset.i, b));
+    $("#l-fb").classList.add("hidden"); $("#l-hinttext").classList.add("hidden");
+    $("#b-next").classList.add("hidden"); $("#b-hint").classList.add("hidden");
+    $("#b-check").classList.toggle("hidden", !!step.quiz);
+    const sk=$("#b-skip"); sk.classList.remove("hidden"); sk.textContent = step.phase==="g" ? "Salta il passo ⤼" : step.phase==="b" ? "Salta l'esercizio ⤼" : "Salta la domanda ⤼";
+    const env=ENVS[step.env]; if(env) env.mount($("#stage"), step[step.env]||{}, step); else $("#stage").innerHTML="";
+    placeDock();
+  }
+  function showHintBtn(){ if(STEPS[pos].hint && !S.hint && S.err >= (BES?1:2)) $("#b-hint").classList.remove("hidden"); }
+  const scored = step => step.phase==="x" || step.phase==="b";
+  function recordFirst(ok){ const step=STEPS[pos]; if(!scored(step) || S.firstDone) return; S.firstDone=true; if(!res(step.id)) store.set("r_"+step.id, {first:ok, done:false}); }
+  function check(){
+    const step=STEPS[pos]; if(!step || step.screen || step.quiz) return;
+    if(S.done){ next(); return; }
+    /* gli esercizi al terminale si controllano dal risultato: cartelle, file, percorso */
+    if(step.need){ const m=step.need(); if(m){ S.err++; say("mid", m); showHintBtn(); return; } recordFirst(true); success(step); return; }
+    const env=ENVS[step.env], v = env && env.verify ? env.verify(step) : {ok:true};
+    if(!v.ok){
+      if(!v.noTry){ S.err++; recordFirst(false); if(step.phase==="x") addErr(step.id); }
+      say(v.noTry?"mid":"ko", (v.noTry?"":"Non ancora. ")+v.msg); showHintBtn(); return; }
+    recordFirst(true); success(step);
+  }
+  function answer(i, btn){
+    const step=STEPS[pos]; if(S.done) return; const o=step.quiz[i];
+    /* negli esercizi «prova e rispondi» la risposta si accetta solo dopo la prova */
+    if(step.need){ const m=step.need(); if(m){ say("mid", m); return; } }
+    if(o.ok){ recordFirst(true); btn.classList.add("right"); $("#l-quiz").querySelectorAll(".qopt").forEach(b=>b.disabled=true); success(step); return; }
+    if(btn.classList.contains("wrong")) return;
+    recordFirst(false); if(step.phase==="x") addErr(step.id);
+    btn.classList.add("wrong"); btn.setAttribute("aria-disabled","true"); S.err++; say("ko", "Non è così. "+o.fb); showHintBtn();
+  }
+  function success(step){
+    S.done=true;
+    if(step.phase==="g"){ const r=Object.assign({}, res(step.id)||{}, {ok:1, err:Math.max(S.err, (res(step.id)||{}).err||0)}); if(S.hint) r.hint=1; delete r.skip; store.set("r_"+step.id, r);
+      say("ok", "✔ Giusto! "+val(step.success)); paintPocket(); }
+    else { const r=res(step.id)||{first:true}; store.set("r_"+step.id, {first:!!r.first, done:true}); say("ok", (step.phase==="b"?"✔ Fatto! ":r.first?"✔ Giusto al primo colpo! ":"✔ Ora è giusta. ")+val(step.why)); }
+    $("#b-check").classList.add("hidden"); $("#b-hint").classList.add("hidden"); $("#b-skip").classList.add("hidden");
+    const nb=$("#b-next"); nb.classList.remove("hidden"); nb.textContent = STEPS[pos+1] && STEPS[pos+1].screen ? "Continua →" : "Avanti →"; nb.focus({preventScroll:true});
+  }
+  /* un passo saltato resta nel codice e vale zero */
+  function skip(){
+    const step=STEPS[pos]; if(!step || step.screen || S.done) return; const r=res(step.id);
+    if(step.phase==="g"){ if(!(r && r.ok)) store.set("r_"+step.id, Object.assign({}, r||{}, {skip:1, err:S.err})); }
+    else store.set("r_"+step.id, {first:false, done:false, skip:1});
+    next();
+  }
+  function hint(){ S.hint=true; const id=STEPS[pos].id; store.set("r_"+id, Object.assign({}, res(id)||{}, {hint:1}));
+    const h=$("#l-hinttext"); h.innerHTML="💡 "+val(STEPS[pos].hint); h.classList.remove("hidden"); $("#b-hint").classList.add("hidden"); }
+  function envErr(){ S.err++; showHintBtn(); }
+  function envDone(){ const fb=$("#l-fb"); if(fb.classList.contains("mid") && STEPS[pos].need && !STEPS[pos].need()) fb.classList.add("hidden"); }
+
+  /* tasca: chiusa durante la sfida e il bonus */
+  function paintPocket(){
+    const learned = GUIDED.filter(s=>s.learn && (res(s.id)||{}).ok), cur=STEPS[pos], closed = cur && (cur.phase==="x" || cur.id==="x0");
+    const b=$("#pocket-btn"); b.classList.toggle("hidden", !learned.length || closed); b.textContent=`🎒 Tasca (${learned.length})`;
+    if(closed){ $("#pocket").classList.add("hidden"); b.setAttribute("aria-expanded","false"); }
+    $("#pocket").innerHTML = `<h3>Cosa so già</h3><ul>${learned.map(s=>`<li><b>${val(s.learn.k)}</b> — ${s.learn.d}</li>`).join("")}</ul>`;
+  }
+  $("#pocket-btn").onclick = e=>{ e.stopPropagation(); const open=$("#pocket").classList.toggle("hidden"); $("#pocket-btn").setAttribute("aria-expanded", String(!open)); };
+  document.addEventListener("click", e=>{ if(!e.target.closest("#pocket") && !$("#pocket").classList.contains("hidden")){ $("#pocket").classList.add("hidden"); $("#pocket-btn").setAttribute("aria-expanded","false"); } });
+
+  /* riepilogo e codice */
+  function guided(){ const r=GUIDED.map(s=>res(s.id)||{}), ok=r.filter(x=>x.ok).length, skip=r.filter(x=>x.skip && !x.ok).length;
+    const hard=GUIDED.map((s,i)=>({n:i+1, e:r[i].err||0})).filter(x=>x.e>=2);
+    return {ok, skip, miss:GUIDED.length-ok-skip, hint:(+store.get("hintsPrev")||0)+r.filter(x=>x.hint).length, hard}; }
+  function tally(){
+    const secs = Object.keys(SEC).map(k=>{ const qs=CHAL.filter(q=>q.sec===k), r=qs.map(q=>res(q.id));
+      return {k, n:qs.length, ok:r.filter(x=>x && x.first && !x.skip).length, skip:r.filter(x=>x && x.skip).length, miss:r.filter(x=>!x).length}; });
+    const skips = CHAL.filter(q=>{ const r=res(q.id); return r && r.skip; });
+    return {secs, n:CHAL.length, miss:secs.reduce((a,x)=>a+x.miss,0), ok:secs.reduce((a,x)=>a+x.ok,0), skips};
+  }
+  /* nel bonus conta l'esercizio portato a termine, non il primo tentativo */
+  function bonus(){ const r=BONUS.map(q=>res(q.id)); return {n:BONUS.length, ok:r.filter(x=>x && x.done).length, any:r.some(Boolean), all:r.every(x=>x && (x.done||x.skip))}; }
+  const pl = (n, one, many) => `${n} ${n===1?one:many}`;
+  function code(){
+    const t=tally(), g=guided(), e=errs(), b=bonus();
+    const gx=[]; if(g.skip) gx.push(pl(g.skip,"saltato","saltati")); if(g.miss) gx.push(pl(g.miss,"non fatto","non fatti"));
+    const parts=[FAM+"-"+TOOL, curName()||"(nome non inserito)"];
+    if(curCls()) parts.push("CLASSE "+curCls());
+    parts.push(`PASSI ${g.ok}/${GUIDED.length}`+(gx.length?` (${gx.join(", ")})`:""), `aiuti ${g.hint}`, "inciampi "+(g.hard.length?g.hard.map(x=>`P${x.n}(${x.e})`).join(" "):"-"));
+    t.secs.forEach(x=>{ const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte"));
+      parts.push(`${SEC[x.k].code} ${x.ok}/${x.n}`+(ex.length?` (${ex.join(", ")})`:"")); });
+    parts.push(`TOT ${t.ok}/${t.n}`);
+    const el=CHAL.filter(q=>e[q.id]).map(q=>`${q.code}(${e[q.id]})`);
+    parts.push("errori "+(el.length?el.join(" "):"-"));
+    if(t.skips.length) parts.push("saltate "+t.skips.map(q=>q.code).join(" "));
+    parts.push(`BONUS ${b.ok}/${b.n}`+(b.any?"":" (non fatto)"));
+    parts.push("ripetizioni "+rip());
+    if(BES) parts.push("modalità facilitata");
+    const n0=store.get("nome0"); if(n0 && nameKey(n0)!==nameKey(curName())) parts.push("nome iniziale: "+n0);
+    parts.push("ADESSO "+where(), "ORA "+nowStr());
+    const body=parts.join(" | ");
+    return body+" | #"+sig(body, TOOL);
+  }
+  function codeBlock(){
+    const t=tally(), g=guided(), e=errs(), b=bonus(), rev=CHAL.filter(q=>e[q.id] || t.skips.includes(q));
+    const note = x => { const ex=[]; if(x.skip) ex.push(pl(x.skip,"saltata","saltate")); if(x.miss) ex.push(pl(x.miss,"non fatta","non fatte")); return ex.length?`<small>${ex.join(", ")}</small>`:""; };
+    const tag = q => [e[q.id]?`<i>(sbagliata ${e[q.id]===1?"1 volta":e[q.id]+" volte"})</i>`:"", t.skips.includes(q)?"<i>(saltata)</i>":""].filter(Boolean).join(" ");
+    return `<div class="stats">${t.secs.map(x=>`<div class="stat"><small>${SEC[x.k].name}</small><b>${x.ok}/${x.n}</b>${note(x)}</div>`).join("")}<div class="stat tot"><small>Giuste al primo colpo</small><b>${t.ok}/${t.n}</b></div>${b.any?`<div class="stat"><small>⭐ Bonus fatti</small><b>${b.ok}/${b.n}</b></div>`:""}</div>
+      <p class="small">Passi guidati: <b>${g.ok}/${GUIDED.length}</b>${g.skip?`, ${pl(g.skip,"saltato","saltati")}`:""}${g.hint?`, aiuti usati: ${g.hint}`:""}${rip()?` · ripetizioni della sfida: ${rip()}`:""}.</p>
+      ${rev.length?`<details class="review" open><summary>Da ripassare (${rev.length})</summary><ul>${rev.map(q=>`<li><b>${plain(val(q.task))}</b> ${tag(q)}<br>${q.why}</li>`).join("")}</ul></details>`:""}
+      <h3>Il tuo codice</h3>
+      <p>Clic nel riquadro, ${K(CT,"A")} e ${K(CT,"C")}, poi incollalo con ${K(CT,"V")} <b>${RS.dove}</b>.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="small" data-copied aria-live="polite"></span></p>
+      <p class="small">I risultati restano su questo computer. Il codice finisce con un controllo (#…): se qualcuno modifica i numeri, il controllo non torna più.</p>`;
+  }
+  document.addEventListener("click", e=>{
+    const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".screen").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]");
+    const ok=()=>{ out.textContent="Copiato ✓ Ora incollalo "+RS.dove+"."; };
+    const fallback=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Copia a mano: clic nel riquadro, "+CT+"+A e "+CT+"+C."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fallback); else fallback();
+  });
+
+  /* «Nuovo studente»: se il nome tornerà sullo stesso PC, errori, aiuti e ripetizioni ripartono da dove erano */
+  function anyWork(){ return STEPS.some(s=>res(s.id)) || Object.keys(errs()).length>0 || rip()>0; }
+  function saveHistory(){
+    const n=curName(); if(!n || !anyWork()) return;
+    const h=store.get("hist")||{}; h[hashName(n)]={rip:rip()+1, errs:errs(), hints:guided().hint, bes:BES}; store.set("hist", h);
+  }
+  function restoreHistory(n){
+    if(anyWork()) return; const h=store.get("hist")||{}, k=hashName(n), p=h[k]; if(!p) return;
+    store.set("rip", p.rip||0); store.set("errs", p.errs||{}); store.set("hintsPrev", p.hints||0); if(p.bes){ BES=true; store.set("bes", true); document.body.classList.add("bes"); const ob=$("#o-bes"); if(ob) ob.checked=true; } delete h[k]; store.set("hist", h);
+  }
+
+  /* schermate */
+  const SCREENS = {
+    welcome(el){
+      el.innerHTML = `<h2>🏷️ Il tuo primo HTML</h2>
+        <p>Lucia ha deciso: il sito della <b>Pasticceria Dolce Vita</b> si fa. Oggi in Bottega Web scrivi tu la prima pagina, in HTML, e prepari dal terminale la cartella del sito.</p>
+        <p><b>${GUIDED.length} passi brevi</b>: in ognuno una pillola di teoria e un esercizio, spesso con l'anteprima che si aggiorna mentre scrivi. Poi una sfida di <b>${CHAL.length} domande</b> e il codice da consegnare. Chi finisce prima trova tre esercizi bonus.</p>
+        <p class="small">Se un passo proprio non ti riesce puoi saltarlo: nel codice risulta saltato e non vale punti.</p>
+        <div class="fields"><p><label for="w-name"><b>Nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}" placeholder="Nome e cognome"></p>
+        <p><label for="w-cls"><b>Classe</b></label><br><input type="text" id="w-cls" autocomplete="off" value="${esc(curCls())}" placeholder="es. 3B" maxlength="8"></p></div>
+        <div class="fb ko hidden" id="w-err" role="alert"></div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const go1=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(), c=$("#w-cls").value.replace(/[^0-9A-Za-z]/g,"").toUpperCase(), er=$("#w-err");
+        if(v.length<3){ er.textContent="Scrivi il tuo nome e cognome (almeno 3 lettere), poi premi Inizia."; er.classList.remove("hidden"); $("#w-name").focus(); return; }
+        if(!/^[1-5][A-Z]{1,4}$/.test(c)){ er.textContent="Scrivi la classe come sul registro, per esempio 3B."; er.classList.remove("hidden"); $("#w-cls").focus(); return; }
+        const old=curName(), any=STEPS.some(s=>res(s.id));
+        if(old && nameKey(old)!==nameKey(v) && any && !store.get("nome0")) store.set("nome0", old);
+        restoreHistory(v);
+        store.set("nome", v); store.set("classe", c); next(); };
+      $("#w-go").onclick=go1; ["#w-name","#w-cls"].forEach(s=>$(s).addEventListener("keydown", e=>{ if(e.key==="Enter") go1(); })); $("#w-name").focus();
+    },
+    finalX(el){
+      el.innerHTML = `<h2>🏁 Sfida finale · Prima della consegna</h2>
+        <p>Prima di mandare la pagina a Lucia, Bottega Web controlla che tu sappia il fatto tuo: <b>${CHAL.length} domande</b> in tre gruppi, i tag, la struttura del documento, il terminale.</p>
+        <p>Conta la <b>prima risposta</b>. Se sbagli, leggi perché e riprova: alla fine trovi l'elenco delle cose da ripassare. Puoi anche saltare una domanda, ma vale zero.</p>
+        <p class="small">Durante la sfida la 🎒 Tasca resta chiusa: conta quello che ricordi. La ritrovi alla fine.</p>
+        <p><button type="button" class="btn" id="s-go">Inizia la sfida →</button></p>`;
+      $("#s-go").onclick=next; $("#s-go").focus();
+    },
+    end(el){
+      const t=tally(), b=bonus();
+      el.innerHTML = `<h2>${t.miss===0 && !t.skips.length?"🎉 Palestra completata":"📋 Riepilogo"}</h2>${codeBlock()}
+        ${!b.all?`<div class="bonusbox"><p><b>⭐ Hai ancora tempo?</b> Tre esercizi in più nell'editor: un cartello, un prezzo scontato, un elenco puntato. Non tolgono punti: nel codice compaiono a parte.</p><p><button type="button" class="btn star" id="e-bonus">⭐ Livello bonus →</button></p></div>`:""}
+        ${restartBox()}
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:62px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p>
+          <p class="small">Per tutta la classe: pagina «Verifica dei codici» nell'argomento Linguaggi web.</p></details>`;
+      const eb=$("#e-bonus"); if(eb) eb.onclick=()=>{ const f=BONUS.find(q=>{ const r=res(q.id); return !(r && (r.done||r.skip)); }); go(idx(f?f.id:"b1")); };
+      $("#e-redo").onclick=e=>askRestart("sfida", e.currentTarget); $("#e-zero").onclick=e=>askRestart("zero", e.currentTarget);
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !new RegExp("^"+FAM+"-[A-Z]{3} \\|").test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(FAM.length+1, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  /* pulsanti */
+  $("#b-check").onclick=check; $("#b-next").onclick=next; $("#b-hint").onclick=hint; $("#b-skip").onclick=skip;
+  $("#l-speak").onclick=()=>{ try{ speechSynthesis.cancel(); const step=STEPS[pos];
+    const txt=[$("#l-title").innerText, $("#l-theory").innerText, $("#l-task").innerText, step.quiz?step.quiz.map((o,i)=>String.fromCharCode(65+i)+". "+plain(o.t)).join(". "):""].filter(Boolean).join(". ");
+    const u=new SpeechSynthesisUtterance(txt); u.lang="it-IT"; u.rate=.95; speechSynthesis.speak(u); }catch(e){} };
+  /* RIAVVIO-JS inizio: scelta alla fine e avviso grande prima di cancellare il codice */
+  function redoChallenge(){ CHAL.forEach(q=>store.del("r_"+q.id)); store.set("rip", rip()+1); go(idx("x0")); }
+  function resetAll(){ saveHistory(); store.clear(); window.scrollTo(0,0); location.reload(); }
+  function restartBox(){
+    const n=curName();
+    return `<div class="restart"><h3>Vuoi ricominciare?</h3>
+      <p>${n?`Questo è il lavoro di <b>${esc(n)}</b>. `:""}<b>Prima incolla il codice ${RS.dove}</b>: se ricominci, il codice qui sopra si cancella e alla fine ne avrai uno nuovo.</p>
+      <p><button type="button" class="btn alt" id="e-redo">↺ Rifai solo la sfida</button> <span class="rs-note">Restano il nome e i passi guidati. Rifai solo ${RS.prove} della sfida.</span></p>
+      <p><button type="button" class="btn danger" id="e-zero">🗑️ Ricomincia tutto da zero</button> <span class="rs-note">Si cancella tutto, anche il nome. Serve anche quando tocca a un compagno.</span></p>
+      <p class="small">Puoi ricominciare quante volte vuoi: il codice nuovo conta le ripetizioni e ricorda tutti gli errori.</p></div>`;
+  }
+  function askRestart(kind, opener){
+    if(document.getElementById("rs-wrap")) return;
+    const zero=kind==="zero", n=curName(), who=n?`il codice di ${esc(n)}`:"il codice salvato su questo computer";
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const w=document.createElement("div"); w.id="rs-wrap"; w.className="modal rs-wrap";
+    w.innerHTML=`<div class="screen warn" role="alertdialog" aria-modal="true" aria-labelledby="rs-t" aria-describedby="rs-d">
+      <div class="warn-body">
+        <div class="warn-ic" aria-hidden="true">⚠️</div>
+        <h2 id="rs-t">${zero?"Ricominci tutto da zero?":"Rifai solo la sfida?"}</h2>
+        <p class="warn-key" id="rs-d">Attenzione: <b>${zero?who:"il codice di adesso"} si perde per sempre</b>. È il codice da consegnare all'insegnante.</p>
+        <p>${zero ? (n?`<b>Sei tu?</b> Prima incolla il codice ${RS.dove}. <b>Non sei tu?</b> Chiedi a ${esc(n)} se l'ha già copiato.`:`<b>È tuo?</b> Prima incolla il codice ${RS.dove}.`) : `<b>Non l'hai ancora incollato ${RS.dove}?</b> Copialo adesso.`}</p>
+        <textarea class="copy" readonly aria-label="Il codice di adesso">${esc(code())}</textarea>
+        <p><button type="button" class="btn alt" data-copy>📋 Copia il codice</button> <span class="rs-copied" data-copied aria-live="polite"></span></p>
+        <p>${zero?`Si cancella tutto: nome, passi guidati, cartelle del terminale e sfida. Se ricominci tu, il codice nuovo conta la ripetizione e ricorda gli errori di prima.`:`${RS.risp} di adesso si cancellano; nome e passi guidati restano. Se ti fermi a metà, nel codice nuovo il resto risulta non fatto. Il codice nuovo conta la ripetizione e ricorda gli errori di prima.`}</p>
+      </div>
+      <div class="warn-acts"><button type="button" class="btn" id="rs-no">No, lascio tutto com'è</button><button type="button" class="btn danger" id="rs-yes">🗑️ ${zero?"Sì, cancello tutto e ricomincio":"Sì, cancello e rifaccio la sfida"}</button></div></div>`;
+    document.body.appendChild(w);
+    const t0=Date.now(), no=w.querySelector("#rs-no"), yes=w.querySelector("#rs-yes");
+    const onKey=e=>{ if(e.key==="Escape"){ e.preventDefault(); e.stopPropagation(); close(true); }
+      else if(e.key==="Tab"){ const f=[...w.querySelectorAll("button,textarea")], a=f[0], z=f[f.length-1];
+        if(e.shiftKey && document.activeElement===a){ e.preventDefault(); z.focus(); } else if(!e.shiftKey && document.activeElement===z){ e.preventDefault(); a.focus(); } } };
+    const onFocus=e=>{ if(!w.contains(e.target)) no.focus({preventScroll:true}); };
+    function close(back){ document.removeEventListener("keydown", onKey, true); document.removeEventListener("focusin", onFocus, true); w.remove();
+      if(back && opener && document.contains(opener)) opener.focus({preventScroll:true}); }
+    document.addEventListener("keydown", onKey, true); document.addEventListener("focusin", onFocus, true);
+    /* i primi 600 ms non contano: il secondo colpo di un doppio clic non conferma e non chiude */
+    no.onclick=()=>{ if(Date.now()-t0<600) return; close(true); };
+    yes.onclick=()=>{ if(Date.now()-t0<600) return; close(false); if(zero) resetAll(); else redoChallenge(); };
+    no.focus({preventScroll:true}); w.querySelector(".warn-body").scrollTop=0;
+  }
+  /* RIAVVIO-JS fine */
+  $("#f-code").onclick=()=>{ const m=$("#modal"); m.innerHTML=`<div class="screen">${codeBlock()}<p><button type="button" class="btn alt" id="m-close">Chiudi e continua</button></p></div>`; m.classList.remove("hidden"); $("#m-close").onclick=()=>{ m.classList.add("hidden"); $("#f-code").focus(); }; $("#m-close").focus(); };
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")){ $("#modal").classList.add("hidden"); $("#f-code").focus(); } });
+  $("#o-bes").checked=BES; document.body.classList.toggle("bes", BES);
+  $("#o-bes").onchange=e=>{ BES=e.target.checked; store.set("bes", BES); document.body.classList.toggle("bes", BES); render(); };
+  $("#o-reset").onclick=e=>{ if(!anyWork()){ resetAll(); return; } askRestart("zero", e.currentTarget); };
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{ $("#opts").open=false; go(idx(b.dataset.jump)); });
+
+  return {render, envErr, envDone};
+})();
+App.render();
+</script>
+</body>
+</html>

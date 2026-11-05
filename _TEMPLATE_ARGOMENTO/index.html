@@ -6,6 +6,8 @@
   2. nel <body> sostituisci il segnaposto:
        data-argomento="AREA/ARGOMENTO/"  ->  data-argomento="SERVIZI_COMMERCIALI/WORDPRESS/"
      e, se vuoi, il <title>;
+     se l'argomento ha una pagina comune dei codici (verifica_codici.html nella
+     cartella dell'argomento), togli il commento al blocco «strumento-docente» qui sotto;
   3. in catalogo.json aggiungi le attività di quell'argomento (percorso a tre segmenti):
      l'elenco qui sotto si riempie da solo, senza toccare questa pagina.
 
@@ -38,6 +40,10 @@
 
 <main class="wrap">
   <p><a href="../../">← Tutti gli argomenti</a></p>
+
+  <!-- Pagina comune dell'argomento (facoltativa). Modello: SERVIZI_COMMERCIALI/LINGUAGGI_WEB/verifica_codici.html
+  <p class="strumento-docente"><a href="verifica_codici.html">🔎 Verifica dei codici</a><span>Per il docente: i codici di tutte le palestre di questo argomento.</span></p>
+  -->
 
   <div class="errore" id="errore" hidden></div>
 

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Dal nome alla pagina · Linguaggi web</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%92%3C/text%3E%3C/svg%3E">
+<style>
+:root{--teal:#0B6E75;--teal-d:#085055;--teal-l:#E3F2F2;--orange:#D9661A;--orange-d:#9a4410;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#55616a;--ok:#1e7d3a;--ok-l:#dff3e4;--ko:#b3261e;--ko-l:#fbe3e1;--bg:#fbf6ea;--line:#d5dade}
+*{box-sizing:border-box}
+body{margin:0;font-family:Verdana,Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:20px;line-height:1.7;letter-spacing:.01em}
+.hidden{display:none!important}
+header{background:var(--teal);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:20px;margin:0}
+header .who{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:15px}
+.hbtn{background:#fff;color:var(--teal-d);border:0;border-radius:20px;padding:6px 14px;cursor:pointer;font:inherit;font-size:16px;font-weight:bold}
+.dots{max-width:760px;margin:0 auto;padding:12px 16px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dot{width:18px;height:18px;border-radius:50%;border:3px solid var(--teal);background:#fff}
+.dot.on{background:var(--teal)}.dot.now{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-l)}
+.dots span{margin-left:8px;font-size:16px;color:var(--muted)}
+main{max-width:760px;margin:0 auto;padding:12px 16px 30px}
+.sheet{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px}
+.count{margin:0;font-size:15px;color:var(--muted);font-weight:bold}
+h2{margin:0 0 10px;color:var(--teal-d);font-size:1.45em;line-height:1.3;outline:none}
+.scene{background:#f3f8f8;border:2px solid var(--teal-l);border-radius:14px;padding:14px;margin:0 0 14px}
+.say{display:flex;gap:10px;align-items:flex-start;margin:0 0 12px}
+.say p{margin:0;flex:1;max-width:32em}
+.say .q{font-weight:bold;font-size:1.08em}
+.spk{flex:none;width:46px;height:46px;border-radius:50%;border:2px solid var(--teal);background:#fff;font-size:20px;cursor:pointer;line-height:1}
+.spk:hover{background:var(--teal-l)}
+.btn{background:var(--teal);color:#fff;border:0;padding:14px 22px;border-radius:12px;font:inherit;font-weight:bold;cursor:pointer}
+.btn:hover{background:var(--teal-d)}
+.btn.alt{background:#fff;color:var(--teal-d);border:2px solid var(--teal);padding:10px 16px;font-weight:normal;font-size:.85em}
+.btn.act{background:var(--orange);font-size:1.1em;border:4px solid var(--orange-d);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(217,102,26,.55)}50%{box-shadow:0 0 0 12px rgba(217,102,26,0)}}
+@media(prefers-reduced-motion:reduce){.btn.act{animation:none;box-shadow:0 0 0 5px var(--orange-l)}}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:6px 0 0}
+.opt{position:relative}
+.pick{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--teal);border-radius:16px;padding:14px 10px 12px;font:inherit;font-weight:bold;color:var(--ink);cursor:pointer;text-align:center;line-height:1.35}
+.pick .ic{font-size:64px;line-height:1.1}
+.pick:hover{background:var(--teal-l)}
+.pick.right{border-color:var(--ok);background:var(--ok-l)}
+.pick.wrong{border-color:#9aa4ab;border-style:dashed;background:#f1f2f3;color:#6b767e;cursor:default}
+.pick.wrong .ic{opacity:.35}
+.pick .mk{font-size:.85em}
+.pick.right .mk{color:var(--ok)}.pick.wrong .mk{color:var(--ko)}
+.pick code,.mono{font-family:Consolas,"Courier New",monospace}
+.opt .spk{position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px}
+.fb{border-radius:12px;padding:12px 16px;margin:14px 0 0}
+.fb.ok{background:var(--ok-l);color:#14532b}.fb.ko{background:var(--orange-l);color:#6b2f0a}
+.word{display:flex;gap:14px;align-items:center;border:3px solid var(--teal);border-radius:14px;padding:10px 14px;margin:14px 0 0;background:var(--teal-l)}
+.word .ic{font-size:56px;line-height:1;flex:none;width:70px;text-align:center}
+.word small{display:block;color:var(--teal-d);font-weight:bold;font-size:.75em}
+.word b{font-size:1.15em}.word span{display:block;line-height:1.45}
+.words{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.words .word{margin:0}
+.next{margin-top:16px}
+input[type=text]{font:inherit;padding:10px 12px;border:3px solid var(--line);border-radius:10px;width:100%;max-width:400px}
+.fields{display:flex;gap:14px;flex-wrap:wrap}.fields p{margin:6px 0}
+#w-cls{max-width:140px}
+textarea.copy{width:100%;height:110px;font-family:"Courier New",monospace;font-size:15px;padding:8px;border:3px solid var(--line);border-radius:10px}
+.stars{font-size:1.2em;font-weight:bold;color:var(--teal-d)}
+.small{font-size:15px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:14px}
+.modal .sheet{max-width:720px;width:100%;max-height:92vh;overflow:auto}
+footer{max-width:760px;margin:0 auto;padding:0 16px 30px;display:flex;gap:16px;flex-wrap:wrap;font-size:15px}
+.linkbtn{background:none;border:0;color:var(--teal-d);text-decoration:underline;cursor:pointer;font:inherit;padding:4px 0}
+details summary{cursor:pointer}
+/* scene: personaggi, frecce, terminale, pagina */
+.row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;text-align:center}
+.row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center}
+.who-em{font-size:64px;line-height:1.1;display:block}
+.actr b{display:block;font-size:.85em}
+.actr.lit{background:var(--ok-l);border-radius:12px}
+.arrows{display:flex;flex-direction:column;gap:8px;min-width:150px}
+.arw{border-radius:10px;padding:4px 10px;font-size:.8em;font-weight:bold;background:#fff;border:2px solid var(--teal)}
+.arw.l{border-color:var(--orange);color:var(--orange-d)}
+.arw.wait{border-style:dashed;color:#9aa4ab;border-color:#c3cacf}
+.msgs{list-style:none;margin:10px 0 0;padding:0}.msgs li{background:#fff;border-radius:10px;padding:4px 10px;margin:6px 0;font-size:.85em}
+.tbox{background:#0c0c0c;color:#e6e6e6;font:17px/1.5 Consolas,"Courier New",monospace;border-radius:10px;padding:12px 14px;margin:0;white-space:pre-wrap;word-break:break-word}
+.tbox mark{background:#ffd166;color:#000;border-radius:3px;padding:0 3px}
+.mini{border:2px solid #b9c2c9;border-radius:10px;background:#fff;padding:12px 16px;font-family:"Times New Roman",serif;font-size:19px;line-height:1.4}
+.mini h3{margin:0 0 6px;font-size:1.5em}.mini p{margin:4px 0}
+.mini.css{background:#fffaf3;font-family:Georgia,serif}.mini.css h3{color:#6b3a1e;border-bottom:3px solid #e8b48a}.mini.css .pz{color:#b3261e;font-weight:bold}.mini.css .bt{background:#d9661a;color:#fff;border-radius:16px;padding:2px 12px;display:inline-block;font-family:Arial,sans-serif;font-size:.85em}
+.mini .bt{border:1px solid #777;padding:1px 8px;font-size:.85em}
+.bubble{background:#dcf8c6;border-radius:12px;padding:8px 14px;display:inline-block;font-family:Arial,sans-serif}
+.code{font-family:Consolas,"Courier New",monospace;background:#fff;border:2px solid var(--line);border-radius:10px;padding:6px 12px;display:inline-block}
+.tagdemo{font:28px Consolas,"Courier New",monospace;text-align:center;padding:16px 0 6px}
+.tagdemo .t{display:inline-flex;flex-direction:column;align-items:center;color:#881280;border:3px solid;border-radius:10px;padding:0 8px;margin:0 6px}
+.tagdemo .t small{font:bold 15px Verdana,Arial,sans-serif}
+.tagdemo .o{border-color:var(--teal)}.tagdemo .o small{color:var(--teal-d)}
+.tagdemo .c{border-color:var(--orange)}.tagdemo .c small{color:var(--orange-d)}
+.desk{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.desk span{display:flex;flex-direction:column;align-items:center;font-size:.8em}.desk span i{font-style:normal;font-size:48px;line-height:1.1}
+.desk .new{background:var(--ok-l);border-radius:10px;padding:0 8px;font-weight:bold}
+@media(max-width:520px){body{font-size:18px}.sheet{padding:16px 14px}.pick .ic{font-size:52px}.opts{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.who-em{font-size:48px}.row{grid-template-columns:minmax(0,1fr)}.arrows{min-width:0}.tagdemo{font-size:22px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📒 Dal nome alla pagina</h1>
+  <div class="who"><span id="h-name"></span><button type="button" class="hbtn" id="b-words">📖 Le mie parole</button></div>
+</header>
+<div class="dots" id="dots" aria-hidden="true"></div>
+<main><section class="sheet" id="app" aria-live="polite"></section></main>
+<footer>
+  <button type="button" class="linkbtn" id="f-code">📋 Il mio codice (anche se non ho finito)</button>
+  <button type="button" class="linkbtn" id="f-reset">Nuovo studente: cancella tutto</button>
+  <details><summary>Solo docente</summary><p class="small">Vai a: <button type="button" class="linkbtn" data-jump="g1">inizio</button> · <button type="button" class="linkbtn" data-jump="g5">seconda parte (HTML)</button> · <button type="button" class="linkbtn" data-jump="r">ripasso</button> · <button type="button" class="linkbtn" data-jump="x1">domande</button>. I passi saltati così nel codice risultano non fatti.</p></details>
+</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true"></div>
+<noscript><p style="padding:20px">Per usare la palestra serve JavaScript attivo nel browser.</p></noscript>
+
+<script>
+"use strict";
+/* =====================================================================
+   Palestra BES dell'attività «Dal nome alla pagina» (Linguaggi web).
+   Regole di scrittura: una frase per volta, al massimo 15 parole;
+   una parola nuova per passo; risposte a carte con disegno.
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const PFX = "webbes_", KEEP = [], mem = {};
+const store = {
+  get(k){ try{ const v=localStorage.getItem(PFX+k); if(v!==null) return JSON.parse(v); }catch(e){} return k in mem ? mem[k] : null; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(PFX+k, JSON.stringify(v)); }catch(e){} },
+  del(k){ delete mem[k]; try{ localStorage.removeItem(PFX+k); }catch(e){} },
+  clear(){ try{ Object.keys(localStorage).filter(k=>k.startsWith(PFX) && !KEEP.includes(k.slice(PFX.length))).forEach(k=>localStorage.removeItem(k)); }catch(e){} for(const k in mem) if(!KEEP.includes(k)) delete mem[k]; }
+};
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+const plain = h => { const d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); };
+function speak(text){ try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(text); u.lang="it-IT"; u.rate=.85; speechSynthesis.speak(u); }catch(e){} }
+
+/* =====================================================================
+   DISEGNI (emoji grandi: si vedono uguali su ogni PC della scuola)
+   ===================================================================== */
+const ic = e => `<span class="ic" aria-hidden="true">${e}</span>`;
+const actr = (e, name, lit) => `<div class="actr${lit?" lit":""}"><span class="who-em" aria-hidden="true">${e}</span><b>${name}</b></div>`;
+const arw = (t, dir, on) => `<div class="arw ${dir}${on?"":" wait"}">${on?t:"…"}</div>`;
+const PAGE = css => `<div class="mini${css?" css":""}"><h3>Pasticceria Dolce Vita</h3><p>Torte fresche ogni giorno.</p><p>Torta Sacher: <span class="pz">18 €</span></p><span class="bt">Mostra l'offerta</span></div>`;
+
+/* =====================================================================
+   PAROLE (una o due per passo, otto in tutto)
+   ===================================================================== */
+const WORDS = {
+  cli:{k:"Client",       e:"📱", d:"Chi chiede la pagina: il telefono, il computer, il browser."},
+  srv:{k:"Server",       e:"🗄️", d:"Il computer che risponde e manda la pagina."},
+  dns:{k:"DNS",          e:"📒", d:"La rubrica di Internet: dal nome trova il numero."},
+  ip: {k:"Indirizzo IP", e:"🔢", d:"Il numero di un computer su Internet. Per esempio 93.41.120.7."},
+  htm:{k:"HTML",         e:"🧱", d:"Il testo e i pezzi della pagina."},
+  css:{k:"CSS",          e:"🎨", d:"I colori e l'aspetto della pagina."},
+  tag:{k:"Tag",          e:"🏷️", d:"Un'etichetta tra &lt; e &gt;. &lt;b&gt; apre il grassetto, &lt;/b&gt; lo chiude."},
+  dir:{k:"Cartella",     e:"📁", d:"Contiene i file. Al terminale si crea con mkdir."}
+};
+const ORDER = ["cli","srv","dns","ip","htm","css","tag","dir"];
+const wordCard = (w,lbl) => `<div class="word"><span class="ic" aria-hidden="true">${w.e}</span><div>${lbl?`<small>${lbl}</small>`:""}<b>${w.k}</b><span>${w.d}</span></div></div>`;
+
+/* =====================================================================
+   PASSI
+   acts = gesti da fare, uno per volta (il pulsante lampeggia)
+   qs   = domande del passo; opts = carte con disegno
+   ===================================================================== */
+const STEPS = [
+ {id:"w", screen:"welcome"},
+
+ {id:"g1", phase:"g", title:"Chi chiede?", words:["cli","srv"],
+  scene:a=>`<div class="row">${actr("📱","Il tuo telefono",a>=2)}<div class="arrows">${arw("❓ Mi mandi la pagina? →","r",a>=1)}${arw("← 📄 Ecco la pagina","l",a>=2)}</div>${actr("🗄️","Il computer del sito")}</div>`,
+  say:"Il telefono vuole la pagina della pasticceria.",
+  acts:[{label:"📨 Manda la domanda", after:"Il telefono ha chiesto la pagina."},
+        {label:"📦 Manda la risposta", after:"Il computer del sito ha mandato la pagina."}],
+  qs:[{q:"Chi ha chiesto la pagina?", opts:[{ic:"📱",t:"Il telefono",ok:true},{ic:"🗄️",t:"Il computer del sito",fb:"Il computer del sito ha risposto. Chi ha fatto la domanda?"}]}],
+  done:"Chi chiede si chiama client. Chi risponde si chiama server."},
+
+ {id:"g2", phase:"g", title:"La rubrica", words:["dns","ip"],
+  scene:a=>`<div class="row">${actr("🔤","dolcevita.it")}<div class="arrows">${arw("cerca →","r",true)}${arw("← trovato!","l",a>=1)}</div>${actr(a>=1?"🔢":"📒", a>=1?"93.41.120.7":"Il DNS", a>=1)}</div>`,
+  say:"I computer si trovano con i numeri. Noi ricordiamo i nomi.",
+  acts:[{label:"🔍 Cerca dolcevita.it", after:"Il DNS ha trovato il numero: 93.41.120.7."}],
+  qs:[{q:"Il DNS assomiglia a…", opts:[{ic:"📺",t:"La televisione",fb:"Pensa al telefono: cerchi un nome e trovi il numero."},{ic:"📒",t:"La rubrica del telefono",ok:true}]}],
+  done:"Il DNS è la rubrica di Internet. Il numero si chiama indirizzo IP."},
+
+ {id:"g3", phase:"g", title:"Il viaggio",
+  scene:a=>`<div class="row3">${actr("📱","Telefono",a>=2)}${actr("📒","DNS",a===1)}${actr("🗄️","Server",a>=2)}</div>
+    <ol class="msgs">${a>=1?`<li>1️⃣ Il telefono chiede al DNS: «Che numero ha dolcevita.it?» → <b>93.41.120.7</b></li>`:""}${a>=2?`<li>2️⃣ Il telefono chiede la pagina al server → <b>📄 la pagina arriva</b></li>`:""}</ol>`,
+  say:"Scrivi www.dolcevita.it e premi Invio.",
+  acts:[{label:"1️⃣ Chiedi il numero al DNS", after:"Il DNS risponde con il numero."},
+        {label:"2️⃣ Chiedi la pagina al server", after:"Il server manda la pagina."}],
+  qs:[{q:"Chi hai chiamato per primo?", opts:[{ic:"🗄️",t:"Il server",fb:"Prima serve il numero. Chi trova il numero?"},{ic:"📒",t:"Il DNS",ok:true}]}],
+  done:"Prima il DNS trova il numero. Poi il server manda la pagina."},
+
+ {id:"g4", phase:"g", title:"Chiedilo al terminale",
+  scene:a=>`<pre class="tbox">C:\\Users\\studente&gt;nslookup www.dolcevita.it${a>=1?`\nServer:  dns.scuola.local\nAddress:  192.168.1.1\n\nNome:    www.dolcevita.it\nAddress:  <mark>93.41.120.7</mark>`:" ▍"}</pre>`,
+  say:"Il comando nslookup chiede il numero al DNS.",
+  acts:[{label:"⏎ Premi Invio", after:"Ecco la risposta. Il numero del sito è in fondo."}],
+  qs:[{q:"Tocca il numero del sito.", opts:[{ic:"🏫",t:"192.168.1.1",fb:"Questo è in alto: è il DNS della scuola. Il sito è in fondo."},{ic:"🔢",t:"93.41.120.7",ok:true}]}],
+  done:"nslookup chiede al DNS il numero di un sito."},
+
+ {id:"g5", phase:"g", title:"Il testo e i colori", words:["htm","css"],
+  scene:a=>PAGE(a<1),
+  say:"Questa è la pagina della pasticceria.",
+  acts:[{label:"🎨 Togli il CSS", after:"I colori sono spariti. Il testo è rimasto."}],
+  qs:[{q:"Che cosa è rimasto?", opts:[{ic:"🔤",t:"Il testo",ok:true},{ic:"🌈",t:"I colori",fb:"Guarda la pagina: i colori sono spariti. Che cosa vedi ancora?"}]}],
+  done:"Il testo è l'HTML. I colori sono il CSS."},
+
+ {id:"g6", phase:"g", title:"Come su WhatsApp", words:["tag"],
+  scene:()=>`<div class="row"><div><span class="bubble">*Offerta*</span><br>⬇<br><span class="bubble"><b>Offerta</b></span><br><small>WhatsApp</small></div><div></div><div><span class="code">&lt;b&gt;Offerta&lt;/b&gt;</span><br>⬇<br><span class="mini" style="display:inline-block;padding:2px 12px"><b>Offerta</b></span><br><small>HTML</small></div></div>`,
+  say:"Su WhatsApp gli asterischi fanno il grassetto. In HTML lo fa il tag b.",
+  qs:[{q:"Quale scrive in grassetto in HTML?", opts:[{ic:"💬",t:"*Offerta*",fb:"Gli asterischi vanno bene su WhatsApp. In HTML si usa il tag b."},{ic:"🏷️",t:"<code>&lt;b&gt;Offerta&lt;/b&gt;</code>",ok:true}]}],
+  done:"&lt;b&gt; è un tag. I tag dicono al browser come mostrare il testo."},
+
+ {id:"g7", phase:"g", title:"Apri e chiudi",
+  scene:()=>`<div class="tagdemo"><span class="t o">&lt;b&gt;<small>apre</small></span>Offerta<span class="t c">&lt;/b&gt;<small>chiude</small></span></div>`,
+  say:"Un tag si apre e si chiude. La chiusura ha la barra /.",
+  qs:[{q:"Tocca il tag che chiude.", opts:[{ic:"🔓",t:"<code>&lt;b&gt;</code>",fb:"Questo apre. Cerca quello con la barra /."},{ic:"🔒",t:"<code>&lt;/b&gt;</code>",ok:true}]}],
+  done:"&lt;b&gt; apre il grassetto. &lt;/b&gt; lo chiude."},
+
+ {id:"g8", phase:"g", title:"Una cartella nuova", words:["dir"],
+  scene:a=>`<pre class="tbox">C:\\Users\\studente\\Desktop&gt;mkdir dolcevita${a>=1?"\n\nC:\\Users\\studente\\Desktop&gt;":" ▍"}</pre>
+    <div class="desk"><span><i aria-hidden="true">📁</i>Documenti</span><span><i aria-hidden="true">📁</i>Immagini</span>${a>=1?`<span class="new"><i aria-hidden="true">📁</i>dolcevita</span>`:""}</div>`,
+  say:"Al terminale si crea una cartella con mkdir.",
+  acts:[{label:"⏎ Premi Invio", after:"Sul Desktop c'è una cartella nuova: dolcevita."}],
+  qs:[{q:"Che cosa ha fatto mkdir?", opts:[{ic:"🗑️",t:"Ha cancellato un file",fb:"Guarda il Desktop: c'è qualcosa in più, non in meno."},{ic:"📁",t:"Ha fatto una cartella",ok:true}]}],
+  done:"mkdir crea una cartella. Lì dentro metterai i file del sito."},
+
+ {id:"r", screen:"review"},
+
+ {id:"x1", phase:"x", code:"D1", scene:()=>`<div class="row">${actr("📱","Il tuo telefono")}<div class="arrows">${arw("❓ Mi mandi la pagina? →","r",true)}</div>${actr("🗄️","")}</div>`,
+  q:"Il telefono chiede una pagina. Il telefono è…",
+  opts:[{ic:"📱",t:"Un client",ok:true},{ic:"🗄️",t:"Un server"}], why:"Chi chiede è il client."},
+ {id:"x2", phase:"x", code:"D2", scene:()=>`<div class="row">${actr("🔤","dolcevita.it")}<div class="arrows">${arw("? →","r",true)}</div>${actr("🔢","93.41.120.7")}</div>`,
+  q:"Chi trova il numero di un sito?",
+  opts:[{ic:"🎨",t:"Il CSS"},{ic:"📒",t:"Il DNS",ok:true}], why:"Il DNS è la rubrica: dal nome trova il numero."},
+ {id:"x3", phase:"x", code:"D3", scene:()=>`<div class="tagdemo">93.41.120.7</div>`,
+  q:"Che cos'è questo numero?",
+  opts:[{ic:"🔢",t:"Un indirizzo IP",ok:true},{ic:"🏷️",t:"Un tag"}], why:"È un indirizzo IP: il numero di un computer su Internet."},
+ {id:"x4", phase:"x", code:"D4", scene:()=>`<pre class="tbox">C:\\Users\\studente&gt;? www.dolcevita.it</pre>`,
+  q:"Quale comando chiede il numero al DNS?",
+  opts:[{ic:"📁",t:"mkdir"},{ic:"⌨️",t:"nslookup",ok:true}], why:"nslookup chiede il numero al DNS."},
+ {id:"x5", phase:"x", code:"D5", scene:()=>PAGE(true),
+  q:"Vuoi il titolo di un altro colore. Che cosa cambi?",
+  opts:[{ic:"🎨",t:"Il CSS",ok:true},{ic:"🔢",t:"L'indirizzo IP"}], why:"I colori sono il CSS."},
+ {id:"x6", phase:"x", code:"D6", scene:()=>`<div class="row"><div><span class="bubble"><b>Offerta</b></span></div><div></div><div></div></div>`,
+  q:"Quale scrive Offerta in grassetto in HTML?",
+  opts:[{ic:"💬",t:"*Offerta*"},{ic:"🏷️",t:"<code>&lt;b&gt;Offerta&lt;/b&gt;</code>",ok:true}], why:"In HTML il grassetto è il tag &lt;b&gt;."},
+ {id:"x7", phase:"x", code:"D7", scene:()=>`<div class="tagdemo"><span class="t o">&lt;b&gt;<small>apre</small></span>Offerta<span class="t c">?<small>chiude</small></span></div>`,
+  q:"Quale tag chiude il grassetto?",
+  opts:[{ic:"🔒",t:"<code>&lt;/b&gt;</code>",ok:true},{ic:"🔓",t:"<code>&lt;b&gt;</code>"}], why:"La chiusura ha la barra: &lt;/b&gt;."},
+ {id:"x8", phase:"x", code:"D8", scene:()=>`<div class="desk"><span><i aria-hidden="true">📁</i>Documenti</span><span class="new"><i aria-hidden="true">📁</i>sito</span></div>`,
+  q:"Quale comando crea una cartella?",
+  opts:[{ic:"⌨️",t:"nslookup"},{ic:"📁",t:"mkdir",ok:true}], why:"mkdir crea una cartella."},
+
+ {id:"f", screen:"phrase"},
+ {id:"end", screen:"end"}
+];
+const GUIDED = STEPS.filter(s=>s.phase==="g"), CHAL = STEPS.filter(s=>s.phase==="x");
+const idx = id => STEPS.findIndex(s=>s.id===id);
+const PHRASE = {q:"Il DNS è come…", opts:[{ic:"📺",t:"una televisione"},{ic:"📒",t:"la rubrica del telefono",ok:true}], why:"Il DNS è come la rubrica: dal nome del sito trova il numero."};
+
+/* =====================================================================
+   CODICE RISULTATO · stessa firma delle altre palestre (djb2, base 36)
+   ===================================================================== */
+const FAM = "WEB", TOOL = "BES";
+function sig(s, tag){ let h=5381; const t=FAM+"*"+s+"*"+tag; for(let k=0;k<t.length;k++){ h=((h<<5)+h+t.charCodeAt(k))>>>0; } return h.toString(36).toUpperCase().slice(-5).padStart(5,"0"); }
+const two = n => String(n).padStart(2,"0");
+const nowStr = () => { const d=new Date(); return `${two(d.getDate())}/${two(d.getMonth()+1)}/${d.getFullYear()} ${two(d.getHours())}:${two(d.getMinutes())}`; };
+
+/* =====================================================================
+   APP
+   ===================================================================== */
+const App = (()=>{
+  let pos = Math.min(Math.max(0, +store.get("pos")||0), STEPS.length-1), S={};
+  const res = id => store.get("r_"+id);
+  const curName = () => (store.get("nome")||"").replace(/\s+/g," ").trim();
+  const curCls = () => (store.get("classe")||"");
+  const rip = () => +store.get("rip")||0;
+  const app = $("#app");
+
+  function go(i){ pos=i; store.set("pos", i); S={a:0, qi:0, err:0, off:[], right:false, first:null}; render(); window.scrollTo(0,0); const h=app.querySelector("h2"); if(h) h.focus({preventScroll:true}); }
+  const next = () => { if(pos<STEPS.length-1) go(pos+1); };
+
+  function dots(){
+    const work=[...GUIDED,...CHAL], cur=STEPS[pos], k=work.indexOf(cur), doneN = k>=0 ? k : (cur.id==="w" ? 0 : cur.id==="r" ? GUIDED.length : work.length);
+    const left=work.length-doneN;
+    $("#dots").innerHTML = work.map((s,i)=>`<i class="dot${i<doneN?" on":""}${i===k?" now":""}"></i>`).join("") + `<span>${left===0?"Hai finito!":left===1?"Ti manca 1 passo":"Ti mancano "+left+" passi"}</span>`;
+    $("#h-name").textContent = curName() + (curCls()?" · "+curCls():"");
+  }
+  function where(){ const s=STEPS[pos]; return s.phase==="g" ? `passo ${GUIDED.indexOf(s)+1}/${GUIDED.length}` : s.phase==="x" ? `domanda ${CHAL.indexOf(s)+1}/${CHAL.length}` : s.id==="r" ? "ripasso" : s.id==="f" ? "frase" : s.id==="end" ? "fine" : "inizio"; }
+  const sayBox = (ctx,q) => `<div class="say"><div style="flex:1">${ctx?`<p>${ctx}</p>`:""}${q?`<p class="q">${q}</p>`:""}</div><button type="button" class="spk" data-say aria-label="Ascolta il testo" title="Ascolta">🔊</button></div>`;
+  function optsBox(opts){
+    return `<div class="opts" role="group" aria-label="Risposte">${opts.map((o,i)=>{ const off=S.off.includes(i), ok=S.right && o.ok;
+      return `<div class="opt"><button type="button" class="pick${off?" wrong":""}${ok?" right":""}" data-i="${i}"${off||S.right?" disabled":""}>${ic(o.ic)}<span>${o.t}</span>${off?`<span class="mk">✗ non è questa</span>`:ok?`<span class="mk">✔ giusto</span>`:""}</button><button type="button" class="spk" data-opt="${i}" aria-label="Ascolta: ${esc(plain(o.t))}">🔊</button></div>`; }).join("")}</div>`;
+  }
+  function bind(opts, onPick){
+    app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+    app.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>speak(plain(opts[+b.dataset.opt].t)));
+    app.querySelectorAll(".pick").forEach(b=>b.onclick=()=>onPick(+b.dataset.i));
+    const n=app.querySelector("#b-next"); if(n){ n.onclick=S.onNext; n.focus({preventScroll:true}); }
+    const a=app.querySelector("#b-act"); if(a) a.onclick=()=>{ S.a++; render(); const f=app.querySelector("#b-act") || app.querySelector(".pick:not([disabled])"); if(f) f.focus({preventScroll:true}); };
+  }
+
+  /* ---- un passo guidato ---- */
+  function guided(step){
+    const acts=step.acts||[], inActs=S.a<acts.length, q=step.qs[S.qi], last=S.qi===step.qs.length-1, finished=S.right && last;
+    const ctx = S.a===0 ? step.say : acts[S.a-1].after;
+    let h = `<p class="count">Passo ${GUIDED.indexOf(step)+1} di ${GUIDED.length}</p><h2 tabindex="-1">${step.title}</h2>`;
+    if(step.scene) h += `<div class="scene">${step.scene(S.a)}</div>`;
+    if(inActs) h += sayBox(ctx, "Premi il pulsante arancione.") + `<p><button type="button" class="btn act" id="b-act">${acts[S.a].label}</button></p>`;
+    else {
+      h += sayBox(S.qi===0 ? ctx : "", q.q) + optsBox(q.opts);
+      if(S.fb) h += `<div class="fb ko" role="status">${S.fb}</div>`;
+      if(S.right) h += `<div class="fb ok" role="status">✔ Giusto! ${finished ? step.done : ""}</div>`;
+      if(finished && step.words) h += step.words.map(w=>wordCard(WORDS[w],"Parola nuova")).join("");
+      if(S.right) h += `<p class="next"><button type="button" class="btn" id="b-next">Avanti →</button></p>`;
+    }
+    app.innerHTML = h;
+    S.onNext = () => { if(!last){ S.qi++; S.off=[]; S.right=false; S.fb=""; render(); const f=app.querySelector(".pick"); if(f) f.focus({preventScroll:true}); } else next(); };
+    bind(q.opts, i=>{ const o=q.opts[i];
+      if(o.ok){ S.right=true; S.fb=""; if(last) store.set("r_"+step.id, {ok:1, err:S.err}); }
+      else { S.err++; S.off.push(i); S.fb="Non è questa. "+(o.fb||q.fb||"Riprova con un'altra carta."); }
+      render(); });
+  }
+  /* ---- una domanda finale: conta la prima risposta ---- */
+  function question(step, cfg){
+    const q = cfg || step;
+    let h = cfg ? `<p class="count">Ultima cosa</p><h2 tabindex="-1">Completa la frase</h2>` : `<p class="count">Domanda ${CHAL.indexOf(step)+1} di ${CHAL.length}</p><h2 tabindex="-1">Domanda ${CHAL.indexOf(step)+1}</h2><div class="scene">${step.scene()}</div>`;
+    h += sayBox("", q.q) + optsBox(q.opts);
+    if(S.right) h += `<div class="fb ok" role="status">${S.first?"✔ Giusto al primo colpo! ":"✔ Adesso è giusta. "}${q.why}</div><p class="next"><button type="button" class="btn" id="b-next">Avanti →</button></p>`;
+    else if(S.fb) h += `<div class="fb ko" role="status">${S.fb}</div>`;
+    app.innerHTML = h; S.onNext = next;
+    bind(q.opts, i=>{ const o=q.opts[i];
+      if(S.first===null){ S.first=!!o.ok; if(!res(step.id)) store.set("r_"+step.id, {first:S.first}); }
+      if(o.ok) S.right=true; else { S.off.push(i); S.fb="Non è questa. Guarda bene il disegno e tocca l'altra carta."; }
+      render(); });
+  }
+
+  /* ---- schermate ---- */
+  const SCREENS = {
+    welcome(){
+      app.innerHTML = `<h2 tabindex="-1">Dal nome alla pagina</h2>
+        <div class="scene"><div class="row">${actr("🔤","dolcevita.it")}<div class="arrows">${arw("📒 DNS →","r",true)}${arw("🗄️ server →","r",true)}</div>${actr("📄","La pagina")}</div></div>
+        ${sayBox("Oggi scopri come arriva una pagina sul tuo telefono. E scrivi il tuo primo tag.","Ci sono 8 passi e 8 domande. Vai con calma.")}
+        <ul><li>Il pulsante 🔊 legge il testo.</li><li>In alto, 📖 <b>Le mie parole</b> ti ricorda le parole nuove.</li><li>Se sbagli, riprovi.</li></ul>
+        <div class="fields"><p><label for="w-name"><b>Nome e cognome</b></label><br><input type="text" id="w-name" autocomplete="off" value="${esc(curName())}"></p>
+        <p><label for="w-cls"><b>Classe</b></label><br><input type="text" id="w-cls" autocomplete="off" value="${esc(curCls())}" placeholder="es. 3B" maxlength="8"></p></div>
+        <div class="fb ko hidden" id="w-err" role="alert">Scrivi nome, cognome e classe. Poi premi Inizia.</div>
+        <p><button type="button" class="btn" id="w-go">Inizia →</button></p>`;
+      const start=()=>{ const v=$("#w-name").value.replace(/\s+/g," ").trim(), c=$("#w-cls").value.replace(/[^0-9A-Za-z]/g,"").toUpperCase();
+        if(v.length<3 || !/^[1-5][A-Z]{1,4}$/.test(c)){ $("#w-err").classList.remove("hidden"); (v.length<3?$("#w-name"):$("#w-cls")).focus(); return; }
+        store.set("nome", v); store.set("classe", c); next(); };
+      $("#w-go").onclick=start; ["#w-name","#w-cls"].forEach(s=>$(s).addEventListener("keydown", e=>{ if(e.key==="Enter") start(); }));
+      app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+    },
+    review(){
+      app.innerHTML = `<p class="count">Ripasso</p><h2 tabindex="-1">Le tue 8 parole</h2>
+        ${sayBox("Hai finito i passi. Bravo!","Rileggi le parole. Poi ci sono 8 domande.")}
+        <div class="words">${ORDER.map(k=>`<div style="position:relative">${wordCard(WORDS[k])}<button type="button" class="spk" data-w="${k}" style="position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px" aria-label="Ascolta: ${WORDS[k].k}">🔊</button></div>`).join("")}</div>
+        <p class="small">Durante le domande puoi riaprire 📖 Le mie parole.</p>
+        <p class="next"><button type="button" class="btn" id="b-next">Vai alle domande →</button></p>`;
+      $("#b-next").onclick=next;
+      app.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak([...b.parentNode.querySelectorAll("p")].map(p=>p.textContent).join(" ")));
+      app.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>speak(WORDS[b.dataset.w].k+". "+plain(WORDS[b.dataset.w].d)));
+    },
+    phrase(){ question(STEPS[pos], PHRASE); },
+    end(){
+      app.innerHTML = `<h2 tabindex="-1">🎉 Hai finito!</h2>${summary()}
+        <div style="border:2px solid var(--line);border-radius:12px;padding:10px 16px;margin-top:18px"><p><b>Vuoi rifare?</b> Prima incolla il codice nella consegna: se ricominci, questo codice si cancella.</p>
+        <p><button type="button" class="btn alt" id="e-redo">↺ Rifaccio solo le domande</button> <button type="button" class="btn alt" id="e-zero">🗑️ Ricomincio tutto</button></p></div>
+        <details style="margin-top:14px"><summary class="small">Area docente: verifica un codice</summary>
+          <textarea class="copy" id="r-verify" style="height:70px" aria-label="Codice da verificare"></textarea><p><button type="button" class="btn alt" id="r-vbtn">Verifica</button> <b id="r-vres" aria-live="polite"></b></p></details>`;
+      $("#e-redo").onclick=()=>{ if(!confirm("Rifai le domande?\n\nIl codice di adesso si cancella. L'hai già incollato nella consegna?")) return; CHAL.forEach(q=>store.del("r_"+q.id)); store.del("r_f"); store.set("rip", rip()+1); go(idx("x1")); };
+      $("#e-zero").onclick=resetAll;
+      $("#r-vbtn").onclick=()=>{ const raw=$("#r-verify").value.replace(/\s+/g," ").trim(), k=raw.lastIndexOf(" | #"), r=$("#r-vres");
+        if(k<0 || !new RegExp("^"+FAM+"-[A-Z]{3} \\|").test(raw)){ r.textContent="✘ Codice incompleto"; r.style.color="#b3261e"; return; }
+        const ok = sig(raw.slice(0,k), raw.slice(FAM.length+1, raw.indexOf(" |")))===raw.slice(k+4).trim();
+        r.textContent = ok ? "✔ Codice valido" : "✘ Codice NON valido: il testo è stato modificato"; r.style.color = ok ? "#1e7d3a" : "#b3261e"; };
+    }
+  };
+
+  /* ---- riepilogo e codice ---- */
+  function tally(){ const g=GUIDED.map(s=>res(s.id)), x=CHAL.map(s=>res(s.id)), f=res("f");
+    return {gok:g.filter(Boolean).length, gerr:g.reduce((a,r)=>a+(r?r.err||0:0),0), xok:x.filter(r=>r && r.first).length, xdone:x.filter(Boolean).length,
+            xbad:CHAL.filter(s=>{ const r=res(s.id); return r && !r.first; }).map(s=>s.code), f}; }
+  function code(){ const t=tally();
+    const parts=[FAM+"-"+TOOL, curName()||"(nome non inserito)"];
+    if(curCls()) parts.push("CLASSE "+curCls());
+    parts.push(`PASSI ${t.gok}/${GUIDED.length}`+(t.gok<GUIDED.length?` (${GUIDED.length-t.gok} non fatti)`:""), `tentativi sbagliati nei passi ${t.gerr}`,
+      `DOMANDE ${t.xok}/${CHAL.length}`+(t.xdone<CHAL.length?` (${CHAL.length-t.xdone} non fatte)`:""), "sbagliate "+(t.xbad.length?t.xbad.join(" "):"-"),
+      "FRASE "+(t.f ? (t.f.first?"giusta":"sbagliata") : "non fatta"), "ripetizioni "+rip(), "palestra BES", "ADESSO "+where(), "ORA "+nowStr());
+    const body=parts.join(" | "); return body+" | #"+sig(body, TOOL); }
+  function summary(){ const t=tally();
+    return `<p class="stars">⭐ Passi fatti: ${t.gok} su ${GUIDED.length}<br>⭐ Domande giuste al primo colpo: ${t.xok} su ${CHAL.length}</p>
+      <h3 style="margin:14px 0 4px">Il tuo codice</h3><p>Premi <b>Copia il codice</b>. Poi incollalo nella consegna di Classroom.</p>
+      <textarea class="copy" readonly aria-label="Codice risultato">${esc(code())}</textarea>
+      <p><button type="button" class="btn" data-copy>📋 Copia il codice</button> <b data-copied aria-live="polite" style="color:var(--ok)"></b></p>`; }
+  document.addEventListener("click", e=>{ const b=e.target.closest("[data-copy]"); if(!b) return;
+    const box=b.closest(".sheet").querySelector("textarea.copy"), out=b.parentNode.querySelector("[data-copied]"), ok=()=>{ out.textContent="Copiato ✓ Ora incollalo nella consegna."; };
+    const fb=()=>{ box.focus(); box.select(); try{ document.execCommand("copy"); ok(); }catch(err){ out.textContent="Seleziona il codice e copialo a mano."; } };
+    if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(box.value).then(ok, fb); else fb(); });
+  function resetAll(){ const any=STEPS.some(s=>res(s.id));
+    if(any && !confirm("Cancello tutto: nome, passi e codice.\n\nIl codice è già stato incollato nella consegna?")) return;
+    store.clear(); location.reload(); }
+
+  /* ---- finestre ---- */
+  function modal(html){ const m=$("#modal"); m.innerHTML=`<div class="sheet">${html}<p class="next"><button type="button" class="btn" id="m-close">Chiudi</button></p></div>`; m.classList.remove("hidden");
+    const back=document.activeElement; $("#m-close").onclick=()=>{ m.classList.add("hidden"); try{ speechSynthesis.cancel(); }catch(e){} if(back && back.focus) back.focus(); }; $("#m-close").focus();
+    m.querySelectorAll("[data-w]").forEach(b=>b.onclick=()=>speak(WORDS[b.dataset.w].k+". "+plain(WORDS[b.dataset.w].d))); }
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !$("#modal").classList.contains("hidden")) $("#m-close").click(); });
+  $("#b-words").onclick=()=>{ const all = pos>=idx("r"), known = ORDER.filter(k=>all || GUIDED.some(s=>s.words && s.words.includes(k) && res(s.id)));
+    modal(`<h2>📖 Le mie parole</h2>${known.length ? `<div class="words">${known.map(k=>`<div style="position:relative">${wordCard(WORDS[k])}<button type="button" class="spk" data-w="${k}" style="position:absolute;top:8px;right:8px;width:40px;height:40px;font-size:17px" aria-label="Ascolta: ${WORDS[k].k}">🔊</button></div>`).join("")}</div>` : "<p>Ancora nessuna parola. Arrivano una alla volta, con i passi.</p>"}`); };
+  $("#f-code").onclick=()=>modal(`<h2>📋 Il mio codice</h2>${summary()}`);
+  $("#f-reset").onclick=resetAll;
+  document.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>go(idx(b.dataset.jump)));
+
+  function render(){ dots(); try{ speechSynthesis.cancel(); }catch(e){}
+    const step=STEPS[pos];
+    if(step.screen) SCREENS[step.screen](); else if(step.phase==="g") guided(step); else question(step); }
+  S={a:0, qi:0, err:0, off:[], right:false, first:null};
+  return {render};
+})();
+App.render();
+</script>
+</body>
+</html>

@@ -138,6 +138,19 @@
         "trasparenza",
         "terminale"
       ]
+    },
+    {
+      "titolo": "Dal nome alla pagina: client-server, DNS e primi tag HTML",
+      "percorso": "SERVIZI_COMMERCIALI/LINGUAGGI_WEB/DAL_NOME_ALLA_PAGINA/",
+      "minuti": 100,
+      "descrizione": "Due ore al PC per fissare quanto fatto in classe, con una pillola di teoria e un esercizio per passo. Palestra «Il viaggio di una pagina»: client e server, gioco di ruolo a turni, DNS e nslookup al terminale, HTML, CSS e JavaScript negli strumenti del browser. Palestra «Il tuo primo HTML»: tag come su WhatsApp, editor con anteprima, scheletro del documento, cartelle e file dal CMD. Codici firmati da incollare nella verifica comune dell'argomento, livello bonus, palestra BES dedicata.",
+      "tag": [
+        "html",
+        "dns",
+        "client-server",
+        "terminale",
+        "siti-web"
+      ]
     }
   ]
 }

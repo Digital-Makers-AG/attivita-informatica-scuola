@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAM e Hard Disk</title>
+<style>
+/* ====== COLORI FISSI: RAM = BLU, HD = ARANCIONE (sempre uguali, aiutano la memoria) ====== */
+:root{
+  --ram:#1e6fd9; --ram-l:#dbe9ff;
+  --hd:#e07b00;  --hd-l:#ffe9cc;
+  --bg:#fdfcf7; --fg:#1b1b1b; --card:#fff; --ok:#1a9b4b; --ko:#d33;
+  --fs:20px; --ls:0;
+}
+body.hc{--bg:#000;--fg:#fff;--card:#111;--ram-l:#0b2a55;--hd-l:#4a2a00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Verdana,Tahoma,Arial,sans-serif;
+  font-size:var(--fs);letter-spacing:var(--ls);line-height:1.5}
+body.dys{--ls:.08em;word-spacing:.2em;line-height:1.8}
+header{display:flex;flex-wrap:wrap;gap:.4em;align-items:center;justify-content:space-between;
+  padding:.4em 1em;background:#222;color:#fff;position:sticky;top:0;z-index:5}
+header b{font-size:1.05em}
+header button{font-size:.8em}
+button{font:inherit;cursor:pointer;border:0;border-radius:.6em;padding:.45em .9em;background:#444;color:#fff}
+button:hover{filter:brightness(1.15)} button:focus-visible{outline:4px solid #ffcc00}
+.b-ram{background:var(--ram)} .b-hd{background:var(--hd)} .b-ok{background:var(--ok)}
+main{max-width:1100px;margin:auto;padding:1em 16px 6em}
+section.slide{display:none;animation:fade .4s}
+section.slide.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+h1,h2{margin:.3em 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1em}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:1em;padding:1em;box-shadow:0 2px 8px #0002}
+.ram{border-top:10px solid var(--ram);background:var(--ram-l)}
+.hd{border-top:10px solid var(--hd);background:var(--hd-l)}
+.ram h2{color:var(--ram)} .hd h2{color:var(--hd)}
+body.hc .ram h2,body.hc .hd h2{color:#fff}
+ul.big li{margin:.35em 0}
+.voice{border-left:6px solid #9b59b6;background:#f3e8ff;color:#222;padding:.6em 1em;border-radius:.5em;margin:1em 0}
+.voice::before{content:"🗣️ Ricordi cosa ha detto il prof? ";font-weight:bold}
+.photo{width:100%;max-height:220px;object-fit:contain;background:#fff;border-radius:.6em}
+.fallback{font-size:5em;text-align:center}
+nav.bottom{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:1em;
+  align-items:center;padding:.5em;background:#222;color:#fff;z-index:5}
+#bar{position:fixed;top:0;left:0;height:5px;background:#ffcc00;z-index:9;transition:width .3s}
+.center{text-align:center}
+/* uccelli / volatile */
+.box{position:relative;min-height:170px;border-radius:1em;padding:.6em;overflow:hidden}
+.data{display:inline-block;font-size:2em;margin:.1em;transition:transform 2s ease-in,opacity 2s}
+.fly{transform:translate(300px,-300px) rotate(-30deg);opacity:0}
+.flap{animation:flap .25s infinite alternate}
+@keyframes flap{to{transform:translateY(-6px) scaleY(.8)}}
+.off{filter:grayscale(1) brightness(.8)}
+/* barre */
+.track{height:38px;background:#ddd;border-radius:1em;overflow:hidden;margin:.3em 0}
+.fill{height:100%;transition:width .6s;color:#fff;font-weight:bold;padding-left:.5em;white-space:nowrap;display:flex;align-items:center}
+/* gara */
+.lane{position:relative;height:70px;background:repeating-linear-gradient(90deg,#555 0 40px,#666 40px 80px);border-radius:.5em;margin:.4em 0}
+.runner{position:absolute;left:0;top:8px;font-size:2.6em;transition:left linear}
+.flag{position:absolute;right:6px;top:10px;font-size:2.2em}
+/* griglia celle */
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.35em;margin:.6em 0}
+.cell{background:var(--card);border:3px solid #999;border-radius:.5em;padding:.4em .2em;text-align:center;font-size:.75em;cursor:pointer;min-height:3.4em;transition:.15s}
+.cell small{display:block;color:#888}
+.cell.scan{background:#fff3a0;border-color:#e6b800;transform:scale(1.06);color:#222}
+.cell.seen{background:#eee;color:#999}
+.cell.target{border-color:var(--ko);border-width:4px}
+.cell.found{background:var(--ok);color:#fff;transform:scale(1.15)}
+.stat{font-size:1.3em;font-weight:bold}
+textarea{width:100%;font:inherit;font-size:.7em}
+/* quiz */
+.chip{display:inline-block;background:#fff;color:#222;border:2px solid #888;border-radius:2em;padding:.3em .8em;margin:.25em;cursor:grab;user-select:none}
+.chip.sel{outline:4px solid #ffcc00}
+.drop{min-height:160px}
+.chip.good{background:var(--ok);color:#fff;border-color:var(--ok)}
+.chip.bad{background:var(--ko);color:#fff;border-color:var(--ko);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.gauge{font-size:3em}
+details{margin:.6em 0} summary{cursor:pointer;font-weight:bold}
+.pill{display:inline-block;padding:.1em .6em;border-radius:1em;color:#fff;font-weight:bold}
+.big-emoji{font-size:4em;line-height:1}
+.bubble{background:#fff;color:#222;border:3px solid #222;border-radius:1.2em;padding:.5em .9em;display:inline-block;position:relative;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<header>
+  <b>💾 Memoria primaria e secondaria</b>
+  <span>
+    <button id="tts" title="Leggi ad alta voce">🔊 Leggi</button>
+    <button onclick="zoom(2)" title="Testo più grande">A+</button>
+    <button onclick="zoom(-2)" title="Testo più piccolo">A−</button>
+    <button onclick="document.body.classList.toggle('dys')" title="Testo più spaziato">↔ Spaziatura</button>
+    <button onclick="document.body.classList.toggle('hc')" title="Alto contrasto">◐ Contrasto</button>
+  </span>
+</header>
+
+<main>
+
+<!-- ============ 1. RIPASSO LIM ============ -->
+<section class="slide" data-speak="A sinistra la RAM, memoria primaria. A destra l'hard disk, memoria secondaria. Ricorda: la RAM è sempre blu, l'hard disk è sempre arancione.">
+  <h1>Cosa abbiamo scritto alla LIM</h1>
+  <p>Come sulla lavagna: <span class="pill" style="background:var(--ram)">RAM a sinistra</span> e <span class="pill" style="background:var(--hd)">HARD DISK a destra</span>. Clicca su ogni voce per scoprirla.</p>
+  <div class="two">
+    <div class="card ram">
+      <h2>🧠 RAM</h2>
+      <img class="photo" alt="Banco di memoria RAM" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Swissbit_2GB_PC2-5300U-555.jpg/640px-Swissbit_2GB_PC2-5300U-555.jpg" onerror="this.outerHTML='<div class=fallback>🧠▭▭▭</div>'">
+      <ul class="big reveal">
+        <li>Memoria <b>PRIMARIA</b></li>
+        <li><b>VOLATILE</b> 🐦</li>
+        <li>Quantità: <b>4 GB – 8 – 16 – 32 – 64 GB</b></li>
+        <li>Velocità <b>MAGGIORE</b> 🚀</li>
+        <li>Costo <b>MAGGIORE</b> 💰💰</li>
+      </ul>
+    </div>
+    <div class="card hd">
+      <h2>🗄️ HARD DISK</h2>
+      <img class="photo" alt="Hard disk aperto" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Hard_disk_head.jpg/640px-Hard_disk_head.jpg" onerror="this.outerHTML='<div class=fallback>🗄️💿</div>'">
+      <ul class="big reveal">
+        <li>Memoria <b>SECONDARIA</b></li>
+        <li><b>PERMANENTE</b> 💇</li>
+        <li>Quantità: <b>256 GB → 1, 2, 4… TB</b></li>
+        <li>Velocità <b>MINORE</b> 🐢</li>
+        <li>Costo <b>MINORE</b> 💰</li>
+      </ul>
+    </div>
+  </div>
+  <p class="center"><button class="b-ok" onclick="revealAll()">Mostra tutto</button></p>
+</section>
+
+<!-- ============ 2. VOLATILE / PERMANENTE ============ -->
+<section class="slide" data-speak="Volatile non è un uccello! Ma i dati nella RAM, quando spegni il computer, volano via come uccellini. Permanente non è l'acconciatura dal parrucchiere! Ma come una permanente, i dati sull'hard disk restano anche a computer spento. Premi il pulsante per spegnere il computer.">
+  <h1>Volatile 🐦 e Permanente 💇</h1>
+  <div class="voice">“Volatile… non è un uccello!” e “Permanente… non è un’acconciatura!”</div>
+  <div class="two">
+    <div class="card ram">
+      <h2>RAM = VOLATILE</h2>
+      <p><span class="bubble">Non sono un uccello… ma i miei dati <u>volano via</u>!</span></p>
+      <div class="box" id="ramBox"></div>
+    </div>
+    <div class="card hd">
+      <h2>HD = PERMANENTE</h2>
+      <p><span class="bubble">Non sono una pettinatura… ma come la permanente <u>resto</u>!</span></p>
+      <div class="box" id="hdBox"></div>
+    </div>
+  </div>
+  <p class="center">
+    <button class="b-ok" id="pwr" onclick="power()">🔌 SPEGNI IL COMPUTER</button>
+  </p>
+  <p class="center" id="pwrMsg" style="font-weight:bold"></p>
+</section>
+
+<!-- ============ 3. QUANTITÀ ============ -->
+<section class="slide" data-speak="Confrontiamo la quantità di dati. Una RAM normale ha da 4 a 64 gigabyte. Un disco ha da 256 gigabyte fino a molti terabyte. Un terabyte sono circa mille gigabyte. Sposta il cursore.">
+  <h1>Quanti dati ci stanno? 📦</h1>
+  <p>1 TB ≈ <b>1000 GB</b>. Sposta i cursori e guarda le barre (stessa scala!).</p>
+  <div class="card ram">
+    <b>RAM:</b> <small>(🔍 barra ingrandita ×3, altrimenti sarebbe quasi invisibile!)</small><br><input type="range" id="rRam" min="0" max="4" value="1" style="width:60%"> <span id="vRam"></span>
+    <div style="display:flex;align-items:center;gap:.5em"><div class="track" style="flex:1"><div class="fill" id="fRam" style="background:var(--ram)"></div></div><b id="lRam" style="color:var(--ram);min-width:4.5em"></b></div>
+  </div><br>
+  <div class="card hd">
+    <b>HARD DISK:</b> <input type="range" id="rHd" min="0" max="4" value="2" style="width:60%"> <span id="vHd"></span>
+    <div class="track"><div class="fill" id="fHd" style="background:var(--hd)"></div></div>
+  </div>
+  <p id="cmp" class="center stat"></p>
+</section>
+
+<!-- ============ 4. VELOCITÀ E COSTO ============ -->
+<section class="slide" data-speak="La RAM è molto più veloce dell'hard disk, ma costa di più per ogni gigabyte. Premi via per far partire la gara.">
+  <h1>Velocità 🚀 e Costo 💰</h1>
+  <div class="lane"><span class="runner" id="run1">🚀</span><span class="flag">🏁</span></div>
+  <div class="lane"><span class="runner" id="run2">🐢</span><span class="flag">🏁</span></div>
+  <p class="center"><button class="b-ok" onclick="race()">VIA! 🏁</button> <span id="raceMsg" class="stat"></span></p>
+  <div class="two">
+    <div class="card ram center"><h2>RAM</h2><div class="big-emoji">💰💰💰</div><p>Costa <b>di più</b> per ogni GB</p></div>
+    <div class="card hd center"><h2>HARD DISK</h2><div class="big-emoji">💰</div><p>Costa <b>di meno</b> per ogni GB</p></div>
+  </div>
+  <p class="center"><i>Per questo nel PC c’è <b>poca RAM veloce</b> e <b>tanto disco economico</b>.</i></p>
+</section>
+
+<!-- ============ 5. VIDEO ============ -->
+<section class="slide" data-speak="Guarda come è fatto dentro un hard disk: un disco che gira e una testina che si sposta. Serve internet per vedere il video.">
+  <h1>Dentro un Hard Disk 🎬</h1>
+  <p>Il disco <b>gira</b> e la testina <b>si sposta</b> per trovare i dati: per questo è più lento. La RAM invece non ha parti in movimento.</p>
+  <div class="card center" id="videoBox">
+    <!-- Video: clic sull'anteprima = si apre YouTube in una nuova scheda (funziona sempre, anche da file locale) -->
+    <div class="two">
+      <a class="vthumb" href="https://www.youtube.com/watch?v=3owqvmMf6No" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/3owqvmMf6No/hqdefault.jpg" alt="Anteprima video" onerror="this.outerHTML='<div class=fallback>🎬</div>'">
+        <span>▶</span><b>Hard disk al rallentatore (Slow Mo Guys, 1:27)</b></a>
+      <a class="vthumb" href="https://www.youtube.com/watch?v=ynSnztTQ3Ig" target="_blank" rel="noopener">
+        <img src="https://img.youtube.com/vi/ynSnztTQ3Ig/hqdefault.jpg" alt="Anteprima video" onerror="this.outerHTML='<div class=fallback>🎬</div>'">
+        <span>▶</span><b>La testina che cerca i dati (super slow motion)</b></a>
+    </div>
+    <p style="font-size:.7em">Clicca l’anteprima: il video si apre su YouTube (serve internet).</p>
+    <style>.vthumb{position:relative;display:block;color:inherit;text-decoration:none}
+      .vthumb img{width:100%;border-radius:.6em}
+      .vthumb span{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);background:#d00;color:#fff;font-size:2em;border-radius:.4em;padding:0 .6em}</style>
+  </div>
+  <div class="center" style="margin-top:1em">
+    <svg viewBox="0 0 200 200" width="220" aria-label="Animazione disco e testina">
+      <circle cx="100" cy="100" r="90" fill="#ccc" stroke="#888" stroke-width="3"/>
+      <g style="transform-origin:100px 100px;animation:spin 1.2s linear infinite">
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#aaa" stroke-dasharray="6 6"/>
+        <circle cx="100" cy="100" r="50" fill="none" stroke="#aaa" stroke-dasharray="6 6"/>
+        <rect x="96" y="12" width="8" height="12" fill="var(--hd)"/>
+      </g>
+      <circle cx="100" cy="100" r="12" fill="#666"/>
+      <g style="transform-origin:185px 185px;animation:arm 2s ease-in-out infinite alternate">
+        <line x1="185" y1="185" x2="110" y2="60" stroke="#333" stroke-width="7" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}@keyframes arm{to{transform:rotate(-18deg)}}</style>
+  </div>
+</section>
+
+<!-- ============ 6. SEQUENZIALE vs CASUALE ============ -->
+<section class="slide" data-speak="Facciamo l'interrogazione! Ogni casella è un alunno, come la griglia alla LIM. Nell'accesso sequenziale chiamo tutti in ordine, dal primo, finché trovo quello che cerco. Nell'accesso casuale vado direttamente da lui. Quale è più veloce?">
+  <h1>L’interrogazione 🙋: sequenziale o casuale?</h1>
+  <div class="voice">La griglia alla LIM: ogni casella (cella/cluster) è un alunno del laboratorio.</div>
+  <details><summary>✏️ Prof: inserisci i nomi degli alunni (uno per riga)</summary>
+    <textarea id="names" rows="4" placeholder="Mario&#10;Giulia&#10;..."></textarea>
+    <button onclick="buildGrid()">Aggiorna griglia</button>
+  </details>
+  <p>🎯 Cerchiamo: <b id="tName"></b> (bordo rosso). <button onclick="pickTarget()">🎲 Altro alunno vicino alla fine</button></p>
+  <div class="grid" id="grid"></div>
+  <p class="center">
+    <button class="b-hd" onclick="seq()">🐢 Interrogazione SEQUENZIALE (HD)</button>
+    <button class="b-ram" onclick="rnd()">🚀 Interrogazione CASUALE (RAM)</button>
+  </p>
+  <div class="two">
+    <div class="card hd center">Sequenziale: <div class="stat"><span id="sSteps">0</span> passi · <span id="sTime">0.0</span> s</div></div>
+    <div class="card ram center">Casuale: <div class="stat"><span id="rSteps">0</span> passi · <span id="rTime">0.0</span> s</div></div>
+  </div>
+  <p class="center" style="font-size:.85em">💡 In modalità casuale puoi anche <b>cliccare qualsiasi casella</b>: dopo pochi salti a caso lo trovi, ovunque sia!</p>
+  <details class="card"><summary>🤔 Considerazioni della classe… (clicca dopo aver discusso)</summary>
+    <ul>
+      <li><b>Sequenziale</b>: devo passare da tutti quelli prima → se il dato è in fondo, ci metto tantissimo.</li>
+      <li><b>Casuale</b> (= ad accesso diretto): vado <b>subito</b> alla casella giusta → il tempo è sempre lo stesso, ovunque sia il dato.</li>
+      <li>RAM = <i>Random Access Memory</i> = memoria ad accesso casuale!</li>
+    </ul>
+  </details>
+</section>
+
+<!-- ============ 7. AGGIORNARE IL PC ============ -->
+<section class="slide" data-speak="Vuoi un computer più veloce? Aggiungi RAM. Ma attenzione: un computer vecchio potrebbe non vedere tutta la RAM. Se aumenti l'hard disk invece hai più spazio, ma il computer non diventa più veloce. Prova il simulatore.">
+  <h1>Voglio un PC più veloce! 🛠️</h1>
+  <p>Scegli il PC:
+    <button id="pcNew" class="b-ok" onclick="setPc(false)">💻 PC nuovo</button>
+    <button id="pcOld" onclick="setPc(true)">🖥️ PC vecchio (32 bit)</button>
+  </p>
+  <div class="two">
+    <div class="card ram">
+      <h2>RAM: <span id="uRam">4</span> GB</h2>
+      <button class="b-ram" onclick="addRam()">➕ Aggiungi 4 GB di RAM</button>
+      <p>RAM vista dal PC: <b id="seenRam">4</b> GB</p>
+    </div>
+    <div class="card hd">
+      <h2>HD: <span id="uHd">256</span> GB</h2>
+      <button class="b-hd" onclick="addHd()">➕ Aggiungi 256 GB di disco</button>
+      <p>Spazio libero per foto e giochi: <b id="space">tanto</b></p>
+    </div>
+  </div>
+  <div class="card center">
+    Velocità del PC: <div class="gauge" id="gauge">🐌</div>
+    <div class="track"><div class="fill" id="spd" style="background:var(--ok);width:20%"></div></div>
+    <p id="upMsg" class="stat"></p>
+    <button onclick="resetPc()">↺ Ricomincia</button>
+  </div>
+</section>
+
+<!-- ============ 8. QUIZ ============ -->
+<section class="slide" data-speak="Gioco finale! Trascina ogni cartellino nella colonna giusta, oppure toccalo e poi tocca la colonna.">
+  <h1>Gioco: metti al posto giusto 🧩</h1>
+  <p>Trascina (oppure <b>tocca il cartellino e poi la colonna</b>).</p>
+  <div id="pool" class="card center"></div><br>
+  <div class="two">
+    <div class="card ram drop" data-k="ram"><h2>🧠 RAM</h2></div>
+    <div class="card hd drop" data-k="hd"><h2>🗄️ HARD DISK</h2></div>
+  </div>
+  <p class="center stat" id="score"></p>
+  <p class="center"><button onclick="buildQuiz()">↺ Rigioca</button></p>
+</section>
+
+<!-- ============ 9. RIASSUNTO ============ -->
+<section class="slide" data-speak="Riassunto. RAM: primaria, volatile, poca, veloce, costosa, accesso casuale. Hard disk: secondaria, permanente, tanta, lenta, economica, accesso sequenziale. Per un PC più veloce si aggiunge RAM, non disco.">
+  <h1>Ricorda! 📝</h1>
+  <div style="overflow-x:auto">
+  <table class="sum">
+    <tr><th></th><th class="tr">🧠 RAM</th><th class="th">🗄️ HARD DISK</th></tr>
+    <tr><td>Tipo</td><td>Primaria</td><td>Secondaria</td></tr>
+    <tr><td>A PC spento</td><td>🐦 Volatile<br><small>i dati volano via</small></td><td>💇 Permanente<br><small>i dati restano</small></td></tr>
+    <tr><td>Quantità</td><td>Poca<br><small>4 – 64 GB</small></td><td>Tanta<br><small>256 GB – TB</small></td></tr>
+    <tr><td>Velocità</td><td>🚀 Alta</td><td>🐢 Bassa</td></tr>
+    <tr><td>Costo</td><td>💰💰 Alto</td><td>💰 Basso</td></tr>
+    <tr><td>Accesso</td><td>🎯 Casuale</td><td>🚶 Sequenziale</td></tr>
+    <tr><td>Se ne aggiungo</td><td>✅ PC più veloce<br><small>(se il PC la “vede”)</small></td><td>📦 Solo più spazio</td></tr>
+  </table></div>
+  <style>.sum{width:100%;border-collapse:separate;border-spacing:0 .35em;text-align:center}
+    .sum th{font-size:1.2em;padding:.4em;color:#fff;border-radius:.5em .5em 0 0}
+    .sum .tr{background:var(--ram)} .sum .th{background:var(--hd)}
+    .sum td{padding:.5em;font-weight:bold}
+    .sum td:first-child{text-align:left;font-weight:normal;color:#666;width:22%}
+    .sum td:nth-child(2){background:var(--ram-l)} .sum td:nth-child(3){background:var(--hd-l)}
+    .sum small{font-weight:normal}</style>
+</section>
+
+</main>
+
+<nav class="bottom">
+  <button onclick="go(-1)" aria-label="Indietro">◀ Indietro</button>
+  <span id="num"></span>
+  <button onclick="go(1)" aria-label="Avanti">Avanti ▶</button>
+</nav>
+
+<script>
+/* ---------- navigazione ---------- */
+const S=[...document.querySelectorAll('.slide')]; let cur=0;
+function show(i){cur=Math.max(0,Math.min(S.length-1,i));S.forEach((s,k)=>s.classList.toggle('on',k===cur));
+  num.textContent=(cur+1)+' / '+S.length; bar.style.width=((cur+1)/S.length*100)+'%';
+  speechSynthesis&&speechSynthesis.cancel(); window.scrollTo(0,0);
+}
+function go(d){show(cur+d)}
+document.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowRight')go(1); if(e.key==='ArrowLeft')go(-1);});
+let fs=20; function zoom(d){fs=Math.max(14,Math.min(34,fs+d));document.documentElement.style.setProperty('--fs',fs+'px')}
+
+/* ---------- sintesi vocale (funziona offline nella maggior parte dei browser) ---------- */
+tts.onclick=()=>{if(!window.speechSynthesis)return alert('Lettura non disponibile');
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(S[cur].dataset.speak);u.lang='it-IT';u.rate=.9;speechSynthesis.speak(u);}
+
+/* ---------- 1. ripasso: voci a comparsa ---------- */
+document.querySelectorAll('.reveal li').forEach(li=>{li.dataset.t=li.innerHTML;li.innerHTML='❓ <i>clicca</i>';li.style.cursor='pointer';
+  li.onclick=()=>li.innerHTML=li.dataset.t;});
+function revealAll(){document.querySelectorAll('.reveal li').forEach(li=>li.innerHTML=li.dataset.t)}
+
+/* ---------- 2. volatile / permanente ---------- */
+const files=['📄','🖼️','🎵','📄','🎮','🖼️'];
+function fillBoxes(){ramBox.innerHTML=files.map(f=>`<span class="data">🐦${f}</span>`).join('');
+  hdBox.innerHTML=files.map(f=>`<span class="data">💇${f}</span>`).join('');ramBox.classList.remove('off');hdBox.classList.remove('off');}
+let on=true;
+function power(){
+  if(on){[...ramBox.children].forEach((d,i)=>{d.classList.add('flap');setTimeout(()=>d.classList.add('fly'),150*i)});
+    ramBox.classList.add('off');hdBox.classList.add('off');
+    pwr.textContent='⚡ RIACCENDI IL COMPUTER';
+    pwrMsg.innerHTML='PC spento: i dati della <span style="color:var(--ram)">RAM</span> sono VOLATI VIA 🐦💨 — quelli dell’<span style="color:var(--hd)">HD</span> sono rimasti, come una permanente 💇!';
+  }else{fillBoxes();ramBox.innerHTML='<i>RAM vuota… il PC deve ricaricare i dati dal disco ⏳</i>';
+    setTimeout(fillBoxes,1500);pwr.textContent='🔌 SPEGNI IL COMPUTER';pwrMsg.textContent='';}
+  on=!on;}
+fillBoxes();
+
+/* ---------- 3. quantità ---------- */
+const ramV=[4,8,16,32,64], hdV=[256,512,1000,2000,4000], MAX=4000, ZOOM=3; /* barra RAM ingrandita x3 */
+const lab=g=>g>=1000?(g/1000)+' TB':g+' GB';
+function upd(){const a=ramV[rRam.value],b=hdV[rHd.value];vRam.textContent=lab(a);vHd.textContent=lab(b);
+  fRam.style.width=(a/MAX*100*ZOOM)+'%';fRam.textContent='';lRam.textContent=lab(a);
+  fHd.style.width=(b/MAX*100)+'%';fHd.textContent=lab(b);
+  cmp.textContent=`Il disco contiene circa ${Math.round(b/a)} volte i dati della RAM!`;}
+rRam.oninput=rHd.oninput=upd;upd();
+
+/* ---------- 4. gara ---------- */
+function race(){[run1,run2].forEach(r=>{r.style.transition='none';r.style.left='0'});raceMsg.textContent='';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    run1.style.transition='left .8s linear';run2.style.transition='left 6s linear';
+    run1.style.left='calc(100% - 90px)';run2.style.left='calc(100% - 90px)';
+    setTimeout(()=>raceMsg.textContent='🚀 RAM vince!',800);setTimeout(()=>raceMsg.textContent='🚀 RAM vince! …🐢 HD arriva ora',6000);}));}
+run1.insertAdjacentHTML('afterend','<span style="position:absolute;left:50%;top:20px;color:#fff;font-weight:bold">RAM</span>');
+run2.insertAdjacentHTML('afterend','<span style="position:absolute;left:50%;top:20px;color:#fff;font-weight:bold">HARD DISK</span>');
+
+/* ---------- 6. griglia sequenziale / casuale ---------- */
+let N=[],target=0,busy=false;
+function buildGrid(){const t=names.value.split('\n').map(s=>s.trim()).filter(Boolean);
+  N=t.length?t:Array.from({length:25},(_,i)=>'Alunno '+(i+1));
+  grid.innerHTML=N.map((n,i)=>`<div class="cell" data-i="${i}"><small>cella ${i+1}</small>${n}</div>`).join('');
+  [...grid.children].forEach(c=>c.onclick=()=>{if(!busy){target=+c.dataset.i;mark();rnd();}});pickTarget();}
+function pickTarget(){if(busy)return;target=N.length-1-Math.floor(Math.random()*Math.min(3,N.length));mark();}
+function mark(){[...grid.children].forEach((c,i)=>{c.className='cell'+(i===target?' target':'')});tName.textContent=N[target];}
+function seq(){if(busy)return;busy=true;mark();let i=0;const t0=performance.now();const C=grid.children;
+  const step=()=>{if(i>0)C[i-1].classList.replace('scan','seen');C[i].classList.add('scan');sSteps.textContent=i+1;
+    sTime.textContent=((performance.now()-t0)/1000).toFixed(1);
+    if(i===target){C[i].classList.add('found');busy=false;say('Trovato dopo '+(i+1)+' passi');return;}i++;setTimeout(step,450);};step();}
+function rnd(){if(busy)return;busy=true;mark();const C=grid.children;
+  /* 2 o 3 "salti a vuoto" su alunni a caso (mai lo stesso, mai il bersaglio), poi quello giusto */
+  const miss=2+Math.floor(Math.random()*2),pool=[...Array(N.length).keys()].filter(i=>i!==target).sort(()=>Math.random()-.5);
+  const path=[...pool.slice(0,miss),target];let k=0;const t0=performance.now();
+  const step=()=>{if(k>0)C[path[k-1]].classList.replace('scan','seen');const i=path[k];C[i].classList.add('scan');
+    rSteps.textContent=k+1;rTime.textContent=((performance.now()-t0)/1000).toFixed(1);
+    if(i===target){C[i].classList.add('found');busy=false;say('Trovato in '+(k+1)+' passi');return;}
+    k++;setTimeout(step,700);};step();}
+function say(t){if(window.speechSynthesis){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='it-IT';speechSynthesis.speak(u);}}
+buildGrid();
+
+/* ---------- 7. upgrade ---------- */
+let old=false,ram=4,hd=256;
+function setPc(o){old=o;pcOld.className=o?'b-ok':'';pcNew.className=o?'':'b-ok';resetPc();}
+function resetPc(){ram=4;hd=256;upMsg.textContent='';renderPc();}
+function renderPc(){const seen=old?Math.min(ram,4):ram;uRam.textContent=ram;seenRam.textContent=seen;uHd.textContent=hd;
+  space.textContent=hd<=256?'poco 📦':hd<=768?'abbastanza 📦📦':'tantissimo 📦📦📦';
+  const p=Math.min(100,15+seen*5);spd.style.width=p+'%';gauge.textContent=p<35?'🐌':p<60?'🚶':p<85?'🚗':'🚀';}
+function addRam(){ram+=4;renderPc();
+  upMsg.innerHTML=old&&ram>4?'⚠️ PC vecchio: <b>non “vede”</b> la RAM oltre 4 GB! Velocità uguale.':'✅ Più RAM = PC <b>più veloce</b>!';}
+function addHd(){hd+=256;renderPc();upMsg.innerHTML='📦 Più spazio… ma la velocità <b>NON cambia</b>!';}
+renderPc();
+
+/* ---------- 8. quiz ---------- */
+const Q=[['Volatile','ram'],['Permanente','hd'],['Primaria','ram'],['Secondaria','hd'],['Più veloce','ram'],['Più lenta','hd'],
+ ['Costa di più','ram'],['Costa di meno','hd'],['16 GB','ram'],['2 TB','hd'],['Accesso casuale','ram'],['Accesso sequenziale','hd'],
+ ['Si svuota a PC spento','ram'],['Tiene le foto anche da spento','hd']];
+let selChip=null,ok=0;
+function buildQuiz(){ok=0;score.textContent='';document.querySelectorAll('.drop .chip').forEach(c=>c.remove());
+  pool.innerHTML=Q.slice().sort(()=>Math.random()-.5).map(([t,k])=>`<span class="chip" draggable="true" data-k="${k}">${t}</span>`).join('');
+  pool.querySelectorAll('.chip').forEach(c=>{c.ondragstart=e=>{selChip=c};c.onclick=()=>{pool.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));c.classList.add('sel');selChip=c;}});}
+function place(zone){if(!selChip||!selChip.parentNode||selChip.parentNode!==pool)return;const c=selChip;selChip=null;c.classList.remove('sel');
+  if(c.dataset.k===zone.dataset.k){c.classList.add('good');c.draggable=false;c.onclick=null;zone.appendChild(c);ok++;
+    score.textContent=`✅ ${ok} / ${Q.length}`+(ok===Q.length?' — BRAVISSIMI! 🎉':'');}
+  else{c.classList.add('bad');setTimeout(()=>c.classList.remove('bad'),500);say('Riprova');}}
+document.querySelectorAll('.drop').forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();place(z)};z.onclick=()=>place(z);});
+buildQuiz();
+
+show(0);
+</script>
+</body>
+</html>
