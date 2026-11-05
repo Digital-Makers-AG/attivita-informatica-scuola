@@ -38,6 +38,7 @@
     "BIENNIO": "Biennio",
     "TECNICO_INFORMATICO": "Tecnico informatico",
     "TPSIT_CLASSE_5": "TPSIT 5° anno",
+    "SISTEMI_RETI_CLASSE_4": "Sistemi e reti 4° anno",
     "WORDPRESS": "WordPress",
     "SEO": "SEO"
   },
@@ -137,6 +138,19 @@
         "reti",
         "trasparenza",
         "terminale"
+      ]
+    },
+    {
+      "titolo": "La rete dell'Istituto",
+      "percorso": "TECNICO_INFORMATICO/SISTEMI_RETI_CLASSE_4/RETE_ISTITUTO/",
+      "minuti": 220,
+      "descrizione": "Sistemi e reti quarto anno, al posto dell'esercitazione in Packet Tracer. Lezione partecipata con slide interattive (percorso essenziale o approfondito): VLAN, trunk, piano /24, firewall, DMZ, DHCP e DNS, VPN, backup. Palestra «Il tecnico di rete» con laboratorio virtuale (router-on-a-stick, caccia al guasto) e codice; palestra BES dedicata «La rete della scuola».",
+      "tag": [
+        "sistemi-e-reti",
+        "reti",
+        "vlan",
+        "firewall",
+        "indirizzamento"
       ]
     },
     {

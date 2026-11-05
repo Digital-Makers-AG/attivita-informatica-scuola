@@ -2,3 +2,16 @@
 EXTRA
 09_PROPOSTA_RACCOLTA_MODULARE
 10_NUOVE_PALESTRE
+# segnaposto vuoti creati dalla sandbox di Claude Code
+.claude/
+.bash_profile
+.bashrc
+.gitconfig
+.gitmodules
+.idea
+.mcp.json
+.profile
+.ripgreprc
+.vscode
+.zprofile
+.zshrc

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
+<title>La rete dell'Istituto: VLAN, indirizzi, firewall, configurazione · Guida per il docente</title>
+<style>
+:root{--teal:#0B6E75;--teal-d:#084f55;--teal-l:#E3F2F2;--orange:#D9661A;--orange-l:#FDEBDC;--ink:#1d2329;--muted:#5f6b73;--line:#dde3e7;--bg:#f7f5f0;--card:#fff}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.5}
+a{color:var(--teal-d)}
+.back{margin:0;padding:8px 16px;background:var(--teal);font:600 13px/1.6 system-ui,sans-serif;color:#cfe8ea;display:flex;flex-wrap:wrap;gap:4px 14px}
+.back a{color:#fff;text-decoration:none} .back a:hover{text-decoration:underline} .back .sp{margin-left:auto}
+.hero{background:linear-gradient(135deg,var(--teal) 0%,var(--teal-d) 100%);color:#fff;padding:30px 24px 26px}
+.hero .in{max-width:1180px;margin:0 auto} .hero h1{margin:4px 0 6px;font-size:clamp(24px,3.6vw,36px);line-height:1.15} .hero p{margin:0;max-width:760px;opacity:.95}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px} .pills span{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:14px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:210px 1fr;gap:28px;padding:24px}
+nav.side{position:sticky;top:16px;align-self:start;display:flex;flex-direction:column;gap:2px}
+nav.side a{text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:8px;font-size:15px}
+nav.side a:hover{background:var(--teal-l)} nav.side a.on{background:var(--teal);color:#fff}
+.prog{margin-top:12px;font-size:13px;color:var(--muted);padding:0 12px} .bar{height:6px;background:#e5e9ec;border-radius:4px;overflow:hidden;margin-top:4px} .bar div{height:100%;background:var(--orange);width:0}
+section{margin-bottom:36px;scroll-margin-top:12px} h2{font-size:26px;margin:2px 0 12px;color:var(--teal-d)} h3{margin:0 0 8px;font-size:19px;color:var(--teal-d)} h4{margin:0 0 6px;font-size:16px}
+.kicker{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--orange);font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px} .card p{margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.task{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.taskhead{display:flex;gap:14px;align-items:center}
+.done{margin-left:auto;font-size:14px;color:var(--muted);white-space:nowrap}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;margin-top:16px}
+.sn{width:28px;height:28px;border-radius:50%;background:var(--teal-l);color:var(--teal-d);font-weight:800;display:grid;place-items:center;font-size:14px}
+.sb{min-width:0} .sb p{margin:0 0 6px}
+.copyrow{display:grid;grid-template-columns:110px 1fr auto;gap:8px;align-items:start;margin:8px 0}
+.copyrow .lbl{font-size:13px;color:var(--muted);padding-top:8px}
+.copybox{background:#f2f5f6;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;white-space:pre-wrap;font-family:inherit;margin:0;min-width:0;overflow-wrap:anywhere}
+.cp,.all{border:1px solid var(--line);background:#fff;color:var(--teal-d);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.cp:hover,.all:hover{background:var(--teal-l)} .all{margin-top:10px}
+.tw{overflow-x:auto} table{border-collapse:collapse;width:100%;font-size:14px;margin-top:6px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-size:13px;font-weight:700}
+td.num{white-space:nowrap} td.note{color:var(--muted);font-size:13px}
+table.sc td.num{color:var(--orange);font-weight:700;width:76px}
+.b{display:inline-block;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;white-space:nowrap}
+.b.copy{background:var(--orange-l);color:#8a3d05} .b.view{background:var(--teal-l);color:var(--teal-d)} .b.link{background:#ece4f7;color:#5a3390}
+.tiny{font-size:12px;color:var(--muted)} .small{font-size:14px;color:var(--muted)}
+ul.checks{list-style:none;padding:0;margin:0} ul.checks li{margin:6px 0} ul.checks label{display:flex;gap:8px;align-items:flex-start;font-size:14px}
+ul.plain{margin:0;padding-left:20px} ul.plain li{margin:4px 0}
+.try{display:inline-block;margin:8px 8px 0 0;background:var(--orange);color:#fff;text-decoration:none;border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600}
+.try.alt{background:#fff;color:var(--teal-d);border:2px solid var(--teal);padding:5px 10px}
+.ph{background:#fff1cf;border:1px dashed #c58b1d;border-radius:6px;padding:1px 7px;font-weight:700;color:#7a5200}
+.pal-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;display:flex;gap:18px;align-items:flex-start}
+.pal-icon{font-size:36px;flex:none;line-height:1} .pal-body{min-width:0} .pal-body p{margin:0 0 6px} .pal-body ul{margin:4px 0 8px;padding-left:20px} .pal-body li{margin:2px 0}
+.rule{background:var(--teal-l);border-radius:10px;padding:10px 14px;margin:12px 0 0;font-size:15px} .rule code{background:#fff}
+code{background:#eef2f3;border-radius:4px;padding:1px 5px;font-size:.92em}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:30px}
+main{min-width:0} a.dl,td a{overflow-wrap:anywhere}
+details.bes{border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:10px;margin-top:16px;padding:10px 14px;background:#fbfcfc} details.bes summary{cursor:pointer;font-weight:700;color:var(--teal-d)} details.bes h4{margin:14px 0 4px}
+@media(max-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr);padding:16px}
+  nav.side{position:static;flex-direction:row;flex-wrap:wrap;min-width:0} nav.side a{padding:6px 10px;font-size:14px}
+  .grid3{grid-template-columns:minmax(0,1fr)} .copyrow{grid-template-columns:minmax(0,1fr)}
+  .done{display:none} .prog{width:100%} .task,.card{padding:14px} .pal-card{flex-direction:column;gap:10px}
+}
+@media print{nav.side,.cp,.all,.try,.done,.back{display:none} .wrap{display:block}}
+</style></head><body>
+
+<p class="back">
+  <a href="../../../index.html">&#8592; Hub principale</a>
+  <a href="../index.html">Sistemi e reti 4 · tutte le attività</a>
+  <span class="sp">Attività 1</span>
+</p>
+
+<header class="hero"><div class="in">
+  <div class="kicker" style="color:#ffd9bf">Guida per il docente · Sistemi e reti 4° anno · attività 1</div>
+  <h1>La rete dell'Istituto: VLAN, indirizzi, firewall, configurazione</h1>
+  <p>Al posto dell'esercitazione in Packet Tracer: una lezione partecipata con le slide, poi una palestra con il laboratorio virtuale.</p>
+  <div class="pills"><span>2 ore lezione + 100 minuti palestra</span><span>Tecnico informatico · quarto anno</span><span>Slide interattive</span><span>1 palestra · SIR-RET</span><span>Palestra BES · SIR-REB</span></div>
+</div></header>
+
+<div class="wrap">
+<nav class="side" id="side">
+  <a href="#breve">In breve</a>
+  <a href="#lezione">Lezione</a>
+  <a href="#scaletta">Scaletta</a>
+  <a href="#palestra">Palestra</a>
+  <a href="#compito">Compito</a>
+  <a href="#valutazione">Valutazione</a>
+  <a href="#bes">BES / DSA</a>
+  <a href="#file">File</a>
+  <div class="prog">Preparazione: <span id="pc">0</span> fatto<div class="bar"><div id="pb"></div></div></div>
+</nav>
+<main>
+
+<section id="breve">
+<div class="kicker">In breve</div><h2>Che cosa c'è dentro</h2>
+<div class="grid3">
+  <div class="card"><h4>🎯 Obiettivo</h4><p>Progettare la rete di una scuola (VLAN, /24, firewall, DMZ, servizi) e configurare VLAN, trunk e router-on-a-stick.</p></div>
+  <div class="card"><h4>🔩 Materiale</h4><p>Lezione: proiettore o LIM. Palestra: un browser per studente. Niente laboratorio né Packet Tracer.</p></div>
+  <div class="card"><h4>📤 Consegna</h4><p>Documento con il codice <b>SIR-RET</b> e il progetto della biblioteca.</p></div>
+</div>
+<div class="tw" style="margin-top:14px"><table>
+<thead><tr><th>Contenuto</th><th>Slide</th><th>Palestra</th></tr></thead>
+<tbody>
+<tr><td>Rete piatta, dominio di broadcast, VLAN</td><td>2–4</td><td>Passi 1–2 · A1</td></tr>
+<tr><td>Access e trunk, tag 802.1Q</td><td>5 (approfondito)</td><td>Passo 8 · A3</td></tr>
+<tr><td>Modem, router, firewall, switch</td><td>6</td><td>Passo 3</td></tr>
+<tr><td>Piano di indirizzamento /24</td><td>7</td><td>Passo 4 · A2, A4</td></tr>
+<tr><td>DHCP (relay), DNS</td><td>8</td><td>Passo 5 · B2</td></tr>
+<tr><td>Wi-Fi e rete ospiti</td><td>9</td><td>B1</td></tr>
+<tr><td>DMZ, regole del firewall</td><td>10–11</td><td>Passi 6–7</td></tr>
+<tr><td>Filtro contenuti, VPN, backup 3-2-1, continuità</td><td>12–14</td><td>B3, B4</td></tr>
+<tr><td>Router-on-a-stick, caccia al guasto</td><td>16 (laboratorio)</td><td>Passi 8–9 · C1–C4</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="lezione">
+<div class="kicker">Lezione partecipata · 2 ore</div><h2>Slide interattive</h2>
+<div class="pal-card">
+  <div class="pal-icon">🏫</div>
+  <div class="pal-body">
+    <h3 style="margin:0 0 4px">Progettiamo la rete dell'Istituto</h3>
+    <ul>
+      <li>All'inizio si sceglie il percorso: <b>essenziale</b> (18 schede) o <b>approfondito</b> (19 schede: trunk, DHCP relay, matrice completa, Cisco IOS).</li>
+      <li>Ogni scheda si può saltare; l'indice (<b>M</b>) segna quelle saltate. Note docente con i minuti: tasto <b>N</b>.</li>
+      <li>Scheda 16, laboratorio virtuale: lo stesso esercizio della palestra, da fare insieme alla LIM.</li>
+    </ul>
+    <a class="try" href="../../../REPO_SLIDE_LEZIONI/TECNICO_INFORMATICO/Progettazione_rete_scuola.html" target="_blank" rel="noopener">▶ Apri le slide</a>
+  </div>
+</div>
+</section>
+
+<section id="scaletta">
+<div class="kicker">Scaletta della palestra · circa 100 minuti</div><h2>Come si conduce</h2>
+<div class="tw"><table class="sc">
+<thead><tr><th>Minuti</th><th>Che cosa si fa</th><th>Nota</th></tr></thead>
+<tbody>
+<tr><td class="num">0–10</td><td><b>Richiamo</b></td><td>Slide 15, schema completo: due percorsi di pacchetti seguiti insieme.</td></tr>
+<tr><td class="num">10–70</td><td><b>Palestra «Il tecnico di rete»</b></td><td>Individuale. 9 passi (circa 40 minuti), poi 12 domande (circa 20).</td></tr>
+<tr><td class="num">70–90</td><td><b>Progetto della biblioteca</b></td><td>Risposte scritte nel documento di consegna.</td></tr>
+<tr><td class="num">90–100</td><td><b>Consegna</b></td><td>Codice incollato in cima al documento.</td></tr>
+</tbody>
+</table></div>
+<div class="rule"><b>Una regola.</b> Nella caccia al guasto si risponde «dove si ferma il pacchetto», non «cosa ho cambiato a caso».</div>
+</section>
+
+<section id="palestra">
+<div class="kicker">Attività interattiva</div><h2>Palestra</h2>
+<div class="pal-card">
+  <div class="pal-icon">🔧</div>
+  <div class="pal-body">
+    <h3 style="margin:0 0 4px">Il tecnico di rete</h3>
+    <ul>
+      <li><b>9 passi</b>: Chi sta con chi · Stampanti, LIM e server · Da Internet al PC · Una /24 per ogni VLAN · Il PC non prende l'indirizzo · Il firewall decide · Il sito della scuola · Configura il laboratorio · Caccia al guasto</li>
+      <li><b>Dati diversi per ogni studente</b>: VLAN del passo 4, richieste del passo 6, guasto del passo 9.</li>
+      <li><b>Laboratorio virtuale</b> (passi 8–9): R1 — SW1 — SW2, sei PC, VLAN 10 e 20. Si configurano porte, trunk e sottointerfacce; il passo si supera solo con 30 ping su 30.</li>
+      <li><b>Sfida, 12 domande</b>: A VLAN e indirizzi (4; VLAN) · B servizi e sicurezza (4; SERV) · C caccia al guasto in sola lettura (4; GUASTI)</li>
+      <li>Circa 60 minuti · codice <b>SIR-RET</b></li>
+    </ul>
+    <a class="try" href="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html" target="_blank" rel="noopener">▶ Prova la palestra</a>
+  </div>
+</div>
+<p class="small" style="margin:10px 0 0">File HTML autonomo: funziona online e offline (doppio clic), senza login. Il codice è firmato: si verifica nell'ultima schermata, «Area docente: verifica un codice». Passi e domande saltati valgono zero. In «Opzioni», in fondo alla pagina, i salti riservati al docente.</p>
+<div class="tw" style="margin-top:10px"><table>
+<thead><tr><th>Domanda C</th><th>Guasto</th></tr></thead>
+<tbody>
+<tr><td>C1</td><td>SW1–SW2 in access VLAN 10: la VLAN 20 non passa.</td></tr>
+<tr><td>C2</td><td>Gateway di PC5 sbagliato (.254).</td></tr>
+<tr><td>C3</td><td>Porta di PC3 nella VLAN 10.</td></tr>
+<tr><td>C4</td><td>Porta di SW1 verso R1 in access.</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="compito">
+<div class="kicker">Classroom</div><h2>Compito</h2>
+<div class="card" style="margin-bottom:14px"><h4>Prima della lezione</h4>
+<ul class="checks">
+  <li><label><input type="checkbox" data-k="p0"> Slide aperte sul PC di classe, percorso scelto.</label></li>
+  <li><label><input type="checkbox" data-k="p1"> Palestra aperta da un PC o da un telefono.</label></li>
+  <li><label><input type="checkbox" data-k="p2"> Compito creato o programmato.</label></li>
+</ul></div>
+
+<article class="task" id="c01">
+<div class="taskhead"><div><h3>La rete dell'Istituto: configura e ripara</h3></div>
+<label class="done"><input type="checkbox" data-k="c01"> creato in Classroom</label></div>
+
+<div class="step"><div class="sn">1</div><div class="sb"><h4>Crea il compito</h4>
+<p class="small">Lavori del corso › <b>+ Crea</b> › <b>Compito</b> · Punti: <b>Senza voto</b> · Argomento: <b>Reti locali</b></p>
+<div class="copyrow"><div class="lbl">Titolo</div><div class="copybox" id="t01">La rete dell'Istituto · Il tecnico di rete</div><button class="cp" data-target="t01">Copia</button></div>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d01">Oggi la rete progettata in classe va fatta funzionare.
+
+1. Palestra «Il tecnico di rete» (60 minuti): <span data-url="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html">—</span>
+   Alla fine premi «Riepilogo e codice», copia la riga SIR-RET e incollala in cima a un Documento Google nuovo.
+   Se il link non si apre, scarica il file allegato e aprilo con doppio clic.
+2. Sotto il codice progetta la rete della biblioteca comunale: sala lettura con 10 PC per il pubblico, 3 PC degli impiegati, Wi-Fi per i visitatori, una stampante.
+   a) Quali VLAN crei? Per ognuna: numero, nome, rete /24, gateway.
+   b) Scrivi tre regole del firewall (chi, verso chi, consenti o blocca) e il perché di ognuna.
+   c) Il Wi-Fi dei visitatori: come lo separi dal resto?
+3. Allega il documento e premi CONSEGNA.</pre><button class="cp" data-target="d01">Copia</button></div></div></div>
+
+<div class="step"><div class="sn">2</div><div class="sb"><h4>Aggiungi questi link</h4>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos'è</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k0" style="font-size:12.5px"><span data-url="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html">—</span></div><button class="cp" data-target="k0" style="margin-top:6px">Copia</button></td><td>Palestra «Il tecnico di rete»</td><td class="note">minuti 10–70</td></tr>
+<tr><td><div class="copybox" id="k1" style="font-size:12.5px"><span data-url="../../../REPO_SLIDE_LEZIONI/TECNICO_INFORMATICO/Progettazione_rete_scuola.html">—</span></div><button class="cp" data-target="k1" style="margin-top:6px">Copia</button></td><td>Slide della lezione</td><td class="note">per il ripasso</td></tr>
+</tbody></table></div></div></div>
+
+<div class="step"><div class="sn">3</div><div class="sb"><h4>Allega questo file</h4>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html" download data-c="01">⬇ palestra_rete_istituto.html</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">riserva offline: funziona con doppio clic</td></tr>
+</tbody></table></div>
+<button class="all" data-c="01">⬇ Scarica tutti i file di questo compito</button></div></div>
+
+<div class="step"><div class="sn">4</div><div class="sb"><h4>Che cosa consegnano</h4>
+<p>Un documento con il codice <b>SIR-RET</b> in cima e il progetto della biblioteca.</p>
+<p class="small"><b>Come controlli:</b> il codice nell'ultima schermata della palestra, «Area docente: verifica un codice». Nel progetto: VLAN pubblico e impiegati separate, /24 coerenti (rete .0, gateway .1), regola «pubblico → impiegati: blocca», Wi-Fi visitatori isolato.</p></div></div>
+<details class="bes"><summary>♿ Versioni BES / DSA di questo compito</summary>
+<p class="small">Per ogni versione: crea un <b>secondo compito</b> con lo stesso titolo (Riutilizza post) e assegnalo solo agli studenti interessati (menu <b>Per</b>).</p>
+<div class="tw"><table><thead><tr><th>Versione</th><th>Per chi</th><th>Che cosa fa</th><th>Consegna</th></tr></thead><tbody>
+<tr><td><b>BES · palestra «La rete della scuola»</b></td><td>Obiettivi minimi</td><td>Palestra a parte: 6 passi e 6 domande, circa 20 minuti</td><td>Solo il codice <b>SIR-REB</b></td></tr>
+<tr><td><b>DSA · modalità facilitata</b></td><td>Stessi obiettivi, meno lettura</td><td>Palestra completa con testo grande, aiuto dopo il primo errore, lettura ad alta voce</td><td>Codice SIR-RET; progetto della biblioteca solo con la domanda a)</td></tr>
+</tbody></table></div>
+
+<h4>BES · palestra «La rete della scuola»</h4>
+<ul class="plain">
+  <li>Una frase per volta; ogni risposta è una carta con disegno; 🔊 su ogni testo e su ogni carta.</li>
+  <li>Sei parole: switch, VLAN, router, firewall, rete ospiti, backup. Sempre a portata in «📖 Le mie parole».</li>
+  <li>Nessuna scheda: alla fine completa una frase toccando una carta, poi copia il codice.</li>
+</ul>
+<a class="try" href="01_LEZIONE_1/BES/palestra_rete_istituto_BES.html" target="_blank" rel="noopener">▶ Prova la palestra BES</a>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d04">Oggi scopri come sono collegati i computer della scuola.
+
+1. Apri la palestra «La rete della scuola»: <span data-url="01_LEZIONE_1/BES/palestra_rete_istituto_BES.html">—</span>
+2. Fai i 6 passi e le 6 domande. Vai con calma. Il pulsante con l'altoparlante legge il testo.
+3. Alla fine premi «Copia il codice».
+4. Incolla il codice qui, nel commento privato, e premi CONSEGNA.</pre><button class="cp" data-target="d04">Copia</button></div>
+<div class="tw"><table><thead><tr><th>Link</th><th>Che cos'è</th><th>Nota</th></tr></thead><tbody>
+<tr><td><div class="copybox" id="k4" style="font-size:12.5px"><span data-url="01_LEZIONE_1/BES/palestra_rete_istituto_BES.html">—</span></div><button class="cp" data-target="k4" style="margin-top:6px">Copia</button></td><td>Palestra BES «La rete della scuola»</td><td class="note">funziona anche offline, con doppio clic</td></tr>
+</tbody></table></div>
+<p class="small"><b>Come leggi il codice SIR-REB:</b> <code>PASSI 6/6</code> passi completati · <code>tentativi sbagliati nei passi</code> carte sbagliate prima di quella giusta · <code>DOMANDE 5/6</code> giuste al primo colpo · <code>sbagliate D4</code> quali (D1 switch, D2 VLAN, D3 router, D4 firewall, D5 rete ospiti, D6 backup) · <code>FRASE</code> la frase finale.</p>
+
+<h4>DSA · modalità facilitata</h4>
+<div class="copyrow"><div class="lbl">Istruzioni</div><pre class="copybox" id="d03">Oggi la rete progettata in classe va fatta funzionare.
+
+1. Apri la palestra «Il tecnico di rete»: <span data-url="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html#bes">—</span>
+   Per farti leggere un testo premi «Leggi». Alla fine copia il codice SIR-RET e incollalo in un Documento Google nuovo.
+2. Sotto il codice scrivi le VLAN per la biblioteca comunale (10 PC del pubblico, 3 PC degli impiegati, Wi-Fi visitatori): numero, nome, rete /24, gateway.
+3. Allega il documento e premi CONSEGNA.</pre><button class="cp" data-target="d03">Copia</button></div>
+
+<h4>File di riserva</h4>
+<div class="tw"><table><thead><tr><th>File</th><th>Peso</th><th>In Classroom</th><th>Nota</th></tr></thead><tbody>
+<tr><td><a class="dl" href="01_LEZIONE_1/BES/palestra_rete_istituto_BES.html" download data-c="01b">⬇ palestra_rete_istituto_BES.html</a></td><td class="num" data-w>—</td><td><span class="b view">Visualizzazione</span></td><td class="note">palestra BES</td></tr>
+</tbody></table></div>
+<button class="all" data-c="01b">⬇ Scarica i file BES / DSA</button>
+</details>
+</article>
+</section>
+
+<section id="valutazione">
+<div class="kicker">Valutazione</div><h2>Che cosa si guarda</h2>
+<div class="tw"><table>
+<thead><tr><th>Livello</th><th>Si riconosce così</th></tr></thead>
+<tbody>
+<tr><td><b>Autonomo</b></td><td>GUASTI 3–4/4; progetto della biblioteca con /24 coerenti e regole motivate.</td></tr>
+<tr><td><b>Con supporto</b></td><td>Passi 8–9 superati con l'aiuto; progetto corretto ma regole senza motivazione.</td></tr>
+<tr><td><b>Non ancora</b></td><td>Passo 8 saltato; VLAN confuse con le reti Wi-Fi o con i piani dell'edificio.</td></tr>
+</tbody>
+</table></div>
+<p class="small" style="margin:8px 0 0">Il codice è formativo: le sezioni VLAN, SERV e GUASTI dicono dove ripassare.</p>
+</section>
+
+<section id="bes">
+<div class="kicker">Inclusione</div><h2>BES / DSA</h2>
+<div class="card"><ul class="plain">
+  <li>Una palestra a parte per i BES («La rete della scuola», codice SIR-REB) e la modalità facilitata per i DSA: nel riquadro <a href="#c01">♿ Versioni BES / DSA di questo compito</a>.</li>
+  <li>Nessuna risposta dipende dal solo colore: le VLAN hanno sempre il numero scritto.</li>
+  <li>Laboratorio usabile da tastiera; ogni riscontro è scritto.</li>
+</ul></div>
+</section>
+
+<section id="file">
+<div class="kicker">Archivio</div><h2>File</h2>
+<div class="tw"><table>
+<thead><tr><th>Cartella</th><th>File</th><th>Peso</th><th>A che cosa serve</th></tr></thead>
+<tbody>
+<tr><td class="tiny">REPO_SLIDE_LEZIONI/TECNICO_INFORMATICO</td><td><a href="../../../REPO_SLIDE_LEZIONI/TECNICO_INFORMATICO/Progettazione_rete_scuola.html" download>Progettazione_rete_scuola.html</a></td><td class="num" data-w>—</td><td class="note">slide interattive della lezione</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/MATERIALI</td><td><a href="01_LEZIONE_1/MATERIALI/palestra_rete_istituto.html" download>palestra_rete_istituto.html</a></td><td class="num" data-w>—</td><td class="note">palestra «Il tecnico di rete» (SIR-RET)</td></tr>
+<tr><td class="tiny">01_LEZIONE_1/BES</td><td><a href="01_LEZIONE_1/BES/palestra_rete_istituto_BES.html" download>palestra_rete_istituto_BES.html</a></td><td class="num" data-w>—</td><td class="note">palestra BES «La rete della scuola» (SIR-REB)</td></tr>
+</tbody>
+</table></div>
+</section>
+
+</main></div>
+
+<footer>La rete dell'Istituto · Sistemi e reti 4° anno · <a href="[INSERIRE-LINK-CLASSROOM]" target="_blank" rel="noopener">Classroom del corso</a> · <a href="../index.html">Attività dell'argomento</a> · <a href="../../../index.html">Hub delle attività</a><br><span class="tiny">Link della Classroom: apri questo file con un editor di testo e sostituisci <span class="ph">INSERIRE-LINK-CLASSROOM</span> con l'indirizzo del corso.</span></footer>
+
+<script>
+(function(){
+  "use strict";
+  var store={
+    get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  };
+  var PFX="sir4-rete-istituto:";
+
+  var boxes=document.querySelectorAll('input[type=checkbox][data-k]');
+  Array.prototype.forEach.call(boxes,function(b){
+    if(store.get(PFX+b.dataset.k)==="1") b.checked=true;
+    b.addEventListener('change',function(){ store.set(PFX+b.dataset.k,b.checked?"1":"0"); progress(); });
+  });
+  function progress(){
+    var n=0;
+    Array.prototype.forEach.call(boxes,function(b){ if(b.checked) n++; });
+    var pc=document.getElementById('pc'), pb=document.getElementById('pb');
+    if(pc) pc.textContent=n+" / "+boxes.length;
+    if(pb) pb.style.width=(boxes.length? Math.round(n/boxes.length*100):0)+"%";
+  }
+  progress();
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.cp'); if(!b) return;
+    var el=document.getElementById(b.dataset.target); if(!el) return;
+    var t=el.innerText;
+    var done=function(){ var old=b.textContent; b.textContent="Copiato"; setTimeout(function(){ b.textContent=old; },1400); };
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(done,fallback);
+    } else { fallback(); }
+    function fallback(){
+      var ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly','');
+      ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(err){ b.textContent="Copia a mano"; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.all'); if(!b) return;
+    var links=document.querySelectorAll('a.dl[data-c="'+b.dataset.c+'"]');
+    Array.prototype.forEach.call(links,function(a,i){
+      setTimeout(function(){
+        var t=document.createElement('a'); t.href=a.getAttribute('href'); t.download='';
+        document.body.appendChild(t); t.click(); document.body.removeChild(t);
+      },i*400);
+    });
+  });
+
+  if(location.protocol.indexOf('http')===0&&window.fetch){
+    Array.prototype.forEach.call(document.querySelectorAll('td[data-w]'),function(td){
+      var a=td.parentNode.querySelector('a[href]'); if(!a) return;
+      fetch(a.getAttribute('href'),{method:'HEAD',cache:'no-store'}).then(function(r){
+        if(!r.ok){ td.textContent='manca'; return; }
+        var n=+r.headers.get('content-length');
+        if(n) td.textContent=n>=1048576?(n/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(n/1024))+' KB';
+      }).catch(function(){});
+    });
+  }
+
+  var secs=document.querySelectorAll('main section[id]');
+  var nav=document.querySelectorAll('nav.side a[href^="#"]');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        Array.prototype.forEach.call(nav,function(a){
+          a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id);
+        });
+      });
+    },{rootMargin:"-20% 0px -70% 0px"});
+    Array.prototype.forEach.call(secs,function(s){ io.observe(s); });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var SITO="https://digital-makers-ag.github.io/attivita-informatica-scuola/";
+  var m=location.pathname.match(/\/attivita-informatica-scuola\/((?:[^\/]+\/)*)[^\/]*$/);
+  if(!m) return;
+  var base=SITO+m[1];
+  Array.prototype.forEach.call(document.querySelectorAll('[data-url]'),function(el){
+    try{ el.textContent=new URL(el.getAttribute('data-url'),base).href; }catch(e){}
+  });
+})();
+</script>
+</body></html>
